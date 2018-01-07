@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExoplanetService.Models;
+using Microsoft.AspNet.OData.Query;
 
 namespace ExoplanetService.Controllers
 {
@@ -20,12 +21,7 @@ namespace ExoplanetService.Controllers
             _context = context;
         }
 
-        // GET: api/Planets
-        [HttpGet]
-        public IEnumerable<Planet> GetPlanets()
-        {
-            return _context.Planets;
-        }
+ 
 
         // GET: api/Planets/5
         [HttpGet("{id}")]
@@ -46,6 +42,14 @@ namespace ExoplanetService.Controllers
             return Ok(planet);
         }
 
-      
+
+
+        public IQueryable<Planet> GetPlanets(ODataQueryOptions opts)
+        {
+            IQueryable results = opts.ApplyTo(_context.Planets.AsQueryable());
+            return results as IQueryable<Planet>;
+        }
+
+
     }
 }

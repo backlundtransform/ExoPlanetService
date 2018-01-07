@@ -1,4 +1,5 @@
 using ExoplanetService.Models;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,10 +15,12 @@ namespace ExoplanetService.Controllers
     {
         private ExoContext context = new ExoContext() { };
 
-        [HttpGet]
-        public async Task<IEnumerable<Star>> Get()
+
+
+        public async Task<IQueryable<Star>> Get(ODataQueryOptions opts)
         {
-            return await Task.Run(() => context.Stars.Where(p => true));
+      
+            return await Task.Run(() => opts.ApplyTo(context.Stars.Where(p => true).AsQueryable()) as IQueryable<Star>);
         }
 
         [HttpGet("{id}")]
