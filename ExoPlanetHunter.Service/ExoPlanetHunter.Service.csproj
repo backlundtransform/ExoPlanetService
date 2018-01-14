@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.0.0-beta1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExoPlanetHunter.Database\ExoPlanetHunter.Database.csproj" />
+    <ProjectReference Include="..\ExoPlanetHunter.Models\ExoPlanetHunter.Pocos.csproj" />
+    <ProjectReference Include="..\ExoPlanetHunter.PHL\ExoPlanetHunter.PHL.csproj" />
+  </ItemGroup>
+
+</Project>
