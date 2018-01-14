@@ -5,13 +5,13 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.Web", "ExoPlanetHunter.Web\ExoPlanetHunter.Web.csproj", "{23E44F78-99A4-4A43-818A-72937DD10525}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExoPlanetHunter.Service", "ExoPlanetHunter.Logic\ExoPlanetHunter.Service.csproj", "{F5CA379E-3281-4960-A8F2-CCED93B5ADA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.Database", "ExoPlanetHunter.Database\ExoPlanetHunter.Database.csproj", "{8E9C452C-D1DD-45E6-8940-A990B9F39B28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExoPlanetHunter.Pocos", "ExoPlanetHunter.Models\ExoPlanetHunter.Pocos.csproj", "{784DD621-40CF-4D73-8A12-995434A6C22F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.PHL", "ExoPlanetHunter.PHL\ExoPlanetHunter.PHL.csproj", "{799C191E-0D1C-4973-9F8E-ED716E432143}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExoPlanetHunter.Database", "ExoPlanetHunter.Database\ExoPlanetHunter.Database.csproj", "{8E9C452C-D1DD-45E6-8940-A990B9F39B28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.Pocos", "ExoPlanetHunter.Pocos\ExoPlanetHunter.Pocos.csproj", "{FFA73689-9B12-46B3-B5C2-2B31BD337FD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExoPlanetHunter.PHL", "ExoPlanetHunter.PHL\ExoPlanetHunter.PHL.csproj", "{799C191E-0D1C-4973-9F8E-ED716E432143}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.Service", "ExoPlanetHunter.Service\ExoPlanetHunter.Service.csproj", "{0AD1D07F-456B-4D7E-A81F-1968680789ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +23,6 @@ Global
 		{23E44F78-99A4-4A43-818A-72937DD10525}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23E44F78-99A4-4A43-818A-72937DD10525}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23E44F78-99A4-4A43-818A-72937DD10525}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5CA379E-3281-4960-A8F2-CCED93B5ADA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5CA379E-3281-4960-A8F2-CCED93B5ADA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5CA379E-3281-4960-A8F2-CCED93B5ADA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5CA379E-3281-4960-A8F2-CCED93B5ADA2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{784DD621-40CF-4D73-8A12-995434A6C22F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{784DD621-40CF-4D73-8A12-995434A6C22F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{784DD621-40CF-4D73-8A12-995434A6C22F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{784DD621-40CF-4D73-8A12-995434A6C22F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E9C452C-D1DD-45E6-8940-A990B9F39B28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E9C452C-D1DD-45E6-8940-A990B9F39B28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E9C452C-D1DD-45E6-8940-A990B9F39B28}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +31,14 @@ Global
 		{799C191E-0D1C-4973-9F8E-ED716E432143}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{799C191E-0D1C-4973-9F8E-ED716E432143}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{799C191E-0D1C-4973-9F8E-ED716E432143}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFA73689-9B12-46B3-B5C2-2B31BD337FD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFA73689-9B12-46B3-B5C2-2B31BD337FD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFA73689-9B12-46B3-B5C2-2B31BD337FD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFA73689-9B12-46B3-B5C2-2B31BD337FD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AD1D07F-456B-4D7E-A81F-1968680789ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AD1D07F-456B-4D7E-A81F-1968680789ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AD1D07F-456B-4D7E-A81F-1968680789ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AD1D07F-456B-4D7E-A81F-1968680789ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,6 +10,8 @@ namespace ExoPlanetHunter.Database
         {
             Configuration = configuration;
             services.AddDbContext<ExoContext>();
+
+        
         }
 
     }

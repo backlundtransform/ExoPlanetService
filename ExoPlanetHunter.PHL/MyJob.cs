@@ -1,4 +1,5 @@
-﻿using ExoPlanetHunter.Database;
+﻿
+using ExoPlanetHunter.Database;
 using ExoPlanetHunter.Pocos;
 using FluentScheduler;
 using System.Collections.Generic;
