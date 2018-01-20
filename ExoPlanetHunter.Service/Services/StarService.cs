@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExoPlanetHunter.Service
+namespace ExoPlanetHunter.Service.Services
 {
     internal class StarService : IStarService
     {
@@ -31,7 +31,7 @@ namespace ExoPlanetHunter.Service
 
         public async Task<IEnumerable<Planet>> GetStarPlanets(int id)
         {
-            return await Task.Run(() => _context.Planets.Where(c => c.Star.Id == id));
+            return await Task.FromResult(_context.Planets.Where(c => c.Star.Id == id));
         }
     }
 }

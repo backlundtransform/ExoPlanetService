@@ -16,4 +16,8 @@
     <ProjectReference Include="..\ExoPlanetHunter.Pocos\ExoPlanetHunter.Pocos.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Integation\" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,7 @@
 ﻿using FluentScheduler;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Linq;
 
 namespace ExoPlanetHunter.PHL
 {
@@ -12,7 +13,12 @@ namespace ExoPlanetHunter.PHL
         {
             Configuration = configuration;
             var week = Convert.ToInt32(Configuration.GetSection("Week").Value);
-            JobManager.Initialize(new ScheduledJobRegistry(week));
+            if (!JobManager.AllSchedules.Any())
+            {
+                JobManager.Initialize(new ScheduledJobRegistry(week));
+
+            }
+            
         }
     }
 }

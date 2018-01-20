@@ -2,6 +2,7 @@
 using ExoPlanetHunter.Database;
 using ExoPlanetHunter.Pocos;
 using FluentScheduler;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -107,7 +108,7 @@ namespace ExoPlanetHunter.PHL
 
                 HabZoneMax = values[53].ToNullable<decimal>(),
 
-                HabCat = values[62].ToNullable<bool>(),
+                HabCat = values[62].ConvertToBoolToNullable(),
                 Planets = new List<Planet>() { }
             };
         }
@@ -164,14 +165,14 @@ namespace ExoPlanetHunter.PHL
                 SurfEsi = values[60].ToNullable<decimal>(),
                 Esi = values[61].ToNullable<decimal>(),
 
-                Habitable = values[63].ToNullable<bool>(),
+                Habitable = values[63].ConvertToBoolToNullable(),
 
-                HabMoon = values[64].ToNullable<bool>(),
+                HabMoon = values[64].ConvertToBoolToNullable(),
 
-                Confirmed = values[65].ToNullable<bool>(),
+                Confirmed = values[65].ConvertToBoolToNullable(),
 
                 Disc_Method = values[66],
-                Disc_Year = values[67].ToNullable<int>(),
+                Disc_Year = (!string.IsNullOrEmpty(values[67])) ? Convert.ToInt32(values[67].Split(",")[0]) : (int?)null,
 
                 Star = star
             };

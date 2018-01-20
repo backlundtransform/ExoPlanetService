@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExoPlanetHunter.Service
+namespace ExoPlanetHunter.Service.Services
 {
     public class PlanetService : IPlanetService
     {

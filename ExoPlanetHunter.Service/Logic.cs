@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
-
+using ExoPlanetHunter.Service.Services;
 using ExoPlanetHunter.Database;
 using ExoPlanetHunter.PHL;
 
@@ -22,10 +22,10 @@ namespace ExoPlanetHunter.Service
             
             Configuration = builder.Build();
             services.AddTransient<IPlanetService, PlanetService>();
-          
             services.AddTransient<IStarService, StarService>();
+            services.AddTransient<IConstellationService, ConstellationService>();
             Db.Startup(services, Configuration);
-          Phl.Startup(Configuration);
+      Phl.Startup(Configuration);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace ExoPlanetHunter.Web.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IQueryable<Star>> Get(ODataQueryOptions opts)
         {
-            return await Task.Run(() => _starService.GetStars(opts));
+            return await _starService.GetStars(opts);
         }
 
         [HttpGet("{id}")]

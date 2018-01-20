@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ExoPlanetHunter.Pocos;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Linq;
+using Microsoft.AspNet.OData.Formatter;
+using Microsoft.Net.Http.Headers;
 
 namespace ExoPlanetHunter.Web
 {
@@ -32,8 +35,18 @@ namespace ExoPlanetHunter.Web
             var config = new ConfigurationBuilder();
             services.AddMvc();
             services.AddOData();
+            services.AddMvcCore(options =>
+            {
+                foreach (var outputFormatter in options.OutputFormatters.OfType<ODataOutputFormatter>().Where(_ => _.SupportedMediaTypes.Count == 0))
+                {
+                    outputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
+                }
+                foreach (var inputFormatter in options.InputFormatters.OfType<ODataInputFormatter>().Where(_ => _.SupportedMediaTypes.Count == 0))
+                {
+                    inputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
+                }
+            });
 
-          
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "ExoPlanet API", Version = "v1" });
