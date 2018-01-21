@@ -25,7 +25,7 @@ namespace ExoPlanetHunter.Service
             services.AddTransient<IStarService, StarService>();
             services.AddTransient<IConstellationService, ConstellationService>();
             Db.Startup(services, Configuration);
-      Phl.Startup(Configuration);
+//      Phl.Startup(Configuration);
         }
     }
 }

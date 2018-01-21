@@ -1,71 +1,67 @@
-﻿using System;
+﻿using ExoPlanetHunter.Pocos;
+using ExoPlanetHunter.Service.Dto;
+using ExoPlanetHunter.Service.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ExoPlanetHunter.Pocos;
-using ExoPlanetHunter.Service.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ExoPlanetHunter.Web.Controllers
 {
+    public class ConsResponse
+    {
+    }
+
     [Produces("application/json")]
     [Route("api/Constellations")]
     public class ConstellationsController : Controller
     {
-
         private readonly IConstellationService _constellationService;
         private readonly IStarService _starService;
+
         public ConstellationsController(IConstellationService constellationService, IStarService starService)
         {
             _starService = starService;
             _constellationService = constellationService;
         }
-      
 
-            [HttpGet]
-            public async Task<IEnumerable<Constellation>> Get()
-            {
-                return await Task.FromResult(_constellationService.GetConstellations());
-            }
+        [HttpGet]
+        public async Task<IEnumerable<ConstellationDto>> Get()
+        {
+            return await Task.FromResult(_constellationService.GetConstellations().Select(p=> new ConstellationDto(p)));
+        }
 
-            [HttpGet("{cid}")]
-            public async Task<object> Get(int cid)
-            {
-                var constellation = await _constellationService.GetConstellation(cid);
-
-                var stars = await Task.FromResult(_constellationService.GetStarsByConstellation(cid));
-
-                return new { Constellation = constellation, Stars = stars.ToList().Count() };
-            }
-
-
-            [HttpGet("{cid}/stars")]
-            public async Task<object> GetStars(int cid)
-            {
+        [HttpGet("{cid}")]
+        public async Task<ConstellationDto> Get(int cid)
+        {
             var constellation = await _constellationService.GetConstellation(cid);
 
-            var stars = await Task.FromResult(_constellationService.GetStarsByConstellation(cid));
+            return new ConstellationDto(constellation);
+        }
 
-            return new { Constellation = constellation, Stars = stars };
-            }
+        [HttpGet("{cid}/stars")]
+        public async Task<Constellation> GetStars(int cid)
+        {
+            var constellation = await _constellationService.GetConstellation(cid);
+
+            return constellation;
+        }
 
         [HttpGet("{cid}/stars/{sid}")]
-        public async Task<object> GetStar(int id)
+        public async Task<StarDto> GetStar(int sid)
         {
-            var star = await _starService.GetStar(id);
+            var star = await _starService.GetStar(sid);
 
-            var planets = await Task.Run(() => _starService.GetStarPlanets(id));
+            var planets = await Task.FromResult(_starService.GetStarPlanets(sid));
 
-            return new { Star = star, Planets = planets.Count() };
+            return  new StarDto(star);
         }
 
         [HttpGet("{cid}/stars/{sid}/planets")]
-        public async Task<object> GetStarPlanets(int id)
+        public async Task<StarPlanetsDto> GetStarPlanets(int sid)
         {
-            var planets = await Task.Run(() => _starService.GetStarPlanets(id)); ;
-            return new { Star = id, Planets = planets };
+            var planets = await _starService.GetStarPlanets(sid); 
+            return new StarPlanetsDto(planets.ToList(), sid);
         }
-
-       
-        }
+    }
 }

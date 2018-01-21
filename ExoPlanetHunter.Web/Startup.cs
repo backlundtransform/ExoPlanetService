@@ -33,7 +33,10 @@ namespace ExoPlanetHunter.Web
         public void ConfigureServices(IServiceCollection services)
         {
             var config = new ConfigurationBuilder();
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(opt =>
+            {
+                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            }); ;
             services.AddOData();
             services.AddMvcCore(options =>
             {

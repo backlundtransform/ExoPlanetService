@@ -26,7 +26,7 @@
                 if (string.IsNullOrEmpty(value)) {
                     return null;
                 }
-                return Convert.ToInt32(value.Split(",")[0])
+                return Convert.ToInt32(value.Split(",")[0]);
 
             }
             catch (Exception)

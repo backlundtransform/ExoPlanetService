@@ -17,7 +17,7 @@ namespace ExoPlanetHunter.PHL
     {
         private string exoplaneturl =Phl.Configuration.GetSection("Exourl").Value.ToString();
 
-        private List<Constellation> _constellations = Phl.Configuration.GetSection("Constellations").Value.ToString().Split(new char[] { ';' }).Select(p => new Constellation { Name = p }).ToList();
+        private List<Constellation> _constellations = Phl.Configuration.GetSection("Constellations").Value.ToString().Split(new char[] { ';' }).Select(p => new Constellation { Name = p, Stars =new List<Star>() {} }).ToList();
 
         public void Execute()
         {
@@ -67,18 +67,27 @@ namespace ExoPlanetHunter.PHL
 
             using (var context = new ExoContext())
             {
-                var starsToDelete = context.Set<Star>();
 
-                context.Stars.RemoveRange(starsToDelete);
-                context.Stars.AddRange(Starlist);
+                if (context.Constellations.Any())
+                {
+                    context.Constellations.UpdateRange(_constellations);
+
+                }
+                else {
+                    context.Constellations.AddRange(_constellations);
+                }
+
 
                 context.SaveChanges();
+
+         
+             
             }
         }
 
         private Star GetStar(string starname, string[] values)
         {
-            return new Star()
+            var star= new Star()
             {
                 Name = starname,
 
@@ -111,6 +120,8 @@ namespace ExoPlanetHunter.PHL
                 HabCat = values[62].ConvertToBoolToNullable(),
                 Planets = new List<Planet>() { }
             };
+            _constellations.FirstOrDefault(p => p.Name == values[36]).Stars.Add(star);
+            return star;
         }
 
         private Planet GetPlanet(string[] values, Star star)

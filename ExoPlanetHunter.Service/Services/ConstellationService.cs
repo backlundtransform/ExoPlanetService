@@ -19,16 +19,17 @@ namespace ExoPlanetHunter.Service.Services
 
         public IEnumerable<Constellation> GetConstellations()
         {
-            return _context.Constellations.Where(p => true);
+            return _context.Constellations.Include(c=> c.Stars).Where(p => true);
         }
         public async Task<Constellation> GetConstellation(int cid)
         {
-            return await _context.Constellations.SingleOrDefaultAsync(c => c.Id == cid);
+            return await _context.Constellations.Include(e => e.Stars).SingleOrDefaultAsync(c => c.Id == cid);
         }
 
         public IEnumerable<Star> GetStarsByConstellation(int cid)
         {
-            return _context.Stars.Where(c => c.Constellation.Id == cid);
+
+            return _context.Stars.Include(e => e.Planets).Where(c => c.Constellation.Id == cid);
         }
     }
 }
