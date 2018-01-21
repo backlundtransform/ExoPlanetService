@@ -14,6 +14,7 @@ using System.Linq;
 using Microsoft.AspNet.OData.Formatter;
 using Microsoft.Net.Http.Headers;
 using ExoPlanetHunter.Database.entity;
+using System.IO;
 
 namespace ExoPlanetHunter.Web
 {
@@ -63,6 +64,10 @@ namespace ExoPlanetHunter.Web
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "ExoPlanet API", Version = "v1" });
+
+                var basePath = AppContext.BaseDirectory;
+                var xmlPath = Path.Combine(basePath, "ExoPlanetHunter.Web.xml");
+                c.IncludeXmlComments(xmlPath);
             });
             Service.Logic.Startup(services, _env);
 
