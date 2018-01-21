@@ -172,7 +172,7 @@ namespace ExoPlanetHunter.PHL
                 Confirmed = values[65].ConvertToBoolToNullable(),
 
                 Disc_Method = values[66],
-                Disc_Year = (!string.IsNullOrEmpty(values[67])) ? Convert.ToInt32(values[67].Split(",")[0]) : (int?)null,
+                Disc_Year = values[67].ConvertYearToIntToNullable(),
 
                 Star = star
             };

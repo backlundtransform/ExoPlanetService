@@ -4,13 +4,36 @@
     {
         public static bool? ConvertToBoolToNullable(this string value)
         {
-            if (string.IsNullOrEmpty(value)) {
+            try
+            {
+
+                if (string.IsNullOrEmpty(value)) {
                 return null;
             }
             int val = 0;
             return (int.TryParse(value, out val) && val == 0);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
+        public static int? ConvertYearToIntToNullable(this string value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(value)) {
+                    return null;
+                }
+                return Convert.ToInt32(value.Split(",")[0])
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
 
 
@@ -28,7 +51,7 @@
                     result = (T)conv.ConvertFrom(s.Replace(".", ","));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

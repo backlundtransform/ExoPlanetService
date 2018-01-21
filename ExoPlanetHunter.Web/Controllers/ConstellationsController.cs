@@ -49,7 +49,7 @@ namespace ExoPlanetHunter.Web.Controllers
             return new { Constellation = constellation, Stars = stars };
             }
 
-        [HttpGet("{id}")]
+        [HttpGet("{cid}/stars/{sid}")]
         public async Task<object> GetStar(int id)
         {
             var star = await _starService.GetStar(id);
@@ -59,7 +59,7 @@ namespace ExoPlanetHunter.Web.Controllers
             return new { Star = star, Planets = planets.Count() };
         }
 
-        [HttpGet("{id}/planets")]
+        [HttpGet("{cid}/stars/{sid}/planets")]
         public async Task<object> GetStarPlanets(int id)
         {
             var planets = await Task.Run(() => _starService.GetStarPlanets(id)); ;
