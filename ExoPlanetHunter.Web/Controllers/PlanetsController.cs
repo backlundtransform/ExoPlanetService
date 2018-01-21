@@ -1,5 +1,4 @@
-
-using ExoPlanetHunter.Pocos;
+using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Service.Interfaces;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Mvc;
@@ -20,26 +19,17 @@ namespace ExoPlanetHunter.Web.Controllers
             _planetService = planetService;
         }
 
-        // GET: api/Planets/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPlanet([FromRoute] int id)
+        public async Task<PlanetDto> GetPlanet(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
+          
             var planet = await _planetService.GetPlanet(id);
 
-            if (planet == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(planet);
+          
+            return planet;
         }
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public IQueryable<Planet> GetPlanets(ODataQueryOptions opts)
+        [HttpGet]
+        public IQueryable<PlanetDto> Get(ODataQueryOptions opts)
         {
 
             return _planetService.GetPlanets(opts);

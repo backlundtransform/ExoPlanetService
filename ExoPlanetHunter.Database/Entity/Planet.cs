@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ExoPlanetHunter.Database.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
-namespace ExoPlanetHunter.Pocos
+namespace ExoPlanetHunter.Database.entity
 {
-    public class Planet
+    public class Planet : IEntity
     {
         [Key]
         public int Id { get; set; }

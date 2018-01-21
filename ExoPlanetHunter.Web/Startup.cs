@@ -8,16 +8,26 @@ using Microsoft.OData.Edm;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ExoPlanetHunter.Pocos;
+
 using Swashbuckle.AspNetCore.Swagger;
 using System.Linq;
 using Microsoft.AspNet.OData.Formatter;
 using Microsoft.Net.Http.Headers;
+using ExoPlanetHunter.Database.entity;
 
 namespace ExoPlanetHunter.Web
 {
     public class Startup
     {
+
+        private IHostingEnvironment _env { get; set; }
+        public Startup(IHostingEnvironment env)
+        {
+
+            _env = env;
+        }
+
+        private IHostingEnvironment CurrentEnvironment { get; set; }
 
         private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
         {
@@ -54,7 +64,7 @@ namespace ExoPlanetHunter.Web
             {
                 c.SwaggerDoc("v1", new Info { Title = "ExoPlanet API", Version = "v1" });
             });
-            Service.Logic.Startup(services);
+            Service.Logic.Startup(services, _env);
 
 
         }

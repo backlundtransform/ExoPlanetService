@@ -1,9 +1,10 @@
-﻿using ExoPlanetHunter.Database;
-using ExoPlanetHunter.Pocos;
+﻿using AutoMapper.QueryableExtensions;
+using ExoPlanetHunter.Database;
+
+using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Service.Interfaces;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,20 +19,20 @@ namespace ExoPlanetHunter.Service.Services
             _context = context;
         }
 
-        public Task<IQueryable<Star>> GetStars(ODataQueryOptions opts)
+        public Task<IQueryable<StarDto>> GetStars(ODataQueryOptions opts)
         {
-            IQueryable results = opts.ApplyTo(_context.Stars.AsQueryable());
-            return Task.FromResult(results as IQueryable<Star>);
+            IQueryable results = opts.ApplyTo(_context.Stars.ProjectTo<StarDto>().AsQueryable());
+            return Task.FromResult(results as IQueryable<StarDto>);
         }
 
-        public async Task<Star> GetStar(int id)
+        public async Task<StarDto> GetStar(int id)
         {
-            return await _context.Stars.SingleOrDefaultAsync(m => m.Id == id);
+            return await _context.Stars.ProjectTo<StarDto>().SingleOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task<IEnumerable<Planet>> GetStarPlanets(int id)
+        public async Task<StarPlanetsDto> GetStarPlanets(int id)
         {
-            return await Task.FromResult(_context.Planets.Where(c => c.Star.Id == id));
+            return await _context.Stars.ProjectTo<StarPlanetsDto>().SingleOrDefaultAsync(m => m.Id == id);
         }
     }
 }

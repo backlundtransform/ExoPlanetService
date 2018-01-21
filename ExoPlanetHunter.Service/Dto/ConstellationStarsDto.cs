@@ -1,13 +1,14 @@
 ﻿
+using System.Collections.Generic;
 
 namespace ExoPlanetHunter.Service.Dto
 {
-    public class ConstellationDto
+    public class ConstellationStarsDto
     {
-      
+
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public int? Stars  { get; set; }
+        public List<StarDto> Stars { get; set; }
     }
 }

@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.Database", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.PHL", "ExoPlanetHunter.PHL\ExoPlanetHunter.PHL.csproj", "{799C191E-0D1C-4973-9F8E-ED716E432143}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.Pocos", "ExoPlanetHunter.Pocos\ExoPlanetHunter.Pocos.csproj", "{FFA73689-9B12-46B3-B5C2-2B31BD337FD2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.Service", "ExoPlanetHunter.Service\ExoPlanetHunter.Service.csproj", "{0AD1D07F-456B-4D7E-A81F-1968680789ED}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{799C191E-0D1C-4973-9F8E-ED716E432143}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{799C191E-0D1C-4973-9F8E-ED716E432143}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{799C191E-0D1C-4973-9F8E-ED716E432143}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FFA73689-9B12-46B3-B5C2-2B31BD337FD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FFA73689-9B12-46B3-B5C2-2B31BD337FD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FFA73689-9B12-46B3-B5C2-2B31BD337FD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FFA73689-9B12-46B3-B5C2-2B31BD337FD2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0AD1D07F-456B-4D7E-A81F-1968680789ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0AD1D07F-456B-4D7E-A81F-1968680789ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AD1D07F-456B-4D7E-A81F-1968680789ED}.Release|Any CPU.ActiveCfg = Release|Any CPU

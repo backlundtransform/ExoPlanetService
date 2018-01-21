@@ -1,11 +1,12 @@
 ﻿
+using ExoPlanetHunter.Database.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace ExoPlanetHunter.Pocos
+namespace ExoPlanetHunter.Database.entity
 {
-    public class Star
+    public class Star : IEntity
     {
 
         [Key]

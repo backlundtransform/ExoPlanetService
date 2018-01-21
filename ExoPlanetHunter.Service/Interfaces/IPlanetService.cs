@@ -1,4 +1,5 @@
-﻿using ExoPlanetHunter.Pocos;
+﻿
+using ExoPlanetHunter.Service.Dto;
 using Microsoft.AspNet.OData.Query;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,8 +8,8 @@ namespace ExoPlanetHunter.Service.Interfaces
 {
     public interface IPlanetService
     {
-        IQueryable<Planet> GetPlanets(ODataQueryOptions opts);
+        IQueryable<PlanetDto> GetPlanets(ODataQueryOptions opts);
 
-        Task<Planet> GetPlanet(int id);
+        Task<PlanetDto> GetPlanet(int id);
     }
 }

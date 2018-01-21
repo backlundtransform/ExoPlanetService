@@ -5,15 +5,19 @@ using System.IO;
 using ExoPlanetHunter.Service.Services;
 using ExoPlanetHunter.Database;
 using ExoPlanetHunter.PHL;
+using ExoPlanetHunter.Service.Profiles;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ExoPlanetHunter.Service
 {
     public class Logic
     {
 
+      
+
         public static IConfigurationRoot Configuration { get; set; }
 
-        public static void Startup(IServiceCollection services)
+        public static void Startup(IServiceCollection services, IHostingEnvironment env)
         {
 
             var builder = new ConfigurationBuilder()
@@ -24,8 +28,15 @@ namespace ExoPlanetHunter.Service
             services.AddTransient<IPlanetService, PlanetService>();
             services.AddTransient<IStarService, StarService>();
             services.AddTransient<IConstellationService, ConstellationService>();
+
+            AutoMapper.Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
             Db.Startup(services, Configuration);
-//      Phl.Startup(Configuration);
+
+            if (env.IsProduction())
+            {
+                Phl.Startup(Configuration);
+            }
+          
         }
     }
 }

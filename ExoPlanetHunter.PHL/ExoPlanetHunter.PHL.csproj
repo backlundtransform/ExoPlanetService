@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExoPlanetHunter.Database\ExoPlanetHunter.Database.csproj" />
-    <ProjectReference Include="..\ExoPlanetHunter.Pocos\ExoPlanetHunter.Pocos.csproj" />
   </ItemGroup>
 
   <ItemGroup>

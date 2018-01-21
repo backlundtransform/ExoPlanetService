@@ -1,6 +1,6 @@
-﻿using ExoPlanetHunter.Pocos;
+﻿
+using ExoPlanetHunter.Service.Dto;
 using Microsoft.AspNet.OData.Query;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,10 +8,10 @@ namespace ExoPlanetHunter.Service.Interfaces
 {
     public interface IStarService
     {
-        Task<IQueryable<Star>> GetStars(ODataQueryOptions opts);
+        Task<IQueryable<StarDto>> GetStars(ODataQueryOptions opts);
 
-        Task<Star> GetStar(int id);
+        Task<StarDto> GetStar(int id);
 
-        Task<IEnumerable<Planet>> GetStarPlanets(int id);
+        Task<StarPlanetsDto> GetStarPlanets(int id);
     }
 }

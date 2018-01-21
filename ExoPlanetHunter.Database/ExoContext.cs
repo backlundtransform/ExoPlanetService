@@ -1,4 +1,5 @@
-﻿using ExoPlanetHunter.Pocos;
+﻿
+using ExoPlanetHunter.Database.entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExoPlanetHunter.Database

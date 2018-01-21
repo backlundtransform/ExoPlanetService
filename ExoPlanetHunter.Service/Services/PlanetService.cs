@@ -1,5 +1,6 @@
-﻿using ExoPlanetHunter.Database;
-using ExoPlanetHunter.Pocos;
+﻿using AutoMapper.QueryableExtensions;
+using ExoPlanetHunter.Database;
+using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Service.Interfaces;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.EntityFrameworkCore;
@@ -17,15 +18,15 @@ namespace ExoPlanetHunter.Service.Services
             _context = context;
         }
 
-        public IQueryable<Planet> GetPlanets(ODataQueryOptions opts)
+        public IQueryable<PlanetDto> GetPlanets(ODataQueryOptions opts)
         {
-            IQueryable results = opts.ApplyTo(_context.Planets.AsQueryable());
-            return results as IQueryable<Planet>;
+            IQueryable results = opts.ApplyTo(_context.Planets.ProjectTo<PlanetDto>().AsQueryable());
+            return results as IQueryable<PlanetDto>;
         }
 
-        public async Task<Planet> GetPlanet(int id)
+        public async Task<PlanetDto> GetPlanet(int id)
         {
-            var planet = await _context.Planets.SingleOrDefaultAsync(m => m.Id == id);
+            var planet = await _context.Planets.ProjectTo<PlanetDto>().SingleOrDefaultAsync(m => m.Id == id);
             return planet;
         }
     }

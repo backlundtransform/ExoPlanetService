@@ -1,5 +1,6 @@
-﻿using ExoPlanetHunter.Database;
-using ExoPlanetHunter.Pocos;
+﻿using AutoMapper.QueryableExtensions;
+using ExoPlanetHunter.Database;
+using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -17,19 +18,20 @@ namespace ExoPlanetHunter.Service.Services
             _context = context;
         }
 
-        public IEnumerable<Constellation> GetConstellations()
+        public IEnumerable<ConstellationDto> GetConstellations()
         {
-            return _context.Constellations.Include(c=> c.Stars).Where(p => true);
+            return _context.Constellations.Include(c=> c.Stars).Where(p => true).ProjectTo<ConstellationDto>();
         }
-        public async Task<Constellation> GetConstellation(int cid)
+        public async Task<ConstellationDto> GetConstellation(int cid)
         {
-            return await _context.Constellations.Include(e => e.Stars).SingleOrDefaultAsync(c => c.Id == cid);
+            return await _context.Constellations.Include(e => e.Stars).ProjectTo<ConstellationDto>().SingleOrDefaultAsync(c => c.Id == cid);
         }
 
-        public IEnumerable<Star> GetStarsByConstellation(int cid)
+        public async Task<ConstellationStarsDto> GetConstellationWithStars(int cid)
         {
-
-            return _context.Stars.Include(e => e.Planets).Where(c => c.Constellation.Id == cid);
+            return await _context.Constellations.Include(e => e.Stars).ProjectTo<ConstellationStarsDto>().SingleOrDefaultAsync(c => c.Id == cid);
         }
+
+      
     }
 }

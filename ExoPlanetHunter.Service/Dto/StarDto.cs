@@ -1,25 +1,41 @@
-﻿using ExoPlanetHunter.Pocos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace ExoPlanetHunter.Service.Dto
 {
     public class StarDto
     {
+        public int Id { get; set; }
 
-        public StarDto(Star star)
-        {
-           
-            Planets = star.Planets?.ToList().Count();
-         
-            Star = star;
+        public string Name { get; set; }
 
-        }
+        public string NameHD { get; set; }
+        public string NameHIP { get; set; }
+        public string Constellation { get; set; }
+        public string Type { get; set; }
 
-        public Star Star { get; set; }
+        public decimal? Mass { get; set; }
 
-        public int? Planets{ get; set; }
+        public decimal? Radius { get; set; }
+        public decimal? Teff { get; set; }
+        public decimal? Luminosity { get; set; }
+        public decimal? FeH { get; set; }
+        public decimal? Age { get; set; }
+
+
+        public decimal? ApparMag { get; set; }
+        public decimal? Distance { get; set; }
+        public decimal? Ra { get; set; }
+        public decimal? Dec { get; set; }
+        public decimal? MagfromPlanet { get; set; }
+        public decimal? SizefromPlanet { get; set; }
+        public int? NoPlanets { get; set; }
+        public int? NoPlanetsHZ { get; set; }
+
+
+        public decimal? HabZoneMin { get; set; }
+        public decimal? HabZoneMax { get; set; }
+
+        public bool? HabCat { get; set; }
+
+        public int? Planets { get; set; }
     }
 }

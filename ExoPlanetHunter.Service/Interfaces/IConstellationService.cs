@@ -1,4 +1,4 @@
-﻿using ExoPlanetHunter.Pocos;
+﻿using ExoPlanetHunter.Service.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,10 +6,11 @@ namespace ExoPlanetHunter.Service.Interfaces
 {
     public interface IConstellationService
     {
-        IEnumerable<Constellation> GetConstellations();
+        IEnumerable<ConstellationDto> GetConstellations();
 
-        Task<Constellation> GetConstellation(int cid);
+        Task<ConstellationDto> GetConstellation(int cid);
 
-        IEnumerable<Star> GetStarsByConstellation(int cid);
+        Task<ConstellationStarsDto> GetConstellationWithStars(int cid);
+
     }
 }

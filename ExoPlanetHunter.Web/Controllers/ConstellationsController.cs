@@ -1,9 +1,9 @@
-﻿using ExoPlanetHunter.Pocos;
-using ExoPlanetHunter.Service.Dto;
+﻿using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using System.Threading.Tasks;
 
 namespace ExoPlanetHunter.Web.Controllers
@@ -28,7 +28,7 @@ namespace ExoPlanetHunter.Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<ConstellationDto>> Get()
         {
-            return await Task.FromResult(_constellationService.GetConstellations().Select(p=> new ConstellationDto(p)));
+            return await Task.FromResult(_constellationService.GetConstellations());
         }
 
         [HttpGet("{cid}")]
@@ -36,13 +36,13 @@ namespace ExoPlanetHunter.Web.Controllers
         {
             var constellation = await _constellationService.GetConstellation(cid);
 
-            return new ConstellationDto(constellation);
+            return constellation;
         }
 
         [HttpGet("{cid}/stars")]
-        public async Task<Constellation> GetStars(int cid)
+        public async Task<ConstellationStarsDto> GetStars(int cid)
         {
-            var constellation = await _constellationService.GetConstellation(cid);
+            var constellation = await _constellationService.GetConstellationWithStars(cid);
 
             return constellation;
         }
@@ -52,16 +52,22 @@ namespace ExoPlanetHunter.Web.Controllers
         {
             var star = await _starService.GetStar(sid);
 
-            var planets = await Task.FromResult(_starService.GetStarPlanets(sid));
-
-            return  new StarDto(star);
+            return star;
         }
 
         [HttpGet("{cid}/stars/{sid}/planets")]
         public async Task<StarPlanetsDto> GetStarPlanets(int sid)
         {
-            var planets = await _starService.GetStarPlanets(sid); 
-            return new StarPlanetsDto(planets.ToList(), sid);
+            try
+            {
+                var planets = await _starService.GetStarPlanets(sid);
+                return planets;
+            }
+            catch (Exception e)
+            {
+
+                return null;
+            }
         }
     }
 }
