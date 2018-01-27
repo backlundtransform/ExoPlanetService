@@ -37,5 +37,7 @@ namespace ExoPlanetHunter.Service.Dto
         public bool? HabCat { get; set; }
 
         public int? Planets { get; set; }
+
+        public string Message { get; set; }
     }
 }

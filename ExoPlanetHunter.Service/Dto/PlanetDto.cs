@@ -62,6 +62,6 @@ namespace ExoPlanetHunter.Service.Dto
         public string Disc_Method { get; set; }
         public int? Disc_Year { get; set; }
 
-
+        public string Message { get; set; }
     }
 }

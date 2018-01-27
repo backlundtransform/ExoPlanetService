@@ -1,5 +1,6 @@
 ﻿using ExoPlanetHunter.PHL.Integration;
 using FluentScheduler;
+using System;
 using System.Threading.Tasks;
 
 namespace ExoPlanetHunter.PHL.Schedules
@@ -7,6 +8,7 @@ namespace ExoPlanetHunter.PHL.Schedules
     public class MyJob : IJob
     {
         private readonly IPhlService _phlService = new PhlService();
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(MyJob));
 
         public void Execute()
         {
@@ -15,8 +17,20 @@ namespace ExoPlanetHunter.PHL.Schedules
 
         private async Task ExecuteAsync()
         {
-           var constellations = await Task.FromResult(_phlService.DownloadExoData());
-            await Task.Run(()=>_phlService.UpdateConstellations(constellations));
+
+            try
+            {
+                log.Info("Start Dowload");
+                var constellations = await Task.FromResult(_phlService.DownloadExoData());
+                log.Info("Dowload Finished");
+                await Task.Run(() => _phlService.UpdateConstellations(constellations));
+                log.Info("Database Updated");
+            }
+            catch (Exception e)
+            {
+                log.Info(e.Message);
+            }
+         
         }
     }
 }

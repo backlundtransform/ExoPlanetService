@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace ExoPlanetHunter.Web.Controllers
 {
-    
     /// <summary>
     /// </summary>
 
@@ -16,6 +15,7 @@ namespace ExoPlanetHunter.Web.Controllers
     [Route("api/Constellations")]
     public class ConstellationsController : Controller
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(ConstellationsController));
         private readonly IConstellationService _constellationService;
         private readonly IStarService _starService;
         /// <summary>
@@ -26,44 +26,84 @@ namespace ExoPlanetHunter.Web.Controllers
             _starService = starService;
             _constellationService = constellationService;
         }
+
         /// <summary>
         /// </summary>
 
         [HttpGet]
         public async Task<IEnumerable<ConstellationDto>> Get()
         {
-            return await Task.FromResult(_constellationService.GetConstellations());
+            
+            try
+            {
+                return await Task.FromResult(_constellationService.GetConstellations());
+            }
+            catch (Exception e)
+            {
+                log.Info(e.Message);
+                return new List<ConstellationDto>();
+            }
         }
+
         /// <summary>
         /// </summary>
 
         [HttpGet("{cid}")]
         public async Task<ConstellationDto> Get(int cid)
         {
-            var constellation = await _constellationService.GetConstellation(cid);
 
-            return constellation;
+            try
+            {
+                var constellation = await _constellationService.GetConstellation(cid);
+
+                return constellation;
+            }
+            catch (Exception e)
+            {
+                log.Info(e.Message);
+                return new ConstellationDto() { Message = e.Message };
+            }
+            
         }
+
         /// <summary>
         /// </summary>
 
         [HttpGet("{cid}/stars")]
         public async Task<ConstellationStarsDto> GetStars(int cid)
         {
-            var constellation = await _constellationService.GetConstellationWithStars(cid);
+            try
+            {
+                var constellation = await _constellationService.GetConstellationWithStars(cid);
 
-            return constellation;
+                return constellation;
+            }
+            catch (Exception e)
+            {
+                log.Info(e.Message);
+                return new ConstellationStarsDto() { Message = e.Message };
+            }
         }
+
         /// <summary>
         /// </summary>
 
         [HttpGet("{cid}/stars/{sid}")]
         public async Task<StarDto> GetStar(int sid)
         {
-            var star = await _starService.GetStar(sid);
+            try
+            {
+                var star = await _starService.GetStar(sid);
 
-            return star;
+                return star;
+            }
+            catch (Exception e)
+            {
+                log.Info(e.Message);
+                return new StarDto() { Message = e.Message };
+            }
         }
+
         /// <summary>
         /// </summary>
 
@@ -77,8 +117,8 @@ namespace ExoPlanetHunter.Web.Controllers
             }
             catch (Exception e)
             {
-
-                return null;
+                log.Info(e.Message);
+                return new StarPlanetsDto() { Message = e.Message };
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExoPlanetHunter.Database;
+using ExoPlanetHunter.PHL;
 using ExoPlanetHunter.Service.Interfaces;
 using ExoPlanetHunter.Service.Profiles;
 using ExoPlanetHunter.Service.Services;
@@ -27,7 +28,7 @@ namespace ExoPlanetHunter.Service
             Mapper.Reset();
             Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
             Db.Startup(services, Configuration);
-
+          
             if (env.IsProduction())
             {
 #if !DEBUG
