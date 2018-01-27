@@ -1,35 +1,32 @@
-﻿
-using ExoPlanetHunter.Database;
+﻿using ExoPlanetHunter.Database;
 using ExoPlanetHunter.Database.entity;
-using FluentScheduler;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
-namespace ExoPlanetHunter.PHL
+namespace ExoPlanetHunter.PHL.Integration
 {
-    public class MyJob : IJob
+    public class PhlService : IPhlService
     {
-        private string exoplaneturl =Phl.Configuration.GetSection("Exourl").Value.ToString();
+        private string exoplaneturl = Phl.Configuration.GetSection("Exourl").Value.ToString();
+        private List<Constellation> _constellations = Phl.Configuration.GetSection("Constellations").Value.ToString().Split(new char[] { ';' }).Select(p => new Constellation { Name = p, Stars = new List<Star>() { } }).ToList();
 
-        private List<Constellation> _constellations = Phl.Configuration.GetSection("Constellations").Value.ToString().Split(new char[] { ';' }).Select(p => new Constellation { Name = p, Stars =new List<Star>() {} }).ToList();
-
-        public void Execute()
+        public void UpdateConstellations(List<Constellation> constellations)
         {
-            ExecuteAsync().Wait();
+            using (var context = new ExoContext())
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+                context.Constellations.AddRange(constellations);
+                context.SaveChanges();
+            }
         }
 
-        private async Task ExecuteAsync()
-        {
-            await Task.Run(() => DownloadExoData());
-        }
-
-        private void DownloadExoData()
+        public List<Constellation> DownloadExoData()
         {
             List<Star> Starlist = new List<Star>();
 
@@ -64,30 +61,13 @@ namespace ExoPlanetHunter.PHL
                     }
                 }
             }
-
-            using (var context = new ExoContext())
-            {
-
-                if (context.Constellations.Any())
-                {
-                    context.Constellations.UpdateRange(_constellations);
-
-                }
-                else {
-                    context.Constellations.AddRange(_constellations);
-                }
-
-
-                context.SaveChanges();
-
-         
-             
-            }
+           
+           return _constellations;
         }
 
         private Star GetStar(string starname, string[] values)
         {
-            var star= new Star()
+            var star = new Star()
             {
                 Name = starname,
 
@@ -188,5 +168,7 @@ namespace ExoPlanetHunter.PHL
                 Star = star
             };
         }
+
+       
     }
 }

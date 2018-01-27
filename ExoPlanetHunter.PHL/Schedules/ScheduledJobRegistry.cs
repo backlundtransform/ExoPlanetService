@@ -2,7 +2,7 @@
 using System;
 
 
-namespace ExoPlanetHunter.PHL
+namespace ExoPlanetHunter.PHL.Schedules
 {
     public class ScheduledJobRegistry : Registry
     {

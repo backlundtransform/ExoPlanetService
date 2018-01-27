@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.PHL", "ExoP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.Service", "ExoPlanetHunter.Service\ExoPlanetHunter.Service.csproj", "{0AD1D07F-456B-4D7E-A81F-1968680789ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{7719932F-4444-4F9B-95D3-9141EDFD3362}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{0AD1D07F-456B-4D7E-A81F-1968680789ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AD1D07F-456B-4D7E-A81F-1968680789ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AD1D07F-456B-4D7E-A81F-1968680789ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7719932F-4444-4F9B-95D3-9141EDFD3362}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7719932F-4444-4F9B-95D3-9141EDFD3362}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7719932F-4444-4F9B-95D3-9141EDFD3362}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7719932F-4444-4F9B-95D3-9141EDFD3362}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

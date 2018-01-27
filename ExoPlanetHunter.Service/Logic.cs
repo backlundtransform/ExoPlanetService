@@ -1,5 +1,5 @@
-﻿using ExoPlanetHunter.Database;
-using ExoPlanetHunter.PHL;
+﻿using AutoMapper;
+using ExoPlanetHunter.Database;
 using ExoPlanetHunter.Service.Interfaces;
 using ExoPlanetHunter.Service.Profiles;
 using ExoPlanetHunter.Service.Services;
@@ -21,16 +21,18 @@ namespace ExoPlanetHunter.Service
             .AddJsonFile("appsettings.json");
 
             Configuration = builder.Build();
-            services.AddTransient<IPlanetService, PlanetService>();
-            services.AddTransient<IStarService, StarService>();
-            services.AddTransient<IConstellationService, ConstellationService>();
+            services.AddTransient<IPlanetService, PlanetService>().AddTransient<IStarService, StarService>()
+                .AddTransient<IConstellationService, ConstellationService>();
 
-            AutoMapper.Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
+            Mapper.Reset();
+            Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
             Db.Startup(services, Configuration);
 
             if (env.IsProduction())
             {
-                Phl.Startup(Configuration);
+#if !DEBUG
+   Phl.Startup(Configuration);
+#endif
             }
         }
     }

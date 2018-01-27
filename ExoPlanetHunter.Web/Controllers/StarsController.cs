@@ -26,9 +26,9 @@ namespace ExoPlanetHunter.Web.Controllers
         /// <summary>
         /// </summary>
      
-        [HttpGet]
       
-        public async Task<IQueryable<StarDto>> Get(ODataQueryOptions opts=null)
+        [HttpGet]
+        public async Task<IQueryable<StarDto>> Get(ODataQueryOptions opts)
         {
             return await _starService.GetStars(opts);
         }

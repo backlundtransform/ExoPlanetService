@@ -15,8 +15,4 @@
     <ProjectReference Include="..\ExoPlanetHunter.Database\ExoPlanetHunter.Database.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Integation\" />
-  </ItemGroup>
-
 </Project>

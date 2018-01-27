@@ -69,7 +69,7 @@ namespace ExoPlanetHunter.Web
                 var xmlPath = Path.Combine(basePath, "ExoPlanetHunter.Web.xml");
                 c.IncludeXmlComments(xmlPath);
             });
-            Service.Logic.Startup(services, _env);
+         Service.Logic.Startup(services, _env);
 
 
         }
