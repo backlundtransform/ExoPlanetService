@@ -18,10 +18,4 @@
     <ProjectReference Include="..\ExoPlanetHunter.Web\ExoPlanetHunter.Web.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="project.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

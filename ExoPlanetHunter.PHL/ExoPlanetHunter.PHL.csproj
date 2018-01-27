@@ -5,6 +5,7 @@
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject></StartupObject>
+    <AssemblyName>udio</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
