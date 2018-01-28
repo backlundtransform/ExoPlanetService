@@ -1,30 +1,27 @@
-﻿using System;
-
+﻿using ExoPlanetHunter.Database.entity;
+using ExoPlanetHunter.Web.Config;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
+using Microsoft.AspNet.OData.Formatter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.OData.Edm;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Swashbuckle.AspNetCore.Swagger;
-using System.Linq;
-using Microsoft.AspNet.OData.Formatter;
 using Microsoft.Net.Http.Headers;
-using ExoPlanetHunter.Database.entity;
+using Microsoft.OData.Edm;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.IO;
+using System.Linq;
 
 namespace ExoPlanetHunter.Web
 {
     public class Startup
     {
-
         private IHostingEnvironment _env { get; set; }
+
         public Startup(IHostingEnvironment env)
         {
-
             _env = env;
         }
 
@@ -37,8 +34,6 @@ namespace ExoPlanetHunter.Web
             builder.EntitySet<Star>("Stars");
             return builder.GetEdmModel();
         }
-      
-
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -64,14 +59,12 @@ namespace ExoPlanetHunter.Web
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "ExoPlanet API", Version = "v1" });
-
+                c.OperationFilter<AddOdataParameters>();
                 var basePath = AppContext.BaseDirectory;
                 var xmlPath = Path.Combine(basePath, "ExoPlanetHunter.Web.xml");
                 c.IncludeXmlComments(xmlPath);
             });
-         Service.Logic.Startup(services, _env);
-
-
+            Service.Logic.Startup(services, _env);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,9 +74,8 @@ namespace ExoPlanetHunter.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseSwagger();
-            
 
             app.UseSwaggerUI(c =>
             {
@@ -92,16 +84,12 @@ namespace ExoPlanetHunter.Web
 
             IEdmModel model = GetEdmModel(app.ApplicationServices);
 
-
-
             app.UseMvc(routeBuilder =>
             {
                 routeBuilder.MapODataServiceRoute("odata", "odata", model);
 
-              
                 routeBuilder.EnableDependencyInjection();
             });
-          
         }
     }
 }
