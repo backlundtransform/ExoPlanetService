@@ -1,4 +1,3 @@
-
 using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Web;
 using Microsoft.AspNetCore.Hosting;
@@ -17,7 +16,7 @@ namespace ExoPlanetHunter.IntegrationTests
     {
         private readonly TestServer _server;
         private readonly HttpClient _client;
- 
+
         private readonly string[] _constellations = "And;Ant;Aqr;Apu;Aps;Aql;Ari;Ara;Aur;Boo;Cae;Cam;Cnc;CVn;CMa;CMi;Cap;Car;Cas;Cen;Cep;Cet;Cha;Cir;Col;Com;CrA;CrB;Crv;Crt;Cru;Cyg;Del;Dor;Dra;Equ;Eri;For;Gem;Gru;Her;Hor;Hya;Hyi;Ind;Lac;Leo;LMi;Lep;Lib;Lup;Lyn;Lyr;Men;Mic;Mon;Mus;Nor;Oct;Oph;Ori;Pav;Peg;Per;Phe;Pic;Psc;PsA;Pup;Pyx;Ret;Sge;Sgr;Sco;Scl;Sct;Ser;Sex;Tau;Tel;Tri;TrA;Tuc;UMa;UMi;Vel;Vir;Vol;Vul;".Split(new char[] { ';' });
 
         public ExoPlanetsTests()
@@ -32,15 +31,13 @@ namespace ExoPlanetHunter.IntegrationTests
         {
             var response = await _client.GetAsync("/api/Constellations");
             response.EnsureSuccessStatusCode();
-        
+
             var responseString = await response.Content.ReadAsStringAsync();
 
             var constellations = JsonConvert.DeserializeObject<List<ConstellationDto>>(responseString);
 
             Assert.Equal(_constellations.Length,
                 constellations.Count);
-
-         
         }
 
         [Fact]
@@ -55,8 +52,6 @@ namespace ExoPlanetHunter.IntegrationTests
 
             Assert.Equal("And",
                 constellation.Name);
-
-
         }
 
         [Fact]
@@ -69,9 +64,31 @@ namespace ExoPlanetHunter.IntegrationTests
 
             var constellationsStars = JsonConvert.DeserializeObject<ConstellationStarsDto>(responseString);
             Assert.False(constellationsStars.Stars.Where(prop => prop.Constellation != "And").Any());
+        }
+        [Fact]
+        public async Task TestConstellationStarAsync()
+        {
+            var response = await _client.GetAsync("/api/Constellations/1/stars/1");
+            response.EnsureSuccessStatusCode();
 
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var constellationsStar = JsonConvert.DeserializeObject<StarDto>(responseString);
+            Assert.Equal("14 And",
+                 constellationsStar.Name);
         }
 
+        [Fact]
+        public async Task TestConstellationStarPlanetsAsync()
+        {
+            var response = await _client.GetAsync("/api/Constellations/1/stars/1/planets");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var constellationsStarPlanets = JsonConvert.DeserializeObject<StarPlanetsDto>(responseString);
+            Assert.True(constellationsStarPlanets.Planets.Any());
+        }
 
         [Fact]
         public async Task TestStarAsync()
@@ -84,7 +101,6 @@ namespace ExoPlanetHunter.IntegrationTests
             var constellationsStar = JsonConvert.DeserializeObject<StarDto>(responseString);
             Assert.Equal("14 And",
                  constellationsStar.Name);
-
         }
 
         [Fact]
@@ -97,7 +113,6 @@ namespace ExoPlanetHunter.IntegrationTests
 
             var constellationsStarPlanets = JsonConvert.DeserializeObject<StarPlanetsDto>(responseString);
             Assert.True(constellationsStarPlanets.Planets.Any());
-
         }
         [Fact]
         public async Task TestStarsDistancesAsync()
@@ -112,8 +127,48 @@ namespace ExoPlanetHunter.IntegrationTests
             Assert.False(stars.Where(p => p.Distance > 200).Any());
             Assert.False(stars.Where(p => p.Distance < 100).Any());
             Assert.True(stars.Where(p => p.Distance > 100).Any());
-
         }
+
+        [Fact]
+        public async Task TestStarsSkipTopAsync()
+        {
+            var response = await _client.GetAsync($"/api/Stars?$top=30&$skip=10");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var stars = JsonConvert.DeserializeObject<List<StarDto>>(responseString);
+
+            Assert.True(stars.Count() == 30);
+
+            Assert.True(stars.First().Id == 11);
+        }
+
+        [Fact]
+        public async Task TestStarsNameAsync()
+        {
+            var response = await _client.GetAsync($"/api/Stars?$filter=Name eq 'SR 12 AB'");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var stars = JsonConvert.DeserializeObject<List<StarDto>>(responseString);
+
+            Assert.True(stars.OrderByDescending(prop => prop.Planets).First().Name == "SR 12 AB");
+        }
+        [Fact]
+        public async Task TestStarsOrderByAsync()
+        {
+            var response = await _client.GetAsync($"/api/Stars?$orderby=Planets desc");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var stars = JsonConvert.DeserializeObject<List<StarDto>>(responseString);
+
+            Assert.True(stars.OrderByDescending(prop => prop.Planets).First().Planets == stars.First().Planets);
+        }
+
         [Fact]
         public async Task TestHabitablePlanetsAsync()
         {
@@ -125,10 +180,37 @@ namespace ExoPlanetHunter.IntegrationTests
             var planets = JsonConvert.DeserializeObject<List<PlanetDto>>(responseString);
 
             Assert.True(planets.Any());
-            Assert.False(planets.Where(p => p.Habitable==false).Any());
-          
-
+            Assert.False(planets.Where(p => p.Habitable == false).Any());
         }
 
+
+        [Fact]
+        public async Task TestPlanetsOrderByDiscoveryYearAsync()
+        {
+            var response = await _client.GetAsync($"/api/Planets?$orderby=Disc_Year asc");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var planets = JsonConvert.DeserializeObject<List<PlanetDto>>(responseString);
+
+            Assert.True(planets.First(p=>p.Disc_Year!=null).Disc_Year== 1988);
+        
+        }
+
+
+        [Fact]
+        public async Task TestPlanetNameAsync()
+        {
+            var response = await _client.GetAsync($"/api/Planets?$filter=Name eq '14 And b'");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var planets = JsonConvert.DeserializeObject<List<PlanetDto>>(responseString);
+
+            Assert.True(planets.First().Name == "14 And b");
+
+        }
     }
 }

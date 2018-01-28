@@ -10,25 +10,20 @@ using System.Threading.Tasks;
 
 namespace ExoPlanetHunter.Web.Controllers
 {
-    /// <summary>
-    /// </summary>
-
+   
     [Produces("application/json")]
     [Route("api/Planets")]
     public class PlanetsController : Controller
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(PlanetsController));
         private readonly IPlanetService _planetService;
-        /// <summary>
-        /// </summary>
-
+        
         public PlanetsController(IPlanetService planetService)
         {
             _planetService = planetService;
         }
 
-        /// <summary>
-        /// </summary>
+       
 
         [HttpGet("{id}")]
         public async Task<PlanetDto> GetPlanet(int id)
@@ -43,9 +38,19 @@ namespace ExoPlanetHunter.Web.Controllers
                 return new PlanetDto() { Message = e.Message };
             }
         }
-
         /// <summary>
         /// </summary>
+        /// <remarks>
+        ///E.g if you want to find habitable planets "$filter= Habitable eq true".
+        /// 
+        ///Find planet with name 14 And b "$filter=Name eq '14 And b'".
+        /// 
+        ///Read more here: https://msdn.microsoft.com/en-us/library/hh169248(v=nav.90).aspx.
+        ///
+        ///Skip and top E.g takes 30 and skips 10 "$top=30 $skip=10".
+        /// 
+        ///Order by ascending discovery year $orderby=Disc_Year asc.
+        /// </remarks>
 
         [HttpGet]
         public IQueryable<PlanetDto> Get(ODataQueryOptions opts)

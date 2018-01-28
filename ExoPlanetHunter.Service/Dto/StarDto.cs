@@ -27,9 +27,6 @@ namespace ExoPlanetHunter.Service.Dto
         public decimal? Dec { get; set; }
         public decimal? MagfromPlanet { get; set; }
         public decimal? SizefromPlanet { get; set; }
-        public int? NoPlanets { get; set; }
-        public int? NoPlanetsHZ { get; set; }
-
 
         public decimal? HabZoneMin { get; set; }
         public decimal? HabZoneMax { get; set; }

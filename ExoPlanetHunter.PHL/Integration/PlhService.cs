@@ -163,7 +163,7 @@ namespace ExoPlanetHunter.PHL.Integration
                 Confirmed = values[65].ConvertToBoolToNullable(),
 
                 Disc_Method = values[66],
-                Disc_Year = values[67].ConvertYearToIntToNullable(),
+                Disc_Year = values[67].ConvertYearIntToNullable(),
 
                 Star = star
             };

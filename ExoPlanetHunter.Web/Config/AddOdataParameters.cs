@@ -15,6 +15,12 @@ namespace ExoPlanetHunter.Web.Config
                 {
                     operation.Parameters = new List<IParameter>();
                     operation.Parameters.Add(new NonBodyParameter() { Name = "$filter", In = "query" });
+
+                    operation.Parameters.Add(new NonBodyParameter() { Name = "$top", In = "query" });
+                    operation.Parameters.Add(new NonBodyParameter() { Name = "$orderby", In = "query" });
+
+                    operation.Parameters.Add(new NonBodyParameter() { Name = "$skip", In = "query" });
+                   
                 }
             }
         }

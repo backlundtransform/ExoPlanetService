@@ -28,7 +28,7 @@ namespace ExoPlanetHunter.Service
             Mapper.Reset();
             Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
             Db.Startup(services, Configuration);
-          
+         
             if (env.IsProduction())
             {
 #if !DEBUG

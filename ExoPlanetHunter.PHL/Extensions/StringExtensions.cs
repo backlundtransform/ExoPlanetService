@@ -19,14 +19,14 @@
             }
         }
 
-        public static int? ConvertYearToIntToNullable(this string value)
+        public static int? ConvertYearIntToNullable(this string value)
         {
             try
             {
-                if (string.IsNullOrEmpty(value)) {
+                if (string.IsNullOrEmpty(value.Trim())) {
                     return null;
                 }
-                return Convert.ToInt32(value.Split(",")[0]);
+                return Convert.ToInt32(value.Split(".")[0]);
 
             }
             catch (Exception)

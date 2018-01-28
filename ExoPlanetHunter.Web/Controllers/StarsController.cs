@@ -17,8 +17,7 @@ namespace ExoPlanetHunter.Web.Controllers
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(StarsController));
         private readonly IStarService _starService;
-        /// <summary>
-        /// </summary>
+    
 
         public StarsController(IStarService starService)
         {
@@ -27,6 +26,18 @@ namespace ExoPlanetHunter.Web.Controllers
 
         /// <summary>
         /// </summary>
+        /// <remarks>
+        /// E.g if you want to find all planets at a distance greater then 110 an less than 140 then use "$filter=Distance gt 110 and Distance lt 140".
+        /// 
+        ///Find star with name SR 12 AB "$filter=Name eq 'SR 12 AB'".
+        /// 
+        ///Read more here: https://msdn.microsoft.com/en-us/library/hh169248(v=nav.90).aspx
+        ///
+        ///Skip and top E.g takes 30 and skips 10 "$top=30 $skip=10".
+        /// 
+        ///Order by decending number of planets $orderby=Planets desc.
+        /// </remarks>
+
 
         [HttpGet]
         public async Task<IQueryable<StarDto>> Get(ODataQueryOptions opts)
@@ -42,8 +53,6 @@ namespace ExoPlanetHunter.Web.Controllers
             }
         }
 
-        /// <summary>
-        /// </summary>
 
         [HttpGet("{id}")]
         public async Task<StarDto> Get(int id)
@@ -59,13 +68,10 @@ namespace ExoPlanetHunter.Web.Controllers
             }
         }
 
-        /// <summary>
-        /// </summary>
 
         [HttpGet("{id}/planets")]
         public async Task<StarPlanetsDto> GetPlanets(int id)
         {
-
             try
             {
                 return await _starService.GetStarPlanets(id);
@@ -75,7 +81,6 @@ namespace ExoPlanetHunter.Web.Controllers
                 log.Info(e.Message);
                 return new StarPlanetsDto() { Message = e.Message };
             }
-          
         }
     }
 }
