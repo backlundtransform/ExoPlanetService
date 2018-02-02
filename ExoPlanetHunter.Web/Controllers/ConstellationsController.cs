@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace ExoPlanetHunter.Web.Controllers
 {
-    /// <summary>
-    /// </summary>
-
+    
     [Produces("application/json")]
     [Route("api/Constellations")]
     public class ConstellationsController : Controller
@@ -18,8 +16,7 @@ namespace ExoPlanetHunter.Web.Controllers
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(ConstellationsController));
         private readonly IConstellationService _constellationService;
         private readonly IStarService _starService;
-        /// <summary>
-        /// </summary>
+    
 
         public ConstellationsController(IConstellationService constellationService, IStarService starService)
         {
@@ -27,8 +24,7 @@ namespace ExoPlanetHunter.Web.Controllers
             _constellationService = constellationService;
         }
 
-        /// <summary>
-        /// </summary>
+    
 
         [HttpGet]
         public async Task<IEnumerable<ConstellationDto>> Get()
@@ -45,8 +41,7 @@ namespace ExoPlanetHunter.Web.Controllers
             }
         }
 
-        /// <summary>
-        /// </summary>
+  
 
         [HttpGet("{cid}")]
         public async Task<ConstellationDto> Get(int cid)
@@ -66,8 +61,7 @@ namespace ExoPlanetHunter.Web.Controllers
             
         }
 
-        /// <summary>
-        /// </summary>
+     
 
         [HttpGet("{cid}/stars")]
         public async Task<ConstellationStarsDto> GetStars(int cid)
@@ -85,8 +79,7 @@ namespace ExoPlanetHunter.Web.Controllers
             }
         }
 
-        /// <summary>
-        /// </summary>
+     
 
         [HttpGet("{cid}/stars/{sid}")]
         public async Task<StarDto> GetStar(int sid)
@@ -104,8 +97,7 @@ namespace ExoPlanetHunter.Web.Controllers
             }
         }
 
-        /// <summary>
-        /// </summary>
+        
 
         [HttpGet("{cid}/stars/{sid}/planets")]
         public async Task<StarPlanetsDto> GetStarPlanets(int sid)
