@@ -1,17 +1,14 @@
-﻿using System;
-
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
-using Microsoft.EntityFrameworkCore;
-using ExoPlanetHunter.Database;
+﻿using ExoPlanetHunter.Database;
 using ExoPlanetHunter.Database.Entity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ExoPlanetHunter.Web.Controllers
 {
-
     public class PostsController : Controller
     {
         private readonly ExoContext _context;
@@ -21,13 +18,11 @@ namespace ExoPlanetHunter.Web.Controllers
             _context = context;
         }
 
-
         public async Task<IActionResult> Index()
         {
             return View(await _context.Posts.ToListAsync());
         }
 
-  
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,19 +41,22 @@ namespace ExoPlanetHunter.Web.Controllers
         }
 
         [Authorize]
-
         public IActionResult Create()
         {
             return View();
         }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,Created,LastModified")] Post post)
+        public async Task<IActionResult> Create([Bind("Title,Content")] Post post)
         {
             if (ModelState.IsValid)
             {
+                post.Created = DateTime.Now;
+                post.LastModified = DateTime.Now;
                 _context.Add(post);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -84,7 +82,7 @@ namespace ExoPlanetHunter.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,Created")] Post post)
         {
             if (id != post.Id)
             {
@@ -95,7 +93,6 @@ namespace ExoPlanetHunter.Web.Controllers
             {
                 try
                 {
-                 
                     post.LastModified = DateTime.Now;
                     _context.Update(post);
                     await _context.SaveChangesAsync();
@@ -133,6 +130,7 @@ namespace ExoPlanetHunter.Web.Controllers
 
             return View(post);
         }
+
         [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

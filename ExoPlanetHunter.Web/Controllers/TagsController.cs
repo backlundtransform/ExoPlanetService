@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ExoPlanetHunter.Database;
 using ExoPlanetHunter.Database.Entity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExoPlanetHunter.Web.Controllers
 {
@@ -19,13 +20,12 @@ namespace ExoPlanetHunter.Web.Controllers
             _context = context;
         }
 
-        // GET: Tags
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Tags.ToListAsync());
         }
-
-        // GET: Tags/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,15 +43,13 @@ namespace ExoPlanetHunter.Web.Controllers
             return View(tag);
         }
 
-        // GET: Tags/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Tags/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Tag tag)
@@ -64,8 +62,7 @@ namespace ExoPlanetHunter.Web.Controllers
             }
             return View(tag);
         }
-
-        // GET: Tags/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,10 +77,7 @@ namespace ExoPlanetHunter.Web.Controllers
             }
             return View(tag);
         }
-
-        // POST: Tags/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Tag tag)
@@ -116,7 +110,7 @@ namespace ExoPlanetHunter.Web.Controllers
             return View(tag);
         }
 
-        // GET: Tags/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,8 +127,7 @@ namespace ExoPlanetHunter.Web.Controllers
 
             return View(tag);
         }
-
-        // POST: Tags/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

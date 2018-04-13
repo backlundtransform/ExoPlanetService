@@ -45,6 +45,7 @@ namespace ExoPlanetHunter.Web
         public void ConfigureServices(IServiceCollection services)
         {
             var config = new ConfigurationBuilder();
+        
             services.AddMvc().AddJsonOptions(opt =>
             {
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -83,7 +84,7 @@ namespace ExoPlanetHunter.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles();
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
@@ -120,6 +121,7 @@ namespace ExoPlanetHunter.Web
 
                 var user = new IdentityUser { UserName = "test",  Email= "test@test.com" };
                  var result = await manager.CreateAsync(user, "Password123#");
+
             }
         }
     }
