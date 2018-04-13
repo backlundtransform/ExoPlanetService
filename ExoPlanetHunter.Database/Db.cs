@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ExoPlanetHunter.Database.Entity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ExoPlanetHunter.Database
@@ -10,9 +12,9 @@ namespace ExoPlanetHunter.Database
         {
             Configuration = configuration;
             services.AddDbContext<ExoContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ExoContext>().AddDefaultTokenProviders();
 
-        
         }
-
     }
 }

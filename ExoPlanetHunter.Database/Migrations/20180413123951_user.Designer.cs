@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace ExoPlanetHunter.Database
+namespace ExoPlanetHunter.Database.Migrations
 {
     [DbContext(typeof(ExoContext))]
-    partial class ExoContextModelSnapshot : ModelSnapshot
+    [Migration("20180413123951_user")]
+    partial class user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

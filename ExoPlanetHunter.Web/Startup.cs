@@ -11,8 +11,14 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.OData.Edm;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using ExoPlanetHunter.Database;
+using ExoPlanetHunter.Database.Entity;
+using ExoPlanetHunter.Service;
+using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace ExoPlanetHunter.Web
 {
@@ -41,7 +47,7 @@ namespace ExoPlanetHunter.Web
             var config = new ConfigurationBuilder();
             services.AddMvc().AddJsonOptions(opt =>
             {
-                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             }); ;
             services.AddOData();
             services.AddMvcCore(options =>
@@ -64,7 +70,10 @@ namespace ExoPlanetHunter.Web
                 var xmlPath = Path.Combine(basePath, "ExoPlanetHunter.Web.xml");
                 c.IncludeXmlComments(xmlPath);
             });
-            Service.Logic.Startup(services, _env);
+            Logic.Startup(services, _env);
+         
+            services.AddRouting();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,13 +92,35 @@ namespace ExoPlanetHunter.Web
             });
 
             IEdmModel model = GetEdmModel(app.ApplicationServices);
-
+            app.UseAuthentication();
             app.UseMvc(routeBuilder =>
             {
                 routeBuilder.MapODataServiceRoute("odata", "odata", model);
-
+                routeBuilder.MapRoute(
+                    "Posts",
+                 "{controller}/{action}/{id?}",
+                    new { controller = "Posts", action = "index" }).MapRoute(
+                    "Account",
+                    "{controller}/{action}/{id?}",
+                    new { controller = "Account", action = "login" }).MapRoute(
+                    "Tags",
+                    "{controller}/{action}/{id?}",
+                    new { controller = "Account", action = "login" }); ;
                 routeBuilder.EnableDependencyInjection();
             });
+
+            Initialize(app.ApplicationServices);
+        }
+
+       private static async void Initialize(IServiceProvider services)
+        {
+            using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+                var user = new IdentityUser { UserName = "test",  Email= "test@test.com" };
+                 var result = await manager.CreateAsync(user, "Password123#");
+            }
         }
     }
 }
