@@ -4,12 +4,7 @@
 @model PaginatedList<ExoPlanetHunter.Database.Entity.Post>
 
 
-<div class="blog-header">
-    <div class="container">
-        <h1 class="blog-title">The Bootstrap Blog</h1>
-        <p class="lead blog-description">An example blog template built with Bootstrap.</p>
-    </div>
-</div>
+
 @if (User.Identity.IsAuthenticated)
 {
     <a asp-action="Create">Create New</a>
@@ -19,7 +14,8 @@
 
     <div class="row">
 
-        <div class="col-sm-8 blog-main">
+         <div class="col-lg-8 col-md-10 mx-auto">
+        
 
             @foreach (var item in Model)
             {
@@ -28,55 +24,42 @@
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 }
-                <div class="blog-post">
-                    <h2 class="blog-post-title"><a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a></h2>
-                    <p class="blog-post-meta">
-                        @Html.DisplayFor(modelItem => item.LastModified)
-                        by <a href="#">Göran</a>
-                        @Html.Raw(item.Content)
-                </div><!-- /.blog-post -->
+                <div class="post-preview">
+                    <h2 class="post-title"><a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a></h2>
+
+                       <h3 class="post-subtitle">
+              @Html.Raw(item.Content)
+              </h3>
+           
+            <p class="post-meta">Posted by
+            Göran Bäcklund
+               @Html.DisplayFor(modelItem => item.LastModified)</p>
+                 </div>
+    
+          <hr>
+                
+                     
+                     
+                        
+                
             }
             @{
                 var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                 var nextDisabled = !Model.HasNextPage ? "disabled" : "";
             }
 
-            <a asp-action="Index"
-               asp-route-page="@(Model.PageIndex - 1)"
-               class="btn btn-default @prevDisabled">
-                Previous
-            </a>
+      
             <a asp-action="Index"
                asp-route-page="@(Model.PageIndex + 1)"
-               class="btn btn-default @nextDisabled">
+               class="btn btn-primary float-right @nextDisabled">
                 Next
             </a>
-
-        </div><!-- /.blog-main -->
-
-        <div class="col-sm-3 offset-sm-1 blog-sidebar">
-            <div class="sidebar-module sidebar-module-inset">
-                <h4>About</h4>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-            </div>
-
-            <div class="sidebar-module">
-                <h4>Elsewhere</h4>
-                <ol class="list-unstyled">
-                    <li><a href="#">GitHub</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Facebook</a></li>
-                </ol>
-            </div>
+      <a asp-action="Index"
+               asp-route-page="@(Model.PageIndex - 1)"
+               class="btn btn-primary float-right @prevDisabled">
+                Previous
+            </a>
         </div>
-
     </div>
-
 </div>
 
-
-<p>
-
-
-
-</p>
