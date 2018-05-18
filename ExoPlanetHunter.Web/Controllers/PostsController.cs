@@ -1,10 +1,12 @@
 ﻿using ExoPlanetHunter.Database;
 using ExoPlanetHunter.Database.Entity;
 using ExoPlanetHunter.Service.Interfaces;
+using ExoPlanetHunter.Web.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,10 +25,12 @@ namespace ExoPlanetHunter.Web.Controllers
             _postService = postService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page=1)
         {
-
-            return View(await _postService.GetPostsAsync());
+            int pageSize = 3;
+            var posts = await _postService.GetPostsAsync();
+            return View(PaginatedList<Post>.CreateAsync(posts, page ?? 1, pageSize));
+           
         }
 
         public async Task<IActionResult> Details(int? id)

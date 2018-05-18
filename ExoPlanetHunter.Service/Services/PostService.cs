@@ -50,5 +50,8 @@ namespace ExoPlanetHunter.Service.Services
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
         }
+
+
+
     }
 }

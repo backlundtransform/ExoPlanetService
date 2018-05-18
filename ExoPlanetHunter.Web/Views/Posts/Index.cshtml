@@ -1,6 +1,7 @@
 ﻿@using ExoPlanetHunter.Database.Entity
 @using Microsoft.AspNetCore.Identity
-@model IEnumerable<ExoPlanetHunter.Database.Entity.Post>
+@using  ExoPlanetHunter.Web.ViewModel
+@model PaginatedList<ExoPlanetHunter.Database.Entity.Post>
 
 
 <div class="blog-header">
@@ -23,22 +24,33 @@
             @foreach (var item in Model)
             {
                 @if (User.Identity.IsAuthenticated)
-                 {
-                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                 }
-            <div class="blog-post">
-                <h2 class="blog-post-title"><a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a></h2>
-                <p class="blog-post-meta">
-                    @Html.DisplayFor(modelItem => item.LastModified)
-                    by <a href="#">Göran</a>
-                @Html.DisplayFor(modelItem => item.Content)
-            </div><!-- /.blog-post -->
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+                <div class="blog-post">
+                    <h2 class="blog-post-title"><a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a></h2>
+                    <p class="blog-post-meta">
+                        @Html.DisplayFor(modelItem => item.LastModified)
+                        by <a href="#">Göran</a>
+                        @Html.Raw(item.Content)
+                </div><!-- /.blog-post -->
             }
-            <nav class="blog-pagination">
-                <a class="btn btn-outline-primary" href="#">Older</a>
-                <a class="btn btn-outline-secondary disabled" href="#">Newer</a>
-            </nav>
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageIndex - 1)"
+               class="btn btn-default @prevDisabled">
+                Previous
+            </a>
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageIndex + 1)"
+               class="btn btn-default @nextDisabled">
+                Next
+            </a>
 
         </div><!-- /.blog-main -->
 
@@ -47,7 +59,7 @@
                 <h4>About</h4>
                 <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
             </div>
-          
+
             <div class="sidebar-module">
                 <h4>Elsewhere</h4>
                 <ol class="list-unstyled">
