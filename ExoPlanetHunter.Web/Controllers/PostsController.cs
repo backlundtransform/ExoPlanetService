@@ -1,5 +1,6 @@
 ﻿using ExoPlanetHunter.Database;
 using ExoPlanetHunter.Database.Entity;
+using ExoPlanetHunter.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,16 +12,21 @@ namespace ExoPlanetHunter.Web.Controllers
 {
     public class PostsController : Controller
     {
-        private readonly ExoContext _context;
 
-        public PostsController(ExoContext context)
+
+
+        private readonly IPostService _postService;
+
+
+        public PostsController(IPostService postService)
         {
-            _context = context;
+            _postService = postService;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Posts.ToListAsync());
+
+            return View(await _postService.GetPostsAsync());
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -30,8 +36,7 @@ namespace ExoPlanetHunter.Web.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var post = await _postService.GetPostAsync(id);
             if (post == null)
             {
                 return NotFound();
@@ -53,11 +58,7 @@ namespace ExoPlanetHunter.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                post.Created = DateTime.Now;
-                post.LastModified = DateTime.Now;
-                _context.Add(post);
-
-                await _context.SaveChangesAsync();
+                await _postService.CreatePostAsync(post);
                 return RedirectToAction(nameof(Index));
             }
             return View(post);
@@ -71,7 +72,7 @@ namespace ExoPlanetHunter.Web.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.SingleOrDefaultAsync(m => m.Id == id);
+            var post = await _postService.GetPostAsync(id);
             if (post == null)
             {
                 return NotFound();
@@ -93,20 +94,13 @@ namespace ExoPlanetHunter.Web.Controllers
             {
                 try
                 {
-                    post.LastModified = DateTime.Now;
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
+                    await _postService.EditPostAsync(post);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PostExists(post.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                  
+                  
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -121,8 +115,7 @@ namespace ExoPlanetHunter.Web.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var post = await _postService.GetPostAsync(id);
             if (post == null)
             {
                 return NotFound();
@@ -136,15 +129,11 @@ namespace ExoPlanetHunter.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var post = await _context.Posts.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Posts.Remove(post);
-            await _context.SaveChangesAsync();
+            var post = await _postService.GetPostAsync(id);
+         
+            await _postService.DeletePostAsync(post); ;
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PostExists(int id)
-        {
-            return _context.Posts.Any(e => e.Id == id);
-        }
     }
 }

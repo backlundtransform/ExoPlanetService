@@ -1,0 +1,55 @@
+{
+  "_from": "ckeditor",
+  "_id": "ckeditor@4.9.2",
+  "_inBundle": false,
+  "_integrity": "sha1-OFYAy0Ao4AVcknIOIkNbuX9BPNw=",
+  "_location": "/ckeditor",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "ckeditor",
+    "name": "ckeditor",
+    "escapedName": "ckeditor",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/ckeditor/-/ckeditor-4.9.2.tgz",
+  "_shasum": "385600cb4028e0055c92720e22435bb97f413cdc",
+  "_spec": "ckeditor",
+  "_where": "C:\\Exoplanethunter\\ExoPlanetService\\ExoPlanetHunter.Web",
+  "author": {
+    "name": "CKSource",
+    "url": "http://cksource.com/"
+  },
+  "bugs": {
+    "url": "http://dev.ckeditor.com"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "JavaScript WYSIWYG web text editor.",
+  "homepage": "http://ckeditor.com",
+  "keywords": [
+    "ckeditor",
+    "fckeditor",
+    "editor",
+    "wysiwyg",
+    "html",
+    "richtext",
+    "text",
+    "javascript"
+  ],
+  "license": "(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)",
+  "main": "ckeditor.js",
+  "name": "ckeditor",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ckeditor/ckeditor-releases.git"
+  },
+  "version": "4.9.2"
+}

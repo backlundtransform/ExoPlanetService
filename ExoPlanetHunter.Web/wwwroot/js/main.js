@@ -1,4 +1,10 @@
-//main.js
-var other = require('./other');
+import Ckeditor from '../../node_modules/ckeditor/ckeditor.js';
+import Config from '../../node_modules/ckeditor/config.js';
+import lang from '../../node_modules/ckeditor/lang/sv.js';
 
-other();
+require('ckeditor');
+
+CKEDITOR.replace('exoeditor');
+
+
+
