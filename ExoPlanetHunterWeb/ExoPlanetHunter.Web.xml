@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ExoPlanetHunterWeb</name>
+    </assembly>
+    <members>
+        <member name="M:ExoPlanetHunter.Web.Controllers.PlanetsController.Get(Microsoft.AspNet.OData.Query.ODataQueryOptions)">
+             <summary>
+             </summary>
+             <remarks>
+            E.g if you want to find habitable planets "$filter= Habitable eq true".
+             
+            Find planet with name 14 And b "$filter=Name eq '14 And b'".
+             
+            Read more here: https://msdn.microsoft.com/en-us/library/hh169248(v=nav.90).aspx.
+            
+            Skip and top E.g takes 30 and skips 10 "$top=30 $skip=10".
+             
+            Order by ascending discovery year $orderby=Disc_Year asc.
+             </remarks>
+        </member>
+        <member name="T:ExoPlanetHunter.Web.Controllers.StarsController">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:ExoPlanetHunter.Web.Controllers.StarsController.Get(Microsoft.AspNet.OData.Query.ODataQueryOptions)">
+             <summary>
+             </summary>
+             <remarks>
+             E.g if you want to find all planets at a distance greater then 110 an less than 140 then use "$filter=Distance gt 110 and Distance lt 140".
+             
+            Find star with name SR 12 AB "$filter=Name eq 'SR 12 AB'".
+             
+            Read more here: https://msdn.microsoft.com/en-us/library/hh169248(v=nav.90).aspx
+            
+            Skip and top E.g takes 30 and skips 10 "$top=30 $skip=10".
+             
+            Order by decending number of planets $orderby=Planets desc.
+             </remarks>
+        </member>
+    </members>
+</doc>

@@ -121,6 +121,8 @@ namespace ExoPlanetHunter.Web
         {
             using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
+
+     
                 var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
                 var user = new IdentityUser { UserName = "test",  Email= "test@test.com" };

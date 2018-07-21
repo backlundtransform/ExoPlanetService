@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExoPlanetHunter.Web\ExoPlanetHunter.Web.csproj" />
+    <ProjectReference Include="..\ExoPlanetHunterWeb\ExoPlanetHunterWeb.csproj" />
   </ItemGroup>
 
 </Project>
