@@ -49,7 +49,11 @@ namespace ExoPlanetHunter.Web
             services.AddMvc().AddJsonOptions(opt =>
             {
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            }); ;
+            });
+            services.Configure<IISOptions>(options =>
+            {
+                options.ForwardClientCertificate = false;
+            });
             services.AddOData();
             services.AddMvcCore(options =>
             {
@@ -98,8 +102,8 @@ namespace ExoPlanetHunter.Web
             {
                 routeBuilder.MapODataServiceRoute("odata", "odata", model);
                 routeBuilder.MapRoute(
-                    "Posts",
-                 "{controller}/{action}/{id?}",
+                    "default",
+                 "{action}/{id?}",
                     new { controller = "Posts", action = "index" }).MapRoute(
                     "Account",
                     "{controller}/{action}/{id?}",

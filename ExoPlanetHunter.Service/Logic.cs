@@ -31,9 +31,9 @@ namespace ExoPlanetHunter.Service
          
             if (env.IsProduction())
             {
-#if !DEBUG
-   Phl.Startup(Configuration);
-#endif
+
+  // Phl.Startup(Configuration);
+
             }
         }
     }
