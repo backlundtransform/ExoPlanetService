@@ -4,39 +4,29 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Post</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastModified)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastModified)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<div class="container">
+
+    <div class="row">
+
+         <div class="col-lg-8 col-md-10 mx-auto">
+        
+ @if (User.Identity.IsAuthenticated)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                }
+                <div class="post-preview">
+                    <h2 class="post-title"><a asp-action="Details" asp-route-id="@Model.Id"> @Model.Title </a></h2>
+
+                       <div class="post-subtitle">
+              @Html.Raw(Model.Content)
+              </div>
+           
+            <p class="post-meta">Posted by
+            Göran Bäcklund
+               @Model.LastModified</p>
+                 </div>  
+                 </div>  
+                 </div>  
+                 </div>

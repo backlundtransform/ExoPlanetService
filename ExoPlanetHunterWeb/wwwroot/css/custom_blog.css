@@ -1,8 +1,8 @@
 ﻿body {
     font-size: 20px;
-    color: #212529;
+    color: #c6d4ff;
     font-family: Lora,'Times New Roman',serif;
-    background: #fff
+    background: #818ea5
 }
 
 p {
@@ -20,14 +20,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-    color: #212529;
+    color: #c6d4ff;
     -webkit-transition: all .2s;
     -moz-transition: all .2s;
     transition: all .2s
 }
 
     a:focus, a:hover {
-        color: #0085a1
+        color: #c6d4ff
     }
 
 blockquote {
@@ -53,24 +53,24 @@ blockquote {
 }
 
 ::-moz-selection {
-    color: #fff;
-    background: #0085a1;
+    color: #c6d4ff;
+    background: #343a40;
     text-shadow: none
 }
 
 ::selection {
-    color: #fff;
-    background: #0085a1;
+    color: #c6d4ff;
+    background: #343a40;
     text-shadow: none
 }
 
 img::selection {
-    color: #fff;
+    color: #c6d4ff;
     background: 0 0
 }
 
 img::-moz-selection {
-    color: #fff;
+    color: #c6d4ff;
     background: 0 0
 }
 
@@ -109,7 +109,7 @@ img::-moz-selection {
 
         #mainNav .navbar-brand {
             padding: 10px 20px;
-            color: #fff
+            color: #c6d4ff
         }
 
             #mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover {
@@ -118,11 +118,11 @@ img::-moz-selection {
 
         #mainNav .navbar-nav > li.nav-item > a {
             padding: 10px 20px;
-            color: #fff
+            color: #c6d4ff
         }
 
             #mainNav .navbar-nav > li.nav-item > a:focus, #mainNav .navbar-nav > li.nav-item > a:hover {
-                color: rgba(255,255,255,.8)
+                color: #c6d4ff
             }
 }
 
@@ -150,19 +150,19 @@ img::-moz-selection {
         }
 
             #mainNav.is-fixed .navbar-brand {
-                color: #212529
+                color: #c6d4ff
             }
 
                 #mainNav.is-fixed .navbar-brand:focus, #mainNav.is-fixed .navbar-brand:hover {
-                    color: #0085a1
+                    color: #c6d4ff
                 }
 
             #mainNav.is-fixed .navbar-nav > li.nav-item > a {
-                color: #212529
+                color: #c6d4ff
             }
 
                 #mainNav.is-fixed .navbar-nav > li.nav-item > a:focus, #mainNav.is-fixed .navbar-nav > li.nav-item > a:hover {
-                    color: #0085a1
+                    color: #c6d4ff
                 }
 
         #mainNav.is-visible {
@@ -192,13 +192,13 @@ header.masthead {
         left: 0;
         height: 100%;
         width: 100%;
-        background-color: #212529;
-        opacity: .5
+        background-color: #c6d4ff;
+        opacity: 0
     }
 
     header.masthead .page-heading, header.masthead .post-heading, header.masthead .site-heading {
         padding: 200px 0 150px;
-        color: #fff
+        color: #c6d4ff
     }
 
 @media only screen and (min-width:768px) {
@@ -267,14 +267,24 @@ header.masthead .post-heading .meta {
         font-size: 30px
     }
 }
+.post-preview {
+    color: #c6d4ff;
+    background-color: #50607a;
+    padding:40px
+}
 
 .post-preview > a {
-    color: #212529
+    color: #c6d4ff;
+
+}
+img{
+
+    background-color: #fff 
 }
 
     .post-preview > a:focus, .post-preview > a:hover {
         text-decoration: none;
-        color: #0085a1
+        color: #c6d4ff
     }
 
     .post-preview > a > .post-title {
@@ -292,17 +302,17 @@ header.masthead .post-heading .meta {
     font-size: 18px;
     font-style: italic;
     margin-top: 0;
-    color: #868e96
+    color: #c6d4ff
 }
 
     .post-preview > .post-meta > a {
         text-decoration: none;
-        color: #212529
+        color: #c6d4ff
     }
 
         .post-preview > .post-meta > a:focus, .post-preview > .post-meta > a:hover {
             text-decoration: underline;
-            color: #0085a1
+            color: #50607a
         }
 
 @media only screen and (min-width:768px) {
@@ -364,7 +374,7 @@ header.masthead .post-heading .meta {
 }
 
 .floating-label-form-group-with-focus label {
-    color: #0085a1
+    color: #c6d4ff
 }
 
 form .form-group:first-child .floating-label-form-group {

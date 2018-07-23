@@ -14,8 +14,6 @@ using System;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using ExoPlanetHunter.Database;
-using ExoPlanetHunter.Database.Entity;
 using ExoPlanetHunter.Service;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
@@ -70,7 +68,7 @@ namespace ExoPlanetHunter.Web
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "ExoPlanet API", Version = "v1" });
-                c.OperationFilter<AddOdataParameters>();
+           c.OperationFilter<AddOdataParameters>();
                 var basePath = AppContext.BaseDirectory;
                 var xmlPath = Path.Combine(basePath, "ExoPlanetHunter.Web.xml");
                 c.IncludeXmlComments(xmlPath);

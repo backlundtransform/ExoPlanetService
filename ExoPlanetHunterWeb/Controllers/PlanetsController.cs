@@ -1,5 +1,6 @@
 using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Service.Interfaces;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Mvc;
 using System;
