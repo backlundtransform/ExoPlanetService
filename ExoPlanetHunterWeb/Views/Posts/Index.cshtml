@@ -7,59 +7,65 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-dark" asp-action="Create">Create New</a>
 
 }
 <div class="container">
 
     <div class="row">
 
-         <div class="col-lg-8 col-md-10 mx-auto">
-        
+        <div class="col-lg-8 col-md-10 mx-auto">
+
 
             @foreach (var item in Model)
             {
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-dark" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a  class="btn btn-dark" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 }
-                <div class="post-preview">
-                    <h2 class="post-title"><a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a></h2>
+                    <div class="post-preview">
+                        <h2 class="post-title"><a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a></h2>     <hr>
 
-                       <div class="post-subtitle">
-              @Html.Raw(item.Content)
-              </div>
+                        <div class="post-subtitle">
+                            @Html.Raw(item.Content)
+                        </div>
+
+                        <p class="post-meta">
+                            Posted by
+                            Göran Bäcklund
+                            @Html.DisplayFor(modelItem => item.LastModified)
+                        </p>
+                 
+                    </div>
+              
            
-            <p class="post-meta">Posted by
-            Göran Bäcklund
-               @Html.DisplayFor(modelItem => item.LastModified)</p>
-                 </div>
-    
-          <hr>
-                
-                     
-                     
-                        
-                
+
+                    <br />
+
+
+
             }
             @{
                 var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                 var nextDisabled = !Model.HasNextPage ? "disabled" : "";
             }
 
-      
+
             <a asp-action="Index"
                asp-route-page="@(Model.PageIndex + 1)"
                class="btn btn-dark float-right @nextDisabled">
                 Next
             </a>
-      <a asp-action="Index"
+            <a asp-action="Index"
                asp-route-page="@(Model.PageIndex - 1)"
                class="btn btn-dark float-right @prevDisabled">
                 Previous
             </a>
-        </div>
+        </div><div class="col-lg-4 col-md-2">
+    <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/exoplanethunt?ref_src=twsrc%5Etfw">Tweets by exoplanethunt</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
     </div>
 </div>
 

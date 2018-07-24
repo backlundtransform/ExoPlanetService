@@ -27,7 +27,7 @@ namespace ExoPlanetHunter.Web.Controllers
 
         public async Task<IActionResult> Index(int? page=1)
         {
-            int pageSize = 3;
+            int pageSize = 10;
             var posts = await _postService.GetPostsAsync();
             return View(PaginatedList<Post>.CreateAsync(posts, page ?? 1, pageSize));
            

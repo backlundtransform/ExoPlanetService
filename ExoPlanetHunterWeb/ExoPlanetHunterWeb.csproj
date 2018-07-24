@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.1" />
@@ -22,6 +23,12 @@
   <ItemGroup>
     <Folder Include="logs\" />
     <Folder Include="wwwroot\logs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ExoPlanetHunter.Web.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

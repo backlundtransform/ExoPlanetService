@@ -9,24 +9,35 @@
 
     <div class="row">
 
-         <div class="col-lg-8 col-md-10 mx-auto">
+         <div class="col-lg-10 col-md-12 mx-auto">
         
  @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                    <a class="btn btn-dark" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    <a  class="btn btn-dark" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
                 }
-                <div class="post-preview">
-                    <h2 class="post-title"><a asp-action="Details" asp-route-id="@Model.Id"> @Model.Title </a></h2>
+                    <div class="post-preview">
+                        <h2 class="post-title"><a asp-action="Details" asp-route-id="@Model.Id"> @Model.Title </a></h2><hr />
 
-                       <div class="post-subtitle">
-              @Html.Raw(Model.Content)
-              </div>
-           
-            <p class="post-meta">Posted by
-            Göran Bäcklund
-               @Model.LastModified</p>
-                 </div>  
+                        <div class="post-subtitle">
+                            @Html.Raw(Model.Content)
+                        </div>
+
+                        <p class="post-meta">
+                            Posted by
+                            Göran Bäcklund
+                            @Model.LastModified
+                        </p>
+                        <!-- AddToAny BEGIN -->
+                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+                            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+                            <a class="a2a_button_facebook"></a>
+                            <a class="a2a_button_twitter"></a>
+                            <a class="a2a_button_google_plus"></a>
+                        </div>
+                        <script async src="https://static.addtoany.com/menu/page.js"></script>
+                        <!-- AddToAny END -->
+                    </div>  
                  </div>  
                  </div>  
                  </div>

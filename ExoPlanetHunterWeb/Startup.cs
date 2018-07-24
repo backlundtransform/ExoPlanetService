@@ -88,7 +88,8 @@ namespace ExoPlanetHunter.Web
             }
             app.UseStaticFiles();
             app.UseSwagger();
-
+           app.UseCookiePolicy();
+            app.UseHttpsRedirection();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExoPlanet API V1");
