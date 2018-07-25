@@ -48,9 +48,13 @@ namespace ExoPlanetHunter.Web
             {
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
-            services.Configure<IISOptions>(options =>
+
+
+            services.Configure<CookiePolicyOptions>(options =>
             {
-                options.ForwardClientCertificate = false;
+               
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
             });
             services.AddOData();
             services.AddMvcCore(options =>

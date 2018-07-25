@@ -5,11 +5,6 @@
 
 
 
-@if (User.Identity.IsAuthenticated)
-{
-    <a class="btn btn-dark" asp-action="Create">Create New</a>
-
-}
 <div class="container">
 
     <div class="row">
@@ -21,27 +16,27 @@
             {
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a class="btn btn-dark" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a  class="btn btn-dark" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-outline-dark" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-outline-dark" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 }
-                    <div class="post-preview">
-                        <h2 class="post-title"><a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a></h2>     <hr>
+                <div class="post-preview">
+                    <h2 class="post-title"><a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a></h2>     <hr>
 
-                        <div class="post-subtitle">
-                            @Html.Raw(item.Content)
-                        </div>
-
-                        <p class="post-meta">
-                            Posted by
-                            Göran Bäcklund
-                            @Html.DisplayFor(modelItem => item.LastModified)
-                        </p>
-                 
+                    <div class="post-subtitle">
+                        @Html.Raw(item.Content)
                     </div>
-              
-           
 
-                    <br />
+                    <p class="post-meta">
+                        Posted by
+                        Göran Bäcklund
+                        @Html.DisplayFor(modelItem => item.LastModified)
+                    </p>
+
+                </div>
+
+
+
+                <br />
 
 
 
@@ -63,9 +58,16 @@
                 Previous
             </a>
         </div><div class="col-lg-4 col-md-2">
-    <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/exoplanethunt?ref_src=twsrc%5Etfw">Tweets by exoplanethunt</a>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</div>
+            <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/exoplanethunt?ref_src=twsrc%5Etfw">Tweets by exoplanethunt</a>
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
     </div>
 </div>
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <a class="btn btn-outline-dark" asp-action="Create">Create New</a>
+
+}
 

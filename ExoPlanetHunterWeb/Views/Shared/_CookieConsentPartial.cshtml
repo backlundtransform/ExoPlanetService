@@ -9,24 +9,21 @@
 {
 
 
-    <nav id="cookieConsent" class="navbar navbar-default navbar-fixed-top" role="alert">
+    <nav id="cookieConsent" class="navbar navbar-default navbar-fixed-top show" role="alert">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="glyphicon glyphicon-info-sign navbar-toggle" data-toggle="collapse" data-target="#cookieConsent .navbar-collapse">
-                    <span class="sr-only">Toggle cookie consent banner</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                  
                 </button>
 
             </div>
-            <div class="collapse navbar-collapse show">
-                <p class="navbar-text">
+            <div id="cookieConsentapprove" class="collapse navbar-collapse show">
+                <p class="alert alert-dark" role="alert">
                     This website uses cookies to improve user experience. Cookies is used for social media widget and for adverising. By using our website you consent to all cookies in accordance with our Cookie Policy.
                 </p>
                 <div class="navbar-right">
-                    <a src="/details/1" class="btn btn-dark">Learn More</a>
-                    <button type="button" class="btn btn-default" data-cookie-string="@cookieString">Accept</button>
+                    <a href="/Details/6" class="btn btn-outline-dark btn-sm">Learn More</a>
+                    <button type="button" class="btn btn-outline-default btn-sm" data-cookie-string="@cookieString">Accept</button>
                 </div>
             </div>
         </div>
@@ -35,15 +32,10 @@
         (function () {
             document.querySelector("#cookieConsent button[data-cookie-string]").addEventListener("click", function (el) {
                 document.cookie = el.target.dataset.cookieString;
-                document.querySelector("#cookieConsent").classList.add("hidden");
+
+       
+                document.querySelector("#cookieConsentapprove").classList.remove("show");
             }, false);
         })();
     </script>
-}
-else
-{
-
-    <!--Start Cookie Script-->
-    <script type="text/javascript" charset="UTF-8" src="http://chs03.cookie-script.com/s/121a8f9319d8c22c836486debc7bde49.js"></script>
-    <!--End Cookie Script-->
 }
