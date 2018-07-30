@@ -7,6 +7,14 @@
 
 <div class="container">
 
+@if (User.Identity.IsAuthenticated)
+{
+    <a class="btn btn-outline-dark" asp-action="Create">Create New</a>
+    <form asp-action="ExecuteJob">
+     <div class="form-group">
+                <input type="submit" value="Execute Job" class="btn btn-outline-dark" />
+            </div></form>
+}
     <div class="row">
 
         <div class="col-lg-8 col-md-10 mx-auto">
@@ -65,9 +73,4 @@
 </div>
 
 
-@if (User.Identity.IsAuthenticated)
-{
-    <a class="btn btn-outline-dark" asp-action="Create">Create New</a>
-
-}
 

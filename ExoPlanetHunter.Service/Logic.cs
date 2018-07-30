@@ -29,12 +29,11 @@ namespace ExoPlanetHunter.Service
             Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
             Db.Startup(services, Configuration);
          
-            if (env.IsProduction())
-            {
+            
 
-  // Phl.Startup(Configuration);
+ // Phl.Startup(Configuration);
 
-            }
+         
         }
     }
 }

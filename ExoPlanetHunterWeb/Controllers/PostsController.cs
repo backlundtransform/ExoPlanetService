@@ -9,16 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using ExoPlanetHunter.PHL.Schedules;
 namespace ExoPlanetHunter.Web.Controllers
 {
     public class PostsController : Controller
     {
-
-
-
         private readonly IPostService _postService;
-
 
         public PostsController(IPostService postService)
         {
@@ -139,5 +137,14 @@ namespace ExoPlanetHunter.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExecuteJob()
+        {
+           var job = new MyJob();
+          job.Execute();
+          return Content("job started");
+        } 
     }
 }

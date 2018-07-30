@@ -3,14 +3,16 @@ using System;
 using ExoPlanetHunter.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ExoPlanetHunter.Database
+namespace ExoPlanetHunter.Database.Migrations
 {
     [DbContext(typeof(ExoContext))]
-    partial class ExoContextModelSnapshot : ModelSnapshot
+    [Migration("20180730170241_const")]
+    partial class @const
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
