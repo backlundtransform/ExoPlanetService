@@ -24,6 +24,10 @@ namespace ExoPlanetHunter.Service.Services
             return results as IQueryable<PlanetDto>;
         }
 
+    public async Task<ExoPlanetsDto> GetExoPlanets(){
+
+        return null;
+    }
         public async Task<PlanetDto> GetPlanet(int id)
         {
             var planet = await _context.Planets.ProjectTo<PlanetDto>().SingleOrDefaultAsync(m => m.Id == id);

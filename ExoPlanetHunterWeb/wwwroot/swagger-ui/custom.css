@@ -1,0 +1,66 @@
+.swagger-ui .topbar {
+    padding: 8px 0;
+    color: #c6d4ff !important;
+    background-color: #50607a;
+}
+.swagger-ui{
+
+    font-size: 20px;
+    color: #c6d4ff !important;
+    font-family: Lora,'Times New Roman',serif;
+    background: #818ea5;
+
+}
+
+.opblock{
+
+    color: #c6d4ff !important;
+    background-color: #50607a!important;
+}
+ h2{
+
+   
+    color: #fff !important;
+    font-family: Lora,'Times New Roman',serif;
+   
+}
+ td, th, .parameter__name{
+    color: #c6d4ff !important;
+    font-family: Lora,'Times New Roman',serif;
+    background-color: #50607a !important;
+
+}
+.swagger-ui .topbar .download-url-wrapper .select-label select {
+    -webkit-box-flex: 2;
+    -ms-flex: 2;
+    flex: 2;
+    width: 100%;
+    border: 2px solid #50607a;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+a, p, .select-label{
+
+    color: #c6d4ff !important;
+    font-family: Lora,'Times New Roman',serif;
+    
+}
+h4 a{
+
+    color: #fff !important;
+    font-family: Lora,'Times New Roman',serif;
+    
+}
+
+.link{
+    display: none !important;
+    
+    
+}
+
+.swagger-ui section.models {
+
+    display: none;
+}

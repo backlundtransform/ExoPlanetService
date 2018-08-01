@@ -97,6 +97,8 @@ namespace ExoPlanetHunter.Web
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExoPlanet API V1");
+                c.InjectStylesheet("/swagger-ui/custom.css");
+                
             });
 
             IEdmModel model = GetEdmModel(app.ApplicationServices);
@@ -125,10 +127,9 @@ namespace ExoPlanetHunter.Web
             using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
 
-     
-                var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                 var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                var user = new IdentityUser { UserName = "test",  Email= "test@test.com" };
+                 var user = new IdentityUser { UserName = "test",  Email= "test@test.com" };
                  var result = await manager.CreateAsync(user, "Password123#");
 
             }

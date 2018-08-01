@@ -16,8 +16,8 @@ namespace ExoPlanetHunter.Web.Controllers
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(ConstellationsController));
        
 
-        [HttpGet]
-        public FeatureCollection LineString()
+         [HttpGet("ConstellationsLines")]
+        public FeatureCollection ConstellationsLines()
         {
             
             try
@@ -32,5 +32,23 @@ namespace ExoPlanetHunter.Web.Controllers
                 return null;
             }
         }
+
+         [HttpGet("StarMarkers")]
+        public FeatureCollection StarMarkers()
+        {
+            
+            try
+            {
+               string json = System.IO.File.ReadAllText("stars.json");
+               var lines  = JsonConvert.DeserializeObject<FeatureCollection>(json);
+                return lines;
+            }
+            catch (Exception e)
+            {
+                log.Info(e.Message);
+                return null;
+            }
+        }
     }     
-}
+ }     
+

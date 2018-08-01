@@ -68,5 +68,20 @@ namespace ExoPlanetHunter.Web.Controllers
             }
          
         }
+
+        [HttpGet("ExoPlanets")]
+        public async Task<ExoPlanetsDto> GetExoPlanets()
+        {
+            try
+            {
+                return await _planetService.GetExoPlanets();
+            }
+            catch (Exception e)
+            {
+                log.Info(e.Message);
+                return new ExoPlanetsDto() { Message = e.Message };
+            }
+        
+    }
     }
 }
