@@ -5,7 +5,7 @@ namespace ExoPlanetHunter.Service.Dto
     public class ExoPlanetsDto
     {
       public string  Name  { get; set; }
-      public object Img { get; set; }
+      public ImgDto Img { get; set; }
       public decimal? Period { get; set; }
       public decimal? Hzd { get; set; }
       public decimal?  Hzc { get; set; }
@@ -21,9 +21,9 @@ namespace ExoPlanetHunter.Service.Dto
       public decimal?  DiscYear { get; set; }
       public decimal?  DiscMethod { get; set; }
       public decimal?   Radius { get; set; }
-      public object Coordinate{ get; set; }
+      public CoordinateDto Coordinate{ get; set; }
       public decimal?  StarDistance{ get; set; }
-      public StarDto Star { get; set; }
+      public ExoStarDto Star { get; set; }
       public decimal?  Temp{ get; set; }
       public decimal?  TempMin{ get; set; }
       public decimal?  Mass{ get; set; }
