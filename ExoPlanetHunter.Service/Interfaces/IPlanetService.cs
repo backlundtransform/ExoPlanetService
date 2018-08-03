@@ -4,6 +4,7 @@ using Microsoft.AspNet.OData.Query;
 using System.Linq;
 using System.Threading.Tasks;
 
+using System.Collections.Generic;
 namespace ExoPlanetHunter.Service.Interfaces
 {
     public interface IPlanetService
@@ -12,6 +13,6 @@ namespace ExoPlanetHunter.Service.Interfaces
 
         Task<PlanetDto> GetPlanet(int id);
         
-        Task<ExoPlanetsDto> GetExoPlanets();
+        Task<List<ExoPlanetsDto>> GetExoPlanets(int skip);
     }
 }

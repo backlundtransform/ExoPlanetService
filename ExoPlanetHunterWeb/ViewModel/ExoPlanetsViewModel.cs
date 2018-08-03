@@ -8,7 +8,7 @@ namespace ExoPlanetHunter.Web.ViewModel
 {
     public class ExoPlanetsViewModel
     {
-        public ExoPlanetsDto PlanetList { get;  set; }
+        public List<ExoPlanetsDto> PlanetList { get;  set; }
         public Dictionary<string,string> Colors { get; set; }
 
          public string Message { get;  set; }

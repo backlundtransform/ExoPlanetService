@@ -13,15 +13,18 @@ namespace ExoPlanetHunter.PHL.Integration
     public class PhlService : IPhlService
     {
         private string exoplaneturl =$"http://www.hpcf.upr.edu/~abel/phl/phl_hec_all_confirmed.csv.zip";
-                private List<Constellation> _constellations = $"And;Ant;Aqr;Apu;Aps;Aql;Ari;Ara;Aur;Boo;Cae;Cam;Cnc;CVn;CMa;CMi;Cap;Car;Cas;Cen;Cep;Cet;Cha;Cir;Col;Com;CrA;CrB;Crv;Crt;Cru;Cyg;Del;Dor;Dra;Equ;Eri;For;Gem;Gru;Her;Hor;Hya;Hyi;Ind;Lac;Leo;LMi;Lep;Lib;Lup;Lyn;Lyr;Men;Mic;Mon;Mus;Nor;Oct;Oph;Ori;Pav;Peg;Per;Phe;Pic;Psc;PsA;Pup;Pyx;Ret;Sge;Sgr;Sco;Scl;Sct;Ser;Sex;Tau;Tel;Tri;TrA;Tuc;UMa;UMi;Vel;Vir;Vol;Vul;".Split(new char[] { ';' }).Select(p=> new Constellation {  Name = p, Stars = new List<Star>() { } }).ToList();
+                private List<Constellation> _constellations = $"And;Ant;Aqr;Apu;Aps;Aql;Ari;Ara;Aur;Boo;Cae;Cam;Cnc;CVn;CMa;CMi;Cap;Car;Cas;Cen;Cep;Cet;Cha;Cir;Col;Com;CrA;CrB;Crv;Crt;Cru;Cyg;Del;Dor;Dra;Equ;Eri;For;Gem;Gru;Her;Hor;Hya;Hyi;Ind;Lac;Leo;LMi;Lep;Lib;Lup;Lyn;Lyr;Men;Mic;Mon;Mus;Nor;Oct;Oph;Ori;Pav;Peg;Per;Phe;Pic;Psc;PsA;Pup;Pyx;Ret;Sge;Sgr;Sco;Scl;Sct;Ser;Sex;Tau;Tel;Tri;TrA;Tuc;UMa;UMi;Vel;Vir;Vol;Vul".Split(new char[] { ';' }).Select(p=> new Constellation {  Name = p, Stars = new List<Star>() { } }).ToList();
 
         public void UpdateConstellations(List<Constellation> constellations)
         {
             using (var context = new ExoContext())
             {
+                var posts = context.Posts.ToList();
+                context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-
-                context.Constellations.AttachRange(constellations);
+                
+                context.Constellations.AddRange(constellations);
+                context.Posts.AddRange(posts);
                 context.SaveChanges();
             }
         }
@@ -142,7 +145,7 @@ namespace ExoPlanetHunter.PHL.Integration
                 Period = values[27].ToNullable<decimal>(),
                 SemMajorAxis = values[28].ToNullable<decimal>(),
                 Eccentricity = values[29].ToNullable<decimal>(),
-                MeanDistance = values[30].ToNullable<decimal>(),
+                MeanDistance = System.Convert.ToDecimal(values[29]),
                 Inclination = values[31].ToNullable<decimal>(),
                 Omega = values[32].ToNullable<decimal>(),
 
