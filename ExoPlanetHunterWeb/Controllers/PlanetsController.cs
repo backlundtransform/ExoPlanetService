@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-
+using ExoPlanetHunter.Web.ViewModel;
+using Newtonsoft.Json;
 namespace ExoPlanetHunter.Web.Controllers
 {
    
@@ -23,8 +24,6 @@ namespace ExoPlanetHunter.Web.Controllers
         {
             _planetService = planetService;
         }
-
-       
 
         [HttpGet("{id}")]
         public async Task<PlanetDto> GetPlanet(int id)
@@ -70,16 +69,22 @@ namespace ExoPlanetHunter.Web.Controllers
         }
 
         [HttpGet("ExoPlanets")]
-        public async Task<ExoPlanetsDto> GetExoPlanets()
+        public async Task<ExoPlanetsViewModel> GetExoPlanets()
         {
             try
             {
-                return await _planetService.GetExoPlanets();
+                string json = System.IO.File.ReadAllText("colors.json");
+                var colors = JsonConvert.DeserializeObject<Dictionary<string,string>>(json);
+
+                var planets =  await _planetService.GetExoPlanets();
+                return 
+
+                 new ExoPlanetsViewModel() { PlanetList =planets, Colors=colors };
             }
             catch (Exception e)
             {
                 log.Info(e.Message);
-                return new ExoPlanetsDto() { Message = e.Message };
+                return new ExoPlanetsViewModel() { Message = e.Message };
             }
         
     }
