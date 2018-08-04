@@ -29,6 +29,7 @@ namespace ExoPlanetHunter.Service.Services
     {
       return await _context.Planets.OrderByDescending(p=>p.Disc_Year).Include(z=>z.Star).Skip(skip).Take(500).Select(p=>new ExoPlanetsDto{ 
            Name=p.Name,
+           Img = new ImgDto(){ Uri= GetColorPlanet(p)},
            DiscYear =p.Disc_Year,
            MeanDistance= p.MeanDistance,
            StarDistance =GetStarDistance(p, p.MeanDistance),
@@ -42,7 +43,7 @@ namespace ExoPlanetHunter.Service.Services
     }
 
      private decimal? GetStarDistance(Planet p,decimal? distance)
-    {
+     {
 
         var lastplanet =p.Star.Planets.OrderByDescending(c=>c.MeanDistance).Last();
         var habzonemax =p.Star.HabZoneMax;
@@ -53,6 +54,80 @@ namespace ExoPlanetHunter.Service.Services
         }
 
         return 600*distance/habzonemax;
+        
+    }
+
+    private string GetColorPlanet(Planet p)
+     {
+
+    	if(p.AtmosphereClass.Equals("no-atmosphere"))
+        {
+            if(p.MassClass.Equals("Jovian"))
+            {
+
+                return "jovian";
+            }
+	   		return "iron";
+	   	}
+	   	else
+	   	{
+	   	 
+	   	  if(p.ZoneClass.Equals("Hot"))
+             {
+
+                    if(p.MassClass.Equals("Superterran"))
+                    {
+                        return "hotsuperearth";
+                    }
+
+                    if(p.MassClass.Equals("Jovian"))
+                    {
+                        return "hotjupiter";
+                    }
+
+                    if(p.MassClass.Equals("Terran") || p.MassClass.Equals("SubTerran"))
+                    {
+                        return "hotstone";
+                    }
+	   		  
+	   	  }
+           
+           if(p.ZoneClass.Equals("Cold"))
+             {
+
+                     if(p.MassClass.Equals("Superterran"))
+                    {
+                        return "coldsuperearth";
+                    }
+
+                    if(p.MassClass.Equals("Jovian"))
+                    {
+                        return "jovian";
+                    }
+                    if(p.MassClass.Equals("Terran") || p.MassClass.Equals("SubTerran"))
+                    {
+                        return "coldstone";
+                    }
+	   	    else{
+	   		  
+                     if(p.MassClass.Equals("Superterran"))
+                    {
+                        return "superearth";
+                    }
+
+                    if(p.MassClass.Equals("Jovian"))
+                    {
+                        return "jovian";
+                    }
+                    if(p.MassClass.Equals("Terran") || p.MassClass.Equals("SubTerran"))
+                    {
+                        return "stone";
+                    }
+	   		 }
+                
+	   	  }
+             return "noimg";
+	   	}
         
     }
 
