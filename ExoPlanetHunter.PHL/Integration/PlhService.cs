@@ -19,17 +19,17 @@ namespace ExoPlanetHunter.PHL.Integration
         {
             using (var context = new ExoContext())
             {
-                var posts = context.Posts.ToList();
+                
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
                 
                 context.Constellations.AddRange(constellations);
-                context.Posts.AddRange(posts);
+                
                 context.SaveChanges();
             }
         }
 
-        public List<Constellation> DownloadExoData()
+       public List<Constellation> DownloadExoData()
         {
             List<Star> Starlist = new List<Star>();
 
@@ -145,7 +145,7 @@ namespace ExoPlanetHunter.PHL.Integration
                 Period = values[27].ToNullable<decimal>(),
                 SemMajorAxis = values[28].ToNullable<decimal>(),
                 Eccentricity = values[29].ToNullable<decimal>(),
-                MeanDistance = System.Convert.ToDecimal(values[29]),
+                MeanDistance = values[30].ToNullable<decimal>(),
                 Inclination = values[31].ToNullable<decimal>(),
                 Omega = values[32].ToNullable<decimal>(),
 

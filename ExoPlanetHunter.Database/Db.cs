@@ -11,10 +11,11 @@ namespace ExoPlanetHunter.Database
         public static void Startup(IServiceCollection services, IConfiguration configuration)
         {
             Configuration = configuration;
-            services.AddDbContext<ExoContext>();
+            services.AddDbContext<ExoContext>().AddDbContext<PostContext>();
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<ExoContext>().AddDefaultTokenProviders();
-
+                .AddEntityFrameworkStores<PostContext>().AddDefaultTokenProviders();
+                
+                
         }
     }
 }

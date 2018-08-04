@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExoPlanetHunter.Database
 {
-    public class ExoContext : IdentityDbContext<IdentityUser>
+    public class ExoContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionbuilder)
         {
@@ -29,7 +29,6 @@ namespace ExoPlanetHunter.Database
         public DbSet<Star> Stars { get; set; }
         public DbSet<Planet> Planets { get; set; }
         public DbSet<Constellation> Constellations { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<Tag> Tags { get; set; }
+      
     }
 }

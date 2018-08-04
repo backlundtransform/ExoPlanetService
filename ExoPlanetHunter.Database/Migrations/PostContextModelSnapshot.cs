@@ -3,138 +3,18 @@ using System;
 using ExoPlanetHunter.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ExoPlanetHunter.Database.Migrations
 {
-    [DbContext(typeof(ExoContext))]
-    [Migration("20180730170841_phl")]
-    partial class phl
+    [DbContext(typeof(PostContext))]
+    partial class PostContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.1-rtm-30846");
-
-            modelBuilder.Entity("ExoPlanetHunter.Database.entity.Constellation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Constellations");
-                });
-
-            modelBuilder.Entity("ExoPlanetHunter.Database.entity.Planet", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal?>("ApparSize");
-
-                    b.Property<string>("AtmosphereClass");
-
-                    b.Property<string>("CompositionClass");
-
-                    b.Property<bool?>("Confirmed");
-
-                    b.Property<decimal?>("Density");
-
-                    b.Property<string>("Disc_Method");
-
-                    b.Property<int?>("Disc_Year");
-
-                    b.Property<decimal?>("Eccentricity");
-
-                    b.Property<decimal?>("EscVel");
-
-                    b.Property<decimal?>("Esi");
-
-                    b.Property<decimal?>("Gravity");
-
-                    b.Property<bool?>("HabMoon");
-
-                    b.Property<bool?>("Habitable");
-
-                    b.Property<string>("HabitableClass");
-
-                    b.Property<decimal?>("Hza");
-
-                    b.Property<decimal?>("Hzc");
-
-                    b.Property<decimal?>("Hzd");
-
-                    b.Property<decimal?>("Hzi");
-
-                    b.Property<decimal?>("Inclination");
-
-                    b.Property<decimal?>("IntEsi");
-
-                    b.Property<decimal?>("Mag");
-
-                    b.Property<decimal?>("Mass");
-
-                    b.Property<string>("MassClass");
-
-                    b.Property<decimal?>("MaxMass");
-
-                    b.Property<decimal?>("MeanDistance");
-
-                    b.Property<decimal?>("MinMass");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("NameKOI");
-
-                    b.Property<string>("NameKepler");
-
-                    b.Property<decimal?>("Omega");
-
-                    b.Property<decimal?>("Period");
-
-                    b.Property<decimal?>("Radius");
-
-                    b.Property<decimal?>("SFluxMax");
-
-                    b.Property<decimal?>("SFluxMean");
-
-                    b.Property<decimal?>("SFluxMin");
-
-                    b.Property<decimal?>("SemMajorAxis");
-
-                    b.Property<decimal?>("Sph");
-
-                    b.Property<int?>("StarId");
-
-                    b.Property<decimal?>("SurfEsi");
-
-                    b.Property<decimal?>("SurfPress");
-
-                    b.Property<decimal?>("TeqMax");
-
-                    b.Property<decimal?>("TeqMean");
-
-                    b.Property<decimal?>("TeqMin");
-
-                    b.Property<decimal?>("TsMax");
-
-                    b.Property<decimal?>("TsMean");
-
-                    b.Property<decimal?>("TsMin");
-
-                    b.Property<string>("ZoneClass");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StarId");
-
-                    b.ToTable("Planets");
-                });
 
             modelBuilder.Entity("ExoPlanetHunter.Database.Entity.Post", b =>
                 {
@@ -152,62 +32,6 @@ namespace ExoPlanetHunter.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("ExoPlanetHunter.Database.entity.Star", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal?>("Age");
-
-                    b.Property<decimal?>("ApparMag");
-
-                    b.Property<int?>("ConstellationId");
-
-                    b.Property<decimal?>("Dec");
-
-                    b.Property<decimal?>("Distance");
-
-                    b.Property<decimal?>("FeH");
-
-                    b.Property<bool?>("HabCat");
-
-                    b.Property<decimal?>("HabZoneMax");
-
-                    b.Property<decimal?>("HabZoneMin");
-
-                    b.Property<decimal?>("Luminosity");
-
-                    b.Property<decimal?>("MagfromPlanet");
-
-                    b.Property<decimal?>("Mass");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("NameHD");
-
-                    b.Property<string>("NameHIP");
-
-                    b.Property<int?>("NoPlanets");
-
-                    b.Property<int?>("NoPlanetsHZ");
-
-                    b.Property<decimal?>("Ra");
-
-                    b.Property<decimal?>("Radius");
-
-                    b.Property<decimal?>("SizefromPlanet");
-
-                    b.Property<decimal?>("Teff");
-
-                    b.Property<string>("Type");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConstellationId");
-
-                    b.ToTable("Stars");
                 });
 
             modelBuilder.Entity("ExoPlanetHunter.Database.Entity.Tag", b =>
@@ -381,20 +205,6 @@ namespace ExoPlanetHunter.Database.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("ExoPlanetHunter.Database.entity.Planet", b =>
-                {
-                    b.HasOne("ExoPlanetHunter.Database.entity.Star", "Star")
-                        .WithMany("Planets")
-                        .HasForeignKey("StarId");
-                });
-
-            modelBuilder.Entity("ExoPlanetHunter.Database.entity.Star", b =>
-                {
-                    b.HasOne("ExoPlanetHunter.Database.entity.Constellation", "Constellation")
-                        .WithMany("Stars")
-                        .HasForeignKey("ConstellationId");
                 });
 
             modelBuilder.Entity("ExoPlanetHunter.Database.Entity.Tag", b =>

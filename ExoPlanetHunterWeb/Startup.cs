@@ -17,7 +17,7 @@ using System.Linq;
 using ExoPlanetHunter.Service;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
-
+using ExoPlanetHunter.Database;
 namespace ExoPlanetHunter.Web
 {
     public class Startup
@@ -128,11 +128,12 @@ namespace ExoPlanetHunter.Web
             {
 
                  var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
+            using (var context = scope.ServiceProvider.GetService<PostContext>())
+                {
                  var user = new IdentityUser { UserName = "test",  Email= "test@test.com" };
-                 var result = await manager.CreateAsync(user, "Password123#");
-
+                 await manager.CreateAsync(user, "Password123#");
+            context.SaveChanges();
             }
         }
     }
-}
+}}

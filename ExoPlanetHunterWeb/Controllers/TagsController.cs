@@ -13,9 +13,9 @@ namespace ExoPlanetHunter.Web.Controllers
 {
     public class TagsController : Controller
     {
-        private readonly ExoContext _context;
+        private readonly PostContext _context;
 
-        public TagsController(ExoContext context)
+        public TagsController(PostContext context)
         {
             _context = context;
         }

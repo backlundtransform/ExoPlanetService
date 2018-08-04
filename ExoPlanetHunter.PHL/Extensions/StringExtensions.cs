@@ -1,4 +1,6 @@
-﻿namespace System.ComponentModel
+﻿
+using System.Globalization;
+namespace System.ComponentModel
 {
     public static class StringExtensions
     {
@@ -42,20 +44,20 @@
             T? result = new T?();
             try
             {
-                if (!string.IsNullOrEmpty(s) && s.Trim().Length > 0)
+                if (string.IsNullOrEmpty(s) || s.Trim().Length == 0)
                 {
-                    TypeConverter conv = TypeDescriptor.GetConverter(typeof(T));
-
                  
-
-                    result = (T)conv.ConvertFrom(s.Replace(".", ","));
+                 return result;
+                  
                 }
+
+                return (T) Convert.ChangeType(s, typeof (T),CultureInfo.InvariantCulture);
             }
             catch (Exception)
             {
-                return null;
+                return result;
             }
-            return result;
+           
         }
     }
 }

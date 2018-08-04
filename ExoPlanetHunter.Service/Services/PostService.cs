@@ -10,9 +10,9 @@ namespace ExoPlanetHunter.Service.Services
 {
     public class PostService : IPostService
     {
-        private readonly ExoContext _context;
+        private readonly PostContext _context;
 
-        public PostService(ExoContext context)
+        public PostService(PostContext context)
         {
             _context = context;
         }
