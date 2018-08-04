@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
+using ExoPlanetHunter.Database.entity;
 namespace ExoPlanetHunter.Service.Services
 {
     public class PlanetService : IPlanetService
@@ -31,10 +31,31 @@ namespace ExoPlanetHunter.Service.Services
            Name=p.Name,
            DiscYear =p.Disc_Year,
            MeanDistance= p.MeanDistance,
-           StarDistance =600*p.MeanDistance/p.Star.Planets.OrderByDescending(c=>c.MeanDistance).LastOrDefault().MeanDistance
+           StarDistance =GetStarDistance(p, p.MeanDistance),
+           Star = new ExoStarDto(){
+
+               HabZoneMax = GetStarDistance(p, p.Star.HabZoneMax),
+               HabZoneMin = GetStarDistance(p, p.Star.HabZoneMin),
+           }
            }).ToListAsync();
         
     }
+
+     private decimal? GetStarDistance(Planet p,decimal? distance)
+    {
+
+        var lastplanet =p.Star.Planets.OrderByDescending(c=>c.MeanDistance).Last();
+        var habzonemax =p.Star.HabZoneMax;
+        if(lastplanet.MeanDistance>habzonemax)
+        {
+
+            return 600*distance/lastplanet.MeanDistance;
+        }
+
+        return 600*distance/habzonemax;
+        
+    }
+
         public async Task<PlanetDto> GetPlanet(int id)
         {
             var planet = await _context.Planets.ProjectTo<PlanetDto>().SingleOrDefaultAsync(m => m.Id == id);
