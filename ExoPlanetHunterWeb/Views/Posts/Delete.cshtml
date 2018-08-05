@@ -4,42 +4,20 @@
     ViewData["Title"] = "Delete";
 }
 
-<h2>Delete</h2>
+<div class="container">
 
+    <div class="row">
+
+         <div class="col-lg-10 col-md-12 mx-auto">
+<div class="post-preview">
 <h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Post</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastModified)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastModified)
-        </dd>
-    </dl>
+
+    
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="btn btn-outline-dark">Back to List</a>
     </form>
 </div>
+</div></div></div>

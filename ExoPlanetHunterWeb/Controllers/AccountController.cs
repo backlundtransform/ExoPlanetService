@@ -53,7 +53,7 @@ namespace ExoPlanetHunter.Web.Controllers
         {
             await _signInManager.SignOutAsync();
   
-            return RedirectToPage("/Index");
+            return Redirect("~/");
         }
     }
 }

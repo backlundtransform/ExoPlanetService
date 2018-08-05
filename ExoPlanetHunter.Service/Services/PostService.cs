@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using System.Linq;
 namespace ExoPlanetHunter.Service.Services
 {
     public class PostService : IPostService
@@ -19,7 +19,7 @@ namespace ExoPlanetHunter.Service.Services
 
         public async Task<List<Post>> GetPostsAsync()
         {
-            return await _context.Posts.ToListAsync();
+            return await _context.Posts.OrderByDescending(p=>p.Created).ToListAsync();
         }
 
         public async Task<Post> GetPostAsync(int? id)

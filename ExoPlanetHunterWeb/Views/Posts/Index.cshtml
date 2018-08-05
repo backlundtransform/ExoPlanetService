@@ -9,11 +9,23 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <a class="btn btn-outline-dark" asp-action="Create">Create New</a>
+     <div class="row">
+         <div class="col-2">
+    <a class="btn btn-outline-dark btn-sm" asp-action="Create">Create New</a>
+    </div>
+     <div class="col-2">
     <form asp-action="ExecuteJob">
      <div class="form-group">
-                <input type="submit" value="Execute Job" class="btn btn-outline-dark" />
-            </div></form>
+                <input type="submit" value="Execute Job" class="btn btn-outline-default btn-sm" />
+            </div>
+            </form></div>
+            <div class="col-2">
+    <form asp-action="Logout" asp-controller="Account">
+     <div class="form-group">
+                <input type="submit" value="Logout" class="btn btn-outline-dark btn-sm" />
+            </div>
+            </form></div>
+            </div>
 }
     <div class="row">
 

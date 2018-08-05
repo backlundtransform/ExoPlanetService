@@ -25,9 +25,9 @@ namespace ExoPlanetHunter.Service.Services
             return results as IQueryable<PlanetDto>;
         }
 
-    public async Task<List<ExoPlanetsDto>> GetExoPlanets(int skip=0)
+    public  IQueryable<ExoPlanetsDto> GetExoPlanets(ODataQueryOptions opts)
     {
-      return await _context.Planets.OrderByDescending(p=>p.Disc_Year).Include(z=>z.Star).Skip(skip).Take(500).Select(p=>new ExoPlanetsDto{ 
+      IQueryable results = opts.ApplyTo(_context.Planets.OrderByDescending(p=>p.Disc_Year).Include(z=>z.Star).Include(z=>z.Star.Planets).Select(p=>new ExoPlanetsDto{ 
            Name=p.Name,
            Img = new ImgDto(){ Uri= GetColorPlanet(p)},
            DiscYear =p.Disc_Year,
@@ -38,8 +38,8 @@ namespace ExoPlanetHunter.Service.Services
                HabZoneMax = GetStarDistance(p, p.Star.HabZoneMax),
                HabZoneMin = GetStarDistance(p, p.Star.HabZoneMin),
            }
-           }).ToListAsync();
-        
+           }).AsQueryable());
+        return results as IQueryable<ExoPlanetsDto>;
     }
 
      private decimal? GetStarDistance(Planet p,decimal? distance)

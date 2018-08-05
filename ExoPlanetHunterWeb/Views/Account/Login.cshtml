@@ -1,20 +1,23 @@
 ﻿
 
+<div class="container">
 
-<h2>View</h2>
+    <div class="row">
 
+         <div class="col-lg-10 col-md-12 mx-auto">
+<div class="post-preview">
 <form method="POST">
     <div>
-        <label>Email</label>
-        <input type="email" name="email" />
+        <label class="control-label">Email</label>
+        <input type="email" name="email"  class="form-control"/>
     </div>
 
     <div>
-        <label>Password</label>
-        <input type="password" name="password" />
+        <label class="control-label">Password</label>
+        <input type="password" class="form-control" name="password" />
     </div>
-
-    <input type="submit" />
+    <br />
+    <input class="btn btn-outline-dark" type="submit" />
 </form>
 
-<div asp-validation-summary="All"></div>
+<div asp-validation-summary="All"></div></div></div></div>

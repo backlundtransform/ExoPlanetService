@@ -69,18 +69,35 @@ namespace ExoPlanetHunter.Web.Controllers
         }
 
         [HttpGet("ExoPlanets")]
-        public async Task<ExoPlanetsViewModel> GetExoPlanets(int skip =0)
+        public IQueryable<ExoPlanetsDto> GetExoPlanets(ODataQueryOptions opts)
         {
             try
             {
                 string json = System.IO.File.ReadAllText("colors.json");
                 var colors = JsonConvert.DeserializeObject<Dictionary<string,string>>(json);
-                return new ExoPlanetsViewModel() { PlanetList =await _planetService.GetExoPlanets(skip), Colors=colors };
+                return  _planetService.GetExoPlanets(opts);
             }
             catch (Exception e)
             {
                 log.Info(e.Message);
-                return new ExoPlanetsViewModel() { Message = e.Message };
+                return null;
+            }
+        
+    }
+
+    [HttpGet("GetImages")]
+      public Dictionary<string,string> GetImages()
+        {
+            try
+            {
+                string json = System.IO.File.ReadAllText("colors.json");
+                return  JsonConvert.DeserializeObject<Dictionary<string,string>>(json);
+              
+            }
+            catch (Exception e)
+            {
+                log.Info(e.Message);
+                return null;
             }
         
     }
