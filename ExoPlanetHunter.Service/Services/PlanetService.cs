@@ -29,12 +29,13 @@ namespace ExoPlanetHunter.Service.Services
     {
       IQueryable results = opts.ApplyTo(_context.Planets.OrderByDescending(p=>p.Disc_Year).Include(z=>z.Star).Include(z=>z.Star.Planets).Select(p=>new ExoPlanetsDto{ 
            Name=p.Name,
-           Img = new ImgDto(){ Uri= GetColorPlanet(p)},
+           Img = new ImgDto(){ Uri= GetPlanetColor(p)},
            DiscYear =p.Disc_Year,
            MeanDistance= p.MeanDistance,
            StarDistance =GetStarDistance(p, p.MeanDistance),
            Star = new ExoStarDto(){
-
+              
+               Color =GetStarColor(p),
                HabZoneMax = GetStarDistance(p, p.Star.HabZoneMax),
                HabZoneMin = GetStarDistance(p, p.Star.HabZoneMin),
            }
@@ -57,7 +58,34 @@ namespace ExoPlanetHunter.Service.Services
         
     }
 
-    private string GetColorPlanet(Planet p)
+    private int? GetStarColor(Planet p)
+     {
+          var type = p.Star.Type;
+           if(type.StartsWith("O")||type.StartsWith("B")||type.StartsWith("A"))
+        {
+           return 0;
+        }
+       
+        if(type.StartsWith("F"))
+        {
+            return 1;
+        }
+        if(type.StartsWith("G"))
+        {
+            return 2;
+        }
+        if(type.StartsWith("K") || type.StartsWith("M"))
+        {
+            return 3;
+        }
+        
+      
+        
+        return null;
+      
+     }
+
+    private string GetPlanetColor(Planet p)
      {
 
     	if(p.AtmosphereClass.Equals("no-atmosphere"))
