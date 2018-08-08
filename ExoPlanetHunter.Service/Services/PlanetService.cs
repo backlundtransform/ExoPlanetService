@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using ExoPlanetHunter.Database.entity;
+using  ExoPlanetHunter.Service.Enum;
+using System;
 namespace ExoPlanetHunter.Service.Services
 {
     public class PlanetService : IPlanetService
@@ -31,10 +33,15 @@ namespace ExoPlanetHunter.Service.Services
            Name=p.Name,
            Img = new ImgDto(){ Uri= GetPlanetColor(p)},
            DiscYear =p.Disc_Year,
+           Comp = p.CompositionClass.ToEnum<CompEnum>(),
+           MassType =  p.MassClass.ToEnum<MassEnum>(),
+           Atmosphere =p.AtmosphereClass.ToEnum<AtmosEnum>(),
+           DiscMethod =p.Disc_Method.ToEnum<DiscEnum>(),
+         
            MeanDistance= p.MeanDistance,
            StarDistance =GetStarDistance(p, p.MeanDistance),
            Star = new ExoStarDto(){
-              
+                Constellation =p.Star.Constellation.Name.ToEnum<ConstellationsEnum>(),
                Color =GetStarColor(p),
                HabZoneMax = GetStarDistance(p, p.Star.HabZoneMax),
                HabZoneMin = GetStarDistance(p, p.Star.HabZoneMin),
@@ -46,9 +53,9 @@ namespace ExoPlanetHunter.Service.Services
      private decimal? GetStarDistance(Planet p,decimal? distance)
      {
 
-        var lastplanet =p.Star.Planets.OrderByDescending(c=>c.MeanDistance).Last();
-        var habzonemax =p.Star.HabZoneMax;
-        if(lastplanet.MeanDistance>habzonemax)
+        var lastplanet =p.Star?.Planets.OrderByDescending(c=>c.MeanDistance).Last();
+        var habzonemax =p.Star?.HabZoneMax;
+        if(lastplanet?.MeanDistance>habzonemax)
         {
 
             return 600*distance/lastplanet.MeanDistance;
@@ -60,7 +67,12 @@ namespace ExoPlanetHunter.Service.Services
 
     private int? GetStarColor(Planet p)
      {
-          var type = p.Star.Type;
+          var type = p.Star?.Type;
+
+          if(type==null)
+          {
+              return null;
+          }
            if(type.StartsWith("O")||type.StartsWith("B")||type.StartsWith("A"))
         {
            return 0;

@@ -71,17 +71,9 @@ namespace ExoPlanetHunter.Web.Controllers
         [HttpGet("ExoPlanets")]
         public IQueryable<ExoPlanetsDto> GetExoPlanets(ODataQueryOptions opts)
         {
-            try
-            {
-                string json = System.IO.File.ReadAllText("colors.json");
-                var colors = JsonConvert.DeserializeObject<Dictionary<string,string>>(json);
+            
                 return  _planetService.GetExoPlanets(opts);
-            }
-            catch (Exception e)
-            {
-                log.Info(e.Message);
-                return null;
-            }
+           
         
     }
 

@@ -1,5 +1,5 @@
 
-
+using ExoPlanetHunter.Service.Enum;
 namespace ExoPlanetHunter.Service.Dto
 {
     public class ExoPlanetsDto
@@ -12,14 +12,14 @@ namespace ExoPlanetHunter.Service.Dto
       public decimal?  Hza { get; set; }
       public decimal?  Hzi { get; set; }
       public string  Type { get; set; }
-      public decimal?  Comp { get; set; }
-      public decimal?  Atmosphere { get; set; }
+      public CompEnum  Comp { get; set; }
+      public AtmosEnum  Atmosphere { get; set; }
       public decimal?  MeanDistance { get; set; }
       public decimal?   Distance{ get; set; }
       public decimal?  Esi { get; set; }
       public decimal?  Sph { get; set; }
       public decimal?  DiscYear { get; set; }
-      public decimal?  DiscMethod { get; set; }
+      public DiscEnum  DiscMethod { get; set; }
       public decimal?   Radius { get; set; }
       public CoordinateDto Coordinate{ get; set; }
       public decimal?  StarDistance{ get; set; }
@@ -31,7 +31,7 @@ namespace ExoPlanetHunter.Service.Dto
       public decimal?  Gravity{ get; set; }
       public decimal?  SurfacePressure { get; set; }
       public decimal?  EscapeVelocity { get; set; }
-      public decimal?  MassType { get; set; }
+      public MassEnum  MassType { get; set; }
       public decimal?  TempMax { get; set; }
       public decimal?  TempZone{ get; set; }
       public bool?  Hab{ get; set; }
