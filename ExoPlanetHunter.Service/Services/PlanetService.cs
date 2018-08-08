@@ -32,16 +32,18 @@ namespace ExoPlanetHunter.Service.Services
       IQueryable results = opts.ApplyTo(_context.Planets.OrderByDescending(p=>p.Disc_Year).Include(z=>z.Star).Include(z=>z.Star.Planets).Select(p=>new ExoPlanetsDto{ 
            Name=p.Name,
            Img = new ImgDto(){ Uri= GetPlanetColor(p)},
+         Coordinate =new CoordinateDto{Latitude = p.Star.Dec,Longitude =15*(p.Star.Ra-12) },
            DiscYear =p.Disc_Year,
            Comp = p.CompositionClass.ToEnum<CompEnum>(),
            MassType =  p.MassClass.ToEnum<MassEnum>(),
            Atmosphere =p.AtmosphereClass.ToEnum<AtmosEnum>(),
            DiscMethod =p.Disc_Method.ToEnum<DiscEnum>(),
-         
+           Radius = ((15 *p.Radius > 50)? 50 :  (15 *p.Radius < 10? 10:15 *p.Radius)) ,
            MeanDistance= p.MeanDistance,
            StarDistance =GetStarDistance(p, p.MeanDistance),
            Star = new ExoStarDto(){
                 Constellation =p.Star.Constellation.Name.ToEnum<ConstellationsEnum>(),
+              Radius = (75 *p.Star.Radius > 100? 100 : (75 *p.Star.Radius < 50? 50:75 *p.Star.Radius)),
                Color =GetStarColor(p),
                HabZoneMax = GetStarDistance(p, p.Star.HabZoneMax),
                HabZoneMin = GetStarDistance(p, p.Star.HabZoneMin),
