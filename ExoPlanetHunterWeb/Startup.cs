@@ -57,6 +57,7 @@ namespace ExoPlanetHunter.Web
                 options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
             });
             services.AddOData();
+            services.AddMemoryCache();
             services.AddMvcCore(options =>
             {
                 foreach (var outputFormatter in options.OutputFormatters.OfType<ODataOutputFormatter>().Where(_ => _.SupportedMediaTypes.Count == 0))
@@ -128,11 +129,11 @@ namespace ExoPlanetHunter.Web
             {
 
                  var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-            using (var context = scope.ServiceProvider.GetService<PostContext>())
+                using (var context = scope.ServiceProvider.GetService<PostContext>())
                 {
-                 var user = new IdentityUser { UserName = "test",  Email= "test@test.com" };
-                 await manager.CreateAsync(user, "Password123#");
-            context.SaveChanges();
+                    var user = new IdentityUser { UserName = "test",  Email= "test@test.com" };
+                     await manager.CreateAsync(user, "Password123#");
+                    context.SaveChanges();
             }
         }
     }

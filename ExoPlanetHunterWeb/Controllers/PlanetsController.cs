@@ -75,7 +75,7 @@ namespace ExoPlanetHunter.Web.Controllers
                 return  _planetService.GetExoPlanets(opts);
            
         
-    }
+        }
 
     [HttpGet("GetImages")]
       public Dictionary<string,string> GetImages()
