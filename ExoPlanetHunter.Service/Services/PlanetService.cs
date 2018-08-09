@@ -28,15 +28,13 @@ namespace ExoPlanetHunter.Service.Services
             IQueryable results = opts.ApplyTo(_context.Planets.ProjectTo<PlanetDto>().AsQueryable());
             return results as IQueryable<PlanetDto>;
         }
-
-    public  IQueryable<ExoPlanetsDto> GetExoPlanets(ODataQueryOptions opts)
+    public  List<ExoPlanetsDto> CacheExoPlanets()
     {
-
-       List<ExoPlanetsDto> cacheEntry;
-        if (!_cache.TryGetValue("Exoplanets", out cacheEntry))
+        List<ExoPlanetsDto> cacheExo;
+        if (!_cache.TryGetValue("Exoplanets", out cacheExo))
           {
-       
-            cacheEntry = _context.Planets.OrderByDescending(p=>p.Disc_Year).Include(z=>z.Star).Include(z=>z.Star.Planets).Select(p=>new ExoPlanetsDto{ 
+             
+            cacheExo= _context.Planets.OrderByDescending(p=>p.Disc_Year).Include(z=>z.Star).Include(z=>z.Star.Planets).Select(p=>new ExoPlanetsDto{ 
             Name=p.Name,
             Img = new ImgDto(){ Uri= GetPlanetColor(p)},
             Coordinate =new CoordinateDto{Latitude = p.Star.Dec,Longitude =15*(p.Star.Ra-12) },
@@ -59,10 +57,15 @@ namespace ExoPlanetHunter.Service.Services
 
      
         var cacheEntryOptions = new MemoryCacheEntryOptions();
-        _cache.Set("Exoplanets", cacheEntry, cacheEntryOptions);
+        _cache.Set("Exoplanets", cacheExo, cacheEntryOptions);
+      
     }
-
-      IQueryable results = opts.ApplyTo(cacheEntry.AsQueryable());
+    return cacheExo;
+    }   
+    public  IQueryable<ExoPlanetsDto> GetExoPlanets(ODataQueryOptions opts)
+    {
+        var cacheEntry = CacheExoPlanets();
+        IQueryable results = opts.ApplyTo(cacheEntry.AsQueryable());
         return results as IQueryable<ExoPlanetsDto>;
     }
 

@@ -17,10 +17,11 @@ namespace ExoPlanetHunter.Web.Controllers
     public class PostsController : Controller
     {
         private readonly IPostService _postService;
-
-        public PostsController(IPostService postService)
+        private readonly IPlanetService _planetService;
+        public PostsController(IPostService postService, IPlanetService planetService)
         {
             _postService = postService;
+            _planetService =planetService;
         }
 
         public async Task<IActionResult> Index(int? page=1)
@@ -144,6 +145,7 @@ namespace ExoPlanetHunter.Web.Controllers
         {
            var job = new MyJob();
           job.Execute();
+          _planetService.CacheExoPlanets();
           return Content("job started");
         } 
     }
