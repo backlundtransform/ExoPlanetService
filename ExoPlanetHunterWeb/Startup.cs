@@ -1,23 +1,23 @@
-﻿using ExoPlanetHunter.Database.entity;
+﻿using ExoPlanetHunter.Database;
+using ExoPlanetHunter.Database.entity;
+using ExoPlanetHunter.Service;
 using ExoPlanetHunter.Web.Config;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Formatter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OData.Edm;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Configuration;
 using System.IO;
 using System.Linq;
-using ExoPlanetHunter.Service;
-using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json;
-using ExoPlanetHunter.Database;
+
 namespace ExoPlanetHunter.Web
 {
     public class Startup
@@ -43,16 +43,14 @@ namespace ExoPlanetHunter.Web
         public void ConfigureServices(IServiceCollection services)
         {
             var config = new ConfigurationBuilder();
-        
+
             services.AddMvc().AddJsonOptions(opt =>
             {
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
-
             services.Configure<CookiePolicyOptions>(options =>
             {
-               
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
             });
@@ -73,15 +71,14 @@ namespace ExoPlanetHunter.Web
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "ExoPlanet API", Version = "v1" });
-           c.OperationFilter<AddOdataParameters>();
+                c.OperationFilter<AddOdataParameters>();
                 var basePath = AppContext.BaseDirectory;
                 var xmlPath = Path.Combine(basePath, "ExoPlanetHunter.Web.xml");
                 c.IncludeXmlComments(xmlPath);
             });
             Logic.Startup(services, _env);
-         
-            services.AddRouting();
 
+            services.AddRouting();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,13 +90,12 @@ namespace ExoPlanetHunter.Web
             }
             app.UseStaticFiles();
             app.UseSwagger();
-           app.UseCookiePolicy();
+            app.UseCookiePolicy();
             app.UseHttpsRedirection();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExoPlanet API V1");
                 c.InjectStylesheet("/swagger-ui/custom.css");
-                
             });
 
             IEdmModel model = GetEdmModel(app.ApplicationServices);
@@ -123,18 +119,18 @@ namespace ExoPlanetHunter.Web
             Initialize(app.ApplicationServices);
         }
 
-       private static async void Initialize(IServiceProvider services)
+        private static async void Initialize(IServiceProvider services)
         {
             using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-
-                 var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
                 using (var context = scope.ServiceProvider.GetService<PostContext>())
                 {
-                    var user = new IdentityUser { UserName = "test",  Email= "test@test.com" };
-                     await manager.CreateAsync(user, "Password123#");
+                    var user = new IdentityUser { UserName = "test", Email = "test@test.com" };
+                    await manager.CreateAsync(user, "Password123#");
                     context.SaveChanges();
+                }
             }
         }
     }
-}}
+}
