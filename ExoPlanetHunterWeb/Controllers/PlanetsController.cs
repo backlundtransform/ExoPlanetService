@@ -71,8 +71,8 @@ namespace ExoPlanetHunter.Web.Controllers
         [HttpGet("ExoPlanets")]
         public IQueryable<ExoPlanetsDto> GetExoPlanets(ODataQueryOptions opts)
         {
-            
-                return  _planetService.GetExoPlanets(opts);
+           
+            return  _planetService.GetExoPlanets(opts);
            
         
         }

@@ -13,7 +13,7 @@ namespace ExoPlanetHunter.Service.Dto
         public int? Color { get; set; }
         public decimal? Mass { get; set; }
 
-        public decimal? Radius { get; set; }
+        public decimal Radius { get; set; }
         
         public decimal? Luminosity { get; set; }
       

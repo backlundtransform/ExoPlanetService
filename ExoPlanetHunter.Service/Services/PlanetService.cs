@@ -37,18 +37,35 @@ namespace ExoPlanetHunter.Service.Services
             cacheExo= _context.Planets.OrderByDescending(p=>p.Disc_Year).Include(z=>z.Star).Include(z=>z.Star.Planets).Select(p=>new ExoPlanetsDto{ 
             Name=p.Name,
             Img = new ImgDto(){ Uri= GetPlanetColor(p)},
+            Type = p.MassClass,
+            Esi =p.Esi,
+            Sph=p.Sph,
+            Hza = p.Hza,
+            Hab = p.Habitable,
+            Gravity =p.Gravity,
+            Moons =p.HabMoon,
+
+            Density =p.Density,
+            Period =p.Period,
+            SurfacePressure=p.SurfPress,
+
+            EscapeVelocity =p.EscVel,
+            Distance  = (decimal)3.26156*(p.Star.Distance ?? 0),
+            Temp = p.TsMean- (decimal)273.15,
+            TempMax = p.TsMax - (decimal)273.15,
+            TempMin = p.TsMin - (decimal)273.15,
             Coordinate =new CoordinateDto{Latitude = p.Star.Dec,Longitude =15*(p.Star.Ra-12) },
             DiscYear =p.Disc_Year,
             Comp = p.CompositionClass.ToEnum<CompEnum>(),
             MassType =  p.MassClass.ToEnum<MassEnum>(),
             Atmosphere =p.AtmosphereClass.ToEnum<AtmosEnum>(),
             DiscMethod =p.Disc_Method.ToEnum<DiscEnum>(),
-            Radius = ((15 *p.Radius > 50)? 50 :  (15 *p.Radius < 10? 10:15 *p.Radius)) ,
+            Radius = ((15 *p.Radius > 50)? 50 :  (15 *p.Radius < 10? 10:15 *p.Radius)) ?? 30,
             MeanDistance= p.MeanDistance,
             StarDistance =GetStarDistance(p, p.MeanDistance),
             Star = new ExoStarDto(){
                Constellation =p.Star.Constellation.Name.ToEnum<ConstellationsEnum>(),
-               Radius = (75 *p.Star.Radius > 100? 100 : (75 *p.Star.Radius < 50? 50:75 *p.Star.Radius)),
+               Radius = (75 *p.Star.Radius > 100? 100 : (75 *p.Star.Radius < 50? 50:75 *p.Star.Radius)) ?? 75,
                Color =GetStarColor(p),
                HabZoneMax = GetStarDistance(p, p.Star.HabZoneMax),
                HabZoneMin = GetStarDistance(p, p.Star.HabZoneMin),
@@ -66,7 +83,7 @@ namespace ExoPlanetHunter.Service.Services
     {
         var cacheEntry = CacheExoPlanets();
         IQueryable results = opts.ApplyTo(cacheEntry.AsQueryable());
-        return results as IQueryable<ExoPlanetsDto>;
+        return (results as IQueryable<ExoPlanetsDto>).Skip(opts.Skip?.Value ?? 0);
     }
 
      private decimal? GetStarDistance(Planet p,decimal? distance)
