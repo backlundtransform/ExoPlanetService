@@ -1,24 +1,26 @@
 using ExoPlanetHunter.Service.Enum;
+
 namespace ExoPlanetHunter.Service.Dto
 {
     public class ExoStarDto
     {
-        public ImgDto Img {get; set; }
-        public int? NoHabPlanets{ get; set; }
-        public int? NoPlanets{ get; set; }
-        public decimal? Temp {get; set; }
+        public ImgDto Img { get; set; }
+        public int? NoHabPlanets { get; set; }
+        public int? NoPlanets { get; set; }
+        public decimal? Temp { get; set; }
         public string Name { get; set; }
         public ConstellationsEnum Constellation { get; set; }
         public string Type { get; set; }
         public int? Color { get; set; }
         public decimal? Mass { get; set; }
 
-        public decimal Radius { get; set; }
-        
-        public decimal? Luminosity { get; set; }
-      
-        public decimal? Age { get; set; }
+        public MagnitudeEnum Magnitude { get; set; }
 
+        public decimal Radius { get; set; }
+
+        public decimal? Luminosity { get; set; }
+
+        public decimal? Age { get; set; }
 
         public decimal? HabZoneMin { get; set; }
         public decimal? HabZoneMax { get; set; }
@@ -26,6 +28,3 @@ namespace ExoPlanetHunter.Service.Dto
         public string Message { get; set; }
     }
 }
-
-
-   
