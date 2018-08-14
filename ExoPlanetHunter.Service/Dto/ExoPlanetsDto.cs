@@ -21,6 +21,7 @@ namespace ExoPlanetHunter.Service.Dto
       public decimal?  DiscYear { get; set; }
       public DiscEnum  DiscMethod { get; set; }
       public decimal   Radius { get; set; }
+     public decimal RadiusEu { get; set; }
       public CoordinateDto Coordinate{ get; set; }
       public decimal?  StarDistance{ get; set; }
       public ExoStarDto Star { get; set; }

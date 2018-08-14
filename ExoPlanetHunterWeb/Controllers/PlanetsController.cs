@@ -68,30 +68,7 @@ namespace ExoPlanetHunter.Web.Controllers
          
         }
 
-        [HttpGet("ExoPlanets")]
-        public IQueryable<ExoPlanetsDto> GetExoPlanets(ODataQueryOptions opts)
-        {
-           
-            return  _planetService.GetExoPlanets(opts);
-           
-        
-        }
 
-    [HttpGet("GetImages")]
-      public Dictionary<string,string> GetImages()
-        {
-            try
-            {
-                string json = System.IO.File.ReadAllText("colors.json");
-                return  JsonConvert.DeserializeObject<Dictionary<string,string>>(json);
-              
-            }
-            catch (Exception e)
-            {
-                log.Info(e.Message);
-                return null;
-            }
-        
-    }
+    
     }
 }

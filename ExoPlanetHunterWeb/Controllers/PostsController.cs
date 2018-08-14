@@ -17,8 +17,8 @@ namespace ExoPlanetHunter.Web.Controllers
     public class PostsController : Controller
     {
         private readonly IPostService _postService;
-        private readonly IPlanetService _planetService;
-        public PostsController(IPostService postService, IPlanetService planetService)
+        private readonly IExoService _planetService;
+        public PostsController(IPostService postService, IExoService planetService)
         {
             _postService = postService;
             _planetService =planetService;
@@ -146,7 +146,7 @@ namespace ExoPlanetHunter.Web.Controllers
            var job = new MyJob();
           job.Execute();
           _planetService.CacheExoPlanets();
-          return Content("job started");
+          return Content("job done");
         } 
     }
 }

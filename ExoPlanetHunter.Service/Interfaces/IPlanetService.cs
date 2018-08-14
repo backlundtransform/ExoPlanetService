@@ -13,8 +13,6 @@ namespace ExoPlanetHunter.Service.Interfaces
 
         Task<PlanetDto> GetPlanet(int id);
         
-        IQueryable<ExoPlanetsDto> GetExoPlanets(ODataQueryOptions opts);
-
-        List<ExoPlanetsDto> CacheExoPlanets();
+     
     }
 }

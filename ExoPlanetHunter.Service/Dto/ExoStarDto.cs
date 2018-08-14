@@ -4,7 +4,6 @@ namespace ExoPlanetHunter.Service.Dto
 {
     public class ExoStarDto
     {
-        public ImgDto Img { get; set; }
         public int? NoHabPlanets { get; set; }
         public int? NoPlanets { get; set; }
         public decimal? Temp { get; set; }
@@ -17,6 +16,8 @@ namespace ExoPlanetHunter.Service.Dto
         public MagnitudeEnum Magnitude { get; set; }
 
         public decimal Radius { get; set; }
+
+        public decimal RadiusSu { get; set; }
 
         public decimal? Luminosity { get; set; }
 

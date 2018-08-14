@@ -23,7 +23,9 @@ namespace ExoPlanetHunter.Service
 
             Configuration = builder.Build();
             services.AddTransient<IPlanetService, PlanetService>().AddTransient<IStarService, StarService>()
-                .AddTransient<IConstellationService, ConstellationService>().AddTransient<IPostService, PostService>();
+                .AddTransient<IConstellationService, ConstellationService>().AddTransient<IPostService, PostService>()
+                 .AddTransient<IExoService,ExoService>();
+               
 
             Mapper.Reset();
             Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
