@@ -48,7 +48,7 @@ namespace ExoPlanetHunter.Service.Services
                     Name = p.Name,
                     Img = p.Img,
                     Radius = p.Radius,
-                    StarDistance =  GetStarDistance(planets, p.MeanDistance)+ p.Radius,
+                    StarDistance =  GetStarDistance(planets, p.MeanDistance)+ p.Radius
                 }).ToList()
 
             };
@@ -123,7 +123,7 @@ namespace ExoPlanetHunter.Service.Services
             return (results as IQueryable<ExoPlanetsDto>).Skip(opts.Skip?.Value ?? 0);
         }
 
-        private decimal? GetStarDistance(List<ExoPlanetsDto> p, decimal? distance)
+        private decimal GetStarDistance(List<ExoPlanetsDto> p, decimal? distance)
         {
 
             var star = p.First().Star;
@@ -131,10 +131,10 @@ namespace ExoPlanetHunter.Service.Services
             var habzonemax = star?.HabZoneMax;
             if (lastplanet?.MeanDistance > habzonemax)
             {
-                return 600 * distance / lastplanet.MeanDistance + 2 * star.Radius;
+                return (600 * distance / lastplanet.MeanDistance + 2 * star.Radius) ?? 0;
             }
 
-            return 600  * distance / habzonemax + 2*star.Radius;   
+            return (600  * distance / habzonemax + 2*star.Radius) ?? 0;   
         }
 
         private int? GetStarColor(Planet p)
