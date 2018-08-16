@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OData.Edm;
+using Microsoft.OData.UriParser;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -103,6 +104,8 @@ namespace ExoPlanetHunter.Web
             app.UseMvc(routeBuilder =>
             {
                 routeBuilder.MapODataServiceRoute("odata", "odata", model);
+
+
                 routeBuilder.MapRoute(
                     "default",
                  "{action}/{id?}",
@@ -113,7 +116,10 @@ namespace ExoPlanetHunter.Web
                     "Tags",
                     "{controller}/{action}/{id?}",
                     new { controller = "Account", action = "login" }); ;
-                routeBuilder.EnableDependencyInjection();
+                routeBuilder.EnableDependencyInjection(b =>
+                {
+                    b.AddService(Microsoft.OData.ServiceLifetime.Singleton, typeof(ODataUriResolver), sp => new StringAsEnumResolver());
+                }); ;
             });
 
             Initialize(app.ApplicationServices);

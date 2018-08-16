@@ -2,7 +2,7 @@ namespace ExoPlanetHunter.Service.Enum
 {
 public enum TempEnum
 {
-Hot, Warm, Cold
+Hot, Warm, Cold, Nodata
 
-}
+    }
 }

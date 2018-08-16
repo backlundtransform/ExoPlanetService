@@ -8,12 +8,12 @@ namespace ExoPlanetHunter.Service.Dto
         public int? NoPlanets { get; set; }
         public decimal? Temp { get; set; }
         public string Name { get; set; }
-        public ConstellationsEnum Constellation { get; set; }
+        public int Constellation { get; set; }
         public string Type { get; set; }
         public int? Color { get; set; }
         public decimal? Mass { get; set; }
 
-        public MagnitudeEnum Magnitude { get; set; }
+        public int Magnitude { get; set; }
 
         public decimal Radius { get; set; }
 

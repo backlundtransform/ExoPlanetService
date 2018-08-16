@@ -13,7 +13,7 @@ namespace System.ComponentModel
                 return null;
             }
             int val = 0;
-            return (int.TryParse(value, out val) && val == 0);
+            return (int.TryParse(value, out val) && val == 1);
             }
             catch (Exception)
             {

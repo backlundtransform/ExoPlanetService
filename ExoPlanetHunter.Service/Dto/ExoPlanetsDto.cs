@@ -12,14 +12,14 @@ namespace ExoPlanetHunter.Service.Dto
       public decimal?  Hza { get; set; }
       public decimal?  Hzi { get; set; }
       public string  Type { get; set; }
-      public CompEnum  Comp { get; set; }
-      public AtmosEnum  Atmosphere { get; set; }
+      public int Comp { get; set; }
+      public int Atmosphere { get; set; }
       public decimal?  MeanDistance { get; set; }
       public decimal?   Distance{ get; set; }
       public decimal?  Esi { get; set; }
       public decimal?  Sph { get; set; }
       public decimal?  DiscYear { get; set; }
-      public DiscEnum  DiscMethod { get; set; }
+      public int DiscMethod { get; set; }
       public decimal   Radius { get; set; }
      public decimal RadiusEu { get; set; }
       public CoordinateDto Coordinate{ get; set; }
@@ -32,9 +32,9 @@ namespace ExoPlanetHunter.Service.Dto
       public decimal?  Gravity{ get; set; }
       public decimal?  SurfacePressure { get; set; }
       public decimal?  EscapeVelocity { get; set; }
-      public MassEnum  MassType { get; set; }
+      public int  MassType { get; set; }
       public decimal?  TempMax { get; set; }
-      public decimal?  TempZone{ get; set; }
+      public int  TempZone{ get; set; }
       public bool?  Hab{ get; set; }
       public bool?  Moons{ get; set; }
       public string Message { get; set; }
