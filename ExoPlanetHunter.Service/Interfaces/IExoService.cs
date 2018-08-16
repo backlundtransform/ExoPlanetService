@@ -16,5 +16,7 @@ namespace ExoPlanetHunter.Service.Interfaces
         IQueryable<ExoPlanetsDto> GetExoPlanets(ODataQueryOptions opts);
 
         List<ExoPlanetsDto> CacheExoPlanets();
+
+        List<ExoPlanetsDto> GetHabitablePlanets();
     }
 }

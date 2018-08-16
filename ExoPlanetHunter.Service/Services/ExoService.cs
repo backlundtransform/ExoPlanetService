@@ -9,14 +9,11 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ExoPlanetHunter.Service.Services
 {
-    public class ExoService: IExoService
+    public class ExoService : IExoService
     {
-
-
         private readonly ExoContext _context;
         private IMemoryCache _cache;
 
@@ -26,14 +23,33 @@ namespace ExoPlanetHunter.Service.Services
             _cache = memoryCache;
         }
 
+        public List<ExoPlanetsDto> GetHabitablePlanets()
+        {
+            var cacheEntry = CacheExoPlanets();
+            return cacheEntry.Where(p => p.Hab==true).Select(p => new ExoPlanetsDto
+            {
+                Name =p.Name,
+                Coordinate= p.Coordinate,
+              Star =p.Star
+            }).GroupBy(p => p.Coordinate)
+            .Select(g => g.First()).ToList();
+        }
 
-        public List<ExoSolarSystemDto> GetSolarSystemPerConstellation(ConstellationsEnum id) { return null; }
+        public List<ExoSolarSystemDto> GetSolarSystemPerConstellation(ConstellationsEnum id)
+        {
+            var cacheEntry = CacheExoPlanets();
+            return cacheEntry.Where(p => p.Star.Constellation == (int)id).GroupBy(p => p.Star).Select(p => new ExoSolarSystemDto()
+            {
+                Name = p.Key.Name,
+                Color = p.Key.Color
+            }).ToList();
+        }
 
-        public ExoSolarSystemDto GetSolarSystemPerStar(string name) {
-
+        public ExoSolarSystemDto GetSolarSystemPerStar(string name)
+        {
             var cacheEntry = CacheExoPlanets();
             var planets = cacheEntry.Where(p => p.Star.Name == name).ToList();
-            
+
             var star = planets.First().Star;
             var solarsystem = new ExoSolarSystemDto()
             {
@@ -42,20 +58,18 @@ namespace ExoPlanetHunter.Service.Services
                 HabZoneMax = GetStarDistance(planets, star.HabZoneMax),
                 HabZoneMin = GetStarDistance(planets, star.HabZoneMin),
                 Radius = star.Radius,
-              
-                Planets = planets.OrderBy(p=>p.MeanDistance).Select(p => new ExoSystemPlanetsDto()
-                {
 
+                Planets = planets.OrderBy(p => p.MeanDistance).Select(p => new ExoSystemPlanetsDto()
+                {
                     Name = p.Name,
                     Img = p.Img,
                     Radius = p.Radius,
-                    StarDistance =  GetStarDistance(planets, p.MeanDistance)+ p.Radius
+                    StarDistance = GetStarDistance(planets, p.MeanDistance) + p.Radius
                 }).ToList()
-
             };
             return solarsystem;
-
         }
+
         public List<ExoPlanetsDto> CacheExoPlanets()
         {
             List<ExoPlanetsDto> cacheExo;
@@ -72,11 +86,11 @@ namespace ExoPlanetHunter.Service.Services
                     Hab = p.Habitable,
                     Gravity = p.Gravity,
                     Moons = p.HabMoon,
-                    TempZone=(int)p.ZoneClass.ToEnum<TempEnum>(),
+                    TempZone = (int)p.ZoneClass.ToEnum<TempEnum>(),
                     Density = p.Density,
                     Period = p.Period,
                     SurfacePressure = p.SurfPress,
-                    RadiusEu= p.Radius ?? 0,
+                    RadiusEu = p.Radius ?? 0,
                     EscapeVelocity = p.EscVel,
                     Distance = (decimal)3.26156 * (p.Star.Distance ?? 0),
                     Temp = p.TsMean - (decimal)273.15,
@@ -90,7 +104,7 @@ namespace ExoPlanetHunter.Service.Services
                     DiscMethod = (int)p.Disc_Method.ToEnum<DiscEnum>(),
                     Radius = ((15 * p.Radius > 50) ? 50 : (15 * p.Radius < 10 ? 10 : 15 * p.Radius)) ?? 30,
                     MeanDistance = p.MeanDistance,
-                 
+
                     Star = new ExoStarDto()
                     {
                         Constellation = (int)p.Star.Constellation.Name.ToEnum<ConstellationsEnum>(),
@@ -124,10 +138,10 @@ namespace ExoPlanetHunter.Service.Services
             return (results as IQueryable<ExoPlanetsDto>).Skip(opts.Skip?.Value ?? 0);
         }
 
+        
+
         private decimal GetStarDistance(List<ExoPlanetsDto> p, decimal? distance)
         {
-
-    
             var star = p.First().Star;
             var lastplanet = p.OrderByDescending(c => c.MeanDistance).Last();
             var habzonemax = star?.HabZoneMax;
@@ -136,7 +150,7 @@ namespace ExoPlanetHunter.Service.Services
                 return (600 * distance / lastplanet.MeanDistance + 2 * star.Radius) ?? 0;
             }
 
-            return (600  * distance / habzonemax + 2*star.Radius) ?? 0;   
+            return (600 * distance / habzonemax + 2 * star.Radius) ?? 0;
         }
 
         private int? GetStarColor(Planet p)
@@ -217,7 +231,6 @@ namespace ExoPlanetHunter.Service.Services
                     {
                         return "coldstone";
                     }
-                   
                 }
                 else
                 {

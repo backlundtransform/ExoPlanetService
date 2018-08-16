@@ -54,6 +54,14 @@ namespace ExoPlanetHunterWeb.Controllers
 
         }
 
+        [HttpGet("GetHabitablePlanets")]
+        public List<ExoPlanetsDto> GetHabitablePlanets()
+        {
+
+            return _exoService.GetHabitablePlanets();
+
+        }
+      
 
         [HttpGet("GetImages")]
         public Dictionary<string, string> GetImages()
