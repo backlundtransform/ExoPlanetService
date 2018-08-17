@@ -1,1 +1,232 @@
-{}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Alkaid",
+        "constellation": "Ursa Major",
+        "constellationid": 82,
+        "size": "xl"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -26.59765625,
+          49.18
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dubhe",
+        "constellation": "Ursa Major",
+        "constellationid": 82,
+        "size": "xl"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.37888671875,
+          56.9554226702048
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Altair",
+        "size": "xxl",
+        "constellation": "Aquila",
+        "constellationid": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -115.88281249999999,
+          9.29905101458183
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Capella",
+        "size": "xxl",
+        "constellation": "Auriga",
+        "constellationid": 7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.3154296875,
+          46.63290858589535
+        ]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Arcturus",
+        "size": "xxl",
+        "constellation": "Bootes",
+        "constellationid": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -32.79296875,
+          19.0118973232094
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "name": "Sirius",
+        "size": "xxl",
+        "constellation": "Canis Major",
+        "constellationid": 13
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          80.146484375,
+          -16.895892559415024
+        ]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Procyon",
+        "size": "xl",
+        "constellation": "Canis Minor",
+        "constellationid": 14
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          67.26953125,
+          5.090944175033399
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Canopis",
+        "size": "xxl",
+        "constellation": "Carina",
+        "constellationid": 16
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.6171875,
+          -52.1598400130443
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hadar",
+        "size": "xl",
+        "constellation": "Centaurus",
+        "constellationid": 18
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [ -30.585937499999996, -61.43876749368282 ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rigel Kentaurus",
+        "size": "xl",
+        "constellation": "Centaurus",
+        "constellationid": 18
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [ -40.703125, -62.26792262941758 ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Gacrux",
+        "size": "xl",
+        "constellation": "Crux",
+        "constellationid": 29
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [ -8.408202230930328, -55.13798592451937 ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mimosa",
+        "size": "xl",
+        "constellation": "Crux",
+        "constellationid": 29
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [ -8.320311605930328, -63.90706788138324 ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Acrux",
+        "size": "xl",
+        "constellation": "Crux",
+        "constellationid": 29
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [ -15.00976473093033, -59.69216656629601 ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Decrux",
+        "size": "xl",
+        "constellation": "Crux",
+        "constellationid": 29
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [ -3.2226553559303284, -58.09002676136156 ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Deneb",
+        "size": "xl",
+        "constellation": "Cygnus",
+        "constellationid": 30
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -133.47656160593033,
+          43.86961392156123
+        ]
+      }
+    }
+  ]
+}
