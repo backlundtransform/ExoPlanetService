@@ -131,6 +131,7 @@ namespace ExoPlanetHunter.Service.Services
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions();
                 _cache.Set("Exoplanets", cacheExo, cacheEntryOptions);
+                _cache.Set("DateUpdated", DateTime.Now, cacheEntryOptions);
             }
             return cacheExo;
         }
