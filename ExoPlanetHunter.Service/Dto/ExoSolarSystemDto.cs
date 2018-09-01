@@ -11,13 +11,14 @@ namespace ExoPlanetHunter.Service.Dto
 
         public int? Color { get; set; }
 
+        public int? Luminosity { get; set; }
 
         public decimal Radius { get; set; }
 
         public decimal? HabZoneMin { get; set; }
 
         public decimal? HabZoneMax { get; set; }
-
+      
         public List<ExoSystemPlanetsDto> Planets { get; set; }
 
         public string Message { get; set; }

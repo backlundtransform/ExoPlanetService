@@ -59,6 +59,7 @@ namespace ExoPlanetHunter.Service.Services
             {
                 Name = star.Name,
                 Color = star.Color,
+                Luminosity = star.Luminosity,
                 HabZoneMax = GetStarDistance(planets, star.HabZoneMax),
                 HabZoneMin = GetStarDistance(planets, star.HabZoneMin),
                 Radius = star.Radius,
@@ -108,7 +109,7 @@ namespace ExoPlanetHunter.Service.Services
                     DiscMethod = (int)p.Disc_Method.ToEnum<DiscEnum>(),
                     Radius = ((15 * p.Radius > 50) ? 50 : (15 * p.Radius < 10 ? 10 : 15 * p.Radius)) ?? 30,
                     MeanDistance = p.MeanDistance,
-                  
+                
                     Star = new ExoStarDto()
                     {
                         Constellation = (int)p.Star.Constellation.Name.ToEnum<ConstellationsEnum>(),
@@ -119,7 +120,7 @@ namespace ExoPlanetHunter.Service.Services
                         Name = p.Star.Name,
                         Temp = p.Star.Teff - (decimal)273.15,
                         Age = p.Star.Age,
-                        Luminosity = p.Star.Luminosity,
+                        Luminosity = (int)GetStarLuminosity(p),
                         NoHabPlanets = p.Star.NoPlanetsHZ,
                         RadiusSu = p.Star.Radius ?? 0,
                         Mass = p.Star.Mass,
@@ -185,6 +186,57 @@ namespace ExoPlanetHunter.Service.Services
             }
 
             return null;
+        }
+
+        public LumEnum GetStarLuminosity(Planet p)
+        {
+            var type = p.Star?.Type;
+            if (type.EndsWith("0"))
+            {
+                return LumEnum.very_luminous_supergiant;
+            }
+            if (type.EndsWith("1a"))
+            {
+                return LumEnum.luminous_giant;
+            }
+            if (type.EndsWith("Ib"))
+            {
+              
+                return LumEnum.less_luminous_supergiant;
+            }
+            if (type.EndsWith("II"))
+            {
+                return LumEnum.giant;
+            }
+            if (type.EndsWith("III"))
+            {
+                return LumEnum.giant;
+            }
+            if (type.EndsWith("IV"))
+            {
+                return LumEnum.subgiant;
+            }
+            if (type.EndsWith("V"))
+            {
+                return LumEnum.dwarf;
+            }
+            if (type.EndsWith("VI"))
+            {
+                return LumEnum.subdwarf;
+            }
+            if (type.EndsWith("VII"))
+            {
+                return LumEnum.white_dwarf;
+            }
+            if (type.Equals("sdB+M"))
+            {
+                return LumEnum.pulsar;
+            }
+            if (type.Contains(""))
+            {
+                return LumEnum.Nodata;
+            }
+            return LumEnum.Nodata;
         }
 
         private string GetPlanetColor(Planet p)

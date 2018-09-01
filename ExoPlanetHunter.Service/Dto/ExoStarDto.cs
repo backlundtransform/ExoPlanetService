@@ -11,6 +11,7 @@ namespace ExoPlanetHunter.Service.Dto
         public int Constellation { get; set; }
         public string Type { get; set; }
         public int? Color { get; set; }
+
         public decimal? Mass { get; set; }
 
         public int Magnitude { get; set; }
@@ -19,7 +20,7 @@ namespace ExoPlanetHunter.Service.Dto
 
         public decimal RadiusSu { get; set; }
 
-        public decimal? Luminosity { get; set; }
+        public int? Luminosity { get; set; }
 
         public decimal? Age { get; set; }
 
