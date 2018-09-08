@@ -65,7 +65,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -101,7 +100,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -144,7 +142,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [ -30.585937499999996, -61.43876749368282 ]
+        "coordinates": [
+          -30.585937499999996,
+          -61.43876749368282
+        ]
       }
     },
     {
@@ -157,7 +158,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [ -40.703125, -62.26792262941758 ]
+        "coordinates": [
+          -40.703125,
+          -62.26792262941758
+        ]
       }
     },
     {
@@ -170,7 +174,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [ -8.408202230930328, -55.13798592451937 ]
+        "coordinates": [
+          -8.408202230930328,
+          -55.13798592451937
+        ]
       }
     },
     {
@@ -183,7 +190,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [ -8.320311605930328, -63.90706788138324 ]
+        "coordinates": [
+          -8.320311605930328,
+          -63.90706788138324
+        ]
       }
     },
     {
@@ -196,7 +206,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [ -15.00976473093033, -59.69216656629601 ]
+        "coordinates": [
+          -15.00976473093033,
+          -59.69216656629601
+        ]
       }
     },
     {
@@ -209,7 +222,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [ -3.2226553559303284, -58.09002676136156 ]
+        "coordinates": [
+          -3.2226553559303284,
+          -58.09002676136156
+        ]
       }
     },
     {
@@ -225,6 +241,273 @@
         "coordinates": [
           -133.47656160593033,
           43.86961392156123
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pollux",
+        "size": "xl",
+        "constellation": "Gemini",
+        "constellationid": 37
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          65.203125,
+          28.51582286553883
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Castor",
+        "size": "xl",
+        "constellation": "Gemini",
+        "constellationid": 37
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          71.3671875,
+          32.62303683152827
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Al Nair",
+        "size": "xl",
+        "constellation": "Grus",
+        "constellationid": 38
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -158.90625,
+          -46.98025235521882
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vega",
+        "size": "xl",
+        "constellation": "Lyra",
+        "constellationid": 51
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -94.482421875,
+          36.24427318493909
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Saiph",
+        "size": "xl",
+        "constellation": "Orion",
+        "constellationid": 59
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          93.251953125,
+          -10.46876014482322
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rigel",
+        "size": "xl",
+        "constellation": "Orion",
+        "constellationid": 59
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          102.216796875,
+          -9.79567758282973
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mintaka",
+        "size": "xl",
+        "constellation": "Orion",
+        "constellationid": 59
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.15234375,
+          0.915832801313164
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Alnitak",
+        "size": "xl",
+        "constellation": "Orion",
+        "constellationid": 59
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          95.1875,
+          -4.102096738726443
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Alnilam",
+        "size": "xl",
+        "constellation": "Orion",
+        "constellationid": 59
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          97.1875,
+          -2.6443
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Betelgeuse",
+        "size": "xl",
+        "constellation": "Orion",
+        "constellationid": 59
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          90,
+          8.407168163601076
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bellatrix",
+        "size": "xl",
+        "constellation": "Orion",
+        "constellationid": 59
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.42578124999999,
+          8.107168163601076
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "constellation": "Perseus",
+        "constellationid": 62,
+        "name": "Mirfak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          125.828125,
+          51.39920565355378
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "constellation": "Pisces Austrinus",
+        "constellationid": 66,
+        "name": "Fomalhaut"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -173.671875,
+          -31.503629305773018
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "constellation": "Scorpius",
+        "constellationid": 72,
+        "name": "Antares"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -58.53515625,
+          -27.68352808378776
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "constellation": "Taurus",
+        "constellationid": 77,
+        "name": "Aldebaran"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          110.53515625,
+          16.812717856407776
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "constellation": "Ursa Minor",
+        "constellationid": 83,
+        "name": "Polaris"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -50.78125,
+          90
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+       "constellation": "Ursa Minor",
+        "constellationid": 83,
+        "name": "Kochab"
+      
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -50.25390625,
+            71.63599288330609
         ]
       }
     }

@@ -197,7 +197,7 @@ namespace ExoPlanetHunter.Service.Services
             }
             if (type.EndsWith("1a"))
             {
-                return LumEnum.luminous_giant;
+                return LumEnum.luminous_supergiant;
             }
             if (type.EndsWith("Ib"))
             {
@@ -206,7 +206,7 @@ namespace ExoPlanetHunter.Service.Services
             }
             if (type.EndsWith("II"))
             {
-                return LumEnum.giant;
+                return LumEnum.luminous_giant;
             }
             if (type.EndsWith("III"))
             {
