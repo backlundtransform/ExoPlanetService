@@ -14,7 +14,7 @@ namespace ExoPlanetHunterWeb.Controllers
 {
     [Produces("application/json")]
     [Route("api/ExoSolarSystems")]
-  
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ExoSolarSystemController : Controller
     {
 

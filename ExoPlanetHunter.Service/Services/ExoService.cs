@@ -153,10 +153,10 @@ namespace ExoPlanetHunter.Service.Services
             var habzonemax = star?.HabZoneMax;
             if (habzonemax == null || lastplanet?.MeanDistance > habzonemax )
             {
-                return (600 * distance / lastplanet.MeanDistance + 2 * star.Radius) ?? 0;
+                return (600 * distance / lastplanet.MeanDistance + 2 * star.Radius) ?? 300;
             }
 
-            return (600 * distance / habzonemax + 2 * star.Radius) ?? 0;
+            return (600 * distance / habzonemax + 2 * star.Radius) ?? 300;
         }
 
         private int? GetStarColor(Planet p)

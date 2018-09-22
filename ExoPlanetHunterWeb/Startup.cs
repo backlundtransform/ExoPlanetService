@@ -132,8 +132,9 @@ namespace ExoPlanetHunter.Web
                 var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
                 using (var context = scope.ServiceProvider.GetService<PostContext>())
                 {
-                    var user = new IdentityUser { UserName = "test", Email = "test@test.com" };
-                    await manager.CreateAsync(user, "Password123#");
+                    var con = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText("config.json"));
+                    var user = new IdentityUser { UserName = con.Name, Email = con.Email.ToString() };
+                    await manager.CreateAsync(user, con.PassWord.ToString());
                     context.SaveChanges();
                 }
             }
