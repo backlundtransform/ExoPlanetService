@@ -74,6 +74,12 @@ img::-moz-selection {
     background: 0 0
 }
 
+.responsive {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+}
+
 #mainNav {
     position: absolute;
     border-bottom: 1px solid #e9ecef;
