@@ -40,7 +40,7 @@
                     <a class="btn btn-outline-dark" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 }
                 <div class="post-preview">
-                    <h2 class="post-title"><a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a></h2>     <hr>
+                    <h2 class="post-title"><a asp-action="Details" asp-route-id="@item.Id" asp-route-title="@item.Title"> @Html.DisplayFor(modelItem => item.Title)</a></h2>     <hr>
 
                     <div class="post-subtitle">
                         @Html.Raw(item.Content)

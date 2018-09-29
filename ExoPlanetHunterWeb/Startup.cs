@@ -108,7 +108,7 @@ namespace ExoPlanetHunter.Web
 
                 routeBuilder.MapRoute(
                     "default",
-                 "{action}/{id?}",
+                 "{action}/{id?}/{title?}",
                     new { controller = "Posts", action = "index" }).MapRoute(
                     "Account",
                     "{controller}/{action}/{id?}",
