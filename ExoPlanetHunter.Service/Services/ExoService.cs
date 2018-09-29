@@ -26,14 +26,14 @@ namespace ExoPlanetHunter.Service.Services
         public List<ExoPlanetsDto> GetHabitablePlanets()
         {
             var cacheEntry = CacheExoPlanets();
-            return cacheEntry.Where(p => p.Hab==true &&
+            return cacheEntry.Where(p => p.Hab == true &&
 
-              p.Star.Color != null && p.Radius!=0
+              p.Star.Color != null && p.Radius != 0
             ).Select(p => new ExoPlanetsDto
             {
-                Name =p.Name,
-                Coordinate= p.Coordinate,
-              Star =p.Star
+                Name = p.Name,
+                Coordinate = p.Coordinate,
+                Star = p.Star
             }).GroupBy(p => p.Coordinate)
             .Select(g => g.First()).ToList();
         }
@@ -41,12 +41,13 @@ namespace ExoPlanetHunter.Service.Services
         public List<ExoSolarSystemDto> GetSolarSystemPerConstellation(ConstellationsEnum id)
         {
             var cacheEntry = CacheExoPlanets();
-            return cacheEntry.Where(p => p.Star.Constellation == (int)id).GroupBy(p => p.Star).Select(p => new ExoSolarSystemDto()
+
+            return cacheEntry.Where(p => p.Star.Constellation == (int)id).GroupBy(p => p.Star).Select(g => g.Key).GroupBy(p => p.Name).Select(p => new ExoSolarSystemDto()
             {
-                Name = p.Key.Name,
-                Color = p.Key.Color,
-                Radius =p.Key.Radius
-            }).ToList();
+                Name = p.Key,
+                Color = p.FirstOrDefault()?.Color,
+                Radius = p.FirstOrDefault().Radius
+            }).ToList(); ;
         }
 
         public ExoSolarSystemDto GetSolarSystemPerStar(string name)
@@ -109,7 +110,7 @@ namespace ExoPlanetHunter.Service.Services
                     DiscMethod = (int)p.Disc_Method.ToEnum<DiscEnum>(),
                     Radius = ((15 * p.Radius > 50) ? 50 : (15 * p.Radius < 10 ? 10 : 15 * p.Radius)) ?? 30,
                     MeanDistance = p.MeanDistance,
-                
+
                     Star = new ExoStarDto()
                     {
                         Constellation = (int)p.Star.Constellation.Name.ToEnum<ConstellationsEnum>(),
@@ -144,14 +145,12 @@ namespace ExoPlanetHunter.Service.Services
             return (results as IQueryable<ExoPlanetsDto>).Skip(opts.Skip?.Value ?? 0);
         }
 
-        
-
         private decimal GetStarDistance(List<ExoPlanetsDto> p, decimal? distance)
         {
             var star = p.First().Star;
             var lastplanet = p.OrderBy(c => c.MeanDistance).Last();
             var habzonemax = star?.HabZoneMax;
-            if (habzonemax == null || lastplanet?.MeanDistance > habzonemax )
+            if (habzonemax == null || lastplanet?.MeanDistance > habzonemax)
             {
                 return (600 * distance / lastplanet.MeanDistance + 2 * star.Radius) ?? 300;
             }
@@ -201,7 +200,6 @@ namespace ExoPlanetHunter.Service.Services
             }
             if (type.EndsWith("Ib"))
             {
-              
                 return LumEnum.less_luminous_supergiant;
             }
             if (type.EndsWith("II"))
