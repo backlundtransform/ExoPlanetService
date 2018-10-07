@@ -18,16 +18,19 @@ namespace ExoPlanetHunter.Web.Controllers
     {
         private readonly IPostService _postService;
         private readonly IExoService _planetService;
-        public PostsController(IPostService postService, IExoService planetService)
+        private readonly IStatisticsService _statisticsService;
+        public PostsController(IPostService postService, IExoService planetService, IStatisticsService statisticsService)
         {
             _postService = postService;
             _planetService =planetService;
+            _statisticsService = statisticsService;
         }
 
         public async Task<IActionResult> Index(int? page=1)
         {
             int pageSize = 10;
             var posts = await _postService.GetPostsAsync();
+            ViewData["stat"] = _statisticsService.GetStatistics();
             return View(PaginatedList<Post>.CreateAsync(posts, page ?? 1, pageSize));
            
         }
