@@ -18,6 +18,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace ExoPlanetHunter.Web
 {
@@ -78,6 +79,10 @@ namespace ExoPlanetHunter.Web
                 c.IncludeXmlComments(xmlPath);
             });
             Logic.Startup(services, _env);
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
 
             services.AddRouting();
         }
@@ -115,7 +120,27 @@ namespace ExoPlanetHunter.Web
                     new { controller = "Account", action = "login" }).MapRoute(
                     "Tags",
                     "{controller}/{action}/{id?}",
-                    new { controller = "Account", action = "login" }); ;
+                    new { controller = "Account", action = "login" });
+
+                app.MapWhen(x => !x.Request.Path.Value.Equals("/"), builder =>
+                {
+                    builder.UseSpa(spa =>
+                    {
+                        spa.Options.SourcePath = "ClientApp";
+
+                        if (env.IsDevelopment())
+                        {
+
+
+                            spa.UseReactDevelopmentServer(npmScript: "start");
+
+                        }
+
+
+                    });
+                });
+               
+
                 routeBuilder.EnableDependencyInjection(b =>
                 {
                     b.AddService(Microsoft.OData.ServiceLifetime.Singleton, typeof(ODataUriResolver), sp => new StringAsEnumResolver());
