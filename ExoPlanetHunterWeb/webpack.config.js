@@ -1,13 +1,16 @@
 var path = require('path');
 
 module.exports = {
+  watch:true,
     entry: {
-        main: './wwwroot/js/main.js'
+        main: './wwwroot/js/main.js',
+        react: './ClientApp/src/App.js'
+
     },
     output: {
        publicPath: "/js/",
        path: path.join(__dirname, '/wwwroot/js/'),
-       filename: 'main.build.js'
+        filename: '[name].build.js'
     },
     module: {
         rules: [
@@ -22,7 +25,13 @@ module.exports = {
           
           },  {
             test:  /\.js$/,
+          
             loaders:  'babel-loader',
+            options:{
+
+              presets:['babel-preset-env', 'babel-preset-react']
+            }
+         
           
           }
         ],
