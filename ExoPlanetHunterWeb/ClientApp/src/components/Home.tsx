@@ -1,9 +1,17 @@
-import React, { Component } from 'react';
-
-export class Home extends Component {
+import * as React from 'react';
+import{GetPlanetListAsync,Planet,planetcolor } from '../service/getPlanets'
+export class Home extends React.Component {
  
 
+  async componentDidMount(){
+
+  var planet =  await GetPlanetListAsync(null,{},100)
+
+console.log(planet)
+  }
+
   render() {
+    console.log("y")
     return (
       <div>
         <h1>Hello, world!</h1>
