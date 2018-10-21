@@ -3,17 +3,24 @@
 
 <html>
 <head>
-    <meta property="og:url" content="http://exoplanets.azurewebsites.net" />
-    <meta property="og:title" content="Exoplanethunter" />
-    <meta property="og:description" content="Exoplanethunter" />
-    <meta property="og:image" content="IMG" />
+    <meta property="og:url" content="https://exoplanethunter.com/" />
+    <meta property="og:title" content="Exoplanets Exploring the universe" />
+    <meta property="og:description" content=@ViewData["Title"] />
+    <meta property="og:image" content="https://i.imgur.com/wBKCEbc.png" />
     <meta name="viewport" content="width=device-width" />
     <meta property="fb:admins" content="goran.backlund.10" />
+    <meta name="twitter:card" content="summary_exoplanet">
+    <meta name="twitter:site" content="@("@exoplanethunt")">
+    <meta name="twitter:creator" content="@("@exoplanethunt")">
+    <meta name="twitter:title" content="Exoplanets Exploring the universe">
+    <meta name="twitter:description" content="@ViewData["Title"]">
+    <meta name="twitter:image" content="https://i.imgur.com/wBKCEbc.png">
 
-    <title>ExoplanetsHunter</title>
+    <title>@ViewData["Title"]</title>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
-    <script src="~/lib/ckeditor/ckeditor.js"></script>
+    <script src="~/js/main.build.js"></script>
+
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
 
 </head>
@@ -59,7 +66,7 @@
         </div>
     </header>
     <partial name="_CookieConsentPartial" />
-   
+
     @RenderBody()
 
 
@@ -114,19 +121,11 @@
                     </div>
                 </div>
             </div>
+        </div>
     </footer>
-    <script src="~/js/main.build.js"></script>
+
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <div id="fb-root"></div>
-    <script>
-    (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.1&appId=2092691731004171&autoLogAppEvents=1';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));</script>
 
 </body>
 </html>

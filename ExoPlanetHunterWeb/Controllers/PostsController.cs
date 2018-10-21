@@ -28,9 +28,10 @@ namespace ExoPlanetHunter.Web.Controllers
 
         public async Task<IActionResult> Index(int? page=1)
         {
-            int pageSize = 10;
+            int pageSize = 5;
             var posts = await _postService.GetPostsAsync();
             ViewData["stat"] = _statisticsService.GetStatistics();
+            ViewData["Title"] = "ExoplanetHunter";
             return View(PaginatedList<Post>.CreateAsync(posts, page ?? 1, pageSize));
            
         }
@@ -48,6 +49,8 @@ namespace ExoPlanetHunter.Web.Controllers
                 return NotFound();
             }
 
+
+            ViewData["Title"] = post.Title;
             return View(post);
         }
 
