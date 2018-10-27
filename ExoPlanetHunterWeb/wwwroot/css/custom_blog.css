@@ -283,9 +283,9 @@ header.masthead .post-heading .meta {
     color: #c6d4ff;
 
 }
-img{
-
-    background-color: #fff 
+img {
+    background-color: transparent;
+   
 }
 
     .post-preview > a:focus, .post-preview > a:hover {

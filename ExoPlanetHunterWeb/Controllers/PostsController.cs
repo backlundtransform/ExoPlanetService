@@ -9,25 +9,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using System.IO;
+
+using System.Net.Http;
 using ExoPlanetHunter.PHL.Schedules;
+using System.Text.RegularExpressions;
+
 namespace ExoPlanetHunter.Web.Controllers
 {
     public class PostsController : Controller
     {
         private readonly IPostService _postService;
         private readonly IExoService _planetService;
-        public PostsController(IPostService postService, IExoService planetService)
+        private readonly IStatisticsService _statisticsService;
+        public PostsController(IPostService postService, IExoService planetService, IStatisticsService statisticsService)
         {
             _postService = postService;
             _planetService =planetService;
+            _statisticsService = statisticsService;
         }
 
         public async Task<IActionResult> Index(int? page=1)
         {
-            int pageSize = 10;
+            int pageSize = 5;
             var posts = await _postService.GetPostsAsync();
+            ViewData["stat"] = _statisticsService.GetStatistics();
+            ViewData["Img"] = "https://i.imgur.com/FFsupGS.png";
+            ViewData["Title"] = "ExoplanetHunter";
             return View(PaginatedList<Post>.CreateAsync(posts, page ?? 1, pageSize));
            
         }
@@ -45,6 +52,10 @@ namespace ExoPlanetHunter.Web.Controllers
                 return NotFound();
             }
 
+
+            ViewData["Img"] = Regex.Match(post.Content, "(([^\"\']*.jpe?g))", RegexOptions.IgnoreCase).Groups[0].Value;
+
+            ViewData["Title"] = post.Title;
             return View(post);
         }
 
