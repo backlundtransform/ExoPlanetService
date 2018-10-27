@@ -10,6 +10,16 @@
                 "${workspaceFolder}/ExoPlanetHunterWeb.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/ExoPlanetHunterWeb.csproj"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

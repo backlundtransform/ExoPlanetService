@@ -1,0 +1,27 @@
+
+.ui.secondary.inverted.pointing.menu .active.item {
+    border-color: #ffff!important;
+    color:  #ffff!important;
+    font-family: Lora,'Times New Roman',serif!important;
+    font-size: 18px!important;
+ 
+}
+.ui.secondary.inverted.pointing.menu .item  {
+   
+    color:  #c6d4ff!important;
+    font-family: Lora,'Times New Roman',serif!important;
+    font-size: 18px!important;
+
+}
+
+.ui.secondary.inverted.pointing.menu .item:hover  {
+   
+    color:  #ffff!important;
+    font-family: Lora,'Times New Roman',serif!important;
+    font-size: 18px!important;
+
+}
+.ui.secondary.inverted.pointing.menu {
+   
+    background-color: #50607a!important;
+}

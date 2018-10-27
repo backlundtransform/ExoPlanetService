@@ -4,7 +4,7 @@ module.exports = {
   watch:true,
     entry: {
         main: './wwwroot/js/main.js',
-        react: './ClientApp/src/App.js'
+        react: './ClientApp/src/App.tsx'
 
     },
     output: {
@@ -20,7 +20,7 @@ module.exports = {
             loaders:  'style-loader!css-loader',
           
           },  {
-            test: /\.(gif|png|jpe?g|svg)$/i,
+            test: /\.(gif|png|eot|woff2|woff|woff2|ttf|jpe?g|svg)$/i,
             loaders:  'file-loader',
           
           },  {
