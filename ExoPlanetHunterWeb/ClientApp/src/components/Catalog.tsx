@@ -25,24 +25,17 @@ async componentDidMount(){
       group.push(arr.slice(i * n, (i + 1) * n));
     return group;
   }
-  
-
-
-
   mainPost =()=>{
     const {planets ,color} = this.state
-
     let posts = [] as Array<any>
 
      for(let item of planets as Array<Planet>){
-
-
-      posts.push(<Grid.Column>
+        posts.push(<Grid.Column>
         <Card className={"post-preview"}>
         <Svg
                height="190" 
                width="180" 
-         >       { Gradient(item.star)}
+         >       {Gradient(item.star)}
       <G>
       <Defs>
           <ClipPath id="clip">
@@ -83,10 +76,7 @@ async componentDidMount(){
         </Card.Content>
       </Card> 
        </Grid.Column>)
-
-
      }
-
 
     let groupedplanets = this.groupBy(posts, 3)
     let groupedposts = [] as Array<any>
@@ -99,14 +89,10 @@ async componentDidMount(){
   }
  row =(post:any) => <Grid.Row centered columns={4}>{post}</Grid.Row>
   render() {
+     const {loading} = this.state
+      const main =this.mainPost()
 
-    const {loading} = this.state
-
-    const main =this.mainPost()
-
-return (loading?(<React.Fragment />):(<Grid stackable centered columns={2}>{main}
-
-</Grid>))
+return (loading?(<React.Fragment />):(<Grid stackable centered columns={2}>{main}</Grid>))
 
 }
 
