@@ -85,6 +85,28 @@ export const GetStatisticsAsync=  async ():Promise<statistics> => {
 
 }
 
+
+export const storeBase64= async () => {
+
+const colors =  await fetch("../api/ExoSolarSystems/GetImages",{
+    headers:{
+      'Content-Type': 'application/json'
+    }
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((myJson) =>  {
+  
+      return myJson 
+  
+    });
+  
+return JSON.stringify(colors)
+}
+
+
 export const GetPlanetListAsync=   (filter:filter, filterstate:any, top:number) => {
   let skip =top-100
 
@@ -199,6 +221,8 @@ const planetList =   fetch(`../api/ExoSolarSystems/ExoPlanets?${filterstring}&%2
 
   return  planetList;
  }
+
+
 
  export const GetPlanetAsync=   (name:string) => {
 

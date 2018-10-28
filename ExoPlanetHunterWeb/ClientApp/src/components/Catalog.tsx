@@ -1,292 +1,117 @@
 import * as React from 'react';
-import{GetPlanetListAsync } from '../service/getPlanets'
+import{GetPlanetListAsync, storeBase64,Planet } from '../service/getPlanets'
 import { Card, Icon,Grid,Rating  } from 'semantic-ui-react'
-import Svg,{Circle,G,ClipPath,Path,Rect,Image, Use,Defs} from 'react-native-svg-web';
+import Svg,{Circle,G,ClipPath,Image,Defs} from 'react-native-svg-web';
 import MaterialIcon from 'material-icons-react';
-export class Catalog extends React.Component {
+import { Link } from 'react-router-dom'
+import {Gradient} from '../styles/radialgradients'
+export class Catalog extends React.Component<any,any> {
+  constructor(props:any) {
+    super(props);
+    this.state = {loading:true, top: 100,color:'', planets:[] as Array<Planet>}
 
-
-  async componentDidMount(){
-
-  var planet =  await GetPlanetListAsync(null,{},100)
-
-console.log(planet)
   }
 
+async componentDidMount(){
 
+  const planets =  await GetPlanetListAsync(null,{},100)
+  let color= JSON.parse(await storeBase64())
+  this.setState({color,planets,loading:false})
+  }
+
+  groupBy=(arr:Array<any>, n:number)=> {
+    var group = [];
+    for (var i = 0, end = arr.length / n; i < end; ++i)
+      group.push(arr.slice(i * n, (i + 1) * n));
+    return group;
+  }
+  
+
+
+
+  mainPost =()=>{
+    const {planets ,color} = this.state
+
+    let posts = [] as Array<any>
+
+     for(let item of planets as Array<Planet>){
+
+
+      posts.push(<Grid.Column>
+        <Card className={"post-preview"}>
+        <Svg
+               height="190" 
+               width="180" 
+         >       { Gradient(item.star)}
+      <G>
+      <Defs>
+          <ClipPath id="clip">
+              <Circle  cx="100" cy="100" r="65"   />
+          </ClipPath>
+      </Defs> 
+      <Image
+       width="180" height="190" 
+       href={`${color[item.img.uri]}` }
+          clipPath="url(#clip)"
+      /><Circle 
+      cx="100" cy="100" r="65"
+          fillOpacity={0.4}
+          fill={`url(#${item.img.uri}`}/></G>
+          </Svg>
+        <Card.Content>
+          <Card.Header><Link to={{ pathname: `planet/${item.name}`, state: { planet: item}}}>{item.name}</Link></Card.Header>
+          <Card.Description>
+            <span>{`Discovered:${item.discYear}`}</span>
+          </Card.Description>
+          <Card.Description>{`${item.type&&item.type !== null?item.type:""}`} {item.distance !== 0?`${Math.round(item.distance)} lightyears from earth.`:""}
+
+          </Card.Description>
+          <Rating icon='star' defaultRating={Math.round(item.esi*10)} maxRating={10} size='large' />
+    
+        </Card.Content>
+        <Card.Content extra>
+          <a style={{margin:10}}>
+            <Icon name='sun' />
+       {item.star.name}
+          </a><br />
+          <a style={{margin:10}}>
+          {`${item.star.noPlanets} Planets`}
+   
+          </a> <a>
+          <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
+          </a>
+        </Card.Content>
+      </Card> 
+       </Grid.Column>)
+
+
+     }
+
+
+    let groupedplanets = this.groupBy(posts, 3)
+    let groupedposts = [] as Array<any>
+    for(let planets of groupedplanets){
+      groupedposts.push(this.row(planets))
+
+    }
+    return groupedposts
+  
+  }
+ row =(post:any) => <Grid.Row centered columns={4}>{post}</Grid.Row>
   render() {
 
+    const {loading} = this.state
 
-    return ( <Grid stackable centered columns={2}>
-    <Grid.Column width={9}>
-       
-        </Grid.Column>
-    
-    <Grid.Row centered columns={4}>
-      <Grid.Column>
-      <Card className={"post-preview"}>
-      <Svg
-             height="190" 
-             width="180" 
-       >   
-    <G>
-    <Defs>
-        <ClipPath id="clip">
-            <Circle  cx="100" cy="100" r="65"   />
-        </ClipPath>
-    </Defs> 
-    <Image
-     width="180" height="190" 
-        href={ 'https://i.imgur.com/wBKCEbc.png'  }
-        clipPath="url(#clip)"
-    /><Circle 
-    cx="100" cy="100" r="65"
-        fillOpacity={0.4}
-        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
-        </Svg>
-      <Card.Content>
-        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
-        <Card.Description>
-          <span>Discovered:2018</span>
-        </Card.Description>
-        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
-        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+    const main =this.mainPost()
 
-      </Card.Content>
-      <Card.Content extra>
-        <a style={{margin:10}}>
-          <Icon name='sun' />
-         Epic
-        </a>
-        <a style={{margin:10}}>
-    
-        2 Planets
-        </a> <a>
-        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
-        </a>
-      </Card.Content>
-    </Card> 
-      </Grid.Column>
-      <Grid.Column>
-      <Card className={"post-preview"}>
-      <Svg
-             height="190" 
-             width="180" 
-       >   
-    <G>
-    <Defs>
-        <ClipPath id="clip">
-            <Circle  cx="100" cy="100" r="65"   />
-        </ClipPath>
-    </Defs> 
-    <Image
-     width="180" height="190" 
-        href={ 'https://i.imgur.com/wBKCEbc.png'  }
-        clipPath="url(#clip)"
-    /><Circle 
-    cx="100" cy="100" r="65"
-        fillOpacity={0.4}
-        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
-        </Svg>
-      <Card.Content>
-        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
-        <Card.Description>
-          <span>Discovered:2018</span>
-        </Card.Description>
-        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
-        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+return (loading?(<React.Fragment />):(<Grid stackable centered columns={2}>{main}
 
-      </Card.Content>
-      <Card.Content extra>
-        <a style={{margin:10}}>
-          <Icon name='sun' />
-         Epic
-        </a>
-        <a style={{margin:10}}>
-    
-        2 Planets
-        </a> <a>
-        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
-        </a>
-      </Card.Content>    </Card> 
-      </Grid.Column>
-      <Grid.Column>
-      <Card className={"post-preview"}>
-      <Svg
-             height="190" 
-             width="180" 
-       >   
-    <G>
-    <Defs>
-        <ClipPath id="clip">
-            <Circle  cx="100" cy="100" r="65"   />
-        </ClipPath>
-    </Defs> 
-    <Image
-     width="180" height="190" 
-        href={ 'https://i.imgur.com/wBKCEbc.png'  }
-        clipPath="url(#clip)"
-    /><Circle 
-    cx="100" cy="100" r="65"
-        fillOpacity={0.4}
-        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
-        </Svg>
-      <Card.Content>
-        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
-        <Card.Description>
-          <span>Discovered:2018</span>
-        </Card.Description>
-        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
-        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+</Grid>))
 
-      </Card.Content>
-      <Card.Content extra>
-        <a style={{margin:10}}>
-          <Icon name='sun' />
-         Epic
-        </a>
-        <a style={{margin:10}}>
-    
-        2 Planets
-        </a> <a>
-        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
-        </a>
-      </Card.Content></Card> 
-      </Grid.Column>
-    </Grid.Row>
-    <Grid.Row centered columns={4}>
-      <Grid.Column>
-      <Card className={"post-preview"}>
-      <Svg
-             height="190" 
-             width="180" 
-       >   
-    <G>
-    <Defs>
-        <ClipPath id="clip">
-            <Circle  cx="100" cy="100" r="65"   />
-        </ClipPath>
-    </Defs> 
-    <Image
-     width="180" height="190" 
-        href={ 'https://i.imgur.com/wBKCEbc.png'  }
-        clipPath="url(#clip)"
-    /><Circle 
-    cx="100" cy="100" r="65"
-        fillOpacity={0.4}
-        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
-        </Svg>
-      <Card.Content>
-        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
-        <Card.Description>
-          <span>Discovered:2018</span>
-        </Card.Description>
-        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
-        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+}
 
-      </Card.Content>
-      <Card.Content extra>
-        <a style={{margin:10}}>
-          <Icon name='sun' />
-         Epic
-        </a>
-        <a style={{margin:10}}>
-    
-        2 Planets
-        </a> <a>
-        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
-        </a>
-      </Card.Content></Card> 
-      </Grid.Column>
-      <Grid.Column>
-      <Card className={"post-preview"}>
-      <Svg
-             height="190" 
-             width="180" 
-       >   
-    <G>
-    <Defs>
-        <ClipPath id="clip">
-            <Circle  cx="100" cy="100" r="65"   />
-        </ClipPath>
-    </Defs> 
-    <Image
-     width="180" height="190" 
-        href={ 'https://i.imgur.com/wBKCEbc.png'  }
-        clipPath="url(#clip)"
-    /><Circle 
-    cx="100" cy="100" r="65"
-        fillOpacity={0.4}
-        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
-        </Svg>
-      <Card.Content>
-        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
-        <Card.Description>
-          <span>Discovered:2018</span>
-        </Card.Description>
-        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
-        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
 
-      </Card.Content>
-      <Card.Content extra>
-        <a style={{margin:10}}>
-          <Icon name='sun' />
-         Epic
-        </a>
-        <a style={{margin:10}}>
-    
-        2 Planets
-        </a> <a>
-        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
-        </a>
-      </Card.Content></Card> 
-      </Grid.Column>
-      <Grid.Column>
-      <Card className={"post-preview"}>
-      <Svg
-             height="190" 
-             width="180" 
-       >   
-    <G>
-    <Defs>
-        <ClipPath id="clip">
-            <Circle  cx="100" cy="100" r="65"   />
-        </ClipPath>
-    </Defs> 
-    <Image
-     width="180" height="190" 
-        href={ 'https://i.imgur.com/wBKCEbc.png'  }
-        clipPath="url(#clip)"
-    /><Circle 
-    cx="100" cy="100" r="65"
-        fillOpacity={0.4}
-        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
-        </Svg>
-      <Card.Content>
-        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
-        <Card.Description>
-          <span>Discovered:2018</span>
-        </Card.Description>
-        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
-        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+  
 
-      </Card.Content>
-      <Card.Content extra>
-        <a style={{margin:10}}>
-          <Icon name='sun' />
-         Epic
-        </a>
-        <a style={{margin:10}}>
-    
-        2 Planets
-        </a> <a>
-        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
-        </a>
-      </Card.Content>    </Card> 
-      </Grid.Column>
-    </Grid.Row>
-
-</Grid>
-    );
-  }
+ 
 }
