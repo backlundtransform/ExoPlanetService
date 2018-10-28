@@ -3,32 +3,62 @@ import { BrowserRouter as Router,Route, Link } from 'react-router-dom'
 
 import { Catalog } from './Catalog'
 import { Map} from './Map'
-import {Menu, Icon} from 'semantic-ui-react'
+import { Chart} from './Chart'
+import {Menu, Icon,Search  } from 'semantic-ui-react'
+
 
 export default class Navigate extends React.Component {
-  state = { activeItem: 'catalog' }
+  state = { activeItem: 'catalog', isLoading:false, value:"", results:{}  }
 
-  handleItemClick = (e:any, { name }:any) => this.setState({ activeItem: name })
+
+  async componentDidMount(){
+
+    this.setState({ activeItem:  window.location.pathname })
+
+    }
+  handleItemClick = (e:any, { name }:any) => this.setState({ activeItem: name})
+  handleResultSelect = (e:any, { result }:any) => this.setState({ value: result.title, isLoading: false})
+
+  handleSearchChange = (e:any, { value }:any) => {
+    this.setState({ isLoading: false, value })
+  }
 
   render() {
-    const { activeItem } = this.state
+
+ const { isLoading, value, results,activeItem } = this.state
     return (
       <React.Fragment>
 <Router><React.Fragment>
-        <Menu icon='labeled' pointing secondary inverted>
+        <Menu icon='labeled' pointing secondary inverted stackable>
         <a className="item" href="/"><Icon name='home' />
 {"Home"}</a>
 
-<Menu.Item name='catalog' active={activeItem === 'catalog'}  as={Link} to='/catalog' onClick={this.handleItemClick}>
+<Menu.Item name='/catalog' active={activeItem === '/catalog'}  as={Link} to='/catalog' onClick={this.handleItemClick}>
 <Icon name='book' />
 {"Catalog"}
 </Menu.Item>
-<Menu.Item name='map' active={activeItem === 'map'}  as={Link} to='/map' onClick={this.handleItemClick}>
+<Menu.Item name='/map' active={activeItem === '/map'}  as={Link} to='/map' onClick={this.handleItemClick}>
 <Icon name='map' />
 {"Star Map"}
-</Menu.Item></Menu>
+</Menu.Item>
+<Menu.Item name='/chart' active={activeItem === '/chart'}  as={Link} to='/chart' onClick={this.handleItemClick}>
+<Icon name='chart line' />
+{"Chart"}
+</Menu.Item>
+<Menu.Item position='right'><br />
+<Search
+         
+            loading={isLoading}
+            onResultSelect={this.handleResultSelect}
+            onSearchChange={this.handleSearchChange}
+            results={results}
+            value={value}
+            {...this.props}
+          /></Menu.Item>
+</Menu>
      <Route exact path="/catalog" component={Catalog} />
      <Route exact path="/Map" component={Map} />
+     <Route exact path="/chart" component={Chart} />
 </React.Fragment>
       </Router></React.Fragment>
     );

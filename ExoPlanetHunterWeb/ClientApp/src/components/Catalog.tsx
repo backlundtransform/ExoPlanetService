@@ -1,7 +1,10 @@
 import * as React from 'react';
-import{GetPlanetListAsync,Planet,planetcolor } from '../service/getPlanets'
+import{GetPlanetListAsync } from '../service/getPlanets'
+import { Card, Icon,Grid,Rating  } from 'semantic-ui-react'
+import Svg,{Circle,G,ClipPath,Path,Rect,Image, Use,Defs} from 'react-native-svg-web';
+import MaterialIcon from 'material-icons-react';
 export class Catalog extends React.Component {
- 
+
 
   async componentDidMount(){
 
@@ -10,25 +13,280 @@ export class Catalog extends React.Component {
 console.log(planet)
   }
 
+
   render() {
 
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we've also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
+
+    return ( <Grid stackable centered columns={2}>
+    <Grid.Column width={9}>
+       
+        </Grid.Column>
+    
+    <Grid.Row centered columns={4}>
+      <Grid.Column>
+      <Card className={"post-preview"}>
+      <Svg
+             height="190" 
+             width="180" 
+       >   
+    <G>
+    <Defs>
+        <ClipPath id="clip">
+            <Circle  cx="100" cy="100" r="65"   />
+        </ClipPath>
+    </Defs> 
+    <Image
+     width="180" height="190" 
+        href={ 'https://i.imgur.com/wBKCEbc.png'  }
+        clipPath="url(#clip)"
+    /><Circle 
+    cx="100" cy="100" r="65"
+        fillOpacity={0.4}
+        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
+        </Svg>
+      <Card.Content>
+        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
+        <Card.Description>
+          <span>Discovered:2018</span>
+        </Card.Description>
+        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
+        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+
+      </Card.Content>
+      <Card.Content extra>
+        <a style={{margin:10}}>
+          <Icon name='sun' />
+         Epic
+        </a>
+        <a style={{margin:10}}>
+    
+        2 Planets
+        </a> <a>
+        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
+        </a>
+      </Card.Content>
+    </Card> 
+      </Grid.Column>
+      <Grid.Column>
+      <Card className={"post-preview"}>
+      <Svg
+             height="190" 
+             width="180" 
+       >   
+    <G>
+    <Defs>
+        <ClipPath id="clip">
+            <Circle  cx="100" cy="100" r="65"   />
+        </ClipPath>
+    </Defs> 
+    <Image
+     width="180" height="190" 
+        href={ 'https://i.imgur.com/wBKCEbc.png'  }
+        clipPath="url(#clip)"
+    /><Circle 
+    cx="100" cy="100" r="65"
+        fillOpacity={0.4}
+        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
+        </Svg>
+      <Card.Content>
+        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
+        <Card.Description>
+          <span>Discovered:2018</span>
+        </Card.Description>
+        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
+        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+
+      </Card.Content>
+      <Card.Content extra>
+        <a style={{margin:10}}>
+          <Icon name='sun' />
+         Epic
+        </a>
+        <a style={{margin:10}}>
+    
+        2 Planets
+        </a> <a>
+        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
+        </a>
+      </Card.Content>    </Card> 
+      </Grid.Column>
+      <Grid.Column>
+      <Card className={"post-preview"}>
+      <Svg
+             height="190" 
+             width="180" 
+       >   
+    <G>
+    <Defs>
+        <ClipPath id="clip">
+            <Circle  cx="100" cy="100" r="65"   />
+        </ClipPath>
+    </Defs> 
+    <Image
+     width="180" height="190" 
+        href={ 'https://i.imgur.com/wBKCEbc.png'  }
+        clipPath="url(#clip)"
+    /><Circle 
+    cx="100" cy="100" r="65"
+        fillOpacity={0.4}
+        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
+        </Svg>
+      <Card.Content>
+        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
+        <Card.Description>
+          <span>Discovered:2018</span>
+        </Card.Description>
+        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
+        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+
+      </Card.Content>
+      <Card.Content extra>
+        <a style={{margin:10}}>
+          <Icon name='sun' />
+         Epic
+        </a>
+        <a style={{margin:10}}>
+    
+        2 Planets
+        </a> <a>
+        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
+        </a>
+      </Card.Content></Card> 
+      </Grid.Column>
+    </Grid.Row>
+    <Grid.Row centered columns={4}>
+      <Grid.Column>
+      <Card className={"post-preview"}>
+      <Svg
+             height="190" 
+             width="180" 
+       >   
+    <G>
+    <Defs>
+        <ClipPath id="clip">
+            <Circle  cx="100" cy="100" r="65"   />
+        </ClipPath>
+    </Defs> 
+    <Image
+     width="180" height="190" 
+        href={ 'https://i.imgur.com/wBKCEbc.png'  }
+        clipPath="url(#clip)"
+    /><Circle 
+    cx="100" cy="100" r="65"
+        fillOpacity={0.4}
+        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
+        </Svg>
+      <Card.Content>
+        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
+        <Card.Description>
+          <span>Discovered:2018</span>
+        </Card.Description>
+        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
+        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+
+      </Card.Content>
+      <Card.Content extra>
+        <a style={{margin:10}}>
+          <Icon name='sun' />
+         Epic
+        </a>
+        <a style={{margin:10}}>
+    
+        2 Planets
+        </a> <a>
+        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
+        </a>
+      </Card.Content></Card> 
+      </Grid.Column>
+      <Grid.Column>
+      <Card className={"post-preview"}>
+      <Svg
+             height="190" 
+             width="180" 
+       >   
+    <G>
+    <Defs>
+        <ClipPath id="clip">
+            <Circle  cx="100" cy="100" r="65"   />
+        </ClipPath>
+    </Defs> 
+    <Image
+     width="180" height="190" 
+        href={ 'https://i.imgur.com/wBKCEbc.png'  }
+        clipPath="url(#clip)"
+    /><Circle 
+    cx="100" cy="100" r="65"
+        fillOpacity={0.4}
+        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
+        </Svg>
+      <Card.Content>
+        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
+        <Card.Description>
+          <span>Discovered:2018</span>
+        </Card.Description>
+        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
+        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+
+      </Card.Content>
+      <Card.Content extra>
+        <a style={{margin:10}}>
+          <Icon name='sun' />
+         Epic
+        </a>
+        <a style={{margin:10}}>
+    
+        2 Planets
+        </a> <a>
+        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
+        </a>
+      </Card.Content></Card> 
+      </Grid.Column>
+      <Grid.Column>
+      <Card className={"post-preview"}>
+      <Svg
+             height="190" 
+             width="180" 
+       >   
+    <G>
+    <Defs>
+        <ClipPath id="clip">
+            <Circle  cx="100" cy="100" r="65"   />
+        </ClipPath>
+    </Defs> 
+    <Image
+     width="180" height="190" 
+        href={ 'https://i.imgur.com/wBKCEbc.png'  }
+        clipPath="url(#clip)"
+    /><Circle 
+    cx="100" cy="100" r="65"
+        fillOpacity={0.4}
+        fill={`url(#https://i.imgur.com/wBKCEbc.png`}/></G>
+        </Svg>
+      <Card.Content>
+        <Card.Header> <a style={{margin:10}}>Epic</a></Card.Header>
+        <Card.Description>
+          <span>Discovered:2018</span>
+        </Card.Description>
+        <Card.Description>Jovian 227 lightyears from earth.</Card.Description>
+        <Rating icon='star' defaultRating={3} maxRating={4} size='large' />
+
+      </Card.Content>
+      <Card.Content extra>
+        <a style={{margin:10}}>
+          <Icon name='sun' />
+         Epic
+        </a>
+        <a style={{margin:10}}>
+    
+        2 Planets
+        </a> <a>
+        <MaterialIcon icon="3d_rotation" color='#c6d4ff'  size={25}/>
+        </a>
+      </Card.Content>    </Card> 
+      </Grid.Column>
+    </Grid.Row>
+
+</Grid>
     );
   }
 }
