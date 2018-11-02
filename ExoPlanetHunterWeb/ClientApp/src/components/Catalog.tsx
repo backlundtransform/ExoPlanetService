@@ -95,9 +95,4 @@ async componentDidMount(){
 return (loading?(<React.Fragment />):(<Grid stackable centered columns={2}>{main}</Grid>))
 
 }
-
-
-  
-
- 
-}
+ }

@@ -1,6 +1,6 @@
 export const GetConstellationsLines=  async () => {
 
-    const lines=  await fetch(`http://exoplanets.azurewebsites.net/api/Maps/ConstellationsLines`)
+    const lines=  await fetch(`../api/Maps/ConstellationsLines`)
     .then((response) => {
       return response.json();
     })
@@ -16,7 +16,7 @@ export const GetConstellationsLines=  async () => {
 
    export const GetStarsMarkers=  async () => {
 
-    const lines=  await fetch(`http://exoplanets.azurewebsites.net/api/Maps/StarMarkers`)
+    const lines=  await fetch(`../api/Maps/StarMarkers`)
     .then((response) => {
       return response.json();
     })

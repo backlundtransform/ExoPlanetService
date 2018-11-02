@@ -37,3 +37,5 @@
  .ui.cards>.card>.content>.header, .ui.cards>.meta, .ui.card>.extra a:not(.ui), .ui.cards>.card>.extra a:not(.ui)  {
     color:  #c6d4ff!important;
 }
+
+#map { height: 780px; }

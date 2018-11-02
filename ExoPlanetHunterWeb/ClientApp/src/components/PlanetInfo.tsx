@@ -3,9 +3,6 @@ import { Container } from 'semantic-ui-react'
 export class PlanetInfo extends  React.Component {
  
     async componentDidMount(){
-
-      
-  
         }
       
   render() {
