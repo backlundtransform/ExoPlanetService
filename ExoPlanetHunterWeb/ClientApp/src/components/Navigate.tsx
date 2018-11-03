@@ -1,10 +1,12 @@
 import  * as React from "react"
 import { BrowserRouter as Router,Route, Link } from 'react-router-dom'
-
 import { Catalog } from './Catalog'
 import { Map} from './Map'
 import { Chart} from './Chart'
 import { PlanetInfo} from './PlanetInfo'
+import { Simulator} from './Simulator'
+import { Constellations} from './Constellations'
+
 import {Menu, Icon,Search  } from 'semantic-ui-react'
 
 
@@ -61,6 +63,8 @@ export default class Navigate extends React.Component {
      <Route exact path="/Map" component={Map} />
      <Route exact path="/chart" component={Chart} />
      <Route name="planet"  path="/planet/:planetId" component={PlanetInfo} />
+     <Route name="system"  path="/system/:starId" component={Simulator} />
+     <Route name="constellation"  path="/constellation/:constellationId" component={Constellations} />
 </React.Fragment>
       </Router></React.Fragment>
     );

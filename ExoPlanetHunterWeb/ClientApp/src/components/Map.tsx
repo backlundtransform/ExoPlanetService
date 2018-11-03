@@ -57,7 +57,7 @@ planets.map((planet) =>  {
   const planetmarker=   L.marker([planet.coordinate.latitude,planet.coordinate.longitude] as L.LatLngExpression,{icon:planetIcon}).bindTooltip(planet.name,
       {direction:"left"}
      ).openTooltip().addTo(this._map)
-     planetmarker.addEventListener("click", ()=>console.log(planet.name))
+     planetmarker.addEventListener("click", ()=>this.props.history.push({ pathname: `system/${planet.star.name}`, state: { star: planet.star}}))
     
        })
     
@@ -69,7 +69,7 @@ planets.map((planet) =>  {
   L.geoJSON(stars, {
     pointToLayer: (feature, latlng)=> {
         return L.marker(latlng, {icon:starIcon }).bindTooltip(feature.properties.name,
-          {direction:"left",permanent: true}
+          {direction:"left"}
          ).openTooltip().addTo(this._map);
     }
 }).addTo(this._map);
@@ -95,14 +95,11 @@ onEachFeature = (feature:any, layer:any)=> {
 const coord =  feature.geometry.coordinates
 
 if(feature.properties.constellation!=null){
-const marker =  L.circleMarker([
-    coord[0][1],
-    coord[0][0],
-  ],options)
+  const marker =  L.circleMarker([coord[0][1],coord[0][0]],options)
     .addTo(this._map).bindTooltip(feature.properties.constellation,
     {permanent: true, direction:"left"}
    ).openTooltip()
-   marker.addEventListener("click", ()=>console.log(feature.properties.constellation))
+   marker.addEventListener("click", ()=>this.props.history.push({ pathname: `constellation/${feature.properties.constellationid}`, state: { constellation: feature.properties.constellation}}))
 
 }
 options = {
