@@ -12,7 +12,8 @@ import Svg, {
   ClipPath,
   Text,
   Defs,
-  G
+  G,
+  Rect
 } from "react-native-svg-web"
 interface SimulatorState {
   x: number
@@ -60,10 +61,11 @@ export default class Simulator extends React.Component<
     if (planet.id !== undefined) {
       var planetinfo = await GetPlanetAsync(planet.id)
 
-      this.props.history.push({
-        pathname: `/planet/${planetinfo.name}`,
-        state: { planet: planetinfo }
-      })
+      planetinfo &&
+        this.props.history.push({
+          pathname: `/planet/${planetinfo.name}`,
+          state: { planet: planetinfo }
+        })
     }
   }
 
@@ -87,14 +89,16 @@ export default class Simulator extends React.Component<
           >
             <Svg x={0} y={0} height={height} width={width}>
               {Gradient()}
-
-              <Path
-                d={`M${width / 2 - star.radius},${height /
-                  2} a1,1 0 0,0 ${star.radius * 2},0`}
+              <Rect
+                x={width / 2 - (3 * star.radius) / 2}
+                y={height / 2}
+                width={star.radius * 3}
+                height={star.radius * 3}
                 fill={`url(#Star${
                   star.color != null ? star.color.toString() : 2
                 })`}
               />
+
               {star.habZoneMax != null ? (
                 <Ellipse
                   cx={width / 2}
@@ -175,9 +179,11 @@ export default class Simulator extends React.Component<
                 )
               })}
 
-              <Path
-                d={`M${width / 2 + star.radius},${height /
-                  2} a1,1 0 0,0  ${star.radius * -2},0`}
+              <Rect
+                x={width / 2 - (3 * star.radius) / 2}
+                y={height / 2 - 3 * star.radius}
+                width={star.radius * 3}
+                height={star.radius * 3}
                 fill={`url(#StarTop${
                   star.color != null ? star.color.toString() : 2
                 })`}

@@ -96,9 +96,13 @@ export default class Catalog extends React.Component<any, any> {
               <a style={{ margin: 10 }}>
                 {`${item.star.noPlanets} Planets`}
               </a>{" "}
-              <a>
-                <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={25} />
-              </a>
+              <Link
+                  to={{
+                    pathname: `system/${item.star.name}`, state: { star: item.star}
+                  }}
+                >
+                <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={25}  />
+              </Link>
             </Card.Content>
           </Card>
         </Grid.Column>

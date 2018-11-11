@@ -38,7 +38,6 @@ gradientUnits="objectBoundingBox" fx="30%" fy="30%">
 </RadialGradient>
 <RadialGradient id={"hotstone"}
 gradientUnits="objectBoundingBox" fx="30%" fy="30%">
-
 <Stop offset="30%" stopColor="#ffcc7f" />
 <Stop offset="100%" stopColor="#fc6b11"/>
 </RadialGradient>
@@ -71,66 +70,64 @@ gradientUnits="objectBoundingBox" fx="30%" fy="30%">
 <Stop offset="30%" stopColor="#f2f2f7"/>
 <Stop offset="100%" stopColor="#8bb1ed" />
 
-</RadialGradient>< RadialGradient id={`Star3`}  cx="50%" cy="50%" r="100%" fx="50%" fy="0%">
-<Stop offset="10%" stopColor="#ff6a00"/>
-<Stop offset="70%" stopColor="red"/>
-<Stop offset="100%" stopColor="black" stopOpacity={0}/>     
-</ RadialGradient>
-< RadialGradient id={`StarTop3`}   cx="50%" cy="50%" r="100%"  fx="50%" fy="100%">
-<Stop offset="10%" stopColor="#ff6a00"/>
-<Stop offset="70%" stopColor="red"/>
-<Stop offset="100%" stopColor="black" stopOpacity={0}/>      
-</ RadialGradient>
-<RadialGradient id={`Star2`}  cx="50%" cy="50%" r="100%" fx="50%" fy="0%">
-<Stop offset="10%" stopColor="orange"/>
-<Stop offset="50%" stopColor="#ff6a00"/>
+</RadialGradient>
+<RadialGradient id={`Star0`} cx="50%" cy="0%" r="50%" > 
+<Stop offset="0%"  stopColor="#164dff" />
+<Stop offset="60%"  stopColor="blue"  />
+<Stop offset="100%" stopColor="#black" stopOpacity={0}  />
+</RadialGradient> 
+<RadialGradient id={`StarTop0`} cx="50%" cy="100%" r="50%" > 
+<Stop offset="0%"  stopColor="#164dff" />
+<Stop offset="60%"  stopColor="blue"  />
+<Stop offset="100%" stopColor="#black" stopOpacity={0}  />
+</RadialGradient> 
+<RadialGradient id={`Star1`} cx="50%" cy="0%" r="50%" > 
+<Stop offset="0%"  stopColor="white" />
+<Stop offset="60%"  stopColor="#fffdd6"  />
+<Stop offset="100%" stopColor="#black" stopOpacity={0}  />
+</RadialGradient> 
+<RadialGradient id={`StarTop1`} cx="50%" cy="100%" r="50%" > 
+<Stop offset="0%"  stopColor="white" />
+<Stop offset="60%"  stopColor="#fffdd6"  />
+<Stop offset="100%" stopColor="#black" stopOpacity={0}  />
+</RadialGradient> 
+<RadialGradient id={`Star2`} cx="50%" cy="0%" r="50%" > 
+<Stop offset="0%"  stopColor="orange" />
+<Stop offset="60%"  stopColor="#ff6a00"  />
+<Stop offset="100%" stopColor="#black" stopOpacity={0}  />
+</RadialGradient> 
+<RadialGradient id={`StarTop2`} cx="50%" cy="100%" r="50%" > 
+<Stop offset="0%"  stopColor="orange" />
+<Stop offset="60%"  stopColor="#ff6a00"  />
+<Stop offset="100%" stopColor="#black" stopOpacity={0}  />
+</RadialGradient> 
+<RadialGradient id={`Star3`} cx="50%" cy="0%" r="50%" > 
+<Stop offset="0%"  stopColor="red" />
+<Stop offset="60%"  stopColor="#fc2c02"  />
+<Stop offset="100%" stopColor="#black" stopOpacity={0}  />
+</RadialGradient> 
+<RadialGradient id={`StarTop3`} cx="50%" cy="100%" r="50%" > 
+<Stop offset="0%"  stopColor="red" />
+<Stop offset="60%"  stopColor="#fc2c02"  />
+<Stop offset="100%" stopColor="#black" stopOpacity={0}  />
+</RadialGradient> 
 
-<Stop offset="80%" stopColor="#black"/>  
-</ RadialGradient>
-
-< RadialGradient id={`StarTop2`}   cx="50%" cy="50%" r="100%"  fx="50%" fy="100%">
-<Stop offset="10%" stopColor="orange"/>
-<Stop offset="50%" stopColor="#ff6a00"/>
-
-<Stop offset="80%" stopColor="#black"/>  
-</ RadialGradient>
-< RadialGradient id={`Star1`} cx="50%" cy="50%" r="100%" fx="50%" fy="0%">
-<Stop offset="10%" stopColor="#fffdd6"/>
-<Stop offset="70%" stopColor="white"/>
-<Stop offset="100%" stopColor="black" stopOpacity={0}/>
-</ RadialGradient>
-< RadialGradient id={`StarTop1`}  cx="50%" cy="50%" r="100%"  fx="50%" fy="100%">
-<Stop offset="10%" stopColor="#fffdd6"/>
-<Stop offset="70%" stopColor="white"/>
-<Stop offset="100%" stopColor="black" stopOpacity={0}/> 
-</ RadialGradient>
-< RadialGradient id={`Star0`} cx="50%" cy="50%" r="100%" fx="50%" fy="0%">
-<Stop offset="10%" stopColor="#164dff"/>
-<Stop offset="70%" stopColor="blue"/>
-<Stop offset="100%" stopColor="black" stopOpacity={0}/> 
-</ RadialGradient>
-< RadialGradient id={`StarTop0`}  cx="50%" cy="50%" r="100%"  fx="50%" fy="100%">
-<Stop offset="10%" stopColor="#164dff"/>
-<Stop offset="70%" stopColor="blue"/>
-<Stop offset="100%" stopColor="black" stopOpacity={0}/>  
-</ RadialGradient>
-
-< RadialGradient id={`${resource.color[3]}`} gradientUnits="objectBoundingBox" fx="30%" fy="30%">
+<RadialGradient id={`${resource.color[3]}`} gradientUnits="objectBoundingBox" fx="30%" fy="30%">
 <Stop offset="10%" stopColor="#ff6a00"/>
 <Stop offset="50%" stopColor="red"/>
 <Stop offset="80%" stopColor="#50607a"/>   
 </ RadialGradient>
-< RadialGradient id={`${resource.color[2]}`}    gradientUnits="objectBoundingBox" fx="30%" fy="30%">
+<RadialGradient id={`${resource.color[2]}`}    gradientUnits="objectBoundingBox" fx="30%" fy="30%">
 <Stop offset="10%" stopColor="#ff6a00"/>
 <Stop offset="50%" stopColor="orange"/>
 <Stop offset="80%" stopColor="#50607a"/>
 </ RadialGradient>
-< RadialGradient id={`${resource.color[1]}`}    gradientUnits="objectBoundingBox" fx="30%" fy="30%">
+<RadialGradient id={`${resource.color[1]}`}    gradientUnits="objectBoundingBox" fx="30%" fy="30%">
 <Stop offset="10%" stopColor="#fffdd6"/>
 <Stop offset="50%" stopColor="white"/>
 <Stop offset="80%" stopColor="#50607a"/>
 </ RadialGradient>
-< RadialGradient id={`${resource.color[0]}`}    gradientUnits="objectBoundingBox" fx="30%" fy="30%">
+<RadialGradient id={`${resource.color[0]}`}    gradientUnits="objectBoundingBox" fx="30%" fy="30%">
 <Stop offset="10%" stopColor="#164dff"/>
 <Stop offset="50%" stopColor="blue"/>
 <Stop offset="80%" stopColor="#50607a"/>
