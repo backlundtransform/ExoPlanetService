@@ -1,8 +1,8 @@
-import * as React from "react"
-import { ReactSVGPanZoom } from "react-svg-pan-zoom"
-import { Star, storeBase64, GetPlanetAsync } from "../service/getPlanets"
-import { getStarSize, getSolarSystem } from "../service/getSolarSystem"
-import { Gradient } from "../styles/radialgradients"
+import * as React from 'react'
+import { ReactSVGPanZoom } from 'react-svg-pan-zoom'
+import { Star, storeBase64, GetPlanetAsync } from '../service/getPlanets'
+import { getStarSize, getSolarSystem } from '../service/getSolarSystem'
+import { Gradient } from '../styles/radialgradients'
 
 import Svg, {
   Circle,
@@ -14,7 +14,7 @@ import Svg, {
   Defs,
   G,
   Rect
-} from "react-native-svg-web"
+} from 'react-native-svg-web'
 interface SimulatorState {
   x: number
   y: number
@@ -60,7 +60,6 @@ export default class Simulator extends React.Component<
   navigateToPlanet = async (planet: any) => {
     if (planet.id !== undefined) {
       var planetinfo = await GetPlanetAsync(planet.id)
-
       planetinfo &&
         this.props.history.push({
           pathname: `/planet/${planetinfo.name}`,
@@ -76,15 +75,15 @@ export default class Simulator extends React.Component<
     let height = window.innerHeight - 120
 
     return (
-      <div className={"space"}>
+      <div className={'space'}>
         {loading ? (
           <React.Fragment />
         ) : (
           <ReactSVGPanZoom
             width={width}
             height={height}
-            SVGBackground={"transparent"}
-            background={"transparent"}
+            SVGBackground={'transparent'}
+            background={'transparent'}
             onClick={event => this.navigateToPlanet(event.originalEvent.target)}
           >
             <Svg x={0} y={0} height={height} width={width}>
@@ -149,7 +148,6 @@ export default class Simulator extends React.Component<
                       )}
                       href={`${color[p.img.uri]}`}
                       clipPath={`url(#${index.toString()}`}
-                      style={{ cursor: "pointer" }}
                     />
                     <Circle
                       id={p.name}
@@ -158,6 +156,7 @@ export default class Simulator extends React.Component<
                       r={p.radius}
                       fillOpacity={0.4}
                       fill={`url(#${p.img.uri})`}
+                      style={{ cursor: 'pointer' }}
                     />
                     />
                     <Text

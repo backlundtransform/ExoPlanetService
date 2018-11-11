@@ -32,16 +32,19 @@
     background-color: #50607a!important;
  
 }
+.ui.header{
+    color:  #c6d4ff!important;
+}
 
 .ui.card>.content>.description, .ui.cards>.card>.content>.description, .ui.card>.content>.header,
- .ui.cards>.card>.content>.header, .ui.cards>.meta, .ui.card>.extra a:not(.ui), .ui.cards>.card>.extra a:not(.ui)  {
+ .ui.cards>.card>.content>.header, .ui.cards>.meta, .ui.card>.extra a:not(.ui), .ui.cards>.card>.extra a:not(.ui) {
     color:  #c6d4ff!important;
 }
 
 #map { height: 780px; }
 
 .space {
-    background-image: url("/img/tile.png") !important;
+    background-image: url("/img/tile_small.png") !important;
     background-repeat: repeat !important;
     overflow-x: scroll;
 }
