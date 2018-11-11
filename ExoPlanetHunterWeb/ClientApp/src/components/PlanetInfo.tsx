@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Container } from 'semantic-ui-react'
-export class PlanetInfo extends  React.Component {
+export default class PlanetInfo extends  React.Component {
  
     async componentDidMount(){
         }

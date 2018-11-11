@@ -1,11 +1,11 @@
 import  * as React from "react"
 import { BrowserRouter as Router,Route, Link } from 'react-router-dom'
-import { Catalog } from './Catalog'
-import { Map} from './Map'
-import { Chart} from './Chart'
-import { PlanetInfo} from './PlanetInfo'
-import { Simulator} from './Simulator'
-import { Constellations} from './Constellations'
+import  Catalog from './Catalog'
+import Map from './Map'
+import Chart from './Chart'
+import  PlanetInfo from './PlanetInfo'
+import Simulator from './Simulator'
+import Constellations from './Constellations'
 
 import {Menu, Icon,Search  } from 'semantic-ui-react'
 

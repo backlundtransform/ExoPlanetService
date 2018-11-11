@@ -11,5 +11,10 @@ declare module 'react-native-svg-web' {
     export const Stop: any
     export const RadialGradient: any
     export const LinearGradient: any
+    export const Ellipse: any
+    export const Pattern: any
+    export const Text: any
+   
+    
     export default Svg;
    }

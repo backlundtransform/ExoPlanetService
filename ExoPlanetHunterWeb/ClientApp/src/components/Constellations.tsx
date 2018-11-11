@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { Container } from 'semantic-ui-react'
-export class Constellations extends  React.Component {
+export default class Constellations extends  React.Component {
  
     async componentDidMount(){
         }

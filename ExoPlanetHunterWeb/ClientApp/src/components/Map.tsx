@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom'
 import{ GetHabitablePlanets, Planet } from '../service/getPlanets'
 interface StarMapState{ constlines:GeoJsonObject,  stars:GeoJsonObject,  longitude:number, latitude:number,  siderealtime:string,planets:Array<Planet>}
 
-export class Map extends  React.Component<any, StarMapState> {
+export  default class Map extends  React.Component<any, StarMapState> {
   state= {constlines:{} as GeoJsonObject,  stars:{} as GeoJsonObject, longitude:-90, latitude:40,siderealtime:"", planets:[] as Array<Planet>}
   _map?: L.Map
 

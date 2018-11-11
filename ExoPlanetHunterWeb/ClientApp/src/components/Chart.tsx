@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export class Chart extends  React.Component {
+export default class Chart extends  React.Component {
  
 
   render() {

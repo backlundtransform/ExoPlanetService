@@ -39,3 +39,9 @@
 }
 
 #map { height: 780px; }
+
+.space {
+    background-image: url("/img/tile.png") !important;
+    background-repeat: repeat !important;
+    overflow-x: scroll;
+}
