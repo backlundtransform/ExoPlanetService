@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ReactSVGPanZoom } from 'react-svg-pan-zoom'
-import { Star, storeBase64, GetPlanetAsync } from '../service/getPlanets'
+import { Star, GetPlanetAsync } from '../service/getPlanets'
 import { getStarSize, getSolarSystem } from '../service/getSolarSystem'
 import { Gradient } from '../styles/radialgradients'
 
@@ -21,7 +21,7 @@ interface SimulatorState {
   alpha: number
   star: Star
   loading: boolean
-  color: Array<any>
+
 }
 interface SimulatorProps {
   location: any
@@ -37,7 +37,7 @@ export default class Simulator extends React.Component<
     alpha: 0,
     star: {} as Star,
     loading: true,
-    color: [] as Array<any>
+  
   }
 
   async componentWillMount() {
@@ -45,11 +45,10 @@ export default class Simulator extends React.Component<
 
     const star = await getSolarSystem(location.state.star)
 
-    let color = JSON.parse(await storeBase64())
 
     star.radius = getStarSize(star)
     setInterval(() => this.updateHandler(), 1000)
-    this.setState({ star, loading: false, color })
+    this.setState({ star, loading: false })
   }
   updateHandler = () => this.setState({ alpha: this.state.alpha + 1 / 50 })
   RotateX = (cx: number, rx: number) =>
@@ -69,7 +68,7 @@ export default class Simulator extends React.Component<
   }
 
   render() {
-    const { star, loading, color } = this.state
+    const { star, loading } = this.state
     let width = window.innerWidth - 20
 
     let height = window.innerHeight - 120
@@ -146,7 +145,7 @@ export default class Simulator extends React.Component<
                         height / 2 - 2 * p.radius,
                         p.starDistance * 0.3
                       )}
-                      href={`${color[p.img.uri]}`}
+                      href={`../img/${p.img.uri}.jpg`}
                       clipPath={`url(#${index.toString()}`}
                     />
                     <Circle
@@ -171,6 +170,7 @@ export default class Simulator extends React.Component<
                       fontWeight="bold"
                       fontSize="18"
                       fill="white"
+                      style={{ cursor: 'pointer' }}
                     >
                       {p.name}
                     </Text>

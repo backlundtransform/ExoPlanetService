@@ -43,9 +43,9 @@ gradientUnits="objectBoundingBox" fx="30%" fy="30%">
 </RadialGradient>
 <RadialGradient id={"stone"}
 gradientUnits="objectBoundingBox" fx="30%" fy="30%">
-<Stop offset="0%" stopColor="#4286f4" />
+<Stop offset="0%" stopColor="#0047ba" />
 <Stop offset="80%" stopColor="#4286f4" />
-<Stop offset="100%" stopColor="#2baf30"/>
+<Stop offset="100%" stopColor="#4286f4"/>
 </RadialGradient>
 <RadialGradient id={"coldstone"}
 gradientUnits="objectBoundingBox" fx="30%" fy="30%">

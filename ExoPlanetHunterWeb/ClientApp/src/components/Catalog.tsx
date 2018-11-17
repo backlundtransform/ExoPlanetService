@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { GetPlanetListAsync, storeBase64, Planet } from '../service/getPlanets'
+import { GetPlanetListAsync, Planet } from '../service/getPlanets'
 import { Card, Icon, Grid, Rating } from 'semantic-ui-react'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import MaterialIcon from 'material-icons-react'
@@ -18,8 +18,8 @@ export default class Catalog extends React.Component<any, any> {
 
   async componentDidMount() {
     const planets = await GetPlanetListAsync(null, {}, 100)
-    let color = JSON.parse(await storeBase64())
-    this.setState({ color, planets, loading: false })
+
+    this.setState({ planets, loading: false })
   }
 
   groupBy = (arr: Array<any>, n: number) => {
@@ -29,13 +29,19 @@ export default class Catalog extends React.Component<any, any> {
     return group
   }
   mainPost = () => {
-    const { planets, color } = this.state
+    const { planets } = this.state
     let posts = [] as Array<any>
 
     for (let item of planets as Array<Planet>) {
       posts.push(
         <Grid.Column>
           <Card className={'post-preview'}>
+          <Link
+                  to={{
+                    pathname: `planet/${item.name}`,
+                    state: { planet: item }
+                  }}
+                >
             <Svg height="190" width="180">
               {' '}
               {Gradient()}
@@ -48,7 +54,7 @@ export default class Catalog extends React.Component<any, any> {
                 <Image
                   width="180"
                   height="190"
-                  href={`${color[item.img.uri]}`}
+                  href={`../img/${item.img.uri}.jpg`}
                   clipPath="url(#clip)"
                 />
                 <Circle
@@ -59,7 +65,7 @@ export default class Catalog extends React.Component<any, any> {
                   fill={`url(#${item.img.uri}`}
                 />
               </G>
-            </Svg>
+            </Svg> </Link>
             <Card.Content>
               <Card.Header>
                 <Link
@@ -89,14 +95,17 @@ export default class Catalog extends React.Component<any, any> {
               />
             </Card.Content>
             <Card.Content extra>
-              <a style={{ margin: 10 }}>
-                <Icon name="sun" />
-                {item.star.name}
-              </a>
+            <Link
+                to={{
+                  pathname: `star/${item.star.name}`,
+                  state: { star: item.star }
+                }}
+              >
+                <Icon name="sun"  size={"large"}/>
+                {"Visit Star"}
+                </Link>
               <br />
-              <a style={{ margin: 10 }}>
-                {`${item.star.noPlanets} Planets`}
-              </a>{' '}
+              <br />
               <Link
                 to={{
                   pathname: `system/${item.star.name}`,
@@ -104,6 +113,7 @@ export default class Catalog extends React.Component<any, any> {
                 }}
               >
                 <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={25} />
+                {`${item.star.noPlanets} Planets`}
               </Link>
             </Card.Content>
           </Card>

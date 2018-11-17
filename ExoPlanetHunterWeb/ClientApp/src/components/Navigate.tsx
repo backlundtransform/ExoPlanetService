@@ -6,6 +6,7 @@ import Chart from './Chart'
 import PlanetInfo from './PlanetInfo'
 import Simulator from './Simulator'
 import Constellations from './Constellations'
+import StarInfo from './StarInfo'
 
 import { Menu, Icon, Search } from 'semantic-ui-react'
 
@@ -85,6 +86,11 @@ export default class Navigate extends React.Component {
               name="planet"
               path="/planet/:planetId"
               component={PlanetInfo}
+            />
+                <Route
+              name="star"
+              path="/star/:starId"
+              component={StarInfo}
             />
             <Route name="system" path="/system/:starId" component={Simulator} />
             <Route

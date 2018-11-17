@@ -1,21 +1,27 @@
 import * as React from 'react'
-import { Container, Header, Rating, Table } from 'semantic-ui-react'
+import { Container, Header, Rating, Table, Grid,Icon  } from 'semantic-ui-react'
 import { Planet } from '../service/getPlanets'
 import { resource } from '../config/Resource'
 import { Gradient } from '../styles/radialgradients'
-
+import MaterialIcon from 'material-icons-react'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
+import { Link } from 'react-router-dom'
 export default class PlanetInfo extends React.Component<any> {
   async componentDidMount() {}
 
   render() {
     const planet = this.props.location.state.planet as Planet
+
     let size = window.innerWidth / 5 > 200 ? window.innerWidth / 5 : 200
 
-    size = size > 500 ? 500 : size
+    size = size > 400 ? 400 : size
 
     return (
-      <Container className={'post-preview'}>
+ <Container className={'post-preview'}>
+ 
+ <Grid columns={2}   stackable>
+      <Grid.Row>
+        <Grid.Column>
         <Container text>
           <Header className={'post-preview'}>{planet.name}</Header>
           <Svg height={size} width={size} x={size / 2}>
@@ -29,22 +35,15 @@ export default class PlanetInfo extends React.Component<any> {
               </Defs>
 
               <Image
-                width={1200}
-                height={500}
+                width={800}
+                height={800}
                 x={0}
                 y={0}
                 href={`../img/${planet.img.uri}.jpg`}
                 clipPath="url(#clip)"
               >
                 {' '}
-                <animate
-                  attributeType="XML"
-                  attributeName="x"
-                  from={-1100 + size}
-                  to={-10}
-                  dur="10s"
-                  repeatCount="indefinite"
-                />
+                
               </Image>
               <Circle
                 cx={size / 2}
@@ -54,71 +53,7 @@ export default class PlanetInfo extends React.Component<any> {
                 fill={`url(#${planet.img.uri})`}
               />
             </G>
-          </Svg>
-        </Container>
-        <Container text>
-          {`${resource.planetname[0]} ${planet.name} ${
-            resource.planetname[1]
-          }  ${planet.star.name}  ${resource.planetname[2]} ${
-            resource.const[planet.star.constellation] === undefined
-              ? ''
-              : resource.const[planet.star.constellation]
-          }`}{' '}
-          {`${resource.decFormatdist[0]}${
-            planet.distance !== 0 ? Math.round(planet.distance) : ''
-          } ${resource.decFormatdist[1]} `}
-          <p>
-            {resource.massInfo[planet.massType] === undefined
-              ? ''
-              : resource.massInfo[planet.massType]}{' '}
-          </p>
-          <p>
-            {resource.compInfo[planet.comp] === undefined
-              ? ''
-              : resource.compInfo[planet.comp]}{' '}
-          </p>
-          <p>
-            {planet.temp != null
-              ? `${resource.meantemp[0]} ${planet.temp}. `
-              : ''}
-            {planet.tempMax != null && planet.tempMin != null
-              ? `${resource.meantemp[1]} ${planet.name} ${
-                  resource.meantemp[2]
-                } ${planet.tempMax} ${resource.meantemp[3]} ${planet.tempMin}`
-              : ''}
-          </p>
-          <p>
-            {planet.period != null
-              ? `${resource.orbit[0]} ${planet.period} ${resource.orbit[1]} `
-              : ''}
-            {planet.meanDistance != null
-              ? `${resource.decMean[0]} ${planet.meanDistance} ${
-                  resource.decMean[1]
-                }`
-              : ''}
-          </p>
-          <p>{`${
-            resource.hzd[planet.hzd] === undefined
-              ? ''
-              : resource.hzd[planet.hzd] + ' '
-          }${
-            resource.hza[planet.hza] === undefined
-              ? ''
-              : resource.hza[planet.hza] + ' '
-          }${
-            resource.atmosinfo[planet.atmosphere] === undefined
-              ? ''
-              : resource.atmosinfo[planet.atmosphere] + ' '
-          }${planet.moons ? resource.moon : ''}`}</p>
-          <p>{`${planet.discYear === undefined ? '' : resource.disc} ${
-            planet.discYear === undefined ? '' : planet.discYear
-          }.`}</p>
-          <p>{`${
-            resource.discinfo[planet.discMethod] == undefined
-              ? ''
-              : resource.discinfo[planet.discMethod]
-          }`}</p>
-          <p>{resource.esiratings}</p>
+          </Svg><p>{resource.esiratings}</p>
           <Rating
             icon="star"
             defaultRating={Math.round(planet.esi * 10)}
@@ -134,7 +69,10 @@ export default class PlanetInfo extends React.Component<any> {
             size="massive"
             disabled={true}
           />
-          <Table celled>
+        </Container>
+        </Grid.Column>
+        <Grid.Column>
+        <Table celled>
             {' '}
             <Table.Body>
               {planet.mass && (
@@ -189,8 +127,94 @@ export default class PlanetInfo extends React.Component<any> {
               <Table.Row />
             </Table.Footer>
           </Table>
-        </Container>
+          <Link
+                to={{
+                  pathname: `../star/${planet.star.name}`,
+                  state: { star: planet.star }
+                }}
+              >
+                <Icon name="sun"  size={"big"}/>
+                {"Visit Star"}
+                </Link>
+              <br />
+              <br />
+              <Link
+                to={{
+                  pathname: `../system/${planet.star.name}`,
+                  state: { star: planet.star }
+                }}
+              >
+                <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={40} />
+                {"Visit Solar System"}
+              </Link>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid><hr />
+    <Container>
+           {`${resource.planetname[0]} ${planet.name} ${
+             resource.planetname[1]
+           }  ${planet.star.name}  ${resource.planetname[2]} ${
+             resource.const[planet.star.constellation] === undefined
+               ? ''
+               : resource.const[planet.star.constellation]
+           }`}{' '}
+           {`${resource.decFormatdist[0]}${
+             planet.distance !== 0 ? Math.round(planet.distance) : ''
+           } ${resource.decFormatdist[1]} `}
+           <p>
+             {resource.massInfo[planet.massType] === undefined
+               ? ''
+               : resource.massInfo[planet.massType]}{' '}
+           </p>
+           <p>
+             {resource.compInfo[planet.comp] === undefined
+               ? ''
+               : resource.compInfo[planet.comp]}{' '}
+           </p>
+           <p>
+             {planet.temp != null
+               ? `${resource.meantemp[0]} ${planet.temp}. `
+               : ''}
+             {planet.tempMax != null && planet.tempMin != null
+               ? `${resource.meantemp[1]} ${planet.name} ${
+                   resource.meantemp[2]
+                 } ${planet.tempMax} ${resource.meantemp[3]} ${planet.tempMin}`
+               : ''}
+           </p>
+           <p>
+             {planet.period != null
+               ? `${resource.orbit[0]} ${planet.period} ${resource.orbit[1]} `
+               : ''}
+             {planet.meanDistance != null
+               ? `${resource.decMean[0]} ${planet.meanDistance} ${
+                   resource.decMean[1]
+                 }`
+               : ''}
+           </p>
+           <p>{`${
+             resource.hzd[planet.hzd] === undefined
+               ? ''
+               : resource.hzd[planet.hzd] + ' '
+           }${
+             resource.hza[planet.hza] === undefined
+               ? ''
+               : resource.hza[planet.hza] + ' '
+           }${
+             resource.atmosinfo[planet.atmosphere] === undefined
+               ? ''
+               : resource.atmosinfo[planet.atmosphere] + ' '
+           }${planet.moons ? resource.moon : ''}`}</p>
+           <p>{`${planet.discYear === undefined ? '' : resource.disc} ${
+             planet.discYear === undefined ? '' : planet.discYear
+           }.`}</p>
+           <p>{`${
+             resource.discinfo[planet.discMethod] == undefined
+               ? ''
+               : resource.discinfo[planet.discMethod]
+           }`}</p>
       </Container>
+</Container>
+         
     )
   }
 }
