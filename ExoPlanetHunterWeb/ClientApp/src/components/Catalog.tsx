@@ -208,7 +208,6 @@ export default class Catalog extends React.Component<any, any> {
   }
 
   render() {
-    console.log("CG")
     const { loading, searchValue, top, planets } = this.state
     const main = this.mainPost()
 
@@ -234,9 +233,10 @@ export default class Catalog extends React.Component<any, any> {
               />
   </Input>
          </div>
+         <div className={"catalog"}>
     <Grid stackable centered columns={2}>
           {main}
-        </Grid>
+        </Grid>  </div>
         <div className={'bar'}>
           <Button.Group>
             <Button

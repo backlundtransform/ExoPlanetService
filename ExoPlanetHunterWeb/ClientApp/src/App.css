@@ -1,47 +1,58 @@
-
 .ui.secondary.inverted.pointing.menu .active.item {
-    border-color: #ffff!important;
-    color:  #ffff!important;
-    font-family: Lora,'Times New Roman',serif!important;
-    font-size: 18px!important;
- 
-}
-.ui.secondary.inverted.pointing.menu .item  {
-   
-    color:  #c6d4ff!important;
-    font-family: Lora,'Times New Roman',serif!important;
-    font-size: 18px!important;
+    border-color: #ffff !important;
+    color: #ffff !important;
+    font-family: Lora, 'Times New Roman', serif !important;
+    font-size: 18px !important;
 
 }
 
-.ui.secondary.inverted.pointing.menu .item:hover  {
-   
-    color:  #ffff!important;
-    font-family: Lora,'Times New Roman',serif!important;
-    font-size: 18px!important;
+.ui.secondary.inverted.pointing.menu .item {
+
+    color: #c6d4ff !important;
+    font-family: Lora, 'Times New Roman', serif !important;
+    font-size: 18px !important;
 
 }
+
+.ui.secondary.inverted.pointing.menu .item:hover {
+
+    color: #ffff !important;
+    font-family: Lora, 'Times New Roman', serif !important;
+    font-size: 18px !important;
+
+}
+
 .ui.secondary.inverted.pointing.menu {
-   
-    background-color: #50607a!important;
+
+    background-color: #50607a !important;
 }
 
-.ui.card, .ui.cards>.card {
-
-    background-color: #50607a!important;
-    min-height: 500px;
- 
-}
-.ui.header{
-    color:  #c6d4ff!important;
+.ui.card,
+.ui.cards>.card {
+    background-color: #50607a !important;
 }
 
-.ui.card>.content>.description, .ui.cards>.card>.content>.description, .ui.card>.content>.header,
- .ui.cards>.card>.content>.header, .ui.cards>.meta, .ui.card>.extra a:not(.ui), .ui.cards>.card>.extra a:not(.ui) {
-    color:  #c6d4ff!important;
+.catalog .ui.card {
+   min-height: 500px;
 }
 
-#map { height: 780px; }
+.ui.header {
+    color: #c6d4ff !important;
+}
+
+.ui.card>.content>.description,
+.ui.cards>.card>.content>.description,
+.ui.card>.content>.header,
+.ui.cards>.card>.content>.header,
+.ui.cards>.meta,
+.ui.card>.extra a:not(.ui),
+.ui.cards>.card>.extra a:not(.ui) {
+    color: #c6d4ff !important;
+}
+
+#map {
+    height: 780px;
+}
 
 .space {
     background-image: url("/img/tile_small.png") !important;
@@ -53,6 +64,6 @@
     position: relative;
     margin: 1rem 0;
     padding: 1em 1em;
-    background-color: #818ea5!important;
-    color:  #c6d4ff!important;
+    background-color: #818ea5 !important;
+    color: #c6d4ff !important;
 }
