@@ -104,7 +104,7 @@ export default class StarInfo extends React.Component<any> {
                       }`}</Table.Cell>
                     </Table.Row>
                   )}
-                  {star.radiusSu && (
+                  {star.radiusSu!==0&&star.radiusSu && (
                     <Table.Row>
                       <Table.Cell>{`${resource.starinfo[1]}`}</Table.Cell>
                       <Table.Cell>{`${star.radiusSu}*${

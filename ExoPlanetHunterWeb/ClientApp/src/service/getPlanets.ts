@@ -12,10 +12,10 @@ export interface SearchPageState {
 }
 
 export interface filter {
-  Key: string
-  MaxValue: number
-  MinValue: number
-  Name: string
+  Key?: string
+  MaxValue?: number
+  MinValue?: number
+  Name?: string
 }
 
 export interface planetcolor {
@@ -108,7 +108,7 @@ export const GetPlanetListAsync = (
   filterstate: any,
   top: number
 ) => {
-  let skip = top - 100
+  let skip = top - 30
 
   let filterstring = '%24filter=Message eq null'
   let orderby = 'DiscYear%20desc'

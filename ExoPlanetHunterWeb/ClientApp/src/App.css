@@ -28,8 +28,8 @@
 
 .ui.card, .ui.cards>.card {
 
-   
     background-color: #50607a!important;
+    min-height: 500px;
  
 }
 .ui.header{
@@ -47,4 +47,12 @@
     background-image: url("/img/tile_small.png") !important;
     background-repeat: repeat !important;
     overflow-x: scroll;
+}
+
+.bar {
+    position: relative;
+    margin: 1rem 0;
+    padding: 1em 1em;
+    background-color: #818ea5!important;
+    color:  #c6d4ff!important;
 }

@@ -8,25 +8,20 @@ import Simulator from './Simulator'
 import Constellations from './Constellations'
 import StarInfo from './StarInfo'
 
-import { Menu, Icon, Search } from 'semantic-ui-react'
+import { Menu, Icon} from 'semantic-ui-react'
 
 export default class Navigate extends React.Component {
-  state = { activeItem: 'catalog', isLoading: false, value: '', results: {} }
+  state = { activeItem: 'catalog'}
 
   async componentDidMount() {
     this.setState({ activeItem: window.location.pathname })
   }
   handleItemClick = (e: any, { name }: any) =>
     this.setState({ activeItem: name })
-  handleResultSelect = (e: any, { result }: any) =>
-    this.setState({ value: result.title, isLoading: false })
 
-  handleSearchChange = (e: any, { value }: any) => {
-    this.setState({ isLoading: false, value })
-  }
 
   render() {
-    const { isLoading, value, results, activeItem } = this.state
+    const {  activeItem } = this.state
     return (
       <React.Fragment>
         <Router>
@@ -67,17 +62,7 @@ export default class Navigate extends React.Component {
                 <Icon name="chart line" />
                 {'Chart'}
               </Menu.Item>
-              <Menu.Item position="right">
-                <br />
-                <Search
-                  loading={isLoading}
-                  onResultSelect={this.handleResultSelect}
-                  onSearchChange={this.handleSearchChange}
-                  results={results}
-                  value={value}
-                  {...this.props}
-                />
-              </Menu.Item>
+           
             </Menu>
             <Route exact path="/catalog" component={Catalog} />
             <Route exact path="/Map" component={Map} />
