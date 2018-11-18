@@ -1,10 +1,32 @@
 import * as React from 'react'
 import { GetPlanetListAsync, Planet } from '../service/getPlanets'
-import { Card, Icon, Grid, Rating } from 'semantic-ui-react'
+import { Card, Button, Grid, Rating } from 'semantic-ui-react'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import MaterialIcon from 'material-icons-react'
 import { Link } from 'react-router-dom'
 import { Gradient } from '../styles/radialgradients'
+
+export const getGroupedItems = (posts: Array<any>) => {
+let groupeditems= groupBy(posts, 3)
+let groupedposts = [] as Array<any>
+for (let items of groupeditems) {
+  groupedposts.push(row(items))
+}
+return groupedposts
+
+}
+
+ const groupBy = (arr: Array<any>, n: number) => {
+  var group = []
+  for (var i = 0, end = arr.length / n; i < end; ++i)
+    group.push(arr.slice(i * n, (i + 1) * n))
+  return group
+}
+const row = (post: any) => (
+  <Grid.Row centered columns={4}>
+    {post}
+  </Grid.Row>
+)
 export default class Catalog extends React.Component<any, any> {
   constructor(props: any) {
     super(props)
@@ -22,12 +44,7 @@ export default class Catalog extends React.Component<any, any> {
     this.setState({ planets, loading: false })
   }
 
-  groupBy = (arr: Array<any>, n: number) => {
-    var group = []
-    for (var i = 0, end = arr.length / n; i < end; ++i)
-      group.push(arr.slice(i * n, (i + 1) * n))
-    return group
-  }
+
   mainPost = () => {
     const { planets } = this.state
     let posts = [] as Array<any>
@@ -95,25 +112,27 @@ export default class Catalog extends React.Component<any, any> {
               />
             </Card.Content>
             <Card.Content extra>
+
             <Link
                 to={{
                   pathname: `star/${item.star.name}`,
                   state: { star: item.star }
                 }}
               >
-                <Icon name="sun"  size={"large"}/>
-                {"Visit Star"}
+                  <Button icon inverted basic color='grey' height="25">
+              <MaterialIcon icon="wb_sunny" color="#c6d4ff" size={25} />
+                {"Visit Star"} </Button>
                 </Link>
-              <br />
-              <br />
+             
               <Link
                 to={{
                   pathname: `system/${item.star.name}`,
                   state: { star: item.star }
                 }}
-              >
-                <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={25} />
-                {`${item.star.noPlanets} Planets`}
+              ><Button icon inverted basic color='grey' height="25">
+              <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={25} />
+        
+                {`${item.star.noPlanets} Planets`}</Button>
               </Link>
             </Card.Content>
           </Card>
@@ -121,18 +140,9 @@ export default class Catalog extends React.Component<any, any> {
       )
     }
 
-    let groupedplanets = this.groupBy(posts, 3)
-    let groupedposts = [] as Array<any>
-    for (let planets of groupedplanets) {
-      groupedposts.push(this.row(planets))
-    }
-    return groupedposts
+    return getGroupedItems(posts)
   }
-  row = (post: any) => (
-    <Grid.Row centered columns={4}>
-      {post}
-    </Grid.Row>
-  )
+
   render() {
     const { loading } = this.state
     const main = this.mainPost()

@@ -131,7 +131,7 @@ export default class Map extends React.Component<any, StarMapState> {
       marker.addEventListener('click', () =>
         this.props.history.push({
           pathname: `constellation/${feature.properties.constellationid}`,
-          state: { constellation: feature.properties.constellation }
+          state: { constellation: feature.properties.constellationid }
         })
       )
     }

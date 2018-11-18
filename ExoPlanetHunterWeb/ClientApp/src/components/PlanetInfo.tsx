@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Container, Header, Rating, Table, Grid,Icon  } from 'semantic-ui-react'
+import { Container, Header, Rating, Table, Grid,Icon,Button  } from 'semantic-ui-react'
 import { Planet } from '../service/getPlanets'
 import { resource } from '../config/Resource'
 import { Gradient } from '../styles/radialgradients'
@@ -23,8 +23,7 @@ export default class PlanetInfo extends React.Component<any> {
       <Grid.Row>
         <Grid.Column>
         <Container text>
-          <Header className={'post-preview'}>{planet.name}</Header>
-          <Svg height={size} width={size} x={size / 2}>
+      <Svg height={size} width={size} x={size / 2}>
             {' '}
             {Gradient()}
             <G>
@@ -72,6 +71,7 @@ export default class PlanetInfo extends React.Component<any> {
         </Container>
         </Grid.Column>
         <Grid.Column>
+        <Header className={'post-preview'}>{planet.name}</Header>
         <Table celled>
             {' '}
             <Table.Body>
@@ -123,29 +123,26 @@ export default class PlanetInfo extends React.Component<any> {
                 </Table.Row>
               )}
             </Table.Body>
-            <Table.Footer>
-              <Table.Row />
-            </Table.Footer>
+           
           </Table>
           <Link
                 to={{
                   pathname: `../star/${planet.star.name}`,
                   state: { star: planet.star }
                 }}
-              >
-                <Icon name="sun"  size={"big"}/>
-                {"Visit Star"}
+              >   
+              <Button icon inverted basic color='grey' height="40">
+              <MaterialIcon icon="wb_sunny" color="#c6d4ff" size={40} />
+                {"Visit Star"} </Button>
                 </Link>
-              <br />
-              <br />
               <Link
                 to={{
                   pathname: `../system/${planet.star.name}`,
                   state: { star: planet.star }
                 }}
-              >
+              > <Button icon inverted basic color='grey' height="40">
                 <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={40} />
-                {"Visit Solar System"}
+                {"Visit Solar System"}</Button>
               </Link>
         </Grid.Column>
       </Grid.Row>
@@ -165,13 +162,11 @@ export default class PlanetInfo extends React.Component<any> {
              {resource.massInfo[planet.massType] === undefined
                ? ''
                : resource.massInfo[planet.massType]}{' '}
-           </p>
-           <p>
+          
              {resource.compInfo[planet.comp] === undefined
                ? ''
                : resource.compInfo[planet.comp]}{' '}
-           </p>
-           <p>
+          
              {planet.temp != null
                ? `${resource.meantemp[0]} ${planet.temp}. `
                : ''}
