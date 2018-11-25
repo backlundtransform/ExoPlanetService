@@ -11,17 +11,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -65,23 +54,16 @@ import Chart from './Chart';
 import PlanetInfo from './PlanetInfo';
 import Simulator from './Simulator';
 import Constellations from './Constellations';
-import { Menu, Icon, Search } from 'semantic-ui-react';
+import StarInfo from './StarInfo';
+import { Menu, Icon } from 'semantic-ui-react';
 var Navigate = /** @class */ (function (_super) {
     __extends(Navigate, _super);
     function Navigate() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.state = { activeItem: 'catalog', isLoading: false, value: '', results: {} };
+        _this.state = { activeItem: 'catalog' };
         _this.handleItemClick = function (e, _a) {
             var name = _a.name;
             return _this.setState({ activeItem: name });
-        };
-        _this.handleResultSelect = function (e, _a) {
-            var result = _a.result;
-            return _this.setState({ value: result.title, isLoading: false });
-        };
-        _this.handleSearchChange = function (e, _a) {
-            var value = _a.value;
-            _this.setState({ isLoading: false, value: value });
         };
         return _this;
     }
@@ -94,7 +76,7 @@ var Navigate = /** @class */ (function (_super) {
         });
     };
     Navigate.prototype.render = function () {
-        var _a = this.state, isLoading = _a.isLoading, value = _a.value, results = _a.results, activeItem = _a.activeItem;
+        var activeItem = this.state.activeItem;
         return (React.createElement(React.Fragment, null,
             React.createElement(Router, null,
                 React.createElement(React.Fragment, null,
@@ -110,14 +92,12 @@ var Navigate = /** @class */ (function (_super) {
                             'Star map'),
                         React.createElement(Menu.Item, { name: "/chart", active: activeItem === '/chart', as: Link, to: "/chart", onClick: this.handleItemClick },
                             React.createElement(Icon, { name: "chart line" }),
-                            'Chart'),
-                        React.createElement(Menu.Item, { position: "right" },
-                            React.createElement("br", null),
-                            React.createElement(Search, __assign({ loading: isLoading, onResultSelect: this.handleResultSelect, onSearchChange: this.handleSearchChange, results: results, value: value }, this.props)))),
+                            'Chart')),
                     React.createElement(Route, { exact: true, path: "/catalog", component: Catalog }),
                     React.createElement(Route, { exact: true, path: "/Map", component: Map }),
                     React.createElement(Route, { exact: true, path: "/chart", component: Chart }),
                     React.createElement(Route, { name: "planet", path: "/planet/:planetId", component: PlanetInfo }),
+                    React.createElement(Route, { name: "star", path: "/star/:starId", component: StarInfo }),
                     React.createElement(Route, { name: "system", path: "/system/:starId", component: Simulator }),
                     React.createElement(Route, { name: "constellation", path: "/constellation/:constellationId", component: Constellations })))));
     };

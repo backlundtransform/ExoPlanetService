@@ -47,59 +47,121 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import * as React from 'react';
-import { Container } from 'semantic-ui-react';
+import { Container, Header, Rating, Table, Grid, Button } from 'semantic-ui-react';
 import { resource } from '../config/Resource';
 import { Gradient } from '../styles/radialgradients';
-import Svg, { Circle, G, ClipPath, Image, Defs, } from 'react-native-svg-web';
+import MaterialIcon from 'material-icons-react';
+import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web';
+import { Link } from 'react-router-dom';
 var PlanetInfo = /** @class */ (function (_super) {
     __extends(PlanetInfo, _super);
     function PlanetInfo() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     PlanetInfo.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        });
+        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
+            return [2 /*return*/];
+        }); });
     };
     PlanetInfo.prototype.render = function () {
         var planet = this.props.location.state.planet;
         var size = window.innerWidth / 5 > 200 ? window.innerWidth / 5 : 200;
-        size = size > 500 ? 500 : size;
-        return (React.createElement(Container, { className: "post-preview" },
-            React.createElement(Container, { text: true },
-                React.createElement(Svg, { height: size, width: size, x: size / 2 },
-                    "      ",
-                    Gradient(),
-                    React.createElement(G, null,
-                        React.createElement(Defs, null,
-                            React.createElement(ClipPath, { id: "clip" },
-                                React.createElement(Circle, { cx: size / 2, cy: size / 2, r: size / 2 }))),
-                        React.createElement(Image, { width: 1200, height: 500, x: 0, y: 0, href: "../img/" + planet.img.uri + ".jpg\"", clipPath: "url(#clip)" },
+        size = size > 400 ? 400 : size;
+        return (React.createElement(Container, { className: 'post-preview' },
+            React.createElement(Grid, { columns: 2, stackable: true },
+                React.createElement(Grid.Row, null,
+                    React.createElement(Grid.Column, null,
+                        React.createElement(Container, { text: true },
+                            React.createElement(Svg, { height: size, width: size, x: size / 2 },
+                                ' ',
+                                Gradient(),
+                                React.createElement(G, null,
+                                    React.createElement(Defs, null,
+                                        React.createElement(ClipPath, { id: "clip" },
+                                            React.createElement(Circle, { cx: size / 2, cy: size / 2, r: size / 2 }))),
+                                    React.createElement(Image, { width: 800, height: 800, x: 0, y: 0, href: "../img/" + planet.img.uri + ".jpg", clipPath: "url(#clip)" }, ' '),
+                                    React.createElement(Circle, { cx: size / 2, cy: size / 2, r: size / 2, fillOpacity: 0.3, fill: "url(#" + planet.img.uri + ")" }))),
+                            React.createElement("p", null, resource.esiratings),
+                            React.createElement(Rating, { icon: "star", defaultRating: Math.round(planet.esi * 10), maxRating: 10, size: "massive", disabled: true }),
+                            React.createElement("p", null, resource.sphratings),
+                            React.createElement(Rating, { icon: "star", defaultRating: Math.round(planet.sph * 10), maxRating: 10, size: "massive", disabled: true }))),
+                    React.createElement(Grid.Column, null,
+                        React.createElement(Header, { className: 'post-preview' }, planet.name),
+                        React.createElement(Table, { celled: true },
+                            ' ',
+                            React.createElement(Table.Body, null,
+                                planet.mass && (React.createElement(Table.Row, null,
+                                    React.createElement(Table.Cell, null, resource.planetinfo[0]),
+                                    React.createElement(Table.Cell, null, planet.mass + "*" + resource.earth))),
+                                planet.radiusEu && (React.createElement(Table.Row, null,
+                                    React.createElement(Table.Cell, null, resource.planetinfo[1]),
+                                    React.createElement(Table.Cell, null, planet.radiusEu + "*" + resource.earth))),
+                                planet.density && (React.createElement(Table.Row, null,
+                                    React.createElement(Table.Cell, null, resource.planetinfo[2]),
+                                    React.createElement(Table.Cell, null, planet.density + "*" + resource.earth))),
+                                planet.gravity && (React.createElement(Table.Row, null,
+                                    React.createElement(Table.Cell, null, resource.planetinfo[3]),
+                                    React.createElement(Table.Cell, null, planet.gravity + "*" + resource.earth))),
+                                planet.surfacePressure && (React.createElement(Table.Row, null,
+                                    React.createElement(Table.Cell, null, resource.planetinfo[4]),
+                                    React.createElement(Table.Cell, null, planet.surfacePressure + "*" + resource.earth))),
+                                planet.escapeVelocity && (React.createElement(Table.Row, null,
+                                    React.createElement(Table.Cell, null, resource.planetinfo[5]),
+                                    React.createElement(Table.Cell, null, planet.escapeVelocity + "*" + resource.earth))))),
+                        React.createElement(Link, { to: {
+                                pathname: "../star/" + planet.star.name,
+                                state: { star: planet.star }
+                            } },
+                            React.createElement(Button, { icon: true, inverted: true, basic: true, color: 'grey', height: "40" },
+                                React.createElement(MaterialIcon, { icon: "wb_sunny", color: "#c6d4ff", size: 40 }),
+                                "Visit Star",
+                                " ")),
+                        React.createElement(Link, { to: {
+                                pathname: "../system/" + planet.star.name,
+                                state: { star: planet.star }
+                            } },
                             " ",
-                            React.createElement("animate", { attributeType: "XML", attributeName: "x", from: -1100 + size, to: -10, dur: "10s", repeatCount: "indefinite" })),
-                        React.createElement(Circle, { cx: size / 2, cy: size / 2, r: size / 2, fillOpacity: 0.3, fill: "url(#" + planet.img.uri + ")" })))),
-            React.createElement(Container, { text: true }, resource.planetname[0] + " " + planet.name + " " + resource.planetname[1] + "  " + planet.star.name + "  " + resource.planetname[2] + " " + (resource.const[planet.star.constellation] === undefined ? "" : resource.const[planet.star.constellation]),
-                " ", "" + resource.decFormatdist[0] + (planet.distance !== 0 ? Math.round(planet.distance) : "") + " " + resource.decFormatdist[1] + " ",
+                            React.createElement(Button, { icon: true, inverted: true, basic: true, color: 'grey', height: "40" },
+                                React.createElement(MaterialIcon, { icon: "3d_rotation", color: "#c6d4ff", size: 40 }),
+                                "Visit Solar System"))))),
+            React.createElement("hr", null),
+            React.createElement(Container, null, resource.planetname[0] + " " + planet.name + " " + resource.planetname[1] + "  " + planet.star.name + "  " + resource.planetname[2] + " " + (resource.const[planet.star.constellation] === undefined
+                ? ''
+                : resource.const[planet.star.constellation]),
+                ' ', "" + resource.decFormatdist[0] + (planet.distance !== 0 ? Math.round(planet.distance) : '') + " " + resource.decFormatdist[1] + " ",
                 React.createElement("p", null,
-                    resource.massInfo[planet.massType] === undefined ? "" : resource.massInfo[planet.massType],
-                    " "),
+                    resource.massInfo[planet.massType] === undefined
+                        ? ''
+                        : resource.massInfo[planet.massType],
+                    ' ',
+                    resource.compInfo[planet.comp] === undefined
+                        ? ''
+                        : resource.compInfo[planet.comp],
+                    ' ',
+                    planet.temp != null
+                        ? resource.meantemp[0] + " " + planet.temp + ". "
+                        : '',
+                    planet.tempMax != null && planet.tempMin != null
+                        ? resource.meantemp[1] + " " + planet.name + " " + resource.meantemp[2] + " " + planet.tempMax + " " + resource.meantemp[3] + " " + planet.tempMin
+                        : ''),
                 React.createElement("p", null,
-                    resource.compInfo[planet.comp] === undefined ? "" : resource.compInfo[planet.comp],
-                    " "),
-                React.createElement("p", null,
-                    planet.temp != null ? resource.meantemp[0] + " " + planet.temp + ". " : '',
-                    planet.tempMax != null && planet.tempMin != null ? resource.meantemp[1] + " " + planet.name + " " + resource.meantemp[2] + " " + planet.tempMax + " " + resource.meantemp[3] + " " + planet.tempMin : ''),
-                React.createElement("p", null,
-                    planet.period != null ? resource.orbit[0] + " " + planet.period + " " + resource.orbit[1] + " " : '',
-                    planet.meanDistance != null ? resource.decMean[0] + " " + planet.meanDistance + " " + resource.decMean[1] : ''),
-                React.createElement("p", null),
-                React.createElement("p", null, "" + (resource.hzd[planet.hzd] === undefined ? "" : resource.hzd[planet.hzd] + " ") + (resource.hza[planet.hza] === undefined ? "" : resource.hza[planet.hza] + " ") + (resource.atmosinfo[planet.atmosphere] === undefined ? "" : resource.atmosinfo[planet.atmosphere] + " ") + (planet.moon ? resource.moon : "")),
-                React.createElement("p", null, (planet.discYear === undefined ? "" : resource.disc) + " " + (planet.discYear === undefined ? "" : planet.discYear) + "."),
-                React.createElement("p", null, "" + (resource.discinfo[planet.discMethod] == undefined ? "" : resource.discinfo[planet.discMethod])),
-                React.createElement("p", null, resource.esiratings),
-                React.createElement("p", null, resource.sphratings))));
+                    planet.period != null
+                        ? resource.orbit[0] + " " + planet.period + " " + resource.orbit[1] + " "
+                        : '',
+                    planet.meanDistance != null
+                        ? resource.decMean[0] + " " + planet.meanDistance + " " + resource.decMean[1]
+                        : ''),
+                React.createElement("p", null, "" + (resource.hzd[planet.hzd] === undefined
+                    ? ''
+                    : resource.hzd[planet.hzd] + ' ') + (resource.hza[planet.hza] === undefined
+                    ? ''
+                    : resource.hza[planet.hza] + ' ') + (resource.atmosinfo[planet.atmosphere] === undefined
+                    ? ''
+                    : resource.atmosinfo[planet.atmosphere] + ' ') + (planet.moons ? resource.moon : '')),
+                React.createElement("p", null, (planet.discYear === undefined ? '' : resource.disc) + " " + (planet.discYear === undefined ? '' : planet.discYear) + "."),
+                React.createElement("p", null, "" + (resource.discinfo[planet.discMethod] == undefined
+                    ? ''
+                    : resource.discinfo[planet.discMethod])))));
     };
     return PlanetInfo;
 }(React.Component));

@@ -48,7 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import * as React from 'react';
 import { ReactSVGPanZoom } from 'react-svg-pan-zoom';
-import { storeBase64, GetPlanetAsync } from '../service/getPlanets';
+import { GetPlanetAsync } from '../service/getPlanets';
 import { getStarSize, getSolarSystem } from '../service/getSolarSystem';
 import { Gradient } from '../styles/radialgradients';
 import Svg, { Circle, Ellipse, Image, ClipPath, Text, Defs, G, Rect } from 'react-native-svg-web';
@@ -62,7 +62,6 @@ var Simulator = /** @class */ (function (_super) {
             alpha: 0,
             star: {},
             loading: true,
-            color: []
         };
         _this.updateHandler = function () { return _this.setState({ alpha: _this.state.alpha + 1 / 50 }); };
         _this.RotateX = function (cx, rx) {
@@ -94,22 +93,18 @@ var Simulator = /** @class */ (function (_super) {
     }
     Simulator.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var location, star, color, _a, _b;
+            var location, star;
             var _this = this;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         location = this.props.location;
                         return [4 /*yield*/, getSolarSystem(location.state.star)];
                     case 1:
-                        star = _c.sent();
-                        _b = (_a = JSON).parse;
-                        return [4 /*yield*/, storeBase64()];
-                    case 2:
-                        color = _b.apply(_a, [_c.sent()]);
+                        star = _a.sent();
                         star.radius = getStarSize(star);
                         setInterval(function () { return _this.updateHandler(); }, 1000);
-                        this.setState({ star: star, loading: false, color: color });
+                        this.setState({ star: star, loading: false });
                         return [2 /*return*/];
                 }
             });
@@ -117,7 +112,7 @@ var Simulator = /** @class */ (function (_super) {
     };
     Simulator.prototype.render = function () {
         var _this = this;
-        var _a = this.state, star = _a.star, loading = _a.loading, color = _a.color;
+        var _a = this.state, star = _a.star, loading = _a.loading;
         var width = window.innerWidth - 20;
         var height = window.innerHeight - 120;
         return (React.createElement("div", { className: 'space' }, loading ? (React.createElement(React.Fragment, null)) : (React.createElement(ReactSVGPanZoom, { width: width, height: height, SVGBackground: 'transparent', background: 'transparent', onClick: function (event) { return _this.navigateToPlanet(event.originalEvent.target); } },
@@ -131,11 +126,11 @@ var Simulator = /** @class */ (function (_super) {
                         React.createElement(Defs, null,
                             React.createElement(ClipPath, { id: index.toString() },
                                 React.createElement(Circle, { cx: _this.RotateX(width / 2, p.starDistance), cy: _this.RotateY(height / 2, p.starDistance * 0.3), r: p.radius }))),
-                        React.createElement(Image, { width: "180", height: "190", x: _this.RotateX(width / 2 - 2 * p.radius, p.starDistance), y: _this.RotateY(height / 2 - 2 * p.radius, p.starDistance * 0.3), href: "" + color[p.img.uri], clipPath: "url(#" + index.toString() }),
+                        React.createElement(Image, { width: "180", height: "190", x: _this.RotateX(width / 2 - 2 * p.radius, p.starDistance), y: _this.RotateY(height / 2 - 2 * p.radius, p.starDistance * 0.3), href: "../img/" + p.img.uri + ".jpg", clipPath: "url(#" + index.toString() }),
                         React.createElement(Circle, { id: p.name, cx: _this.RotateX(width / 2, p.starDistance), cy: _this.RotateY(height / 2, p.starDistance * 0.3), r: p.radius, fillOpacity: 0.4, fill: "url(#" + p.img.uri + ")", style: { cursor: 'pointer' } }),
                         "/>",
                         React.createElement(Text, { key: "text- " + index, x: p.radius + _this.RotateX(width / 2, p.starDistance), y: p.radius +
-                                _this.RotateY(height / 2, p.starDistance * 0.3), textAnchor: "end", id: p.name, fontWeight: "bold", fontSize: "18", fill: "white" }, p.name)));
+                                _this.RotateY(height / 2, p.starDistance * 0.3), textAnchor: "end", id: p.name, fontWeight: "bold", fontSize: "18", fill: "white", style: { cursor: 'pointer' } }, p.name)));
                 }),
                 React.createElement(Rect, { x: width / 2 - (3 * star.radius) / 2, y: height / 2 - 3 * star.radius, width: star.radius * 3, height: star.radius * 3, fill: "url(#StarTop" + (star.color != null ? star.color.toString() : 2) + ")" }))))));
     };

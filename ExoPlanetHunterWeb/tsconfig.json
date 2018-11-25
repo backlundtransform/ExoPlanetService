@@ -5,6 +5,7 @@
     "module": "es6",
     "target": "es5",
     "jsx": "react",
+    "skipLibCheck": false,
     "moduleResolution": "node",
     "allowJs": true,
     "lib": [ "es2015","dom"],

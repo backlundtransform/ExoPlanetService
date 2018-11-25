@@ -52,36 +52,15 @@ export var GetStatisticsAsync = function () { return __awaiter(_this, void 0, vo
         }
     });
 }); };
-export var storeBase64 = function () { return __awaiter(_this, void 0, void 0, function () {
-    var colors;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, fetch("../api/ExoSolarSystems/GetImages", {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .then(function (response) {
-                    return response.json();
-                })
-                    .then(function (myJson) {
-                    return myJson;
-                })];
-            case 1:
-                colors = _a.sent();
-                return [2 /*return*/, JSON.stringify(colors)];
-        }
-    });
-}); };
 export var GetPlanetListAsync = function (filter, filterstate, top) {
-    var skip = top - 100;
-    var filterstring = "%24filter=Message eq null";
-    var orderby = "DiscYear%20desc";
+    var skip = top - 30;
+    var filterstring = '%24filter=Message eq null';
+    var orderby = 'DiscYear%20desc';
     if (filter != null) {
-        if (filter.Key === "Hab" || filter.Key === "Moons") {
+        if (filter.Key === 'Hab' || filter.Key === 'Moons') {
             filterstring = filterstring + " and " + filter.Key + "%20eq%20true";
         }
-        if (filter.Key === "Temp" || filter.Key === "Esi" || filter.Key === "Sph") {
+        if (filter.Key === 'Temp' || filter.Key === 'Esi' || filter.Key === 'Sph') {
             filterstring = filterstring + " and " + filter.Key + " gt " + filter.MinValue + " and " + filter.Key + " lt  " + filter.MaxValue;
         }
         if (filter.Name != null) {
@@ -126,18 +105,18 @@ export var GetPlanetListAsync = function (filter, filterstate, top) {
                 break;
         }
         if (orderindex > -1) {
-            var order = currentfilter.order ? "desc" : "asc";
+            var order = currentfilter.order ? 'desc' : 'asc';
             if (orderindex === 0) {
-                orderby = "Distance";
+                orderby = 'Distance';
             }
             if (orderindex === 1) {
-                orderby = "Esi";
+                orderby = 'Esi';
             }
             if (orderindex === 2) {
-                orderby = "Mass";
+                orderby = 'Mass';
             }
             if (orderindex === 3) {
-                orderby = "DiscYear";
+                orderby = 'DiscYear';
             }
             orderby = orderby + "%20" + order;
         }

@@ -47,20 +47,83 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import * as React from 'react';
-import { Container } from 'semantic-ui-react';
+import { ConstellationSolarSystems } from '../service/getSolarSystem';
+import { Card, Button, Grid, Header } from 'semantic-ui-react';
+import Svg, { Rect } from 'react-native-svg-web';
+import { getGroupedItems } from './Catalog';
+import MaterialIcon from 'material-icons-react';
+import { Link } from 'react-router-dom';
+import { Gradient } from '../styles/radialgradients';
+import { resource } from '../config/Resource';
 var Constellations = /** @class */ (function (_super) {
     __extends(Constellations, _super);
-    function Constellations() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function Constellations(props) {
+        var _this = _super.call(this, props) || this;
+        _this.mainPost = function () {
+            var stars = _this.state.stars;
+            var posts = [];
+            for (var _i = 0, _a = stars; _i < _a.length; _i++) {
+                var item = _a[_i];
+                posts.push(React.createElement(Grid.Column, null,
+                    React.createElement(Card, { className: 'post-preview' },
+                        React.createElement(Link, { to: {
+                                pathname: "../star/" + item.name,
+                                state: { star: item }
+                            } },
+                            React.createElement(Svg, { height: "200", width: "250" },
+                                ' ',
+                                Gradient(),
+                                React.createElement(Rect, { x: 50, y: -50, width: 150, height: 150, fill: "url(#StarTop" + (item.color != null ? item.color.toString() : 2) + ")" }),
+                                React.createElement(Rect, { x: 50, y: 100, width: 150, height: 150, fill: "url(#Star" + (item.color != null ? item.color.toString() : 2) + ")" })),
+                            " "),
+                        React.createElement(Card.Content, null,
+                            React.createElement(Card.Header, null,
+                                React.createElement(Link, { to: {
+                                        pathname: "../star/" + item.name,
+                                        state: { star: item }
+                                    } }, item.name))),
+                        React.createElement(Card.Content, { extra: true },
+                            React.createElement(Link, { to: {
+                                    pathname: "../system/" + item.name,
+                                    state: { star: item }
+                                } },
+                                React.createElement(Button, { icon: true, inverted: true, basic: true, color: 'grey', height: "25" },
+                                    React.createElement(MaterialIcon, { icon: "3d_rotation", color: "#c6d4ff", size: 25 }), "Visit Solarsystem"))))));
+            }
+            return getGroupedItems(posts);
+        };
+        _this.state = {
+            loading: true,
+            stars: []
+        };
+        return _this;
     }
     Constellations.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/];
-        }); });
+        return __awaiter(this, void 0, void 0, function () {
+            var constellation, stars;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        constellation = this.props.location.state.constellation;
+                        return [4 /*yield*/, ConstellationSolarSystems(constellation)];
+                    case 1:
+                        stars = _a.sent();
+                        this.setState({ stars: stars, loading: false });
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     Constellations.prototype.render = function () {
-        var location = this.props.location;
-        return (React.createElement(Container, { className: 'post-preview' }, location.state.constellation));
+        var _a = this.state, loading = _a.loading, stars = _a.stars;
+        var main = this.mainPost();
+        return loading ? (React.createElement(React.Fragment, null)) : (React.createElement(React.Fragment, null,
+            " ",
+            React.createElement(Header, { textAlign: 'center' },
+                " ",
+                resource.const[this.props.location.state.constellation]),
+            React.createElement(Grid, { stackable: true, centered: true, columns: 2 }, main),
+            " "));
     };
     return Constellations;
 }(React.Component));

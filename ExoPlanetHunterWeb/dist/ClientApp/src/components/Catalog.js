@@ -47,38 +47,57 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import * as React from 'react';
-import { GetPlanetListAsync, storeBase64 } from '../service/getPlanets';
-import { Card, Icon, Grid, Rating } from 'semantic-ui-react';
+import { GetPlanetListAsync } from '../service/getPlanets';
+import { Card, Button, Grid, Rating, Input, Dropdown, Icon } from 'semantic-ui-react';
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web';
 import MaterialIcon from 'material-icons-react';
 import { Link } from 'react-router-dom';
 import { Gradient } from '../styles/radialgradients';
+export var getGroupedItems = function (posts) {
+    var groupeditems = groupBy(posts, 3);
+    var groupedposts = [];
+    for (var _i = 0, groupeditems_1 = groupeditems; _i < groupeditems_1.length; _i++) {
+        var items = groupeditems_1[_i];
+        groupedposts.push(row(items));
+    }
+    return groupedposts;
+};
+var groupBy = function (arr, n) {
+    var group = [];
+    for (var i = 0, end = arr.length / n; i < end; ++i)
+        group.push(arr.slice(i * n, (i + 1) * n));
+    return group;
+};
+var row = function (post) { return (React.createElement(Grid.Row, { centered: true, columns: 4 }, post)); };
+var options = [
+    { key: 'all', text: 'All Planets', value: 'all' },
+    { key: 'hab', text: 'Habitable Planets', value: 'hab' }
+];
 var Catalog = /** @class */ (function (_super) {
     __extends(Catalog, _super);
     function Catalog(props) {
         var _this = _super.call(this, props) || this;
-        _this.groupBy = function (arr, n) {
-            var group = [];
-            for (var i = 0, end = arr.length / n; i < end; ++i)
-                group.push(arr.slice(i * n, (i + 1) * n));
-            return group;
-        };
         _this.mainPost = function () {
-            var _a = _this.state, planets = _a.planets, color = _a.color;
+            var planets = _this.state.planets;
             var posts = [];
-            for (var _i = 0, _b = planets; _i < _b.length; _i++) {
-                var item = _b[_i];
+            for (var _i = 0, _a = planets; _i < _a.length; _i++) {
+                var item = _a[_i];
                 posts.push(React.createElement(Grid.Column, null,
                     React.createElement(Card, { className: 'post-preview' },
-                        React.createElement(Svg, { height: "190", width: "180" },
-                            ' ',
-                            Gradient(),
-                            React.createElement(G, null,
-                                React.createElement(Defs, null,
-                                    React.createElement(ClipPath, { id: "clip" },
-                                        React.createElement(Circle, { cx: "100", cy: "100", r: "65" }))),
-                                React.createElement(Image, { width: "180", height: "190", href: "" + color[item.img.uri], clipPath: "url(#clip)" }),
-                                React.createElement(Circle, { cx: "100", cy: "100", r: "65", fillOpacity: 0.4, fill: "url(#" + item.img.uri }))),
+                        React.createElement(Link, { to: {
+                                pathname: "planet/" + item.name,
+                                state: { planet: item }
+                            } },
+                            React.createElement(Svg, { height: "190", width: "180" },
+                                ' ',
+                                Gradient(),
+                                React.createElement(G, null,
+                                    React.createElement(Defs, null,
+                                        React.createElement(ClipPath, { id: "clip" },
+                                            React.createElement(Circle, { cx: "100", cy: "100", r: "65" }))),
+                                    React.createElement(Image, { width: "180", height: "190", href: "../img/" + item.img.uri + ".jpg", clipPath: "url(#clip)" }),
+                                    React.createElement(Circle, { cx: "100", cy: "100", r: "65", fillOpacity: 0.4, fill: "url(#" + item.img.uri }))),
+                            ' '),
                         React.createElement(Card.Content, null,
                             React.createElement(Card.Header, null,
                                 React.createElement(Link, { to: {
@@ -92,59 +111,142 @@ var Catalog = /** @class */ (function (_super) {
                                 item.distance !== 0
                                     ? Math.round(item.distance) + " lightyears from earth."
                                     : ''),
-                            React.createElement(Rating, { icon: "star", defaultRating: Math.round(item.esi * 10), maxRating: 10, size: "large" })),
+                            React.createElement(Rating, { icon: "star", defaultRating: Math.round(item.esi * 10), maxRating: 10, size: "large", disabled: true })),
                         React.createElement(Card.Content, { extra: true },
-                            React.createElement("a", { style: { margin: 10 } },
-                                React.createElement(Icon, { name: "sun" }),
-                                item.star.name),
-                            React.createElement("br", null),
-                            React.createElement("a", { style: { margin: 10 } }, item.star.noPlanets + " Planets"),
-                            ' ',
+                            React.createElement(Link, { to: {
+                                    pathname: "star/" + item.star.name,
+                                    state: { star: item.star }
+                                } },
+                                React.createElement(Button, { icon: true, inverted: true, basic: true, color: "grey", height: "25" },
+                                    React.createElement(MaterialIcon, { icon: "wb_sunny", color: "#c6d4ff", size: 25 }),
+                                    'Visit Star',
+                                    ' ')),
                             React.createElement(Link, { to: {
                                     pathname: "system/" + item.star.name,
                                     state: { star: item.star }
                                 } },
-                                React.createElement(MaterialIcon, { icon: "3d_rotation", color: "#c6d4ff", size: 25 }))))));
+                                React.createElement(Button, { icon: true, inverted: true, basic: true, color: "grey", height: "25" },
+                                    React.createElement(MaterialIcon, { icon: "3d_rotation", color: "#c6d4ff", size: 25 }), item.star.noPlanets + " Planets"))))));
             }
-            var groupedplanets = _this.groupBy(posts, 3);
-            var groupedposts = [];
-            for (var _c = 0, groupedplanets_1 = groupedplanets; _c < groupedplanets_1.length; _c++) {
-                var planets_1 = groupedplanets_1[_c];
-                groupedposts.push(_this.row(planets_1));
-            }
-            return groupedposts;
+            return getGroupedItems(posts);
         };
-        _this.row = function (post) { return (React.createElement(Grid.Row, { centered: true, columns: 4 }, post)); };
+        _this.handleSearchChange = function (e) { return __awaiter(_this, void 0, void 0, function () {
+            var searchValue;
+            return __generator(this, function (_a) {
+                searchValue = this.state.searchValue;
+                searchValue = e.target.value;
+                this.setState({ searchValue: searchValue });
+                return [2 /*return*/];
+            });
+        }); };
+        _this.handleSearchClick = function () { return __awaiter(_this, void 0, void 0, function () {
+            var filter, planets;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        filter = this.setSearchFilter();
+                        return [4 /*yield*/, GetPlanetListAsync(filter, {}, 30)];
+                    case 1:
+                        planets = _a.sent();
+                        this.setState({ planets: planets, loading: false });
+                        return [2 /*return*/];
+                }
+            });
+        }); };
+        _this.handleHabClick = function () { return __awaiter(_this, void 0, void 0, function () {
+            var habactive, planets;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        habactive = this.state.habactive;
+                        habactive = !habactive;
+                        planets = [];
+                        if (!habactive) return [3 /*break*/, 2];
+                        return [4 /*yield*/, GetPlanetListAsync({ Key: 'Hab' }, {}, 30)];
+                    case 1:
+                        planets = _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        if (!!habactive) return [3 /*break*/, 4];
+                        return [4 /*yield*/, GetPlanetListAsync({}, {}, 30)];
+                    case 3:
+                        planets = _a.sent();
+                        _a.label = 4;
+                    case 4:
+                        this.setState({ planets: planets, loading: false, habactive: habactive });
+                        return [2 /*return*/];
+                }
+            });
+        }); };
+        _this.handlePaginate = function (top) { return __awaiter(_this, void 0, void 0, function () {
+            var filter, planets;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        filter = this.setSearchFilter();
+                        return [4 /*yield*/, GetPlanetListAsync(filter, {}, top)];
+                    case 1:
+                        planets = _a.sent();
+                        this.setState({ planets: planets, loading: false, top: top });
+                        return [2 /*return*/];
+                }
+            });
+        }); };
+        _this.setSearchFilter = function () {
+            var _a = _this.state, habactive = _a.habactive, searchValue = _a.searchValue;
+            if (habactive && searchValue !== '') {
+                return { Key: 'Hab', Name: searchValue };
+            }
+            if (!habactive && searchValue !== '') {
+                return { Name: searchValue };
+            }
+            if (habactive && searchValue === '') {
+                return { Key: 'Hab' };
+            }
+            return {};
+        };
         _this.state = {
             loading: true,
-            top: 100,
+            top: 30,
             color: '',
+            habactive: false,
+            searchValue: '',
             planets: []
         };
         return _this;
     }
     Catalog.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var planets, color, _a, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, GetPlanetListAsync(null, {}, 100)];
+            var planets;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, GetPlanetListAsync(null, {}, 30)];
                     case 1:
-                        planets = _c.sent();
-                        _b = (_a = JSON).parse;
-                        return [4 /*yield*/, storeBase64()];
-                    case 2:
-                        color = _b.apply(_a, [_c.sent()]);
-                        this.setState({ color: color, planets: planets, loading: false });
+                        planets = _a.sent();
+                        this.setState({ planets: planets, loading: false });
                         return [2 /*return*/];
                 }
             });
         });
     };
     Catalog.prototype.render = function () {
-        var loading = this.state.loading;
+        var _this = this;
+        var _a = this.state, loading = _a.loading, searchValue = _a.searchValue, top = _a.top, planets = _a.planets;
         var main = this.mainPost();
-        return loading ? (React.createElement(React.Fragment, null)) : (React.createElement(Grid, { stackable: true, centered: true, columns: 2 }, main));
+        return loading ? (React.createElement(React.Fragment, null)) : (React.createElement(React.Fragment, null,
+            React.createElement("div", { className: 'bar' },
+                React.createElement(Input, { type: 'text', size: "large", value: searchValue, onChange: function (e) { return _this.handleSearchChange(e); }, placeholder: 'Search...', action: true },
+                    React.createElement("input", null),
+                    React.createElement(Button, { type: 'submit', onClick: function () { return _this.handleSearchClick(); } },
+                        React.createElement(Icon, { name: "search" })),
+                    React.createElement(Dropdown, { button: true, basic: true, floating: true, onChange: function () { return _this.handleHabClick(); }, options: options, defaultValue: "all" }))),
+            React.createElement("div", { className: "catalog" },
+                React.createElement(Grid, { stackable: true, centered: true, columns: 2 }, main),
+                "  "),
+            React.createElement("div", { className: 'bar' },
+                React.createElement(Button.Group, null,
+                    React.createElement(Button, { labelPosition: "left", icon: "left chevron", content: "Previous", color: top <= 30 ? 'grey' : 'black', disabled: top <= 30, onClick: function () { return _this.handlePaginate(top - 30); } }),
+                    React.createElement(Button, { labelPosition: "right", icon: "right chevron", content: "Next", color: planets.length <= 29 ? 'grey' : 'black', disabled: planets.length <= 29, onClick: function () { return _this.handlePaginate(top + 30); } })))));
     };
     return Catalog;
 }(React.Component));

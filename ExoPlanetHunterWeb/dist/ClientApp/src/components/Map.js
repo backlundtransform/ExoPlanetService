@@ -134,7 +134,7 @@ var Map = /** @class */ (function (_super) {
                 marker.addEventListener('click', function () {
                     return _this.props.history.push({
                         pathname: "constellation/" + feature.properties.constellationid,
-                        state: { constellation: feature.properties.constellation }
+                        state: { constellation: feature.properties.constellationid }
                     });
                 });
             }

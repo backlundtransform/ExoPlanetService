@@ -4,6 +4,7 @@
   "description": "",
   "main": "webpack.config.js",
   "dependencies": {
+    "@amcharts/amcharts4": "^4.0.1",
     "@types/leaflet": "^1.2.12",
     "@types/react": "^16.4.18",
     "@types/react-dom": "^16.0.9",

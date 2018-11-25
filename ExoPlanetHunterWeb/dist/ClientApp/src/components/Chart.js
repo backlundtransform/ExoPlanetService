@@ -12,13 +12,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import * as React from 'react';
+import AmCharts from "@amcharts/amcharts3-react";
 var Chart = /** @class */ (function (_super) {
     __extends(Chart, _super);
     function Chart() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Chart.prototype.render = function () {
-        return (React.createElement("div", null, "AmChart"));
+        return (React.createElement(AmCharts.React, { className: "my-class", style: { width: "100%" }, options: null }));
     };
     return Chart;
 }(React.Component));
