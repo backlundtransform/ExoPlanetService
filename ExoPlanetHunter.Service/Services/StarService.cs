@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ExoPlanetHunter.Service.Services
 {
-    internal class StarService : IStarService
+    public class StarService : IStarService
     {
         private readonly ExoContext _context;
 
