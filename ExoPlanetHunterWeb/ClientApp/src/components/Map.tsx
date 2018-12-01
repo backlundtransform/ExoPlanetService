@@ -7,7 +7,7 @@ import {
 import { GeoJsonObject } from 'geojson'
 import { Icon, Statistic } from 'semantic-ui-react'
 import siderealtime from '../siderealtime/'
-import { withRouter } from 'react-router-dom'
+
 import { GetHabitablePlanets, Planet } from '../service/getPlanets'
 interface StarMapState {
   constlines: GeoJsonObject
