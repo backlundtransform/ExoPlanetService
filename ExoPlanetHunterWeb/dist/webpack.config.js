@@ -21,12 +21,21 @@ module.exports = {
             }, {
                 test: /\.js$/,
                 loaders: 'babel-loader',
+                include: ['/node_modules/@amcharts'],
                 options: {
                     presets: ['babel-preset-env', 'babel-preset-react']
                 }
             }, {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true,
+                            experimentalWatchApi: true,
+                        },
+                    },
+                ],
                 exclude: /node_modules/
             }
         ],

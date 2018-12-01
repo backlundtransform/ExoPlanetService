@@ -1,5 +1,7 @@
 ﻿using ExoPlanetHunter.Database.entity;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace ExoPlanetHunter.Service.Dto
@@ -9,9 +11,9 @@ namespace ExoPlanetHunter.Service.Dto
         public string Title { get; set; }
         public string Type { get; set; }
         public decimal? Lum { get; set; }
-        public decimal? Mag { get; set; }
         public string Color { get; set; }
         public decimal? Size { get; set; }
+        public decimal? Temp { get; set; }
         public string Constellation { get; set; }
 
         public static Expression<Func<Star, HertzsprungRussellDto>> FromEntities
@@ -23,13 +25,25 @@ namespace ExoPlanetHunter.Service.Dto
                     Title = p.Name,
                     Type = p.Type,
                     Lum = p.Luminosity,
-                    Mag = p.ApparMag,
-                    Color = "#f49842",
-                    Size = p.Mass,
-                    Constellation = p.Constellation.Name
+                    Color = dict.ContainsKey(p.Type.FirstOrDefault()) ? dict[p.Type[0]] : null,
+                    Size = p.Mass * 100,
+                    Constellation = p.Constellation.Name,
+                    Temp = p.Teff
                 };
             }
         }
+
+        private static Dictionary<char, string> dict = new Dictionary<char, string>() {
+            { 'O', "#19147A" },
+            { 'B', "#1D6AAE" },
+            { 'A', "#A3D4E2" },
+            { 'F', "#ECF2EE" },
+            { 'G', "#FCDF21" },
+            { 'K', "#FB830B" },
+            { 'M', "#FB5908" },
+            { 'L', "#FB110A" },
+            { 'T', "#9b0000" },
+        };
 
         public static HertzsprungRussellDto FromEntity(Star star) =>
             FromEntities.Compile().Invoke(star);

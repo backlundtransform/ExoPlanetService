@@ -17,7 +17,10 @@ namespace ExoPlanetHunter.Service.Services
 
         public List<HertzsprungRussellDto> GetHertzsprungRussell()
         {
-            return _context.Stars.AsQueryable().Select(HertzsprungRussellDto.FromEntities).ToList();
+            return _context.Stars.AsQueryable()
+                .Where(p => p.Mass != null && p.Luminosity != null
+            && p.Teff != null  && p.Type != null)
+            .Select(HertzsprungRussellDto.FromEntities).Where(p=>p.Color != null).ToList();
         }
     }
 }
