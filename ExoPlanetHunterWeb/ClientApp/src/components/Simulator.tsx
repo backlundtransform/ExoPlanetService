@@ -3,11 +3,12 @@ import { ReactSVGPanZoom } from 'react-svg-pan-zoom'
 import { Star, GetPlanetAsync } from '../service/getPlanets'
 import { getStarSize, getSolarSystem } from '../service/getSolarSystem'
 import { Gradient } from '../styles/radialgradients'
+import {Loader,Dimmer} from 'semantic-ui-react'
 
 import Svg, {
   Circle,
   Ellipse,
-  Path,
+
   Image,
   ClipPath,
   Text,
@@ -76,7 +77,9 @@ export default class Simulator extends React.Component<
     return (
       <div className={'space'}>
         {loading ? (
-          <React.Fragment />
+       <Dimmer active>
+       <Loader  />
+       </Dimmer>
         ) : (
           <ReactSVGPanZoom
             width={width}

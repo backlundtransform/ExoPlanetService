@@ -7,7 +7,8 @@ import {
   Rating,
   Input,
   Dropdown,
-  Icon
+  Icon,
+  Loader, Dimmer
 } from 'semantic-ui-react'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import MaterialIcon from 'material-icons-react'
@@ -211,8 +212,11 @@ export default class Catalog extends React.Component<any, any> {
     const { loading, searchValue, top, planets } = this.state
     const main = this.mainPost()
 
-    return loading ? (
-      <React.Fragment />
+    return loading? (
+      <Dimmer active>
+      <Loader />
+      </Dimmer>
+
     ) : (
       <React.Fragment>
         <div className={'bar'}>

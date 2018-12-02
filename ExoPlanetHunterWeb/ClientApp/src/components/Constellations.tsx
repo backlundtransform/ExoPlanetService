@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ConstellationSolarSystems} from '../service/getSolarSystem'
-import { Card, Button, Grid,Header} from 'semantic-ui-react'
+import { Card, Button, Grid,Header,Loader,Dimmer } from 'semantic-ui-react'
 import Svg, { Rect } from 'react-native-svg-web'
 import {getGroupedItems} from './Catalog'
 import MaterialIcon from 'material-icons-react'
@@ -99,7 +99,9 @@ export default class Constellations extends React.Component<any,any> {
     const main = this.mainPost()
  
     return loading ? (
-      <React.Fragment />
+      <Dimmer active>
+      <Loader />
+      </Dimmer>
     ) : (
       <React.Fragment> <Header textAlign='center'> {resource.const[this.props.location.state.constellation]}</Header>
       <Grid stackable centered columns={2}>

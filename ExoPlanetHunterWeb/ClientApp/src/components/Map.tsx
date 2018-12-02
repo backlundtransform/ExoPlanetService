@@ -1,5 +1,5 @@
 import * as React from 'react'
-import * as L from 'leaflet'
+
 import {
   GetConstellationsLines,
   GetStarsMarkers
@@ -36,6 +36,7 @@ export default class Map extends React.Component<any, StarMapState> {
       )
     }
     const { longitude, latitude } = this.state
+   const L= require("Leaflet")
     this._map = L.map('map', {
       zoom: 5,
       minZoom: 4,
@@ -62,6 +63,7 @@ export default class Map extends React.Component<any, StarMapState> {
       weight: 5,
       opacity: 1
     }
+    const L= require("Leaflet")
     L.geoJSON(constlines, {
       style: lineStyle,
       onEachFeature: this.onEachFeature
@@ -93,9 +95,9 @@ export default class Map extends React.Component<any, StarMapState> {
       iconUrl: '/img/smarker.png',
       iconSize: [60, 60]
     })
-
+ 
     L.geoJSON(stars, {
-      pointToLayer: (feature, latlng) => {
+      pointToLayer: (feature:any, latlng:any) => {
         return L.marker(latlng, { icon: starIcon })
           .bindTooltip(feature.properties.name, { direction: 'left' })
           .openTooltip()
@@ -119,7 +121,7 @@ export default class Map extends React.Component<any, StarMapState> {
       fillOpacity: 0
     }
     const coord = feature.geometry.coordinates
-
+    const L= require("Leaflet")
     if (feature.properties.constellation != null) {
       const marker = L.circleMarker([coord[0][1], coord[0][0]], options)
         .addTo(this._map)

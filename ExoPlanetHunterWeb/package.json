@@ -35,9 +35,9 @@
   },
   "scripts": {
     "webpack": "webpack --mode=none",
-    "build": "dotnet run --no-build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "-vs-binding": { "AfterBuild": [ "webpack" ] },
   "repository": {
     "type": "git",
     "url": "gbanm"
