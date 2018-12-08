@@ -34,10 +34,10 @@ export const getSolarSystem = async (star: Star): Promise<Star> => {
 }
 
 export const ConstellationSolarSystems = async (
-  constellation: number
+  constellation: number, page:number
 ): Promise<Array<Star>> => {
   const SolarSystems = await getData(
-    `../api/ExoSolarSystems/GetSolarSystemPerConstellation?constellation=${constellation}`
+    `../api/ExoSolarSystems/GetSolarSystemPerConstellation?constellation=${constellation}&page=${page}`
   )
 
   return SolarSystems as Promise<Array<Star>>

@@ -46,10 +46,10 @@ namespace ExoPlanetHunterWeb.Controllers
         }
 
         [HttpGet("GetSolarSystemPerConstellation")]
-        public List<ExoSolarSystemDto> GetSolarSystemPerConstellation(ConstellationsEnum constellation)
+        public List<ExoSolarSystemDto> GetSolarSystemPerConstellation(ConstellationsEnum constellation, int? page = null)
         {
 
-            return _exoService.GetSolarSystemPerConstellation(constellation);
+            return _exoService.GetSolarSystemPerConstellation(constellation, page);
 
 
         }

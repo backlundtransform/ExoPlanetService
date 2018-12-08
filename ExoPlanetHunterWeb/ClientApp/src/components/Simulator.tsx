@@ -40,16 +40,19 @@ export default class Simulator extends React.Component<
     loading: true,
   
   }
+ _isMounted = false;
+ 
 
   async componentWillMount() {
     const { location } = this.props as any
-
+    this._isMounted = true;
+    
     const star = await getSolarSystem(location.state.star)
-
-
     star.radius = getStarSize(star)
     setInterval(() => this.updateHandler(), 1000)
-    this.setState({ star, loading: false })
+   
+      this._isMounted&& this.setState({ star, loading: false })
+   
   }
   updateHandler = () => this.setState({ alpha: this.state.alpha + 1 / 50 })
   RotateX = (cx: number, rx: number) =>
@@ -67,12 +70,16 @@ export default class Simulator extends React.Component<
         })
     }
   }
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
 
   render() {
     const { star, loading } = this.state
     let width = window.innerWidth - 20
 
     let height = window.innerHeight - 120
+ 
 
     return (
       <div className={'space'}>
@@ -88,11 +95,11 @@ export default class Simulator extends React.Component<
             background={'transparent'}
             onClick={event => this.navigateToPlanet(event.originalEvent.target)}
           >
-            <Svg x={0} y={0} height={height} width={width}>
+            <svg x={0} y={0} height={height} width={width}>
               {Gradient()}
               <Rect
-                x={width / 2 - (3 * star.radius) / 2}
-                y={height / 2}
+                x={Math.round(width / 2 - (3 * star.radius) / 2)}
+                y={Math.round(height / 2)}
                 width={star.radius * 3}
                 height={star.radius * 3}
                 fill={`url(#Star${
@@ -130,7 +137,7 @@ export default class Simulator extends React.Component<
 
               {star.planets.map((p, index) => {
                 return (
-                  <G key={index.toString()}>
+                  <G key={p.name}>
                     <Defs>
                       <ClipPath id={index.toString()}>
                         <Circle
@@ -182,15 +189,15 @@ export default class Simulator extends React.Component<
               })}
 
               <Rect
-                x={width / 2 - (3 * star.radius) / 2}
-                y={height / 2 - 3 * star.radius}
+                x={Math.round(width / 2 - (3 * star.radius) / 2)}
+                y={Math.round(height / 2 - 3 * star.radius)}
                 width={star.radius * 3}
                 height={star.radius * 3}
                 fill={`url(#StarTop${
                   star.color != null ? star.color.toString() : 2
                 })`}
               />
-            </Svg>
+            </svg>
           </ReactSVGPanZoom>
         )}
       </div>

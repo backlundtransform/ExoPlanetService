@@ -1,11 +1,12 @@
 import * as React from 'react'
-import { Container, Header, Rating, Table, Grid,Icon,Button  } from 'semantic-ui-react'
+import { Container, Header, Rating, Table, Grid,Button  } from 'semantic-ui-react'
 import { Planet } from '../service/getPlanets'
 import { resource } from '../config/Resource'
 import { Gradient } from '../styles/radialgradients'
 import MaterialIcon from 'material-icons-react'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import { Link } from 'react-router-dom'
+import Ad from '../common/ad'
 export default class PlanetInfo extends React.Component<any> {
   async componentDidMount() {}
 
@@ -73,7 +74,6 @@ export default class PlanetInfo extends React.Component<any> {
         <Grid.Column>
         <Header className={'post-preview'}>{planet.name}</Header>
         <Table celled>
-            {' '}
             <Table.Body>
               {planet.mass && (
                 <Table.Row>
@@ -208,6 +208,7 @@ export default class PlanetInfo extends React.Component<any> {
                : resource.discinfo[planet.discMethod]
            }`}</p>
       </Container>
+      <Ad />
 </Container>
          
     )

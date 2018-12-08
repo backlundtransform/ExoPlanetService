@@ -8,20 +8,30 @@ import { Link } from 'react-router-dom'
 import { Gradient } from '../styles/radialgradients'
 import { Star} from '../service/getPlanets'
 import { resource } from '../config/Resource'
+import Paginate from '../common/paginate'
 export default class Constellations extends React.Component<any,any> {
  constructor(props: any) {
     super(props)
     this.state = {
       loading: true,
-   
+      top:30,
+     constellation:1,
       stars: [] as Array<Star>
     }
   }
 
   async componentDidMount() {
     const constellation = this.props.location.state.constellation as number
-    const stars = await ConstellationSolarSystems(constellation)
-     this.setState({ stars, loading: false })
+    const stars = await ConstellationSolarSystems(constellation,0)
+     this.setState({ stars, loading: false, constellation })
+  }
+
+  handlePaginate = async (top: number) => {
+   
+    const {constellation} = this.state
+    const stars= await ConstellationSolarSystems(constellation,(top-30)/30)
+
+    this.setState({  top,stars})
   }
 
   mainPost = () => {
@@ -30,7 +40,7 @@ export default class Constellations extends React.Component<any,any> {
 
     for (let item of stars as Array<Star>) {
       posts.push(
-        <Grid.Column>
+        <Grid.Column key={item.name}>
           <Card className={'post-preview'}>
           <Link
                   to={{
@@ -93,7 +103,7 @@ export default class Constellations extends React.Component<any,any> {
   }
 
   render() {
-    const { loading,stars } = this.state
+    const { loading,top,constellation, stars } = this.state
 
  
     const main = this.mainPost()
@@ -103,10 +113,14 @@ export default class Constellations extends React.Component<any,any> {
       <Loader />
       </Dimmer>
     ) : (
-      <React.Fragment> <Header textAlign='center'> {resource.const[this.props.location.state.constellation]}</Header>
+      <React.Fragment> <Header textAlign='center'> {resource.const[constellation]}</Header>
       <Grid stackable centered columns={2}>
         {main}
-      </Grid> </React.Fragment> 
+      </Grid> 
+      <div className={'bar'}>
+        <Paginate handlePaginate={this.handlePaginate} top={top} length={stars.length} />
+        </div>
+      </React.Fragment> 
     )
   }
 }

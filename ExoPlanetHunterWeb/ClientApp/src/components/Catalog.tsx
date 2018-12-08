@@ -10,6 +10,8 @@ import {
   Icon,
   Loader, Dimmer
 } from 'semantic-ui-react'
+
+import Paginate from '../common/paginate'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import MaterialIcon from 'material-icons-react'
 import { Link } from 'react-router-dom'
@@ -30,7 +32,7 @@ const groupBy = (arr: Array<any>, n: number) => {
   return group
 }
 const row = (post: any) => (
-  <Grid.Row centered columns={4}>
+  <Grid.Row centered columns={4} key={post[0].key}>
     {post}
   </Grid.Row>
 )
@@ -50,11 +52,18 @@ export default class Catalog extends React.Component<any, any> {
       searchValue: '',
       planets: [] as Array<Planet>
     }
+ 
   }
-
+  _isMounted = false;
   async componentDidMount() {
+    this._isMounted = true;
+
     const planets = await GetPlanetListAsync(null, {}, 30)
-    this.setState({ planets, loading: false })
+    this._isMounted&&this.setState({ planets, loading: false })
+
+  }
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   mainPost = () => {
@@ -62,16 +71,16 @@ export default class Catalog extends React.Component<any, any> {
     let posts = [] as Array<any>
 
     for (let item of planets as Array<Planet>) {
-      posts.push(
-        <Grid.Column>
-          <Card className={'post-preview'}>
+      posts.push(<React.Fragment key ={item.name}>
+        <Grid.Column key={item.name}>
+          <Card className={'post-preview'} >
             <Link
               to={{
-                pathname: `planet/${item.name}`,
+                pathname: `/planet/${item.name}`,
                 state: { planet: item }
               }}
             >
-              <Svg height="190" width="180">
+              <Svg height="190" width="180" >
                 {' '}
                 {Gradient()}
                 <G>
@@ -100,7 +109,7 @@ export default class Catalog extends React.Component<any, any> {
               <Card.Header>
                 <Link
                   to={{
-                    pathname: `planet/${item.name}`,
+                    pathname: `/planet/${item.name}`,
                     state: { planet: item }
                   }}
                 >
@@ -127,7 +136,7 @@ export default class Catalog extends React.Component<any, any> {
             <Card.Content extra>
               <Link
                 to={{
-                  pathname: `star/${item.star.name}`,
+                  pathname: `/star/${item.star.name}`,
                   state: { star: item.star }
                 }}
               >
@@ -139,7 +148,7 @@ export default class Catalog extends React.Component<any, any> {
 
               <Link
                 to={{
-                  pathname: `system/${item.star.name}`,
+                  pathname: `/system/${item.star.name}`,
                   state: { star: item.star }
                 }}
               >
@@ -151,7 +160,7 @@ export default class Catalog extends React.Component<any, any> {
               </Link>
             </Card.Content>
           </Card>
-        </Grid.Column>
+        </Grid.Column></React.Fragment>
       )
     }
 
@@ -171,7 +180,7 @@ export default class Catalog extends React.Component<any, any> {
 
     const planets = await GetPlanetListAsync(filter, {}, 30)
 
-    this.setState({ planets, loading: false })
+    this._isMounted&&this.setState({ planets, loading: false })
   }
 
   handleHabClick = async () => {
@@ -184,14 +193,15 @@ export default class Catalog extends React.Component<any, any> {
     if (!habactive) {
       planets = await GetPlanetListAsync({}, {}, 30)
     }
-    this.setState({ planets, loading: false, habactive })
+    this._isMounted&&this.setState({ planets, loading: false, habactive })
   }
   handlePaginate = async (top: number) => {
+
     let filter = this.setSearchFilter()
 
     const planets = await GetPlanetListAsync(filter, {}, top)
 
-    this.setState({ planets, loading: false, top })
+    this._isMounted&&this.setState({ planets, loading: false, top })
   }
 
   setSearchFilter = () => {
@@ -242,24 +252,7 @@ export default class Catalog extends React.Component<any, any> {
           {main}
         </Grid>  </div>
         <div className={'bar'}>
-          <Button.Group>
-            <Button
-              labelPosition="left"
-              icon="left chevron"
-              content="Previous"
-              color={top <= 30 ? 'grey' : 'black'}
-              disabled={top <= 30}
-              onClick={() => this.handlePaginate(top - 30)}
-            />
-            <Button
-              labelPosition="right"
-              icon="right chevron"
-              content="Next"
-              color={planets.length <= 29 ? 'grey' : 'black'}
-              disabled={planets.length <= 29}
-              onClick={() => this.handlePaginate(top + 30)}
-            />
-          </Button.Group>
+        <Paginate handlePaginate={this.handlePaginate} top={top} length={planets.length} />
         </div>
       </React.Fragment>
     )

@@ -7,6 +7,7 @@ import MaterialIcon from 'material-icons-react'
 import Svg, { Rect } from 'react-native-svg-web'
 import { Link } from 'react-router-dom'
 import { getSolarSystem } from '../service/getSolarSystem'
+import Ad from '../common/ad'
 export default class StarInfo extends React.Component<any> {
   state = {
     star: {} as Star
@@ -94,7 +95,6 @@ export default class StarInfo extends React.Component<any> {
             <Grid.Column>
               <Header className={'post-preview'}>{star.name}</Header>
               <Table celled>
-                {' '}
                 <Table.Body>
                   {star.mass && (
                     <Table.Row>
@@ -197,6 +197,7 @@ export default class StarInfo extends React.Component<any> {
             : ''}
           {planetext == null ? <React.Fragment /> : planetext}
         </Container>
+        <Ad />
       </Container>
     )
   }

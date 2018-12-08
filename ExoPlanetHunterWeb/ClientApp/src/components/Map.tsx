@@ -28,8 +28,10 @@ export default class Map extends React.Component<any, StarMapState> {
     planets: [] as Array<Planet>
   }
   _map?: L.Map
-
+ _isMounted = false;
   async componentDidMount() {
+    this._isMounted = true;
+    
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position =>
         this.updatetime(position.coords.longitude)
@@ -48,11 +50,14 @@ export default class Map extends React.Component<any, StarMapState> {
     let planets = (await GetHabitablePlanets()) as Array<Planet>
     this._map.on('moveend', () => {
       const { lng, lat } = this._map.getCenter()
-      this.setState({ longitude: lng, latitude: lat })
+      this._isMounted&&this.setState({ longitude: lng, latitude: lat })
     })
 
     L.tileLayer('/img/tile.png', {}).addTo(this._map)
-    this.setState({ constlines, planets, stars }, () => this.init())
+    this._isMounted&&this.setState({ constlines, planets, stars }, () => this.init())
+  }
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   init = () => {

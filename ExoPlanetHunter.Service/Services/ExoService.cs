@@ -38,16 +38,25 @@ namespace ExoPlanetHunter.Service.Services
             .Select(g => g.First()).ToList();
         }
 
-        public List<ExoSolarSystemDto> GetSolarSystemPerConstellation(ConstellationsEnum id)
+        public List<ExoSolarSystemDto> GetSolarSystemPerConstellation(ConstellationsEnum id,int? page =null)
         {
-            var cacheEntry = CacheExoPlanets();
-
-            return cacheEntry.Where(p => p.Star.Constellation == (int)id).GroupBy(p => p.Star).Select(g => g.Key).GroupBy(p => p.Name).Select(p => new ExoSolarSystemDto()
+           
+            if(page == null) { 
+            return CacheExoPlanets().Where(p => p.Star.Constellation == (int)id).GroupBy(p => p.Star).Select(g => g.Key).GroupBy(p => p.Name).Select(p => new ExoSolarSystemDto()
             {
                 Name = p.Key,
                 Color = p.FirstOrDefault()?.Color,
                 Radius = p.FirstOrDefault().Radius
-            }).ToList(); ;
+            }).ToList();
+
+            }
+
+            return CacheExoPlanets().Where(p => p.Star.Constellation == (int)id).GroupBy(p => p.Star).Select(g => g.Key).GroupBy(p => p.Name).Select(p => new ExoSolarSystemDto()
+            {
+                Name = p.Key,
+                Color = p.FirstOrDefault()?.Color,
+                Radius = p.FirstOrDefault().Radius
+            }).Skip((int)page*30).Take(30).ToList();
         }
 
         public ExoSolarSystemDto GetSolarSystemPerStar(string name)
