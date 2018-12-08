@@ -35,3 +35,4 @@ ExoPlanetHunter.Database/exo.db
 ExoPlanetHunterWeb/config.json
 ExoPlanetHunterWeb/post.db
 lib
+ExoPlanetHunterWeb/post.db
