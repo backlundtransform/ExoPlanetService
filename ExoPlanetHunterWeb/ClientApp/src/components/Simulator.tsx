@@ -41,6 +41,7 @@ export default class Simulator extends React.Component<
   
   }
  _isMounted = false;
+ _interval:any
  
 
   async componentWillMount() {
@@ -49,7 +50,7 @@ export default class Simulator extends React.Component<
     
     const star = await getSolarSystem(location.state.star)
     star.radius = getStarSize(star)
-    setInterval(() => this.updateHandler(), 1000)
+    this._interval = setInterval(() => this.updateHandler(), 1000)
    
       this._isMounted&& this.setState({ star, loading: false })
    
@@ -72,6 +73,7 @@ export default class Simulator extends React.Component<
   }
   componentWillUnmount(){
     this._isMounted = false;
+    clearInterval(this._interval);
   }
 
   render() {

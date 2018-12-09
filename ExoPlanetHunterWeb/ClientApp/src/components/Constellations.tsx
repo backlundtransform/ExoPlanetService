@@ -21,6 +21,7 @@ export default class Constellations extends React.Component<any,any> {
   }
 
   async componentDidMount() {
+    console.log(this.props)
     const constellation = this.props.location.state.constellation as number
     const stars = await ConstellationSolarSystems(constellation,0)
      this.setState({ stars, loading: false, constellation })
