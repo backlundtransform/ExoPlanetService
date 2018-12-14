@@ -9,6 +9,7 @@ import { Gradient } from '../styles/radialgradients'
 import { Star} from '../service/getPlanets'
 import { resource } from '../config/Resource'
 import Paginate from '../common/paginate'
+
 export default class Constellations extends React.Component<any,any> {
  constructor(props: any) {
     super(props)
@@ -21,10 +22,10 @@ export default class Constellations extends React.Component<any,any> {
   }
 
   async componentDidMount() {
-    console.log(this.props)
-    const constellation = this.props.location.state.constellation as number
+    const { location, match } = this.props as any
+    const constellation =location.state===undefined? match.params.constellationId :location.state.constellation  as number
     const stars = await ConstellationSolarSystems(constellation,0)
-     this.setState({ stars, loading: false, constellation })
+    this.setState({ stars, loading: false, constellation })
   }
 
   handlePaginate = async (top: number) => {

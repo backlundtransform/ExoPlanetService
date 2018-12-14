@@ -45,10 +45,11 @@ export default class Simulator extends React.Component<
  
 
   async componentWillMount() {
-    const { location } = this.props as any
+    const { location, match } = this.props as any
     this._isMounted = true;
-    
-    const star = await getSolarSystem(location.state.star)
+    const starname =location.state!==undefined?location.state.star:{ name:match.params.starId}
+   
+    const star = await getSolarSystem(starname)
     star.radius = getStarSize(star)
     this._interval = setInterval(() => this.updateHandler(), 1000)
    
