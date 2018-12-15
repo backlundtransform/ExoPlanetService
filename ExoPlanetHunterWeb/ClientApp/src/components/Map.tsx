@@ -29,6 +29,7 @@ export default class Map extends React.Component<any, StarMapState> {
   }
   _map?: L.Map
  _isMounted = false;
+ _interval:any
   async componentDidMount() {
     this._isMounted = true;
     
@@ -58,6 +59,7 @@ export default class Map extends React.Component<any, StarMapState> {
   }
   componentWillUnmount(){
     this._isMounted = false;
+    clearInterval(this._interval);
   }
 
   init = () => {
@@ -112,7 +114,7 @@ export default class Map extends React.Component<any, StarMapState> {
   }
   updatetime = (position: number) => {
     this.setState({ siderealtime: siderealtime(position) })
-    setInterval(() => {
+    this._interval = setInterval(() => {
       this.setState({ siderealtime: siderealtime(position) })
     }, 60000)
   }

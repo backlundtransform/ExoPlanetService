@@ -92,6 +92,7 @@ export default class Simulator extends React.Component<
        </Dimmer>
         ) : (
           <ReactSVGPanZoom
+  
             width={width}
             height={height}
             SVGBackground={'transparent'}
@@ -192,8 +193,8 @@ export default class Simulator extends React.Component<
               })}
 
               <Rect
-                x={Math.round(width / 2 - (3 * star.radius) / 2)}
-                y={Math.round(height / 2 - 3 * star.radius)}
+                x={Math.ceil(width / 2 - (3 * star.radius) / 2)}
+                y={Math.ceil(height / 2 - 3 * star.radius)}
                 width={star.radius * 3}
                 height={star.radius * 3}
                 fill={`url(#StarTop${
