@@ -31,9 +31,10 @@ _ReSharper*/
 #Nuget packages folder
 packages/
 node_modules
-ExoPlanetHunter.Database/exo.db
+
 ExoPlanetHunterWeb/config.json
-ExoPlanetHunterWeb/post.db
+
 lib
+
 
 
