@@ -9,7 +9,7 @@ namespace ExoPlanetHunter.Service.Interfaces
     public interface IExoService
     {
 
-        List<ExoSolarSystemDto> GetSolarSystemPerConstellation(ConstellationsEnum id);
+        List<ExoSolarSystemDto> GetSolarSystemPerConstellation(ConstellationsEnum id, int? page=null);
 
         ExoSolarSystemDto  GetSolarSystemPerStar(string name);
 

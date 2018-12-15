@@ -1,0 +1,20 @@
+declare module 'react-native-svg-web' {
+    const Svg: any
+    export const Circle: any
+    export const G: any
+    export const ClipPath: any
+    export const Path: any
+    export const Rect: any
+    export const Image: any
+    export const  Use: any
+    export const  Defs: any
+    export const Stop: any
+    export const RadialGradient: any
+    export const LinearGradient: any
+    export const Ellipse: any
+    export const Pattern: any
+    export const Text: any
+   
+    
+    export default Svg;
+   }
