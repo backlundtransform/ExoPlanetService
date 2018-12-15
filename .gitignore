@@ -38,3 +38,5 @@ lib
 
 
 
+*.db
+*\Properties\*
