@@ -1,14 +1,12 @@
 ﻿using AutoMapper.QueryableExtensions;
 using ExoPlanetHunter.Database;
-using ExoPlanetHunter.Database.entity;
+
 using ExoPlanetHunter.Service.Dto;
-using ExoPlanetHunter.Service.Enum;
+
 using ExoPlanetHunter.Service.Interfaces;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,12 +15,10 @@ namespace ExoPlanetHunter.Service.Services
     public class PlanetService : IPlanetService
     {
         private readonly ExoContext _context;
-   
 
         public PlanetService(ExoContext context)
         {
             _context = context;
-           
         }
 
         public IQueryable<PlanetDto> GetPlanets(ODataQueryOptions opts)
