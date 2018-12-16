@@ -95,7 +95,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                       icon="star"
                       defaultRating={Math.round(planet.esi * 10)}
                       maxRating={10}
-                      size="massive"
+                      size="large"
                       disabled={true}
                     />
                     <p>{resource.sphratings}</p>
@@ -103,7 +103,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                       icon="star"
                       defaultRating={Math.round(planet.sph * 10)}
                       maxRating={10}
-                      size="massive"
+                      size="large"
                       disabled={true}
                     />
                   </Container>

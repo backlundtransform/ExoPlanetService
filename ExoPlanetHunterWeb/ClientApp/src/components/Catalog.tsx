@@ -117,7 +117,7 @@ export default class Catalog extends React.Component<any, any> {
                 </Link>
               </Card.Header>
               <Card.Description>
-                <span>{`Discovered:${item.discYear}`}</span>
+                <span>{`Discovered: ${item.discYear}`}</span>
               </Card.Description>
               <Card.Description>
                 {`${item.type && item.type !== null ? item.type : ''}`}{' '}
@@ -229,15 +229,9 @@ export default class Catalog extends React.Component<any, any> {
 
     ) : (
       <React.Fragment>
-        <div className={'bar'}>
-        <Input type='text'
-           size="large"
-           value={searchValue}
-           onChange={(e:any) => this.handleSearchChange(e)}
-        placeholder='Search...' action>
-    <input />
-    <Button type='submit' onClick={() => this.handleSearchClick()}><Icon name={"search"} /></Button>
-    <Dropdown
+             <div className={'float-left'} style={{marginLeft:20}}>
+         <Dropdown
+                className={'float-left'}
                 button
                 basic
                 floating
@@ -245,7 +239,20 @@ export default class Catalog extends React.Component<any, any> {
                 options={options}
                 defaultValue="all"
               />
+              </div>
+        <div className={'bar'}>
+   
+        <Input type='text'
+           size="small"
+           value={searchValue}
+           onChange={(e:any) => this.handleSearchChange(e)}
+        placeholder='Search...' action>
+    <input />
+    <Button type='submit' onClick={() => this.handleSearchClick()}><Icon name={"search"} /></Button>
+    
   </Input>
+
+   
          </div>
          <div className={"catalog"}>
     <Grid stackable centered columns={2}>

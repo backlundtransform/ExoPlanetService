@@ -4,7 +4,9 @@ import { Container } from 'semantic-ui-react'
 
 export default class Ad extends React.Component {
   componentDidMount() {
-    ;((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({})
+    
+  
+ 
   }
   render() {
 

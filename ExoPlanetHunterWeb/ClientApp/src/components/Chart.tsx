@@ -25,6 +25,7 @@ class Chart extends React.Component<any> {
     valueAxisY.title.text ="Luminosity"
 
     valueAxisX.title.text ="Temperature K"
+    valueAxisX.renderer.labels.template.rotation = 45;
 
   
     valueAxisX.logarithmic =true
@@ -80,7 +81,7 @@ class Chart extends React.Component<any> {
 
     chart.cursor = new am4charts.XYCursor()
     chart.cursor.behavior = 'zoomXY'
-
+    chart.responsive.enabled = true;
     chart.scrollbarX = new am4core.Scrollbar()
     chart.scrollbarY = new am4core.Scrollbar()
 
