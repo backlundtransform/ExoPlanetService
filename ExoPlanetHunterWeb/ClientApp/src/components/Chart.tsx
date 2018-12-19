@@ -52,7 +52,8 @@ class Chart extends React.Component<any> {
      let name= (ev.target.dataItem as any)._dataContext.title
       this.props.history.push({
         pathname: `system/${name}`,
-        state: { star: {name} as Star }
+        state: { star: {name} as Star },
+        props:{timestamp:()=>new Date().toString()}
       })
     }, this);
     bullet.circle.adapter.add("tooltipText", (text:string,s:any) => {

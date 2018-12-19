@@ -14,14 +14,14 @@ const getData = async (uri: string): Promise<any> => {
 
 export const getStarSize = (star: Star): number => {
   if (star.luminosity < 3) {
-    return 150
+    return 160
   }
 
   if (star.luminosity < 6) {
-    return 100
+    return 120
   }
 
-  return 75
+  return 80
 }
 
 export const getSolarSystem = async (star: Star): Promise<Star> => {

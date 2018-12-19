@@ -146,18 +146,16 @@ export default class Catalog extends React.Component<any, any> {
                 </Button>
               </Link>
 
-              <Link
-                to={{
-                  pathname: `/system/${item.star.name}`,
-                  state: { star: item.star }
-                }}
+              <a
+                href={`/system/${item.star.name}`}
+  
               >
                 <Button icon inverted basic color="grey" height="25">
                   <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={25} />
 
                   {`${item.star.noPlanets} Planets`}
                 </Button>
-              </Link>
+              </a>
             </Card.Content>
           </Card>
         </Grid.Column></React.Fragment>

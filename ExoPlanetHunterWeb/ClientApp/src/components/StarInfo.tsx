@@ -152,18 +152,15 @@ export default class StarInfo extends React.Component<any> {
             </Table.Footer>
           </Table>
 
-          <Link
-            to={{
-              pathname: `../system/${star.name}`,
-              state: { star: star }
-            }}
+          <a
+            href={`../system/${star.name}`}
           >
-            {' '}
+          
             <Button icon inverted basic color="grey" height="40">
               <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={40} />
               {'Visit Solar System'}
             </Button>
-          </Link>
+          </a>
           <Link
             to={{
               pathname: `../constellation/${star.constellation}`,
