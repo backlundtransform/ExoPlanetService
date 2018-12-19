@@ -15,7 +15,7 @@ import { Gradient } from '../styles/radialgradients'
 import MaterialIcon from 'material-icons-react'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import { Link } from 'react-router-dom'
-import Ad from '../common/ad'
+
 
 interface PlanetState {
   planet: Planet
@@ -257,7 +257,6 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                   : resource.discinfo[planet.discMethod]
               }`}</p>
             </Container>
-            <Ad />
           </Container>
         )}
       </div>

@@ -103,7 +103,7 @@ export default class Simulator extends React.Component<
               {Gradient()}
               <Rect
                 x={Math.round(width / 2 - (3 * star.radius) / 2)}
-                y={Math.round(height / 2)}
+                y={Math.floor(height / 2)}
                 width={star.radius * 3}
                 height={star.radius * 3}
                 fill={`url(#Star${
@@ -193,7 +193,7 @@ export default class Simulator extends React.Component<
               })}
 
               <Rect
-                x={Math.ceil(width / 2 - (3 * star.radius) / 2)}
+                x={Math.round(width / 2 - (3 * star.radius) / 2)}
                 y={Math.ceil(height / 2 - 3 * star.radius)}
                 width={star.radius * 3}
                 height={star.radius * 3}
