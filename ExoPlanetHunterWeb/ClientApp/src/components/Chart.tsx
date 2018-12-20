@@ -53,7 +53,7 @@ class Chart extends React.Component<any> {
       this.props.history.push({
         pathname: `system/${name}`,
         state: { star: {name} as Star },
-        props:{timestamp:()=>new Date().toString()}
+
       })
     }, this);
     bullet.circle.adapter.add("tooltipText", (text:string,s:any) => {

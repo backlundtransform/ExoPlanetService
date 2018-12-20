@@ -1,3 +1,4 @@
+
 import * as React from 'react'
 import { ReactSVGPanZoom } from 'react-svg-pan-zoom'
 import { Star, GetPlanetAsync } from '../service/getPlanets'
@@ -27,7 +28,7 @@ interface SimulatorState {
 interface SimulatorProps {
   location: any
   history: any
-  timestamp:any
+
 }
 export default class Simulator extends React.Component<
   SimulatorProps,
@@ -97,8 +98,7 @@ export default class Simulator extends React.Component<
        </Dimmer>
         ) : (
           <ReactSVGPanZoom
-        
-       
+      
             width={width}
             height={height}
             SVGBackground={'transparent'}
@@ -107,6 +107,17 @@ export default class Simulator extends React.Component<
           >
             <svg x={0} y={0} height={height} width={width}>
               {Gradient()}
+              <Circle
+                      
+                      cx={width / 2 }
+                      cy={height/2}
+                      r={star.radius}
+                      fillOpacity={1}
+                      fill={`url(#b${
+                        star.color != null ? star.color.toString() : 2
+                      })`}
+                      style={{ cursor: 'pointer' }}
+                    />
               <Rect
                 x={width / 2 - (Math.PI * star.radius) / 2}
                 y={height/2}
@@ -197,10 +208,9 @@ export default class Simulator extends React.Component<
                   </G>
                 )
               })}
-
               <Rect
                 x={width / 2 - (Math.PI * star.radius) / 2}
-                y={(height/2- (Math.PI * star.radius) )}
+                y={(height/2- (Math.PI * star.radius)+0.2)}
                 width={star.radius * Math.PI}
                 height={star.radius * Math.PI}
                 fill={`url(#StarTop${

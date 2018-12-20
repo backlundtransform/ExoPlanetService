@@ -146,8 +146,8 @@ export default class Catalog extends React.Component<any, any> {
                 </Button>
               </Link>
 
-              <a
-                href={`/system/${item.star.name}`}
+              <Link
+                to={`/system/${item.star.name}`}
   
               >
                 <Button icon inverted basic color="grey" height="25">
@@ -155,7 +155,7 @@ export default class Catalog extends React.Component<any, any> {
 
                   {`${item.star.noPlanets} Planets`}
                 </Button>
-              </a>
+              </Link>
             </Card.Content>
           </Card>
         </Grid.Column></React.Fragment>

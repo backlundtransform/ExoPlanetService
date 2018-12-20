@@ -171,13 +171,10 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                   >
                     <Button icon inverted basic color="grey" height="40">
                       <MaterialIcon icon="wb_sunny" color="#c6d4ff" size={40} />
-                      {'Visit Star'}{' '}
+                      {'Visit Star'}
                     </Button>
                   </Link>
-                  <a
-            href={`../system/${planet.star.name}`}
-          >
-                    {' '}
+                  <Link to={`../system/${planet.star.name}`}>
                     <Button icon inverted basic color="grey" height="40">
                       <MaterialIcon
                         icon="3d_rotation"
@@ -186,7 +183,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                       />
                       {'Visit Solar System'}
                     </Button>
-                  </a>
+                  </Link>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
