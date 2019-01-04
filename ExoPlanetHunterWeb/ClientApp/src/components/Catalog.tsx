@@ -147,10 +147,8 @@ export default class Catalog extends React.Component<any, any> {
               </Link>
 
               <Link
-                to={{
-                  pathname: `/system/${item.star.name}`,
-                  state: { star: item.star }
-                }}
+                to={`/system/${item.star.name}`}
+  
               >
                 <Button icon inverted basic color="grey" height="25">
                   <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={25} />

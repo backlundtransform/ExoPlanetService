@@ -93,7 +93,8 @@ export default class Map extends React.Component<any, StarMapState> {
       planetmarker.addEventListener('click', () =>
         this.props.history.push({
           pathname: `system/${planet.star.name}`,
-          state: { star: planet.star }
+          state: { star: planet.star },
+         props:{timestamp:()=>new Date().toString()}
         })
       )
     })

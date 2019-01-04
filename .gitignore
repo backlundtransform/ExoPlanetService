@@ -41,3 +41,4 @@ lib
 *.db
 *\Properties\*
 PublishProfiles
+ExoPlanetHunterWeb/wwwroot/js/react.build.js

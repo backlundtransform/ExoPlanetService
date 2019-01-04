@@ -8,7 +8,7 @@ import MaterialIcon from 'material-icons-react'
 import Svg, { Rect } from 'react-native-svg-web'
 import { Link } from 'react-router-dom'
 import { getSolarSystem } from '../service/getSolarSystem'
-import Ad from '../common/ad'
+
 
 export default class StarInfo extends React.Component<any> {
   state = {
@@ -153,12 +153,9 @@ export default class StarInfo extends React.Component<any> {
           </Table>
 
           <Link
-            to={{
-              pathname: `../system/${star.name}`,
-              state: { star: star }
-            }}
+            to={`../system/${star.name}`}
           >
-            {' '}
+          
             <Button icon inverted basic color="grey" height="40">
               <MaterialIcon icon="3d_rotation" color="#c6d4ff" size={40} />
               {'Visit Solar System'}
@@ -216,7 +213,6 @@ export default class StarInfo extends React.Component<any> {
         : ''}
       {planetext == null ? <React.Fragment /> : planetext}
     </Container>
-    <Ad />
   </Container>)}</div>
 
      

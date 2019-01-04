@@ -15,7 +15,7 @@ import { Gradient } from '../styles/radialgradients'
 import MaterialIcon from 'material-icons-react'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import { Link } from 'react-router-dom'
-import Ad from '../common/ad'
+
 
 interface PlanetState {
   planet: Planet
@@ -171,16 +171,10 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                   >
                     <Button icon inverted basic color="grey" height="40">
                       <MaterialIcon icon="wb_sunny" color="#c6d4ff" size={40} />
-                      {'Visit Star'}{' '}
+                      {'Visit Star'}
                     </Button>
                   </Link>
-                  <Link
-                    to={{
-                      pathname: `../system/${planet.star.name}`,
-                      state: { star: planet.star }
-                    }}
-                  >
-                    {' '}
+                  <Link to={`../system/${planet.star.name}`}>
                     <Button icon inverted basic color="grey" height="40">
                       <MaterialIcon
                         icon="3d_rotation"
@@ -257,7 +251,6 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                   : resource.discinfo[planet.discMethod]
               }`}</p>
             </Container>
-            <Ad />
           </Container>
         )}
       </div>

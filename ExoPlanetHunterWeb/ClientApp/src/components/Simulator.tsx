@@ -1,3 +1,4 @@
+
 import * as React from 'react'
 import { ReactSVGPanZoom } from 'react-svg-pan-zoom'
 import { Star, GetPlanetAsync } from '../service/getPlanets'
@@ -27,6 +28,7 @@ interface SimulatorState {
 interface SimulatorProps {
   location: any
   history: any
+
 }
 export default class Simulator extends React.Component<
   SimulatorProps,
@@ -47,6 +49,8 @@ export default class Simulator extends React.Component<
   async componentWillMount() {
     const { location, match } = this.props as any
     this._isMounted = true;
+
+  
     const starname =location.state!==undefined?location.state.star:{ name:match.params.starId}
    
     const star = await getSolarSystem(starname)
@@ -77,12 +81,14 @@ export default class Simulator extends React.Component<
     clearInterval(this._interval);
   }
 
+ 
+
   render() {
     const { star, loading } = this.state
     let width = window.innerWidth - 20
 
     let height = window.innerHeight - 120
- 
+
 
     return (
       <div className={'space'}>
@@ -92,7 +98,7 @@ export default class Simulator extends React.Component<
        </Dimmer>
         ) : (
           <ReactSVGPanZoom
-  
+      
             width={width}
             height={height}
             SVGBackground={'transparent'}
@@ -101,11 +107,22 @@ export default class Simulator extends React.Component<
           >
             <svg x={0} y={0} height={height} width={width}>
               {Gradient()}
+              <Circle
+                      
+                      cx={width / 2 }
+                      cy={height/2}
+                      r={star.radius}
+                      fillOpacity={1}
+                      fill={`url(#b${
+                        star.color != null ? star.color.toString() : 2
+                      })`}
+                      style={{ cursor: 'pointer' }}
+                    />
               <Rect
-                x={Math.round(width / 2 - (3 * star.radius) / 2)}
-                y={Math.round(height / 2)}
-                width={star.radius * 3}
-                height={star.radius * 3}
+                x={width / 2 - (Math.PI * star.radius) / 2}
+                y={height/2}
+                width={star.radius * Math.PI}
+                height={star.radius * Math.PI}
                 fill={`url(#Star${
                   star.color != null ? star.color.toString() : 2
                 })`}
@@ -191,12 +208,11 @@ export default class Simulator extends React.Component<
                   </G>
                 )
               })}
-
               <Rect
-                x={Math.ceil(width / 2 - (3 * star.radius) / 2)}
-                y={Math.ceil(height / 2 - 3 * star.radius)}
-                width={star.radius * 3}
-                height={star.radius * 3}
+                x={width / 2 - (Math.PI * star.radius) / 2}
+                y={(height/2- (Math.PI * star.radius)+0.2)}
+                width={star.radius * Math.PI}
+                height={star.radius * Math.PI}
                 fill={`url(#StarTop${
                   star.color != null ? star.color.toString() : 2
                 })`}

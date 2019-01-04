@@ -112,25 +112,21 @@ gradientUnits="objectBoundingBox" fx="30%" fy="30%">
 <Stop offset="100%" stopColor="#black" stopOpacity={0}  />
 </RadialGradient> 
 
-<RadialGradient id={`${resource.color[3]}`} gradientUnits="objectBoundingBox" fx="30%" fy="30%">
-<Stop offset="10%" stopColor="#ff6a00"/>
-<Stop offset="50%" stopColor="red"/>
-<Stop offset="80%" stopColor="#50607a"/>   
+<RadialGradient id={`b3`}    gradientUnits="objectBoundingBox">
+<Stop offset="30%" stopColor="red"/>
+<Stop offset="80%" stopColor="#fc2c02"/>
 </ RadialGradient>
-<RadialGradient id={`${resource.color[2]}`}    gradientUnits="objectBoundingBox" fx="30%" fy="30%">
-<Stop offset="10%" stopColor="#ff6a00"/>
-<Stop offset="50%" stopColor="orange"/>
-<Stop offset="80%" stopColor="#50607a"/>
+<RadialGradient id={`b2`}    gradientUnits="objectBoundingBox">
+<Stop offset="30%" stopColor="orange"/>
+<Stop offset="80%" stopColor="#ff6a00"/>
 </ RadialGradient>
-<RadialGradient id={`${resource.color[1]}`}    gradientUnits="objectBoundingBox" fx="30%" fy="30%">
-<Stop offset="10%" stopColor="#fffdd6"/>
-<Stop offset="50%" stopColor="white"/>
-<Stop offset="80%" stopColor="#50607a"/>
+<RadialGradient id={`b1`}    gradientUnits="objectBoundingBox">
+<Stop offset="30%" stopColor="white"/>
+<Stop offset="80%" stopColor="#fffdd6"/>
 </ RadialGradient>
-<RadialGradient id={`${resource.color[0]}`}    gradientUnits="objectBoundingBox" fx="30%" fy="30%">
-<Stop offset="10%" stopColor="#164dff"/>
-<Stop offset="50%" stopColor="blue"/>
-<Stop offset="80%" stopColor="#50607a"/>
+<RadialGradient id={`b0`}    gradientUnits="objectBoundingBox">
+<Stop offset="30%" stopColor="#164dff"/>
+<Stop offset="80%" stopColor="blue"/>
 </ RadialGradient>
  </Defs>) }
     
