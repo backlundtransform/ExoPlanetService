@@ -10,6 +10,8 @@ namespace ExoPlanetHunter.Service.Interfaces
 
         Task<Post> GetPostAsync(int? id);
 
+        Task<List<Post>> GetRelatedContent(string tag);
+
         Task EditPostAsync(Post post);
 
         Task CreatePostAsync(Post post);

@@ -78,6 +78,7 @@ namespace ExoPlanetHunter.Service.Services
                     Name = p.Name,
                     Img = p.Img,
                     Radius = p.Radius,
+                    Eccentricity =p.Eccentricity,
                     StarDistance = GetStarDistance(planets, p.MeanDistance) + p.Radius
                 }).ToList()
             };
@@ -118,6 +119,7 @@ namespace ExoPlanetHunter.Service.Services
                     DiscMethod = (int)p.Disc_Method.ToEnum<DiscEnum>(),
                     Radius = ((15 * p.Radius > 50) ? 50 : (15 * p.Radius < 10 ? 10 : 15 * p.Radius)) ?? 30,
                     MeanDistance = p.MeanDistance,
+                    Eccentricity =p.Eccentricity,
 
                     Star = new ExoStarDto()
                     {

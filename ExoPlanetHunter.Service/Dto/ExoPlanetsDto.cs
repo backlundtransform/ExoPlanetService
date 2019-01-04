@@ -20,7 +20,8 @@ namespace ExoPlanetHunter.Service.Dto
       public decimal?  Sph { get; set; }
       public decimal?  DiscYear { get; set; }
       public int DiscMethod { get; set; }
-      public decimal   Radius { get; set; }
+      public decimal   Radius { get; set; }  
+      public decimal? Eccentricity { get; set; }
      public decimal RadiusEu { get; set; }
       public CoordinateDto Coordinate{ get; set; }
       public decimal?  StarDistance{ get; set; }
