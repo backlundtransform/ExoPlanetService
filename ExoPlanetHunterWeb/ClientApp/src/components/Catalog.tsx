@@ -38,7 +38,8 @@ const row = (post: any) => (
 )
 const options = [
   { key: 'all', text: 'All Planets', value: 'all' },
-  { key: 'hab', text: 'Habitable Planets', value: 'hab' }
+  { key: 'Hab', text: 'Habitable Planets', value: 'Hab' },
+  { key: 'Moons', text: 'Potentially Habitable Moon', value: 'Moons' }
 ]
 
 export default class Catalog extends React.Component<any, any> {
@@ -50,6 +51,7 @@ export default class Catalog extends React.Component<any, any> {
       color: '',
       habactive: false,
       searchValue: '',
+      selectedvalue:'all',
       planets: [] as Array<Planet>
     }
  
@@ -181,17 +183,18 @@ export default class Catalog extends React.Component<any, any> {
     this._isMounted&&this.setState({ planets, loading: false })
   }
 
-  handleHabClick = async () => {
+  handleHabClick = async (e:any, { value }:any) => {
+ 
     let { habactive } = this.state
-    habactive = !habactive
+    habactive = value!=='all'
     let planets = [] as Array<Planet>
     if (habactive) {
-      planets = await GetPlanetListAsync({ Key: 'Hab' }, {}, 30)
+      planets = await GetPlanetListAsync({ Key: value }, {}, 30)
     }
     if (!habactive) {
       planets = await GetPlanetListAsync({}, {}, 30)
     }
-    this._isMounted&&this.setState({ planets, loading: false, habactive })
+    this._isMounted&&this.setState({ planets, loading: false, habactive,selectedvalue:value })
   }
   handlePaginate = async (top: number) => {
 
@@ -203,21 +206,21 @@ export default class Catalog extends React.Component<any, any> {
   }
 
   setSearchFilter = () => {
-    let { habactive, searchValue } = this.state
+    let { habactive, searchValue,selectedvalue } = this.state
     if (habactive && searchValue !== '') {
-      return { Key: 'Hab', Name: searchValue }
+      return { Key: selectedvalue, Name: searchValue }
     }
     if (!habactive && searchValue !== '') {
       return { Name: searchValue }
     }
     if (habactive && searchValue === '') {
-      return { Key: 'Hab' }
+      return { Key: selectedvalue }
     }
     return {}
   }
 
   render() {
-    const { loading, searchValue, top, planets } = this.state
+    const { loading, searchValue, top, planets, selectedvalue } = this.state
     const main = this.mainPost()
 
     return loading? (
@@ -233,9 +236,10 @@ export default class Catalog extends React.Component<any, any> {
                 button
                 basic
                 floating
-                onChange={() => this.handleHabClick()}
+                onChange={this.handleHabClick}
                 options={options}
-                defaultValue="all"
+              
+                value={ selectedvalue}
               />
               </div>
         <div className={'bar'}>
