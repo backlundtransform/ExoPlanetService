@@ -26,13 +26,17 @@ namespace ExoPlanetHunter.Web.Controllers
             _statisticsService = statisticsService;
         }
 
-        public async Task<IActionResult> Index(int? page = 1)
+        public async Task<IActionResult> Index(int? page = 1, string tag="all")
         {
             int pageSize = 5;
-            var posts = await _postService.GetPostsAsync();
+            var posts =  _postService.GetPosts();
             ViewData["stat"] = _statisticsService.GetStatistics();
             ViewData["Img"] = "https://i.imgur.com/FFsupGS.png";
             ViewData["Title"] = "ExoplanetHunter";
+            if(tag!="all"){
+
+               posts = posts.Where(p=>p.Tags.Any(o=>o.Name==tag)).OrderBy(i=>i.Created);
+            }
             return View(PaginatedList<Post>.CreateAsync(posts, page ?? 1, pageSize));
         }
 

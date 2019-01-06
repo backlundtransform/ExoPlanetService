@@ -17,9 +17,9 @@ namespace ExoPlanetHunter.Service.Services
             _context = context;
         }
 
-        public async Task<List<Post>> GetPostsAsync()
+        public IOrderedQueryable<Post> GetPosts()
         {
-            return await _context.Posts.OrderByDescending(p=>p.Created).ToListAsync();
+            return _context.Posts.Include(p=>p.Tags).OrderByDescending(p=>p.Created);
         }
 
         public async Task<List<Post>> GetRelatedContent(string tag)
@@ -41,8 +41,6 @@ namespace ExoPlanetHunter.Service.Services
             post.Created = DateTime.Now;
 
             p.Tags= post.Tags;
-
-      
 
             _context.Update(p);
             await _context.SaveChangesAsync();

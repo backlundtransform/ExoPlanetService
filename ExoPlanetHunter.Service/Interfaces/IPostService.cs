@@ -1,12 +1,13 @@
 ﻿using ExoPlanetHunter.Database.Entity;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ExoPlanetHunter.Service.Interfaces
 {
     public interface IPostService
     {
-        Task<List<Post>> GetPostsAsync();
+         IOrderedQueryable<Post> GetPosts();
 
         Task<Post> GetPostAsync(int? id);
 
