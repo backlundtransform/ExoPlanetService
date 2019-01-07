@@ -40,9 +40,17 @@ namespace ExoPlanetHunter.Web.Controllers
             return View(PaginatedList<Post>.CreateAsync(posts, page ?? 1, pageSize));
         }
 
-        public async Task<List<Post>> GetRelatedContent(string tag)
+    [Produces("application/json")]
+    [Route("api/GetRelatedContent")]
+        public async Task<List<RelatedContent>> GetRelatedContent(string tag)
         {
-            return await _postService.GetRelatedContent(tag);
+           var posts = await _postService.GetRelatedContent(tag);
+            return posts.Select(post=> new RelatedContent {
+              Image= Regex.Match(post.Content, "(([^\"\']*.jpe?g))", RegexOptions.IgnoreCase).Groups[0].Value,
+              Description=post.Title,
+              Created =post.Created,
+              Url =$"/details/{post.Id}/{post.Title}"
+            }).ToList();
         }
 
         public async Task<IActionResult> Details(int? id)
