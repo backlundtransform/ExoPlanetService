@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Card,  Image } from 'semantic-ui-react'
+import { Card, Image, Container,Divider} from 'semantic-ui-react'
 
 import {GetRelatedAsync , RelatedContent} from '../service/getRelated'
 interface RelatedContentProps{
@@ -20,16 +20,17 @@ export default class RelatedContents extends React.Component<RelatedContentProps
   render() {
   const {tags} =this.state
 
-    return (
-      <Card.Group itemsPerRow={3}>
-          {tags.map(p=>(<Card  href={p.url} >
-      <Image src={p.image} />
-      <Card.Content>
-        <Card.Meta>Created {p.created}</Card.Meta>
-        <Card.Description>{p.description}</Card.Description>
-      </Card.Content>
-     </Card>))}
-      </Card.Group>
-    )
+   const content = tags.length>0?<div><Divider/>
+   <Card.Group itemsPerRow={4}>
+       {tags.map(p=>(<Card  href={p.url} >
+   <Image src={p.image} />
+   <Card.Content>
+     <Card.Description>{p.description}</Card.Description>
+   </Card.Content>
+  </Card>))}
+   </Card.Group></div>:null
+
+    return  content
+    
   }
 }

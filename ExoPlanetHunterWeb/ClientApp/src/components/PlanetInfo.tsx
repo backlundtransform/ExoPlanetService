@@ -7,7 +7,8 @@ import {
   Grid,
   Button,
   Loader,
-  Dimmer
+  Dimmer,
+  Divider
 } from 'semantic-ui-react'
 import { GetPlanetAsync, Planet } from '../service/getPlanets'
 import { resource } from '../config/Resource'
@@ -187,7 +188,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <hr />
+            <Divider/>
             <Container>
               {`${resource.planetname[0]} ${planet.name} ${
                 resource.planetname[1]

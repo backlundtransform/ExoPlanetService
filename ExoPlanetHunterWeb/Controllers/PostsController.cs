@@ -33,6 +33,7 @@ namespace ExoPlanetHunter.Web.Controllers
             ViewData["stat"] = _statisticsService.GetStatistics();
             ViewData["Img"] = "https://i.imgur.com/FFsupGS.png";
             ViewData["Title"] = "ExoplanetHunter";
+            ViewData["tags"] = "";
             if(tag!="all"){
 
                posts = posts.Where(p=>p.Tags.Any(o=>o.Name==tag)).OrderBy(i=>i.Created);
