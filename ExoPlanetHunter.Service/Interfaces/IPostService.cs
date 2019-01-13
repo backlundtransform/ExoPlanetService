@@ -7,7 +7,8 @@ namespace ExoPlanetHunter.Service.Interfaces
 {
     public interface IPostService
     {
-         IOrderedQueryable<Post> GetPosts();
+        IOrderedQueryable<Post> GetPosts();
+        Task<List<string>> GetTags();
 
         Task<Post> GetPostAsync(int? id);
 

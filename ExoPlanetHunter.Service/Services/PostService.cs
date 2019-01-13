@@ -26,6 +26,10 @@ namespace ExoPlanetHunter.Service.Services
         {
             return await _context.Posts.Include(b => b.Tags).Where(p=>p.Tags.Any(c=>c.Name==tag)).ToListAsync();
         }
+        public async Task<List<string>> GetTags()
+        {
+            return await _context.Posts.Include(b => b.Tags).SelectMany(p=>p.Tags).GroupBy(c=>c.Name).Select(p=> p.Key).ToListAsync();
+        }
 
         public async Task<Post> GetPostAsync(int? id)
         {

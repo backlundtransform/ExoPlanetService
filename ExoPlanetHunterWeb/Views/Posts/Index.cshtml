@@ -7,6 +7,7 @@
 @{
 
     var stat = ViewData["stat"] as ExoPlanetHunter.Service.Dto.StatisticsDto;
+    var tags = ViewData["tags"] as List<string>;
 }
 
 <div class="container">
@@ -90,6 +91,13 @@
                   </div>
     <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/exoplanethunt?ref_src=twsrc%5Etfw">Tweets by exoplanethunt</a>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <br />
+     <div class="alert alert-dark bg-dark text-light" role="alert">
+                  @foreach (var tag in tags)
+                         {
+                         <a asp-action="Index" asp-route-tag="@tag" class="badge badge-secondary">@tag</a>
+                         } 
+                  </div>
 </div>
     </div>
 </div>
