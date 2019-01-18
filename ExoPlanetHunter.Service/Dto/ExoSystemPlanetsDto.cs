@@ -8,6 +8,8 @@
 
         public decimal Radius { get; set; }
 
+       public decimal? Eccentricity { get; set; }
+
         public decimal? StarDistance { get; set; }
     }
 }

@@ -17,21 +17,36 @@ namespace ExoPlanetHunter.Service.Services
             _context = context;
         }
 
-        public async Task<List<Post>> GetPostsAsync()
+        public IOrderedQueryable<Post> GetPosts()
         {
-            return await _context.Posts.OrderByDescending(p=>p.Created).ToListAsync();
+            return _context.Posts.Include(p=>p.Tags).OrderByDescending(p=>p.Created);
+        }
+
+        public async Task<List<Post>> GetRelatedContent(string tag)
+        {
+            return await _context.Posts.Include(b => b.Tags).Where(p=>p.Tags.Any(c=>c.Name==tag)).ToListAsync();
+        }
+        public async Task<List<string>> GetTags()
+        {
+            return await _context.Posts.Include(b => b.Tags).SelectMany(p=>p.Tags).GroupBy(c=>c.Name).Select(p=> p.Key).ToListAsync();
         }
 
         public async Task<Post> GetPostAsync(int? id)
         {
-            return await _context.Posts
+            return await _context.Posts.Include(b => b.Tags)
                 .SingleOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task EditPostAsync(Post post)
         {
-            post.LastModified = DateTime.Now;
-            _context.Update(post);
+           var p = await GetPostAsync(post.Id);
+
+            p.LastModified = DateTime.Now;
+            post.Created = DateTime.Now;
+
+            p.Tags= post.Tags;
+
+            _context.Update(p);
             await _context.SaveChangesAsync();
         }
 

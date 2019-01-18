@@ -3,11 +3,7 @@ import * as React from 'react'
 import { Container } from 'semantic-ui-react'
 
 export default class Ad extends React.Component {
-  componentDidMount() {
-    
-  
- 
-  }
+
   render() {
 
     return (

@@ -50,6 +50,7 @@ export interface Planet {
   radiusEu?: number
   coordinate?: any
   starDistance: number
+  eccentricity?: number
   star?: Star
   temp?: number
   tempMin?: number
@@ -61,7 +62,6 @@ export interface Planet {
   massType?: number
   tempMax?: number
   tempZone?: number
-
   hab?: boolean
   moons: true
 }

@@ -7,7 +7,8 @@ import {
   Grid,
   Button,
   Loader,
-  Dimmer
+  Dimmer,
+  Divider
 } from 'semantic-ui-react'
 import { GetPlanetAsync, Planet } from '../service/getPlanets'
 import { resource } from '../config/Resource'
@@ -15,7 +16,7 @@ import { Gradient } from '../styles/radialgradients'
 import MaterialIcon from 'material-icons-react'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import { Link } from 'react-router-dom'
-
+import RelatedContents from '../common/relatedcontents'
 
 interface PlanetState {
   planet: Planet
@@ -187,7 +188,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <hr />
+            <Divider/>
             <Container>
               {`${resource.planetname[0]} ${planet.name} ${
                 resource.planetname[1]
@@ -251,6 +252,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                   : resource.discinfo[planet.discMethod]
               }`}</p>
             </Container>
+            <RelatedContents name={planet.name}></RelatedContents>
           </Container>
         )}
       </div>

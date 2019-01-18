@@ -62,7 +62,7 @@ export default class Simulator extends React.Component<
   }
   updateHandler = () => this.setState({ alpha: this.state.alpha + 1 / 50 })
   RotateX = (cx: number, rx: number) =>
-    cx + rx * Math.cos(this.state.alpha + rx)
+    cx + rx* Math.cos(this.state.alpha + rx)
   RotateY = (cy: number, ry: number) =>
     cy + ry * Math.sin(this.state.alpha + ry / 0.3)
 
@@ -88,7 +88,7 @@ export default class Simulator extends React.Component<
     let width = window.innerWidth - 20
 
     let height = window.innerHeight - 120
-
+ 
 
     return (
       <div className={'space'}>
@@ -162,7 +162,7 @@ export default class Simulator extends React.Component<
                     <Defs>
                       <ClipPath id={index.toString()}>
                         <Circle
-                          cx={this.RotateX(width / 2, p.starDistance)}
+                          cx={this.RotateX(width / 2+p.starDistance*p.eccentricity/2, p.starDistance)}
                           cy={this.RotateY(height / 2, p.starDistance * 0.3)}
                           r={p.radius}
                         />
@@ -171,7 +171,7 @@ export default class Simulator extends React.Component<
                     <Image
                       width="180"
                       height="190"
-                      x={this.RotateX(width / 2 - 2 * p.radius, p.starDistance)}
+                      x={this.RotateX(width / 2 - 2 * p.radius+p.starDistance*p.eccentricity/2, p.starDistance  )}
                       y={this.RotateY(
                         height / 2 - 2 * p.radius,
                         p.starDistance * 0.3
@@ -181,7 +181,7 @@ export default class Simulator extends React.Component<
                     />
                     <Circle
                       id={p.name}
-                      cx={this.RotateX(width / 2, p.starDistance)}
+                      cx={this.RotateX(width / 2+p.starDistance*p.eccentricity/2, p.starDistance)}
                       cy={this.RotateY(height / 2, p.starDistance * 0.3)}
                       r={p.radius}
                       fillOpacity={0.4}
@@ -191,9 +191,9 @@ export default class Simulator extends React.Component<
                     />
                     <Text
                       key={`text- ${index}`}
-                      x={p.radius + this.RotateX(width / 2, p.starDistance)}
+                      x={p.radius + this.RotateX(width / 2+p.starDistance*p.eccentricity/2, p.starDistance)}
                       y={
-                        p.radius +
+                        2*p.radius +
                         this.RotateY(height / 2, p.starDistance * 0.3)
                       }
                       textAnchor="end"

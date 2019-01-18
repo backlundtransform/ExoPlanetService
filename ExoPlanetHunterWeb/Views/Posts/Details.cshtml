@@ -29,6 +29,15 @@
                     Göran Bäcklund
                     @Model.Created
                 </p>
+            <div>
+            @foreach (var item in Model.Tags)
+            {
+            <a asp-action="Index" asp-route-tag="@item.Name" class="badge badge-secondary">@item.Name</a>
+            } 
+                </div>
+         <br />
+
+
                 <!-- AddToAny BEGIN -->
                 <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
                     <a class="a2a_dd" href="https://www.addtoany.com/share"></a>

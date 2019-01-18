@@ -1,12 +1,8 @@
-﻿@model ExoPlanetHunter.Database.Entity.Post
+﻿@model ExoPlanetHunterWeb.ViewModel.PostsTags;
 
 @{
     ViewData["Title"] = "Edit";
 }
-
-
-
-
 
 <div class="container">
 
@@ -16,7 +12,7 @@
             <div class="post-preview">
                 <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Id" />
+          
                     <div class="form-group">
                         <label asp-for="Title" class="control-label"></label>
                         <input asp-for="Title" class="form-control" />
@@ -27,7 +23,12 @@
                         <textarea id="exoeditor" rows="20" cols="880" asp-for="Content" class="form-control"></textarea>
                         <span asp-validation-for="Content" class="text-danger"></span>
                     </div>
-                    <input type="hidden" asp-for="Created" />
+                    <div class="form-group">
+                        <label asp-for="Tags" class="control-label"></label>
+                        <input asp-for="Tags" class="form-control" />
+                        <span asp-validation-for="Tags" class="text-danger"></span>
+                    </div>
+                
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-default" />
                     </div>
@@ -44,3 +45,4 @@
         CKEDITOR.replace('exoeditor');
         CKEDITOR.config.allowedContent = true;
     </script>
+</div>
