@@ -15,6 +15,8 @@ namespace ExoPlanetHunter.Web.Controllers
 {
     public class PostsController : Controller
     {
+        private const string _title= "Exoplanets Exploring the universe";
+        private const string _image= "https://i.imgur.com/FFsupGS.png";
         private readonly IPostService _postService;
         private readonly IExoService _planetService;
         private readonly IStatisticsService _statisticsService;
@@ -31,8 +33,8 @@ namespace ExoPlanetHunter.Web.Controllers
             int pageSize = 5;
             var posts =  _postService.GetPosts();
             ViewData["stat"] = _statisticsService.GetStatistics();
-            ViewData["Img"] = "https://i.imgur.com/FFsupGS.png";
-            ViewData["Title"] = "ExoplanetHunter";
+            ViewData["Img"] = _image;
+            ViewData["Title"] = _title;
             ViewData["tags"] = await _postService.GetTags();
             if(tag!="all"){
 
