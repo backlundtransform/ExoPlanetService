@@ -68,7 +68,7 @@ namespace ExoPlanetHunter.Web.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["tags"] = await _postService.GetTags();
             ViewData["Img"] = Regex.Match(post.Content, "(([^\"\']*.jpe?g))", RegexOptions.IgnoreCase).Groups[0].Value;
 
             ViewData["Title"] = post.Title;

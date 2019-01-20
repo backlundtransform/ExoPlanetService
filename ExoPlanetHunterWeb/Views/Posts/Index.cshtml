@@ -93,7 +93,7 @@
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <br />  <br />
      <div class="alert alert-dark bg-dark text-light" role="alert">
-                  @foreach (var tag in tags.Take(30))
+                  @foreach (var tag in tags)
                          {
                          <a asp-action="Index" asp-route-tag="@tag" class="badge badge-secondary">@tag</a>
                          } 
