@@ -39,11 +39,11 @@ namespace ExoPlanetHunter.Service.Services
 
         public async Task EditPostAsync(Post post)
         {
-           var p = await GetPostAsync(post.Id);
-
+           var p = await GetPostAsync(post.Id); 
+            p.Content = post.Content;
+            p.Title = post.Title;
             p.LastModified = DateTime.Now;
             post.Created = DateTime.Now;
-
             p.Tags= post.Tags;
 
             _context.Update(p);
