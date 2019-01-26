@@ -189,7 +189,7 @@ export default class Catalog extends React.Component<any, any> {
     habactive = value!=='all'
     let planets = [] as Array<Planet>
     if (habactive) {
-      planets = await GetPlanetListAsync({ Key: value }, {}, 30)
+      planets = await GetPlanetListAsync({ Key: value }, {},60)
     }
     if (!habactive) {
       planets = await GetPlanetListAsync({}, {}, 30)
