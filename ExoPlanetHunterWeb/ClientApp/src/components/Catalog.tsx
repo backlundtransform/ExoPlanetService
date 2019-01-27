@@ -60,7 +60,7 @@ export default class Catalog extends React.Component<any, any> {
   async componentDidMount() {
     this._isMounted = true;
 
-    const planets = await GetPlanetListAsync(null, {}, 30)
+    const planets = await GetPlanetListAsync(null, 30)
     this._isMounted&&this.setState({ planets, loading: false })
 
   }
@@ -178,7 +178,7 @@ export default class Catalog extends React.Component<any, any> {
    
     let filter = this.setSearchFilter()
 
-    const planets = await GetPlanetListAsync(filter, {}, 30)
+    const planets = await GetPlanetListAsync(filter, 30)
 
     this._isMounted&&this.setState({ planets, loading: false })
   }
@@ -189,18 +189,18 @@ export default class Catalog extends React.Component<any, any> {
     habactive = value!=='all'
     let planets = [] as Array<Planet>
     if (habactive) {
-      planets = await GetPlanetListAsync({ Key: value }, {},60)
+      planets = await GetPlanetListAsync({ Key: value },30)
     }
     if (!habactive) {
-      planets = await GetPlanetListAsync({}, {}, 30)
+      planets = await GetPlanetListAsync({}, 30)
     }
-    this._isMounted&&this.setState({ planets, loading: false, habactive,selectedvalue:value })
+    this._isMounted&&this.setState({ planets, loading: false, habactive,selectedvalue:value, top:30 })
   }
   handlePaginate = async (top: number) => {
 
     let filter = this.setSearchFilter()
 
-    const planets = await GetPlanetListAsync(filter, {}, top)
+    const planets = await GetPlanetListAsync(filter, top)
 
     this._isMounted&&this.setState({ planets, loading: false, top })
   }
@@ -239,7 +239,7 @@ export default class Catalog extends React.Component<any, any> {
                 onChange={this.handleHabClick}
                 options={options}
               
-                value={ selectedvalue}
+                value={selectedvalue}
               />
               </div>
         <div className={'bar'}>

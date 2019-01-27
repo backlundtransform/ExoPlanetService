@@ -32,8 +32,6 @@ namespace ExoPlanetHunterWeb.Controllers
         {
 
             return _exoService.GetExoPlanets(opts);
-
-
         }
 
         [HttpGet("GetExoSolarSystemByName")]
@@ -61,7 +59,24 @@ namespace ExoPlanetHunterWeb.Controllers
             return _exoService.GetHabitablePlanets();
 
         }
+
+        [HttpGet("GetPaginatedPlanets")]
+        public List<ExoPlanetsDto> GetPaginatedPlanets(int page, bool hab, bool moon)
+        {
+            if (hab) { 
+            return _exoService.CacheExoPlanets().Where(p=>p.Hab==true).OrderByDescending(p=>p.DiscYear).Skip(page * 30).Take(30).ToList(); 
+            }
+            if (moon)
+            {
+                return _exoService.CacheExoPlanets().Where(p => p.Moons == true).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList(); 
+            }
+            return _exoService.CacheExoPlanets().OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
+
+        }
+
       
+
+
 
         [HttpGet("GetImages")]
         public Dictionary<string, string> GetImages()
