@@ -135,7 +135,7 @@ export default class StarInfo extends React.Component<any> {
                 <Table.Row>
                   <Table.Cell>{`${resource.starinfo[2]}`}</Table.Cell>
                   <Table.Cell>{`${star.age}*${
-                    resource.oursun
+                   'Gyrs'
                   }`}</Table.Cell>
                 </Table.Row>
               )}
