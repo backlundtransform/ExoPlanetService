@@ -45,6 +45,7 @@ namespace ExoPlanetHunter.Web.Controllers
 
     [Produces("application/json")]
     [Route("api/GetRelatedContent")]
+    [HttpGet]
         public async Task<List<RelatedContent>> GetRelatedContent(string tag)
         {
            var posts = await _postService.GetRelatedContent(tag);
