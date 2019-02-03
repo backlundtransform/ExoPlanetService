@@ -7,7 +7,8 @@ import PlanetInfo from './PlanetInfo'
 import Simulator from './Simulator'
 import Constellations from './Constellations'
 import StarInfo from './StarInfo'
-
+import HertzsprungRussell  from '../chart/Hertzsprung–Russell'
+import PlanetTypes from '../chart/Planettype'
 import { Menu, Icon} from 'semantic-ui-react'
 
 export default class Navigate extends React.Component {
@@ -67,6 +68,9 @@ export default class Navigate extends React.Component {
             <Route exact path="/catalog" component={Catalog} />
             <Route exact path="/Map" component={Map} />
             <Route exact path="/chart" component={Chart} />
+            <Route exact path="/chart/hertz" component={HertzsprungRussell} />
+            <Route exact path="/chart/planettypes" component={PlanetTypes} />
+        
             <Route
               name="planet"
               path="/planet/:planetId"

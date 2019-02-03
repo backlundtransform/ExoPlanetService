@@ -1,7 +1,9 @@
 ﻿using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Service.Interfaces;
+using ExoPlanetHunterWeb.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ExoPlanetHunterWeb.Controllers
 {
@@ -17,9 +19,15 @@ namespace ExoPlanetHunterWeb.Controllers
         }
 
         [HttpGet("HertzsprungRussell")]
-        public List<HertzsprungRussellDto> GetHertzsprungRussell()
+        public IQueryable<HertzsprungRussellDto> GetHertzsprungRussell()
         {
             return _chart.GetHertzsprungRussell();
+        }
+
+        [HttpGet("PlanetTypes")]
+        public IQueryable<PlanetTypes> GetPlanetTypes()
+        {
+            return _chart.GetPlanetTypes().Select(p=>new PlanetTypes { Title=p.Key, Value=p.Count()});
         }
     }
 }

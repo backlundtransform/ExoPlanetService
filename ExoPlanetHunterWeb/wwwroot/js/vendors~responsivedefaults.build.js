@@ -1,18 +1,18 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[4],{
 
-/***/ 840:
+/***/ 850:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _charts_axes_AxisRenderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(841);
-/* harmony import */ var _charts_axes_AxisRendererX__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(849);
-/* harmony import */ var _charts_axes_AxisRendererY__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(855);
-/* harmony import */ var _charts_axes_AxisRendererCircular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(856);
-/* harmony import */ var _charts_Chart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(860);
-/* harmony import */ var _charts_Legend__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(862);
-/* harmony import */ var _charts_map_SmallMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(864);
-/* harmony import */ var _charts_map_ZoomControl__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(865);
+/* harmony import */ var _charts_axes_AxisRenderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(851);
+/* harmony import */ var _charts_axes_AxisRendererX__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(859);
+/* harmony import */ var _charts_axes_AxisRendererY__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(865);
+/* harmony import */ var _charts_axes_AxisRendererCircular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(866);
+/* harmony import */ var _charts_Chart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(870);
+/* harmony import */ var _charts_Legend__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(872);
+/* harmony import */ var _charts_map_SmallMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(874);
+/* harmony import */ var _charts_map_ZoomControl__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(875);
 /**
  * Defines default Responsive rules
  * @hidden
@@ -196,22 +196,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 864:
+/***/ 874:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SmallMap", function() { return SmallMap; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(754);
-/* harmony import */ var _core_Container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(766);
-/* harmony import */ var _core_elements_Rectangle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(832);
-/* harmony import */ var _core_utils_List__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(770);
-/* harmony import */ var _core_utils_Disposer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(755);
-/* harmony import */ var _core_Registry__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(752);
-/* harmony import */ var _core_utils_Color__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(775);
-/* harmony import */ var _core_utils_InterfaceColorSet__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(801);
-/* harmony import */ var _core_utils_Utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(796);
-/* harmony import */ var _core_utils_Type__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(758);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(764);
+/* harmony import */ var _core_Container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(776);
+/* harmony import */ var _core_elements_Rectangle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(842);
+/* harmony import */ var _core_utils_List__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(780);
+/* harmony import */ var _core_utils_Disposer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(765);
+/* harmony import */ var _core_Registry__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(762);
+/* harmony import */ var _core_utils_Color__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(785);
+/* harmony import */ var _core_utils_InterfaceColorSet__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(811);
+/* harmony import */ var _core_utils_Utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(806);
+/* harmony import */ var _core_utils_Type__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(768);
 /**
  * A module for the mini-map control.
  */
@@ -452,22 +452,22 @@ _core_Registry__WEBPACK_IMPORTED_MODULE_5__["registry"].registeredClasses["Small
 
 /***/ }),
 
-/***/ 865:
+/***/ 875:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZoomControl", function() { return ZoomControl; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(754);
-/* harmony import */ var _core_Container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(766);
-/* harmony import */ var _core_elements_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(866);
-/* harmony import */ var _core_elements_RoundedRectangle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(863);
-/* harmony import */ var _core_utils_Disposer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(755);
-/* harmony import */ var _core_utils_Keyboard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(793);
-/* harmony import */ var _core_interaction_Interaction__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(785);
-/* harmony import */ var _core_utils_Percent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(759);
-/* harmony import */ var _core_Registry__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(752);
-/* harmony import */ var _core_utils_InterfaceColorSet__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(801);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(764);
+/* harmony import */ var _core_Container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(776);
+/* harmony import */ var _core_elements_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(876);
+/* harmony import */ var _core_elements_RoundedRectangle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(873);
+/* harmony import */ var _core_utils_Disposer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(765);
+/* harmony import */ var _core_utils_Keyboard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(803);
+/* harmony import */ var _core_interaction_Interaction__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(795);
+/* harmony import */ var _core_utils_Percent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(769);
+/* harmony import */ var _core_Registry__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(762);
+/* harmony import */ var _core_utils_InterfaceColorSet__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(811);
 /**
  * Zoom control module
  */

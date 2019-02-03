@@ -1,4 +1,5 @@
 ﻿using ExoPlanetHunter.Database;
+using ExoPlanetHunter.Database.entity;
 using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Service.Interfaces;
 using System.Collections.Generic;
@@ -15,12 +16,17 @@ namespace ExoPlanetHunter.Service.Services
             _context = context;
         }
 
-        public List<HertzsprungRussellDto> GetHertzsprungRussell()
+        public IQueryable<HertzsprungRussellDto> GetHertzsprungRussell()
         {
             return _context.Stars.AsQueryable()
                 .Where(p => p.Mass != null && p.Luminosity != null
-            && p.Teff != null  && p.Type != null)
-            .Select(HertzsprungRussellDto.FromEntities).Where(p=>p.Color != null).ToList();
+            && p.Teff != null && p.Type != null)
+            .Select(HertzsprungRussellDto.FromEntities).Where(p => p.Color != null);
+        }
+
+        public IQueryable<IGrouping<string, Planet>> GetPlanetTypes()
+        {
+            return _context.Planets.AsQueryable().Where(p => p.MassClass != "").GroupBy(p => p.MassClass);
         }
     }
 }

@@ -24,8 +24,7 @@ namespace ExoPlanetHunter.Web.Controllers
             _constellationService = constellationService;
         }
 
-    
-
+   
         [HttpGet]
         public async Task<IEnumerable<ConstellationDto>> Get()
         {

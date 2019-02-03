@@ -56,7 +56,7 @@ export default class Catalog extends React.Component<any, any> {
   _isMounted = false
   async componentDidMount() {
     this._isMounted = true
-
+console.log(this.props.location.state.name)
     const planets = await GetPlanetListAsync(null, {}, 30)
     this._isMounted && this.setState({ planets, loading: false })
   }
