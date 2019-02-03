@@ -51,17 +51,20 @@ export default class Catalog extends React.Component<any, any> {
       color: '',
       habactive: false,
       searchValue: '',
-      selectedvalue:'all',
+      selectedvalue: 'all',
       planets: [] as Array<Planet>
     }
   }
   _isMounted = false
   async componentDidMount() {
-    this._isMounted = true;
+    this._isMounted = true
+    let filter = this.setSearchFilter()
 
-    const planets = await GetPlanetListAsync(null, 30)
-    this._isMounted&&this.setState({ planets, loading: false })
-
+    const planets = await GetPlanetListAsync(
+      filter ,
+      30
+    )
+    this._isMounted && this.setState({ planets, loading: false })
   }
   componentWillUnmount() {
     this._isMounted = false
@@ -184,18 +187,24 @@ export default class Catalog extends React.Component<any, any> {
     this._isMounted && this.setState({ planets, loading: false })
   }
 
-  handleHabClick = async (e:any, { value }:any) => {
- 
+  handleHabClick = async (e: any, { value }: any) => {
     let { habactive } = this.state
-    habactive = value!=='all'
+    habactive = value !== 'all'
     let planets = [] as Array<Planet>
     if (habactive) {
-      planets = await GetPlanetListAsync({ Key: value },30)
+      planets = await GetPlanetListAsync({ Key: value }, 30)
     }
     if (!habactive) {
       planets = await GetPlanetListAsync({}, 30)
     }
-    this._isMounted&&this.setState({ planets, loading: false, habactive,selectedvalue:value, top:30 })
+    this._isMounted &&
+      this.setState({
+        planets,
+        loading: false,
+        habactive,
+        selectedvalue: value,
+        top: 30
+      })
   }
   handlePaginate = async (top: number) => {
     let filter = this.setSearchFilter()
@@ -206,7 +215,8 @@ export default class Catalog extends React.Component<any, any> {
   }
 
   setSearchFilter = () => {
-    let { habactive, searchValue,selectedvalue } = this.state
+    let { habactive, searchValue, selectedvalue } = this.state
+    const type =  this.props.location.state&&this.props.location.state.name
     if (habactive && searchValue !== '') {
       return { Key: selectedvalue, Name: searchValue }
     }
@@ -216,7 +226,11 @@ export default class Catalog extends React.Component<any, any> {
     if (habactive && searchValue === '') {
       return { Key: selectedvalue }
     }
-    return {}
+    if (type !== undefined) {
+      return { Key: 'Mass', Name: type }
+    }
+
+    return null
   }
 
   render() {
@@ -229,18 +243,17 @@ export default class Catalog extends React.Component<any, any> {
       </Dimmer>
     ) : (
       <React.Fragment>
-             <div className={'float-left'} style={{marginLeft:20}}>
-         <Dropdown
-                className={'float-left'}
-                button
-                basic
-                floating
-                onChange={this.handleHabClick}
-                options={options}
-              
-                value={selectedvalue}
-              />
-              </div>
+        <div className={'float-left'} style={{ marginLeft: 20 }}>
+          <Dropdown
+            className={'float-left'}
+            button
+            basic
+            floating
+            onChange={this.handleHabClick}
+            options={options}
+            value={selectedvalue}
+          />
+        </div>
         <div className={'bar'}>
           <Input
             type="text"

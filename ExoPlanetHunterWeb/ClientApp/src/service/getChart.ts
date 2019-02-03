@@ -64,6 +64,7 @@ export const initStockChart = (parent:any): am4charts.XYChart => {
 
   let columnTemplate = series.columns.template
   columnTemplate.strokeWidth = 2
+  columnTemplate.cursorOverStyle=am4core.MouseCursorStyle.pointer
   columnTemplate.strokeOpacity = 1
   columnTemplate.stroke = am4core.color('#FFFFFF')
   columnTemplate.events.on(
