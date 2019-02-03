@@ -9,7 +9,7 @@ namespace ExoPlanetHunter.Service.Interfaces
 {
     public interface IChartService
     {
-        IQueryable<HertzsprungRussellDto> GetHertzsprungRussell();
+        IQueryable<HertzsprungRussellDto> GetHertzsprungRussell(bool habitableOnly);
       IQueryable<IGrouping<string, Planet>> GetPlanetTypes();
     }
 }

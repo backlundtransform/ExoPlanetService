@@ -1,6 +1,5 @@
 import * as React from 'react'
 import * as am4core from '@amcharts/amcharts4/core'
-import * as am4charts from '@amcharts/amcharts4/charts'
 import { Container } from 'semantic-ui-react'
 import am4themes_animated from '@amcharts/amcharts4/themes/animated'
 import { getPlanetTypes, initStockChart } from '../service/getChart'

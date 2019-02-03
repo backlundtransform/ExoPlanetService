@@ -19,9 +19,9 @@ namespace ExoPlanetHunterWeb.Controllers
         }
 
         [HttpGet("HertzsprungRussell")]
-        public IQueryable<HertzsprungRussellDto> GetHertzsprungRussell()
+        public IQueryable<HertzsprungRussellDto> GetHertzsprungRussell(bool habitableOnly=true)
         {
-            return _chart.GetHertzsprungRussell();
+            return _chart.GetHertzsprungRussell(habitableOnly);
         }
 
         [HttpGet("PlanetTypes")]

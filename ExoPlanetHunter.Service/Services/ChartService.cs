@@ -16,11 +16,11 @@ namespace ExoPlanetHunter.Service.Services
             _context = context;
         }
 
-        public IQueryable<HertzsprungRussellDto> GetHertzsprungRussell()
+        public IQueryable<HertzsprungRussellDto> GetHertzsprungRussell(bool habitableOnly)
         {
             return _context.Stars.AsQueryable()
                 .Where(p => p.Mass != null && p.Luminosity != null
-            && p.Teff != null && p.Type != null)
+            && p.Teff != null && p.Type != null && habitableOnly?p.Planets.Any(o=>o.Habitable==true):true)
             .Select(HertzsprungRussellDto.FromEntities).Where(p => p.Color != null);
         }
 
