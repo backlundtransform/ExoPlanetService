@@ -38,7 +38,8 @@ const row = (post: any) => (
 )
 const options = [
   { key: 'all', text: 'All Planets', value: 'all' },
-  { key: 'hab', text: 'Habitable Planets', value: 'hab' }
+  { key: 'Hab', text: 'Habitable Planets', value: 'Hab' },
+  { key: 'Moons', text: 'Potentially Habitable Moon', value: 'Moons' }
 ]
 
 export default class Catalog extends React.Component<any, any> {
@@ -50,15 +51,17 @@ export default class Catalog extends React.Component<any, any> {
       color: '',
       habactive: false,
       searchValue: '',
+      selectedvalue:'all',
       planets: [] as Array<Planet>
     }
   }
   _isMounted = false
   async componentDidMount() {
-    this._isMounted = true
-console.log(this.props.location.state.name)
-    const planets = await GetPlanetListAsync(null, {}, 30)
-    this._isMounted && this.setState({ planets, loading: false })
+    this._isMounted = true;
+
+    const planets = await GetPlanetListAsync(null, 30)
+    this._isMounted&&this.setState({ planets, loading: false })
+
   }
   componentWillUnmount() {
     this._isMounted = false
@@ -176,47 +179,48 @@ console.log(this.props.location.state.name)
   handleSearchClick = async () => {
     let filter = this.setSearchFilter()
 
-    const planets = await GetPlanetListAsync(filter, {}, 30)
+    const planets = await GetPlanetListAsync(filter, 30)
 
     this._isMounted && this.setState({ planets, loading: false })
   }
 
-  handleHabClick = async () => {
+  handleHabClick = async (e:any, { value }:any) => {
+ 
     let { habactive } = this.state
-    habactive = !habactive
+    habactive = value!=='all'
     let planets = [] as Array<Planet>
     if (habactive) {
-      planets = await GetPlanetListAsync({ Key: 'Hab' }, {}, 30)
+      planets = await GetPlanetListAsync({ Key: value },30)
     }
     if (!habactive) {
-      planets = await GetPlanetListAsync({}, {}, 30)
+      planets = await GetPlanetListAsync({}, 30)
     }
-    this._isMounted && this.setState({ planets, loading: false, habactive })
+    this._isMounted&&this.setState({ planets, loading: false, habactive,selectedvalue:value, top:30 })
   }
   handlePaginate = async (top: number) => {
     let filter = this.setSearchFilter()
 
-    const planets = await GetPlanetListAsync(filter, {}, top)
+    const planets = await GetPlanetListAsync(filter, top)
 
     this._isMounted && this.setState({ planets, loading: false, top })
   }
 
   setSearchFilter = () => {
-    let { habactive, searchValue } = this.state
+    let { habactive, searchValue,selectedvalue } = this.state
     if (habactive && searchValue !== '') {
-      return { Key: 'Hab', Name: searchValue }
+      return { Key: selectedvalue, Name: searchValue }
     }
     if (!habactive && searchValue !== '') {
       return { Name: searchValue }
     }
     if (habactive && searchValue === '') {
-      return { Key: 'Hab' }
+      return { Key: selectedvalue }
     }
     return {}
   }
 
   render() {
-    const { loading, searchValue, top, planets } = this.state
+    const { loading, searchValue, top, planets, selectedvalue } = this.state
     const main = this.mainPost()
 
     return loading ? (
@@ -225,17 +229,18 @@ console.log(this.props.location.state.name)
       </Dimmer>
     ) : (
       <React.Fragment>
-        <div className={'float-left'} style={{ marginLeft: 20 }}>
-          <Dropdown
-            className={'float-left'}
-            button
-            basic
-            floating
-            onChange={() => this.handleHabClick()}
-            options={options}
-            defaultValue="all"
-          />
-        </div>
+             <div className={'float-left'} style={{marginLeft:20}}>
+         <Dropdown
+                className={'float-left'}
+                button
+                basic
+                floating
+                onChange={this.handleHabClick}
+                options={options}
+              
+                value={selectedvalue}
+              />
+              </div>
         <div className={'bar'}>
           <Input
             type="text"

@@ -2,15 +2,17 @@
 
 @{
     ViewBag.Title = Model.Title;
+    var tags = ViewData["tags"] as List<string>;
 
 }
-
+   
 
 <div class="container">
 
-    <div class="row">
+   <div class="row">
 
-        <div class="col-lg-10 col-md-12 mx-auto">
+        <div class="col-lg-9 col-md-11 mx-auto">
+
 
             @if (User.Identity.IsAuthenticated)
             {
@@ -65,5 +67,15 @@
 
             </div>
         </div>
-    </div>
+   <div class="col-lg-3 col-md-1">
+  <div class="alert alert-dark bg-dark text-light" role="alert">
+                      <a href='https://play.google.com/store/apps/details?id=com.varoid.exoplanethunter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="200" style="background-color: transparent;"/></a>
+                  </div>
+     <div class="alert alert-dark bg-dark text-light" role="alert">
+                  @foreach (var tag in tags)
+                         {
+                         <a asp-action="Index" asp-route-tag="@tag" class="badge badge-secondary" style="margin:5px">@tag</a>
+                         } 
+                  </div>
+</div> </div>
 </div>

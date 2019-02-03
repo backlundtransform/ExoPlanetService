@@ -134,8 +134,8 @@ export default class StarInfo extends React.Component<any> {
               {star.age && (
                 <Table.Row>
                   <Table.Cell>{`${resource.starinfo[2]}`}</Table.Cell>
-                  <Table.Cell>{`${star.age}*${
-                    resource.oursun
+                  <Table.Cell>{`${star.age} ${
+                   ' Gyrs'
                   }`}</Table.Cell>
                 </Table.Row>
               )}

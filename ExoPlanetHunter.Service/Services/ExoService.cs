@@ -78,16 +78,16 @@ namespace ExoPlanetHunter.Service.Services
                     Name = p.Name,
                     Img = p.Img,
                     Radius = p.Radius,
-                    Eccentricity =p.Eccentricity,
+                    Eccentricity = p.Eccentricity,
                     StarDistance = GetStarDistance(planets, p.MeanDistance) + p.Radius
                 }).ToList()
             };
             return solarsystem;
         }
 
-        public List<ExoPlanetsDto> CacheExoPlanets()
+        public IEnumerable<ExoPlanetsDto> CacheExoPlanets()
         {
-            List<ExoPlanetsDto> cacheExo;
+           List<ExoPlanetsDto> cacheExo;
             if (!_cache.TryGetValue("Exoplanets", out cacheExo))
             {
                 cacheExo = _context.Planets.OrderByDescending(p => p.Disc_Year).Include(z => z.Star).Include(z => z.Star.Planets).Select(p => new ExoPlanetsDto
@@ -119,7 +119,7 @@ namespace ExoPlanetHunter.Service.Services
                     DiscMethod = (int)p.Disc_Method.ToEnum<DiscEnum>(),
                     Radius = ((15 * p.Radius > 50) ? 50 : (15 * p.Radius < 10 ? 10 : 15 * p.Radius)) ?? 30,
                     MeanDistance = p.MeanDistance,
-                    Eccentricity =p.Eccentricity,
+                    Eccentricity = p.Eccentricity,
 
                     Star = new ExoStarDto()
                     {
