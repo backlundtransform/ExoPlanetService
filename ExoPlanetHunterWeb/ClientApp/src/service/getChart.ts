@@ -2,7 +2,7 @@ import { Star } from './getPlanets'
 import * as am4core from '@amcharts/amcharts4/core'
 import * as am4charts from '@amcharts/amcharts4/charts'
 
-import am4themes_animated from '@amcharts/amcharts4/themes/animated'
+
 import am4themes_dark from '@amcharts/amcharts4/themes/dark'
 export interface HertzsprungRussell {
   title: string
@@ -39,7 +39,14 @@ export const getHertzsprungRussell = async (): Promise<
 export const getPlanetTypes = async (): Promise<Array<PlanetTypes>> =>
   (await getData(`../api/Chart/PlanetTypes`)) as Promise<Array<PlanetTypes>>
 export const initStockChart = (parent:any): am4charts.XYChart => {
-  const chart = initChart(true)
+
+ am4core.useTheme(am4themes_dark)
+  let chart = am4core.create(
+    'stockchartdiv',
+   am4charts.XYChart3D 
+  )
+  chart.exporting.menu = new am4core.ExportMenu()
+
   let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis())
   categoryAxis.dataFields.category = 'title'
   categoryAxis.renderer.labels.template.rotation = 270
@@ -93,19 +100,15 @@ export const initStockChart = (parent:any): am4charts.XYChart => {
 
   return chart
 }
-const initChart = (is3D: boolean): am4charts.XYChart => {
-  am4core.useTheme(am4themes_animated)
-  am4core.useTheme(am4themes_dark)
-  let chart = am4core.create(
-    'chartdiv',
-    is3D ? am4charts.XYChart3D : am4charts.XYChart
-  )
-  chart.exporting.menu = new am4core.ExportMenu()
 
-  return chart
-}
 export const initBubbleChart = (parent:any): am4charts.XYChart => {
-  const chart = initChart(false)
+ am4core.useTheme(am4themes_dark)
+  let chart = am4core.create(
+    'bubblechartdiv',
+ am4charts.XYChart
+  )
+  //chart.exporting.menu = new am4core.ExportMenu()
+
   chart.hiddenState.properties.opacity = 0
 
   let valueAxisX = chart.xAxes.push(new am4charts.ValueAxis())

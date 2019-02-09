@@ -8,7 +8,7 @@ import Simulator from './Simulator'
 import Constellations from './Constellations'
 import StarInfo from './StarInfo'
 import HertzsprungRussell  from '../chart/Hertzsprung–Russell'
-import PlanetTypes from '../chart/Planettype'
+import StockChart from '../chart/StockChart'
 import { Menu, Icon} from 'semantic-ui-react'
 
 export default class Navigate extends React.Component {
@@ -32,6 +32,16 @@ export default class Navigate extends React.Component {
                 <Icon name="home" />
                 {'Home'}
               </a>
+              <Menu.Item
+                name="/dashboard"
+                active={activeItem === '/dashboard'}
+                as={Link}
+                to="/dashboard"
+                onClick={this.handleItemClick}
+              >
+                <Icon name="chart line" />
+                {'Dashboard'}
+              </Menu.Item>
 
               <Menu.Item
                 name="/catalog"
@@ -53,23 +63,13 @@ export default class Navigate extends React.Component {
                 <Icon name="map" />
                 {'Star map'}
               </Menu.Item>
-              <Menu.Item
-                name="/chart"
-                active={activeItem === '/chart'}
-                as={Link}
-                to="/chart"
-                onClick={this.handleItemClick}
-              >
-                <Icon name="chart line" />
-                {'Chart'}
-              </Menu.Item>
            
             </Menu>
             <Route exact path="/catalog" component={Catalog} />
             <Route exact path="/Map" component={Map} />
-            <Route exact path="/chart" component={Chart} />
-            <Route exact path="/chart/hertz" component={HertzsprungRussell} />
-            <Route exact path="/chart/planettypes" component={PlanetTypes} />
+            <Route exact path="/dashboard" component={Chart} />
+            <Route exact path="/dashboard/hertz" component={HertzsprungRussell} />
+            <Route exact path="/dashboard/planets" component={StockChart} />
         
             <Route
               name="planet"

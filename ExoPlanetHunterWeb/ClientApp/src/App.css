@@ -67,3 +67,8 @@
     background-color: #818ea5 !important;
     color: #c6d4ff !important;
 }
+
+.ui.container.stackable.equal.width.grid{
+    margin: 0px !important;
+width: 100%!important;
+}
