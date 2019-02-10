@@ -1,35 +1,52 @@
 import * as React from 'react'
-import * as am4core from '@amcharts/amcharts4/core'
-import { Segment } from 'semantic-ui-react'
-import am4themes_animated from '@amcharts/amcharts4/themes/animated'
-import { getPlanetTypes, initStockChart } from '../service/getChart'
-class StockChart extends React.Component<any> {
-  chart: any
-  async componentDidMount() {
+import { Menu, Segment } from 'semantic-ui-react'
+import { planetTypes } from '../service/getChart'
+interface StockChartProps {
+  updateParent: (type: number) => void
+}
 
-
-    var chart = initStockChart(this.props.props?this.props:this)
-
-    chart.data = await getPlanetTypes()
-
-    this.chart = chart
+interface StockChartState {
+  isActive: number
+}
+class StockChart extends React.Component<StockChartProps, StockChartState> {
+  constructor(props: StockChartProps) {
+    super(props)
+    this.state = { isActive: 0 }
   }
 
-  componentWillUnmount() {
-    if (this.chart) {
-      this.chart.dispose()
-    }
+  isHabitable = (type: number) => {
+    const { updateParent } = this.props
+
+    updateParent(type)
+    this.setState({ isActive: type })
   }
 
   render() {
+    const { isActive } = this.state
     return (
-      <Segment inverted  style={{ minWidth: '250px'}}>
-        <h3>{'Planets type diagram'}</h3>
-        <div
-          id="stockchartdiv"
-          style={{ width: '100%', maxHeight: '700px', height: '69vh',margin:"10px" }}
-        />
-      </Segment>
+      <React.Fragment><Menu attached="top" tabular stackable>{planetTypes.map((p,index)=>(
+      <Menu.Item
+        name="active"
+        key={p}
+        active={isActive === index}
+        onClick={() => this.isHabitable(index)}
+      >
+        {p}
+      </Menu.Item>))}
+        </Menu>
+        <Segment inverted attached="bottom" style={{ minWidth: '250px' }}>
+          <h3>{'Planets type diagram'}</h3>
+          <div
+            id="stockchartdiv"
+            style={{
+              width: '100%',
+              maxHeight: '700px',
+              height: '69vh',
+              margin: '10px'
+            }}
+          />
+        </Segment>
+      </React.Fragment>
     )
   }
 }

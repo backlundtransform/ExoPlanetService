@@ -14,7 +14,7 @@ import {
 import Paginate from '../common/paginate'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import MaterialIcon from 'material-icons-react'
-import { Link } from 'react-router-dom'
+import { Link, } from 'react-router-dom'
 import { Gradient } from '../styles/radialgradients'
 
 export const getGroupedItems = (posts: Array<any>) => {
@@ -59,11 +59,8 @@ export default class Catalog extends React.Component<any, any> {
   async componentDidMount() {
     this._isMounted = true
     let filter = this.setSearchFilter()
-
-    const planets = await GetPlanetListAsync(
-      filter ,
-      30
-    )
+    window.addEventListener('beforeunload', this.props.history.push({}));
+    const planets = await GetPlanetListAsync(filter, 30)
     this._isMounted && this.setState({ planets, loading: false })
   }
   componentWillUnmount() {
@@ -216,7 +213,9 @@ export default class Catalog extends React.Component<any, any> {
 
   setSearchFilter = () => {
     let { habactive, searchValue, selectedvalue } = this.state
-    const type =  this.props.location.state&&this.props.location.state.name
+
+    
+
     if (habactive && searchValue !== '') {
       return { Key: selectedvalue, Name: searchValue }
     }
@@ -226,11 +225,14 @@ export default class Catalog extends React.Component<any, any> {
     if (habactive && searchValue === '') {
       return { Key: selectedvalue }
     }
-    if (type !== undefined) {
-      return { Key: 'Mass', Name: type }
+    if (this.props.location.state ===undefined) {
+ 
+      return null
     }
-
-    return null
+    const { key, type } = this.props.location.state
+    if (type !== undefined) {
+      return { Key: key, Name: type }
+    }
   }
 
   render() {

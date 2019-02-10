@@ -87,7 +87,7 @@ namespace ExoPlanetHunter.Service.Services
 
         public IEnumerable<ExoPlanetsDto> CacheExoPlanets()
         {
-           List<ExoPlanetsDto> cacheExo;
+            List<ExoPlanetsDto> cacheExo;
             if (!_cache.TryGetValue("Exoplanets", out cacheExo))
             {
                 cacheExo = _context.Planets.OrderByDescending(p => p.Disc_Year).Include(z => z.Star).Include(z => z.Star.Planets).Select(p => new ExoPlanetsDto
@@ -114,6 +114,7 @@ namespace ExoPlanetHunter.Service.Services
                     Coordinate = new CoordinateDto { Latitude = p.Star.Dec, Longitude = -15 * (p.Star.Ra - 12) },
                     DiscYear = p.Disc_Year,
                     Comp = (int)p.CompositionClass.ToEnum<CompEnum>(),
+                    HabType = (int)p.HabitableClass.ToEnum<MassEnum>(),
                     MassType = (int)p.MassClass.ToEnum<MassEnum>(),
                     Atmosphere = (int)p.AtmosphereClass.ToEnum<AtmosEnum>(),
                     DiscMethod = (int)p.Disc_Method.ToEnum<DiscEnum>(),

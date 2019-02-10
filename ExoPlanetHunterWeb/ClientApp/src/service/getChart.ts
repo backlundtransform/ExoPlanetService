@@ -2,8 +2,16 @@ import { Star } from './getPlanets'
 import * as am4core from '@amcharts/amcharts4/core'
 import * as am4charts from '@amcharts/amcharts4/charts'
 
-
 import am4themes_dark from '@amcharts/amcharts4/themes/dark'
+
+export const planetTypes = [
+  'Mass Class',
+  'Discovery Metod',
+  'Composition Class',
+  'Atmosphere Class',
+  'Zone Class',
+  'Habitable Class'
+]
 export interface HertzsprungRussell {
   title: string
   type: string
@@ -29,22 +37,25 @@ const getData = async (uri: string): Promise<any> => {
   return data
 }
 
-export const getHertzsprungRussell = async (): Promise<
-  Array<HertzsprungRussell>
-> =>
-  (await getData(`../api/Chart/HertzsprungRussell`)) as Promise<
-    Array<HertzsprungRussell>
+export const getHertzsprungRussell = async (
+  habitableOnly: boolean
+): Promise<Array<HertzsprungRussell>> =>
+  (await getData(
+    `../api/Chart/HertzsprungRussell?habitableOnly=${habitableOnly}`
+  )) as Promise<Array<HertzsprungRussell>>
+
+export const getPlanetTypes = async (
+  planetType: number
+): Promise<Array<PlanetTypes>> =>
+  (await getData(`../api/Chart/PlanetTypes?type=${planetType}`)) as Promise<
+    Array<PlanetTypes>
   >
-
-export const getPlanetTypes = async (): Promise<Array<PlanetTypes>> =>
-  (await getData(`../api/Chart/PlanetTypes`)) as Promise<Array<PlanetTypes>>
-export const initStockChart = (parent:any): am4charts.XYChart => {
-
- am4core.useTheme(am4themes_dark)
-  let chart = am4core.create(
-    'stockchartdiv',
-   am4charts.XYChart3D 
-  )
+export const initStockChart = (
+  parent: any,
+  planetType: number
+): am4charts.XYChart => {
+  am4core.useTheme(am4themes_dark)
+  let chart = am4core.create('stockchartdiv', am4charts.XYChart3D)
   chart.exporting.menu = new am4core.ExportMenu()
 
   let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis())
@@ -71,16 +82,17 @@ export const initStockChart = (parent:any): am4charts.XYChart => {
 
   let columnTemplate = series.columns.template
   columnTemplate.strokeWidth = 2
-  columnTemplate.cursorOverStyle=am4core.MouseCursorStyle.pointer
+  columnTemplate.cursorOverStyle = am4core.MouseCursorStyle.pointer
   columnTemplate.strokeOpacity = 1
   columnTemplate.stroke = am4core.color('#FFFFFF')
   columnTemplate.events.on(
     'hit',
     (ev: any) => {
-      let name = (ev.target.dataItem as any)._dataContext.title
+      let key = (ev.target.dataItem as any)._dataContext.title
+
       parent.props.history.push({
         pathname: `../catalog`,
-        state: { name }
+        state: { key, type: planetType }
       })
     },
     this
@@ -101,13 +113,10 @@ export const initStockChart = (parent:any): am4charts.XYChart => {
   return chart
 }
 
-export const initBubbleChart = (parent:any): am4charts.XYChart => {
- am4core.useTheme(am4themes_dark)
-  let chart = am4core.create(
-    'bubblechartdiv',
- am4charts.XYChart
-  )
-  //chart.exporting.menu = new am4core.ExportMenu()
+export const initBubbleChart = (parent: any): am4charts.XYChart => {
+  am4core.useTheme(am4themes_dark)
+  let chart = am4core.create('bubblechartdiv', am4charts.XYChart)
+  chart.exporting.menu = new am4core.ExportMenu()
 
   chart.hiddenState.properties.opacity = 0
 

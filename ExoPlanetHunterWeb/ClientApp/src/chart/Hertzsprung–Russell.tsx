@@ -1,31 +1,45 @@
 import * as React from 'react'
-import {  Menu, Segment } from 'semantic-ui-react'
-import { getHertzsprungRussell, initBubbleChart } from '../service/getChart'
+import { Menu, Segment } from 'semantic-ui-react'
 
-class HertzsprungRussell extends React.Component<any> {
-  chart: any
-  async componentDidMount() {
-    let data = await getHertzsprungRussell()
+interface HertzsprungRussellProps {
+  updateParent: () => void
+}
 
-    const chart = initBubbleChart(this.props.props ? this.props : this)
-    chart.data = data
-    this.chart = chart
+interface HertzsprungRussellState {
+  isHabitable: boolean
+}
+class HertzsprungRussell extends React.Component<
+  HertzsprungRussellProps,
+  HertzsprungRussellState
+> {
+  constructor(props: HertzsprungRussellProps) {
+    super(props)
+    this.state = { isHabitable: true }
   }
 
-  componentWillUnmount() {
-    if (this.chart) {
-      this.chart.dispose()
-    }
-  }
+  isHabitable = (isHabitable: boolean) => {
+    const { updateParent } = this.props
 
+    updateParent()
+    this.setState({ isHabitable })
+  }
   render() {
+    const { isHabitable } = this.state
     return (
       <React.Fragment>
         <Menu attached="top" tabular>
-          <Menu.Item name="active" active={true} onClick={() => {}}>
+          <Menu.Item
+            name="active"
+            active={isHabitable}
+            onClick={() => this.isHabitable(true)}
+          >
             Habitable
           </Menu.Item>
-          <Menu.Item name="2" active={false} onClick={() => {}}>
+          <Menu.Item
+            name="2"
+            active={!isHabitable}
+            onClick={() => this.isHabitable(false)}
+          >
             All
           </Menu.Item>
         </Menu>

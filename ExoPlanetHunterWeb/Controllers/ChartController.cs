@@ -1,4 +1,5 @@
 ﻿using ExoPlanetHunter.Service.Dto;
+using ExoPlanetHunter.Service.Enum;
 using ExoPlanetHunter.Service.Interfaces;
 using ExoPlanetHunterWeb.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +26,9 @@ namespace ExoPlanetHunterWeb.Controllers
         }
 
         [HttpGet("PlanetTypes")]
-        public IQueryable<PlanetTypes> GetPlanetTypes()
+        public IQueryable<PlanetTypes> GetPlanetTypes(ChartType type)
         {
-            return _chart.GetPlanetTypes().Select(p=>new PlanetTypes { Title=p.Key, Value=p.Count()});
+            return _chart.GetPlanetTypes(type).Select(p=>new PlanetTypes { Title=p.Key, Value=p.Count()});
         }
     }
 }

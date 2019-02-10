@@ -48,7 +48,7 @@ namespace ExoPlanetHunterWeb.Controllers
         }
 
         [HttpGet("GetPaginatedPlanets")]
-        public List<ExoPlanetsDto> GetPaginatedPlanets(int page, bool hab, bool moon, string type)
+        public List<ExoPlanetsDto> GetPaginatedPlanets(int page, bool hab, bool moon, string type, ChartType key)
         {
             if (hab)
             {
@@ -61,7 +61,15 @@ namespace ExoPlanetHunterWeb.Controllers
 
             if (!string.IsNullOrEmpty(type))
             {
-                return _exoService.CacheExoPlanets().Where(p => p.MassType == (int)type.ToEnum<MassEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
+                switch (key)
+                {
+                    case ChartType.Mass: return _exoService.CacheExoPlanets().Where(p => p.MassType == (int)type.ToEnum<MassEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
+                    case ChartType.Atmospere: return _exoService.CacheExoPlanets().Where(p => p.Atmosphere == (int)type.ToEnum<AtmosEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
+                    case ChartType.DiscoveryMetod: return _exoService.CacheExoPlanets().Where(p => p.DiscMethod == (int)type.ToEnum<DiscEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
+                    case ChartType.Hability: return _exoService.CacheExoPlanets().Where(p => p.HabType == (int)type.ToEnum<HabEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
+                    case ChartType.Temperature: return _exoService.CacheExoPlanets().Where(p => p.TempZone == (int)type.ToEnum<TempEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
+                    case ChartType.Composition: return _exoService.CacheExoPlanets().Where(p => p.Comp== (int)type.ToEnum<CompEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
+                }
             }
             return _exoService.CacheExoPlanets().OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
         }
