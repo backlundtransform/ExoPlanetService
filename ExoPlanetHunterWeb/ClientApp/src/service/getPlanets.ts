@@ -103,16 +103,18 @@ export const GetStatisticsAsync = async (): Promise<statistics> => {
   return stat as statistics
 }
 
-export const GetPlanetListAsync = (
-  filter: filter,
-  top: number
-) => {
+export const GetPlanetListAsync = (filter: filter, top: number) => {
   let page = top / 30
 
-  const hab =  filter&&filter.Key ==='Hab'
-  const moon=  filter&&filter.Key ==='Moons'
+  console.log(filter)
+
+  const hab = filter && filter.Key === 'Hab'
+  const moon = filter && filter.Key === 'Moons'
   const planetList = fetch(
-    `../api/ExoSolarSystems/GetPaginatedPlanets?page=${page-1}&hab=${hab}&moon=${moon}`
+    `../api/ExoSolarSystems/GetPaginatedPlanets?page=${page -
+      1}&hab=${hab}&moon=${moon}&name=${
+      filter && filter.Name ? filter.Name : ''
+    }`
   )
     .then(response => {
       return response.json()

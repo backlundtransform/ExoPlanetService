@@ -1,18 +1,18 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[4],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[5],{
 
-/***/ 839:
+/***/ 840:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _charts_axes_AxisRenderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(840);
-/* harmony import */ var _charts_axes_AxisRendererX__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(848);
-/* harmony import */ var _charts_axes_AxisRendererY__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(854);
-/* harmony import */ var _charts_axes_AxisRendererCircular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(855);
-/* harmony import */ var _charts_Chart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(859);
-/* harmony import */ var _charts_Legend__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(861);
-/* harmony import */ var _charts_map_SmallMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(863);
-/* harmony import */ var _charts_map_ZoomControl__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(864);
+/* harmony import */ var _charts_axes_AxisRenderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(841);
+/* harmony import */ var _charts_axes_AxisRendererX__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(849);
+/* harmony import */ var _charts_axes_AxisRendererY__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(855);
+/* harmony import */ var _charts_axes_AxisRendererCircular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(856);
+/* harmony import */ var _charts_Chart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(860);
+/* harmony import */ var _charts_Legend__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(862);
+/* harmony import */ var _charts_map_SmallMap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(864);
+/* harmony import */ var _charts_map_ZoomControl__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(865);
 /**
  * Defines default Responsive rules
  * @hidden
@@ -196,7 +196,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 863:
+/***/ 864:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -204,13 +204,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SmallMap", function() { return SmallMap; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(753);
 /* harmony import */ var _core_Container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(765);
-/* harmony import */ var _core_elements_Rectangle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(831);
+/* harmony import */ var _core_elements_Rectangle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(832);
 /* harmony import */ var _core_utils_List__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(769);
 /* harmony import */ var _core_utils_Disposer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(754);
 /* harmony import */ var _core_Registry__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(751);
 /* harmony import */ var _core_utils_Color__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(774);
-/* harmony import */ var _core_utils_InterfaceColorSet__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(800);
-/* harmony import */ var _core_utils_Utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(795);
+/* harmony import */ var _core_utils_InterfaceColorSet__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(799);
+/* harmony import */ var _core_utils_Utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(776);
 /* harmony import */ var _core_utils_Type__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(757);
 /**
  * A module for the mini-map control.
@@ -258,8 +258,6 @@ var SmallMap = /** @class */ (function (_super) {
         _super.call(this) || this;
         /**
          * A target map.
-         *
-         * @type {MutableValueDisposer<MapChart>}
          */
         _this._chart = new _core_utils_Disposer__WEBPACK_IMPORTED_MODULE_4__["MutableValueDisposer"]();
         _this.className = "SmallMap";
@@ -300,7 +298,7 @@ var SmallMap = /** @class */ (function (_super) {
          * A list of map series used to draw the mini-map.
          *
          * @readonly
-         * @return {List<MapSeries>} Series
+         * @return Series
          */
         get: function () {
             if (!this._series) {
@@ -316,7 +314,7 @@ var SmallMap = /** @class */ (function (_super) {
     /**
      * Decorates a new series when they are pushed into a `series` list.
      *
-     * @param {IListEvents<MapSeries>["inserted"]} event Event
+     * @param event Event
      */
     SmallMap.prototype.handleSeriesAdded = function (event) {
         var series = event.newValue;
@@ -334,7 +332,7 @@ var SmallMap = /** @class */ (function (_super) {
     /**
      * Cleans up after series are removed from Scrollbar.
      *
-     * @param {IListEvents<XYSeries>["removed"]}  event  Event
+     * @param event  Event
      */
     SmallMap.prototype.handleSeriesRemoved = function (event) {
         //let sourceSeries: MapSeries = event.oldValue;
@@ -344,21 +342,16 @@ var SmallMap = /** @class */ (function (_super) {
      * Moves main map pan position after click on the small map.
      *
      * @ignore Exclude from docs
-     * @param {AMEvent<Sprite, ISpriteEvents>["hit"]}  event  Event
+     * @param event  Event
      */
     SmallMap.prototype.moveToPosition = function (event) {
-        var svgPoint = event.svgPoint;
-        var rectPoint = _core_utils_Utils__WEBPACK_IMPORTED_MODULE_8__["svgPointToSprite"](svgPoint, this.rectangle);
-        var zoomLevel = this.chart.zoomLevel;
-        var scale = Math.min(this.percentWidth, this.percentHeight) / 100;
-        var x = (rectPoint.x + this.rectangle.pixelWidth / 2) / scale * zoomLevel;
-        var y = (rectPoint.y + this.rectangle.pixelHeight / 2) / scale * zoomLevel;
-        var geoPoint = this.chart.svgPointToGeo({ x: x, y: y });
+        var rectPoint = _core_utils_Utils__WEBPACK_IMPORTED_MODULE_8__["spritePointToSprite"](event.spritePoint, this, this.seriesContainer);
+        var geoPoint = this.chart.seriesPointToGeo(rectPoint);
         this.chart.zoomToGeoPoint(geoPoint, this.chart.zoomLevel, true);
     };
     Object.defineProperty(SmallMap.prototype, "chart", {
         /**
-         * @return {MapChart} Chart/map
+         * @return Chart/map
          */
         get: function () {
             return this._chart.get();
@@ -366,7 +359,7 @@ var SmallMap = /** @class */ (function (_super) {
         /**
          * A chart/map that this control is meant for.
          *
-         * @param {MapChart}  chart  Chart/map
+         * @param chart  Chart/map
          */
         set: function (chart) {
             if (this.chart != chart) {
@@ -393,8 +386,8 @@ var SmallMap = /** @class */ (function (_super) {
         rectangle.height = this.pixelHeight / zoomLevel;
         var scale = Math.min(this.percentWidth, this.percentHeight) / 100;
         var seriesContainer = chart.seriesContainer;
-        rectangle.x = Math.ceil((zoomLevel * seriesContainer.pixelWidth / 2 - seriesContainer.pixelX) * scale / zoomLevel + rectangle.pixelWidth / 2);
-        rectangle.y = Math.ceil((zoomLevel * seriesContainer.pixelHeight / 2 - seriesContainer.pixelY) * scale / zoomLevel + rectangle.pixelHeight / 2);
+        rectangle.x = Math.ceil((zoomLevel * seriesContainer.pixelWidth / 2 - seriesContainer.pixelX) * scale / zoomLevel); // + rectangle.pixelWidth / 2);
+        rectangle.y = Math.ceil((zoomLevel * seriesContainer.pixelHeight / 2 - seriesContainer.pixelY) * scale / zoomLevel); // + rectangle.pixelHeight / 2);
         rectangle.validate();
     };
     /**
@@ -422,7 +415,7 @@ var SmallMap = /** @class */ (function (_super) {
      * Processes JSON-based config before it is applied to the object.
      *
      * @ignore Exclude from docs
-     * @param {object}  config  Config
+     * @param config  Config
      */
     SmallMap.prototype.processConfig = function (config) {
         if (config) {
@@ -452,7 +445,7 @@ _core_Registry__WEBPACK_IMPORTED_MODULE_5__["registry"].registeredClasses["Small
 
 /***/ }),
 
-/***/ 864:
+/***/ 865:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -460,14 +453,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZoomControl", function() { return ZoomControl; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(753);
 /* harmony import */ var _core_Container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(765);
-/* harmony import */ var _core_elements_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(865);
-/* harmony import */ var _core_elements_RoundedRectangle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(862);
+/* harmony import */ var _core_elements_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(866);
+/* harmony import */ var _core_elements_RoundedRectangle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(863);
 /* harmony import */ var _core_utils_Disposer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(754);
-/* harmony import */ var _core_utils_Keyboard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(792);
-/* harmony import */ var _core_interaction_Interaction__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(784);
+/* harmony import */ var _core_utils_Keyboard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(794);
+/* harmony import */ var _core_interaction_Interaction__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(789);
 /* harmony import */ var _core_utils_Percent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(758);
 /* harmony import */ var _core_Registry__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(751);
-/* harmony import */ var _core_utils_InterfaceColorSet__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(800);
+/* harmony import */ var _core_utils_InterfaceColorSet__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(799);
 /**
  * Zoom control module
  */
@@ -509,8 +502,6 @@ var ZoomControl = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         /**
          * A target map.
-         *
-         * @type {MutableValueDisposer<MapChart>}
          */
         _this._chart = new _core_utils_Disposer__WEBPACK_IMPORTED_MODULE_4__["MutableValueDisposer"]();
         _this.className = "ZoomControl";
@@ -524,6 +515,7 @@ var ZoomControl = /** @class */ (function (_super) {
         plusButton.label.text = "+";
         plusButton.width = Object(_core_utils_Percent__WEBPACK_IMPORTED_MODULE_7__["percent"])(100);
         plusButton.padding(5, 5, 5, 5);
+        plusButton.contentValign = "none";
         //plusButton.fontFamily = "Verdana";
         _this.plusButton = plusButton;
         var slider = _this.createChild(_core_Container__WEBPACK_IMPORTED_MODULE_1__["Container"]);
@@ -544,6 +536,7 @@ var ZoomControl = /** @class */ (function (_super) {
         minusButton.shouldClone = false;
         minusButton.label.text = "-";
         minusButton.padding(5, 5, 5, 5);
+        minusButton.contentValign = "none";
         //minusButton.fontFamily = "Verdana";
         _this.minusButton = minusButton;
         // Set roles
@@ -587,15 +580,17 @@ var ZoomControl = /** @class */ (function (_super) {
             this.height = 40;
             this.width = undefined;
             this.minusButton.height = Object(_core_utils_Percent__WEBPACK_IMPORTED_MODULE_7__["percent"])(100);
-            this.minusButton.width = 30;
+            this.minusButton.width = undefined;
             this.thumb.height = Object(_core_utils_Percent__WEBPACK_IMPORTED_MODULE_7__["percent"])(100);
             this.thumb.width = undefined;
             this.plusButton.height = Object(_core_utils_Percent__WEBPACK_IMPORTED_MODULE_7__["percent"])(100);
-            this.plusButton.width = 30;
+            this.plusButton.width = undefined;
+            this.plusButton.padding(4, 10, 4, 10);
             this.slider.height = Object(_core_utils_Percent__WEBPACK_IMPORTED_MODULE_7__["percent"])(100);
             this.slider.width = 0;
             this.minusButton.marginLeft = 2;
             this.plusButton.marginRight = 2;
+            this.minusButton.padding(4, 10, 4, 10);
             this.minusButton.toBack();
             this.plusButton.toFront();
         }
@@ -604,7 +599,7 @@ var ZoomControl = /** @class */ (function (_super) {
      * Handles zoom operation after clicking on the slider background.
      *
      * @ignore Exclude from docs
-     * @param {AMEvent<Sprite, ISpriteEvents>["hit"]}  event  Event
+     * @param event  Event
      */
     ZoomControl.prototype.handleBackgroundClick = function (event) {
         var sprite = event.target;
@@ -618,7 +613,7 @@ var ZoomControl = /** @class */ (function (_super) {
     };
     Object.defineProperty(ZoomControl.prototype, "chart", {
         /**
-         * @return {MapChart} Map/chart
+         * @return Map/chart
          */
         get: function () {
             return this._chart.get();
@@ -626,7 +621,7 @@ var ZoomControl = /** @class */ (function (_super) {
         /**
          * A main chart/map that this zoom control is for.
          *
-         * @param {MapChart}  chart  Map/chart
+         * @param chart  Map/chart
          */
         set: function (chart) {
             var _this = this;
@@ -738,7 +733,7 @@ var ZoomControl = /** @class */ (function (_super) {
          * zoom level settings.
          *
          * @ignore Exclude from docs
-         * @return {number} Step count
+         * @return Step count
          */
         get: function () {
             return Math.log(this.chart.maxZoomLevel) / Math.LN2 - Math.log(this.chart.minZoomLevel) / Math.LN2;
@@ -750,7 +745,7 @@ var ZoomControl = /** @class */ (function (_super) {
      * Creates a background element for slider control.
      *
      * @ignore Exclude from docs
-     * @return {this} Background
+     * @return Background
      */
     ZoomControl.prototype.createBackground = function () {
         return new _core_elements_RoundedRectangle__WEBPACK_IMPORTED_MODULE_3__["RoundedRectangle"]();

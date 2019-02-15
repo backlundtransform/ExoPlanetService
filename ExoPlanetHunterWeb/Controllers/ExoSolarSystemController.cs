@@ -48,7 +48,7 @@ namespace ExoPlanetHunterWeb.Controllers
         }
 
         [HttpGet("GetPaginatedPlanets")]
-        public List<ExoPlanetsDto> GetPaginatedPlanets(int page, bool hab, bool moon)
+        public List<ExoPlanetsDto> GetPaginatedPlanets(int page, bool hab, bool moon, string name)
         {
             if (hab)
             {
@@ -57,6 +57,10 @@ namespace ExoPlanetHunterWeb.Controllers
             if (moon)
             {
                 return _exoService.CacheExoPlanets().Where(p => p.Moons == true).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                return _exoService.CacheExoPlanets().Where(p => p.Name.ToLower().Contains(name.ToLower())).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
             }
             return _exoService.CacheExoPlanets().OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
         }
