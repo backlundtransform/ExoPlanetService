@@ -24,7 +24,7 @@ class StockChart extends React.Component<StockChartProps, StockChartState> {
   render() {
     const { isActive } = this.state
     return (
-      <React.Fragment><Menu attached="top" tabular stackable>{planetTypes.map((p,index)=>(
+      <React.Fragment><Menu attached="top" size='mini' tabular stackable style={{ maxWidth: '250px' }}>{planetTypes.map((p,index)=>(
       <Menu.Item
         name="active"
         key={p}

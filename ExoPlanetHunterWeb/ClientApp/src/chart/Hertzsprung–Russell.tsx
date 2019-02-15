@@ -27,7 +27,7 @@ class HertzsprungRussell extends React.Component<
     const { isHabitable } = this.state
     return (
       <React.Fragment>
-        <Menu attached="top" tabular>
+        <Menu attached="top" tabular  size='mini'>
           <Menu.Item
             name="active"
             active={isHabitable}
