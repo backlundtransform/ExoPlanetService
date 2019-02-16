@@ -5,12 +5,12 @@ import * as am4charts from '@amcharts/amcharts4/charts'
 import am4themes_dark from '@amcharts/amcharts4/themes/dark'
 
 export const planetTypes = [
-  'Mass Class',
-  'Discovery Metod',
-  'Composition Class',
-  'Atmosphere Class',
-  'Zone Class',
-  'Habitable Class'
+  'Mass',
+  'Discovery',
+  'Composition',
+  'Atmosphere',
+  'Zone',
+  'Habitable'
 ]
 export interface HertzsprungRussell {
   title: string

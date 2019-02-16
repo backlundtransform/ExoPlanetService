@@ -43,7 +43,7 @@ class HertzsprungRussell extends React.Component<
             All
           </Menu.Item>
         </Menu>
-        <Segment inverted attached="bottom" style={{ minWidth: '250px' }}>
+        <Segment inverted attached="bottom" >
           <h3>{'Hertzsprung–Russell diagram'}</h3>
           <div
             id="bubblechartdiv"
@@ -52,7 +52,7 @@ class HertzsprungRussell extends React.Component<
               maxHeight: '700px',
               height: '69vh',
               margin: '10px',
-              minWidth: '250px'
+       
             }}
           />
         </Segment>

@@ -26,6 +26,7 @@
     "react": "^16.5.2",
     "react-adsense": "0.0.6",
     "react-dom": "^16.5.2",
+    "react-ionicons": "^3.0.1",
     "react-native-svg-web": "^1.0.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",

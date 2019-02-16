@@ -14,7 +14,7 @@ class StockChart extends React.Component<StockChartProps, StockChartState> {
     this.state = { isActive: 0 }
   }
 
-  isHabitable = (type: number) => {
+  changeType = (type: number) => {
     const { updateParent } = this.props
 
     updateParent(type)
@@ -24,17 +24,17 @@ class StockChart extends React.Component<StockChartProps, StockChartState> {
   render() {
     const { isActive } = this.state
     return (
-      <React.Fragment><Menu attached="top" size='mini' tabular stackable style={{ maxWidth: '250px' }}>{planetTypes.map((p,index)=>(
+      <React.Fragment><Menu attached="top" size='mini' tabular stackable>{planetTypes.map((p,index)=>(
       <Menu.Item
         name="active"
         key={p}
         active={isActive === index}
-        onClick={() => this.isHabitable(index)}
+        onClick={() => this.changeType(index)}
       >
         {p}
       </Menu.Item>))}
         </Menu>
-        <Segment inverted attached="bottom" style={{ minWidth: '250px' }}>
+        <Segment inverted attached="bottom">
           <h3>{'Planets type diagram'}</h3>
           <div
             id="stockchartdiv"

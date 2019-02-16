@@ -14,7 +14,7 @@ import {
 import Paginate from '../common/paginate'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import MaterialIcon from 'material-icons-react'
-import { Link, } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Gradient } from '../styles/radialgradients'
 
 export const getGroupedItems = (posts: Array<any>) => {
@@ -52,14 +52,16 @@ export default class Catalog extends React.Component<any, any> {
       habactive: false,
       searchValue: '',
       selectedvalue: 'all',
-      planets: [] as Array<Planet>
+      planets: [] as Array<Planet>,
+      key: this.props.location.state && this.props.location.state.key,
+      type: this.props.location.state && this.props.location.state.type
     }
   }
   _isMounted = false
   async componentDidMount() {
     this._isMounted = true
     let filter = this.setSearchFilter()
-    window.addEventListener('beforeunload', this.props.history.push({}));
+    window.addEventListener('beforeunload', this.props.history.push({}))
     const planets = await GetPlanetListAsync(filter, 30)
     this._isMounted && this.setState({ planets, loading: false })
   }
@@ -207,14 +209,11 @@ export default class Catalog extends React.Component<any, any> {
     let filter = this.setSearchFilter()
 
     const planets = await GetPlanetListAsync(filter, top)
-
-    this._isMounted && this.setState({ planets, loading: false, top })
+    this._isMounted && this.setState({ planets, loading: false, top },() => window.scrollTo(0, 0))
   }
 
   setSearchFilter = () => {
-    let { habactive, searchValue, selectedvalue } = this.state
-
-    
+    let { habactive, searchValue, selectedvalue, key, type } = this.state
 
     if (habactive && searchValue !== '') {
       return { Key: selectedvalue, Name: searchValue }
@@ -225,14 +224,12 @@ export default class Catalog extends React.Component<any, any> {
     if (habactive && searchValue === '') {
       return { Key: selectedvalue }
     }
-    if (this.props.location.state ===undefined) {
- 
-      return null
-    }
-    const { key, type } = this.props.location.state
+
     if (type !== undefined) {
       return { Key: key, Name: type }
     }
+
+    return null
   }
 
   render() {

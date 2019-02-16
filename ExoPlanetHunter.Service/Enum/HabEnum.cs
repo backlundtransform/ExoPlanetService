@@ -7,7 +7,8 @@ namespace ExoPlanetHunter.Service.Enum
   
     public enum HabEnum
     {
-        mesoplanet, thermoplanet, psychroplanet, hypopsychroplanet, hyperthermoplanet, non_habitable
+        mesoplanet, thermoplanet, psychroplanet, hypopsychroplanet, hyperthermoplanet, non_habitable,
+        Nodata
     }
 
 }

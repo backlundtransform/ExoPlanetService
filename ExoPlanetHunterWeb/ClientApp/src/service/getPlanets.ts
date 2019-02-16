@@ -113,7 +113,11 @@ export const GetPlanetListAsync = (
   const moon=  filter&&filter.Key ==='Moons'
   
   const planetList = fetch(
-    `../api/ExoSolarSystems/GetPaginatedPlanets?page=${page-1}&hab=${hab}&moon=${moon}&type=${filter!=undefined?filter.Key:""}&key=${filter&&filter.Name}`
+    `../api/ExoSolarSystems/GetPaginatedPlanets?page=${page-1}&hab=${hab}&moon=${moon}&type=${filter && filter.Key ?filter.Key:""}&key=${filter&&filter.Name}
+    &name=${
+      filter && filter.Name ? filter.Name : ''
+    }
+    `
   )
     .then(response => {
       return response.json()

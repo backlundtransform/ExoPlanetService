@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Grid } from 'semantic-ui-react'
+import { Grid, Statistic } from 'semantic-ui-react'
 import HertzsprungRussell from '../chart/Hertzsprung–Russell'
 import StockChart from '../chart/StockChart'
 import {
@@ -8,6 +8,10 @@ import {
   initStockChart,
   getPlanetTypes
 } from '../service/getChart'
+import Svg, { Path } from 'react-native-svg-web'
+import MdPlanet from 'react-ionicons/lib/MdPlanet'
+import MdGlobe from 'react-ionicons/lib/MdGlobe'
+import MdMoon from 'react-ionicons/lib/MdMoon'
 export default class Chart extends React.Component<any, any> {
   constructor(props: any) {
     super(props)
@@ -28,7 +32,7 @@ export default class Chart extends React.Component<any, any> {
     bubblechart.data = data
     this.bubblechart = bubblechart
   }
-  async getStockData(type:number) {
+  async getStockData(type: number) {
     var stockchart = initStockChart(this, type)
 
     stockchart.data = await getPlanetTypes(type)
@@ -43,7 +47,7 @@ export default class Chart extends React.Component<any, any> {
     )
   }
 
-  setStockType= (type:number) => {
+  setStockType = (type: number) => {
     this.setState({ habitableOnly: !this.state.habitableOnly }, () =>
       this.getStockData(type)
     )
@@ -70,7 +74,7 @@ export default class Chart extends React.Component<any, any> {
       {
         key: 'stock',
 
-        component: <StockChart  updateParent={this.setStockType}/>
+        component: <StockChart updateParent={this.setStockType} />
       }
     ]
     for (let item of options) {
@@ -84,9 +88,37 @@ export default class Chart extends React.Component<any, any> {
     const main = this.mainPost()
 
     return (
-      <Grid container stackable columns={'equal'}>
-        {main}
-      </Grid>
+      <React.Fragment>
+        <Statistic.Group widths="three" size="small">
+          <Statistic>
+            <Statistic.Value>
+              <MdPlanet fontSize="50px" /> 3875
+            </Statistic.Value>
+            <Statistic.Label>Confirmed</Statistic.Label>
+            <Statistic.Label>Exoplanets</Statistic.Label>
+          </Statistic>
+
+          <Statistic>
+            <Statistic.Value>
+              <MdGlobe fontSize="50px" />
+              55
+            </Statistic.Value>
+            <Statistic.Label>Potentially</Statistic.Label>
+            <Statistic.Label>Habitable Planets</Statistic.Label>
+          </Statistic>
+          <Statistic>
+            <Statistic.Value>
+              <MdMoon fontSize="50px" /> 55
+            </Statistic.Value>
+            <Statistic.Label>Potentially</Statistic.Label>
+            <Statistic.Label>Habitable Moon</Statistic.Label>
+          </Statistic>
+        </Statistic.Group>
+        <br />
+        <Grid container stackable columns={'equal'}>
+          {main}
+        </Grid>
+      </React.Fragment>
     )
   }
 }

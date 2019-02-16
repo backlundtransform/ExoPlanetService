@@ -20,12 +20,12 @@ export default class Navigate extends React.Component {
   handleItemClick = (e: any, { name }: any) =>
     this.setState({ activeItem: name })
 
-
   render() {
     const {  activeItem } = this.state
+ 
     return (
       <React.Fragment>
-        <Router>
+        <Router >
           <React.Fragment>
             <Menu icon="labeled" pointing secondary inverted stackable>
               <a className="item" href="/">

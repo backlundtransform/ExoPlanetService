@@ -114,7 +114,7 @@ namespace ExoPlanetHunter.Service.Services
                     Coordinate = new CoordinateDto { Latitude = p.Star.Dec, Longitude = -15 * (p.Star.Ra - 12) },
                     DiscYear = p.Disc_Year,
                     Comp = (int)p.CompositionClass.ToEnum<CompEnum>(),
-                    HabType = (int)p.HabitableClass.ToEnum<MassEnum>(),
+                    HabType = (int)p.HabitableClass.ToEnum<HabEnum>(),
                     MassType = (int)p.MassClass.ToEnum<MassEnum>(),
                     Atmosphere = (int)p.AtmosphereClass.ToEnum<AtmosEnum>(),
                     DiscMethod = (int)p.Disc_Method.ToEnum<DiscEnum>(),
