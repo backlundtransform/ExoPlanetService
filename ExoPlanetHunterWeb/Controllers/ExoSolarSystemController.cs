@@ -65,8 +65,6 @@ namespace ExoPlanetHunterWeb.Controllers
                 return _exoService.CacheExoPlanets().Where(p => p.Name.ToLower().Contains(name.ToLower())).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
             }
 
-
-
             if (hab)
             {
                 return _exoService.CacheExoPlanets().Where(p => p.Hab == hab).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
