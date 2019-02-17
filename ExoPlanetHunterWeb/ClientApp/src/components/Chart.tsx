@@ -1,109 +1,150 @@
 import * as React from 'react'
-import * as am4core from '@amcharts/amcharts4/core'
-import * as am4charts from '@amcharts/amcharts4/charts'
-import { Container } from 'semantic-ui-react'
-import am4themes_animated from '@amcharts/amcharts4/themes/animated'
-import am4themes_dark from '@amcharts/amcharts4/themes/dark'
-import { Star } from '../service/getPlanets';
-import { getHertzsprungRussell } from '../service/getChart';
+import { Grid, Statistic } from 'semantic-ui-react'
+import HertzsprungRussell from '../chart/Hertzsprung–Russell'
+import StockChart from '../chart/StockChart'
+import {
+  getHertzsprungRussell,
+  initBubbleChart,
+  initStockChart,
+  getPlanetTypes
+} from '../service/getChart'
+import { Link } from 'react-router-dom'
 
-class Chart extends React.Component<any> {
-  chart: any
-  async componentDidMount() {
-
-   let data =await getHertzsprungRussell()
-
-    am4core.useTheme(am4themes_animated)
-    am4core.useTheme(am4themes_dark)
-    let chart = am4core.create('chartdiv', am4charts.XYChart)
-    chart.exporting.menu = new am4core.ExportMenu()
-    chart.hiddenState.properties.opacity = 0
-
-    let valueAxisX = chart.xAxes.push(new am4charts.ValueAxis())
-    let valueAxisY = chart.yAxes.push(new am4charts.ValueAxis())
-
-    valueAxisY.title.text ="Luminosity"
-
-    valueAxisX.title.text ="Temperature K"
-    valueAxisX.renderer.labels.template.rotation = 45;
-
-  
-    valueAxisX.logarithmic =true
-    valueAxisX.renderer.inversed = true
-    valueAxisY.logarithmic =true
-    let serieslum = chart.series.push(new am4charts.LineSeries())
-    serieslum.dataFields.valueX = 'temp'
-    serieslum.dataFields.valueY = 'lum'
-    serieslum.dataFields.value = 'size'
-    
-    serieslum.strokeOpacity = 0
-    serieslum.sequencedInterpolation = true
-    serieslum.yAxis =valueAxisY
-
-
-    let bullet = serieslum.bullets.push(new am4charts.CircleBullet())
-    bullet.fill = am4core.color('#ff0000')
-    bullet.propertyFields.fill = 'color'
-    bullet.strokeOpacity =  0.7
-    bullet.strokeWidth = 2
-    bullet.fillOpacity = 0.7
-    bullet.stroke = am4core.color('#ffffff')
-    bullet.circle.events.on("hit",(ev:any)=> {
-     let name= (ev.target.dataItem as any)._dataContext.title
-      this.props.history.push({
-        pathname: `system/${name}`,
-        state: { star: {name} as Star },
-
-      })
-    }, this);
-    bullet.circle.adapter.add("tooltipText", (text:string,s:any) => {
-      const size= s.dataItem._dataContext.size/100
-   
-      return  text.replace("{size}", size.toString())
-     })
-     bullet.circle.cursorOverStyle= am4core.MouseCursorStyle.pointer
-    bullet.circle.tooltipText =
-      '[bold]{title}:[/]\nMass: {size} M⊙︎\nTemperature: {valueX.value}\nLuminosity: {valueY.value}\nSpectral class: {type}\nConstellation: {constellation}'
-
-    let hoverState = bullet.states.create('hover')
-    hoverState.properties.fillOpacity = 1
-    hoverState.properties.strokeOpacity = 1
-
-    serieslum.heatRules.push({
-      target: bullet.circle,
-      min: 2,
-      max: 100,
-      property: 'radius'
-    })
-
-    bullet.circle.adapter.add('tooltipY', (tooltipY, target) =>{
-      return -target.radius
-    })
-
-    chart.cursor = new am4charts.XYCursor()
-    chart.cursor.behavior = 'zoomXY'
-    chart.responsive.enabled = true;
-    chart.scrollbarX = new am4core.Scrollbar()
-    chart.scrollbarY = new am4core.Scrollbar()
-
-    chart.data = data
-    this.chart = chart
-  }
-
-  componentWillUnmount() {
-    if (this.chart) {
-      this.chart.dispose()
+import { GetStatisticsAsync , statistics} from '../service/getPlanets'
+import MdPlanet from 'react-ionicons/lib/MdPlanet'
+import MdGlobe from 'react-ionicons/lib/MdGlobe'
+import MdMoon from 'react-ionicons/lib/MdMoon'
+export default class Chart extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props)
+    this.state = { habitableOnly: true,
+      stat:{} as statistics
     }
   }
 
+  bubblechart: any
+  stockchart: any
+  componentDidMount = async () => {
+    await this.getBubbleData()
+    await this.getStockData(0)
+  const stat =  await  GetStatisticsAsync()
+  this.setState({stat})
+  }
+
+  async getBubbleData() {
+    let data = await getHertzsprungRussell(this.state.habitableOnly)
+
+    const bubblechart = initBubbleChart(this)
+    bubblechart.data = data
+    this.bubblechart = bubblechart
+  }
+  async getStockData(type: number) {
+    var stockchart = initStockChart(this, type)
+
+    stockchart.data = await getPlanetTypes(type)
+
+    this.stockchart = stockchart
+
+    this.stockchart = stockchart
+  }
+  isHabitable = () => {
+    this.setState({ habitableOnly: !this.state.habitableOnly }, () =>
+      this.getBubbleData()
+    )
+  }
+
+  setStockType = (type: number) => {
+    this.setState({ habitableOnly: !this.state.habitableOnly }, () =>
+      this.getStockData(type)
+    )
+  }
+
+  componentWillUnmount() {
+    if (this.bubblechart) {
+      this.bubblechart.dispose()
+    }
+    if (this.stockchart) {
+      this.stockchart.dispose()
+    }
+  }
+
+  mainPost = () => {
+    let posts = [] as Array<any>
+
+    const options = [
+      {
+        key: 'hertz',
+
+        component: <HertzsprungRussell updateParent={this.isHabitable} />
+      },
+      {
+        key: 'stock',
+
+        component: <StockChart updateParent={this.setStockType} />
+      }
+    ]
+    for (let item of options) {
+      posts.push(<Grid.Column key={item.key}>{item.component}</Grid.Column>)
+    }
+
+    return posts
+  }
+
   render() {
+    const main = this.mainPost()
+    const stat= this.state.stat  as statistics 
+
     return (
-      <Container className={'post-preview'}>
-     <h3>{'Hertzsprung–Russell diagram'}</h3> 
-        <div id="chartdiv" style={{ width: '100%', maxHeight: '700px', height:'99vh' }} />
-      </Container>
+      <React.Fragment>
+        <Statistic.Group widths="three" size="small">
+          <Statistic>  <Link
+          className="ui statistic"
+                to={{
+                  pathname: `/catalog`,
+                }}
+              >
+            <Statistic.Value>
+              <MdPlanet fontSize="50px" /> {stat.confirmedPlanets}
+            </Statistic.Value>
+            <Statistic.Label>Confirmed</Statistic.Label>
+            <Statistic.Label>Exoplanets</Statistic.Label></Link>
+          </Statistic>
+
+          <Statistic>
+          <Link
+          className="ui statistic"
+                to={{
+                  pathname: `/catalog`,
+                  state: {  selectedvalue: "Hab"}
+                }}
+              >
+            <Statistic.Value>
+              <MdGlobe fontSize="50px" />
+              {stat.confirmedHabitablePlanets}
+            </Statistic.Value>
+            <Statistic.Label>Potentially</Statistic.Label>
+            <Statistic.Label>Habitable Planets</Statistic.Label></Link>
+          </Statistic>
+          <Statistic>
+          <Link
+          className="ui statistic"
+                to={{
+                  pathname: `/catalog`,
+                  state: { selectedvalue: "Moons" }
+                }}
+              >
+            <Statistic.Value>
+              <MdMoon fontSize="50px" />      {stat.possibleHabitableMoons}
+            </Statistic.Value>
+            <Statistic.Label>Potentially</Statistic.Label>
+            <Statistic.Label>Habitable Moons</Statistic.Label></Link>
+          </Statistic>
+        </Statistic.Group>
+        <br />
+        <Grid container stackable columns={'equal'}>
+          {main}
+        </Grid>
+      </React.Fragment>
     )
   }
 }
-
-export default Chart

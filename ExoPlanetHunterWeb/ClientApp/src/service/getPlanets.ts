@@ -106,15 +106,20 @@ export const GetStatisticsAsync = async (): Promise<statistics> => {
 export const GetPlanetListAsync = (filter: filter, top: number) => {
   let page = top / 30
 
-  console.log(filter)
-
   const hab = filter && filter.Key === 'Hab'
   const moon = filter && filter.Key === 'Moons'
+
+  const type = !hab && !moon && filter && filter.Key ? filter.Key : ''
+  const key =
+    type !== '' && !hab && !moon && filter && filter.Name ? filter.Name : ''
+
+    const name = type === '' &&filter && filter.Name ? filter.Name : ''
+
   const planetList = fetch(
     `../api/ExoSolarSystems/GetPaginatedPlanets?page=${page -
-      1}&hab=${hab}&moon=${moon}&name=${
-      filter && filter.Name ? filter.Name : ''
-    }`
+      1}&hab=${hab}&moon=${moon}&type=${type}&key=${key}
+    &name=${name}
+    `
   )
     .then(response => {
       return response.json()

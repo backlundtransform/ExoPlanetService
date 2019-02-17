@@ -1,12 +1,29 @@
 import { Star } from './getPlanets'
+import * as am4core from '@amcharts/amcharts4/core'
+import * as am4charts from '@amcharts/amcharts4/charts'
+
+import am4themes_dark from '@amcharts/amcharts4/themes/dark'
+
+export const planetTypes = [
+  'Mass',
+  'Discovery',
+  'Composition',
+  'Atmosphere',
+  'Zone',
+  'Habitable'
+]
 export interface HertzsprungRussell {
   title: string
   type: string
   lum: number
   color: string
   size: number
-  temp:number
+  temp: number
   constellation: string
+}
+export interface PlanetTypes {
+  title: string
+  value: string
 }
 const getData = async (uri: string): Promise<any> => {
   const data = await fetch(uri)
@@ -21,7 +38,155 @@ const getData = async (uri: string): Promise<any> => {
 }
 
 export const getHertzsprungRussell = async (
-): Promise<Array<HertzsprungRussell>> => {
-  const hertzsprungRussell  = await getData(`../api/Chart/HertzsprungRussell`)
-  return hertzsprungRussell  as Promise<Array<HertzsprungRussell>>
+  habitableOnly: boolean
+): Promise<Array<HertzsprungRussell>> =>
+  (await getData(
+    `../api/Chart/HertzsprungRussell?habitableOnly=${habitableOnly}`
+  )) as Promise<Array<HertzsprungRussell>>
+
+export const getPlanetTypes = async (
+  planetType: number
+): Promise<Array<PlanetTypes>> =>
+  (await getData(`../api/Chart/PlanetTypes?type=${planetType}`)) as Promise<
+    Array<PlanetTypes>
+  >
+export const initStockChart = (
+  parent: any,
+  planetType: number
+): am4charts.XYChart => {
+  am4core.useTheme(am4themes_dark)
+  let chart = am4core.create('stockchartdiv', am4charts.XYChart3D)
+  chart.exporting.menu = new am4core.ExportMenu()
+
+  let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis())
+  categoryAxis.dataFields.category = 'title'
+  categoryAxis.renderer.labels.template.rotation = 270
+  categoryAxis.renderer.labels.template.hideOversized = false
+  categoryAxis.renderer.minGridDistance = 20
+  categoryAxis.renderer.labels.template.horizontalCenter = 'right'
+  categoryAxis.renderer.labels.template.verticalCenter = 'middle'
+  categoryAxis.tooltip.label.rotation = 270
+  categoryAxis.tooltip.label.horizontalCenter = 'right'
+  categoryAxis.tooltip.label.verticalCenter = 'middle'
+
+  let valueAxis = chart.yAxes.push(new am4charts.ValueAxis())
+  valueAxis.title.text = 'Planets'
+  valueAxis.title.fontWeight = 'bold'
+
+  let series = chart.series.push(new am4charts.ColumnSeries3D())
+  series.dataFields.valueY = 'value'
+  series.dataFields.categoryX = 'title'
+  series.name = 'Visits'
+  series.tooltipText = '{categoryX}: [bold]{valueY}[/]'
+  series.columns.template.fillOpacity = 0.8
+
+  let columnTemplate = series.columns.template
+  columnTemplate.strokeWidth = 2
+  columnTemplate.cursorOverStyle = am4core.MouseCursorStyle.pointer
+  columnTemplate.strokeOpacity = 1
+  columnTemplate.stroke = am4core.color('#FFFFFF')
+  columnTemplate.events.on(
+    'hit',
+    (ev: any) => {
+      let key = (ev.target.dataItem as any)._dataContext.title
+
+      parent.props.history.push({
+        pathname: `../catalog`,
+        state: { key, type: planetType }
+      })
+    },
+    this
+  )
+
+  columnTemplate.adapter.add('fill', (fill, target) => {
+    return chart.colors.getIndex(target.dataItem.index)
+  })
+
+  columnTemplate.adapter.add('stroke', (stroke, target) => {
+    return chart.colors.getIndex(target.dataItem.index)
+  })
+
+  chart.cursor = new am4charts.XYCursor()
+  chart.cursor.lineX.strokeOpacity = 0
+  chart.cursor.lineY.strokeOpacity = 0
+
+  return chart
+}
+
+export const initBubbleChart = (parent: any): am4charts.XYChart => {
+  am4core.useTheme(am4themes_dark)
+  let chart = am4core.create('bubblechartdiv', am4charts.XYChart)
+  chart.exporting.menu = new am4core.ExportMenu()
+
+  chart.hiddenState.properties.opacity = 0
+
+  let valueAxisX = chart.xAxes.push(new am4charts.ValueAxis())
+  let valueAxisY = chart.yAxes.push(new am4charts.ValueAxis())
+
+  valueAxisY.title.text = 'Luminosity'
+
+  valueAxisX.title.text = 'Temperature K'
+  valueAxisX.renderer.labels.template.rotation = 45
+
+  valueAxisX.logarithmic = true
+  valueAxisX.renderer.inversed = true
+  valueAxisY.logarithmic = true
+
+  chart.cursor = new am4charts.XYCursor()
+  chart.cursor.behavior = 'zoomXY'
+  chart.responsive.enabled = true
+  chart.scrollbarX = new am4core.Scrollbar()
+  chart.scrollbarY = new am4core.Scrollbar()
+
+  let series = chart.series.push(new am4charts.LineSeries())
+  series.dataFields.valueX = 'temp'
+  series.dataFields.valueY = 'lum'
+  series.dataFields.value = 'size'
+
+  series.strokeOpacity = 0
+  series.sequencedInterpolation = true
+  series.yAxis = valueAxisY
+
+  let bullet = series.bullets.push(new am4charts.CircleBullet())
+  bullet.fill = am4core.color('#ff0000')
+  bullet.propertyFields.fill = 'color'
+  bullet.strokeOpacity = 0.7
+  bullet.strokeWidth = 2
+  bullet.fillOpacity = 0.7
+  bullet.stroke = am4core.color('#ffffff')
+  bullet.circle.events.on(
+    'hit',
+    (ev: any) => {
+      let name = (ev.target.dataItem as any)._dataContext.title
+      parent.props.history.push({
+        pathname: `../system/${name}`,
+        state: { star: { name } as Star }
+      })
+    },
+    this
+  )
+  bullet.circle.adapter.add('tooltipText', (text: string, s: any) => {
+    const size = s.dataItem._dataContext.size / 100
+
+    return text.replace('{size}', size.toString())
+  })
+  bullet.circle.cursorOverStyle = am4core.MouseCursorStyle.pointer
+  bullet.circle.tooltipText =
+    '[bold]{title}:[/]\nMass: {size} M⊙︎\nTemperature: {valueX.value}\nLuminosity: {valueY.value}\nSpectral class: {type}\nConstellation: {constellation}'
+
+  let hoverState = bullet.states.create('hover')
+  hoverState.properties.fillOpacity = 1
+  hoverState.properties.strokeOpacity = 1
+
+  series.heatRules.push({
+    target: bullet.circle,
+    min: 2,
+    max: 100,
+    property: 'radius'
+  })
+
+  bullet.circle.adapter.add('tooltipY', (tooltipY, target) => {
+    return -target.radius
+  })
+  return chart
 }

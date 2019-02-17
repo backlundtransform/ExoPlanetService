@@ -2,6 +2,8 @@ var path = require('path');
 
 module.exports = {
   watch:true,
+
+
     entry: {
         main: './wwwroot/js/main.js',
         react: './ClientApp/src/App.tsx'
@@ -25,7 +27,7 @@ module.exports = {
           
           },  {
             test:  /\.js$/,
-          
+            enforce: "pre",
             loaders:  'babel-loader',
             include: ['/node_modules/@amcharts'],
             options:{

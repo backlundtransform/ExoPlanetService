@@ -14,7 +14,8 @@ namespace ExoPlanetHunter.Service.Dto
       public string  Type { get; set; }
       public int Comp { get; set; }
       public int Atmosphere { get; set; }
-      public decimal?  MeanDistance { get; set; }
+        public int HabType { get; set; }
+        public decimal?  MeanDistance { get; set; }
       public decimal?   Distance{ get; set; }
       public decimal?  Esi { get; set; }
       public decimal?  Sph { get; set; }
