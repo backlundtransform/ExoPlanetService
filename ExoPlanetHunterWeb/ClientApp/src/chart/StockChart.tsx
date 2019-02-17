@@ -35,7 +35,7 @@ class StockChart extends React.Component<StockChartProps, StockChartState> {
       </Menu.Item>))}
         </Menu>
         <Segment inverted attached="bottom">
-          <h3>{'Planets type diagram'}</h3>
+          <h3>{'Planet class diagram'}</h3>
           <div
             id="stockchartdiv"
             style={{

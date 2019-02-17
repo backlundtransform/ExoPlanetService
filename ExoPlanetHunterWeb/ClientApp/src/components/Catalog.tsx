@@ -49,9 +49,9 @@ export default class Catalog extends React.Component<any, any> {
       loading: true,
       top: 30,
       color: '',
-      habactive: false,
+      habactive: this.props.location.state&&this.props.location.state.selectedvalue&&this.props.location.state.selectedvalue!=='all' ,
       searchValue: '',
-      selectedvalue: 'all',
+      selectedvalue: this.props.location.state&&this.props.location.state.selectedvalue?this.props.location.state.selectedvalue:'all',
       planets: [] as Array<Planet>,
       key: this.props.location.state && this.props.location.state.key,
       type: this.props.location.state && this.props.location.state.type
@@ -59,6 +59,7 @@ export default class Catalog extends React.Component<any, any> {
   }
   _isMounted = false
   async componentDidMount() {
+
     this._isMounted = true
     let filter = this.setSearchFilter()
     window.addEventListener('beforeunload', this.props.history.push({}))
@@ -176,7 +177,7 @@ export default class Catalog extends React.Component<any, any> {
 
     searchValue = e.target.value
 
-    this.setState({ searchValue })
+    this._isMounted && this.setState({ searchValue })
   }
   handleSearchClick = async () => {
     let filter = this.setSearchFilter()
@@ -187,14 +188,14 @@ export default class Catalog extends React.Component<any, any> {
   }
 
   handleHabClick = async (e: any, { value }: any) => {
-    let { habactive } = this.state
+    let { habactive,searchValue} = this.state
     habactive = value !== 'all'
     let planets = [] as Array<Planet>
     if (habactive) {
-      planets = await GetPlanetListAsync({ Key: value }, 30)
+      planets = await GetPlanetListAsync({ Key: value, Name:searchValue }, 30)
     }
     if (!habactive) {
-      planets = await GetPlanetListAsync({}, 30)
+      planets = await GetPlanetListAsync({ Name:searchValue }, 30)
     }
     this._isMounted &&
       this.setState({
@@ -222,6 +223,7 @@ export default class Catalog extends React.Component<any, any> {
       return { Name: searchValue }
     }
     if (habactive && searchValue === '') {
+      
       return { Key: selectedvalue }
     }
 

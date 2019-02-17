@@ -50,44 +50,46 @@ namespace ExoPlanetHunterWeb.Controllers
         [HttpGet("GetPaginatedPlanets")]
         public IEnumerable<ExoPlanetsDto> GetPaginatedPlanets(int page, bool hab, bool moon, string type, ChartType key, string name)
         {
-            IEnumerable<ExoPlanetsDto> planets;
-            try
+            if (!string.IsNullOrEmpty(name)&&hab)
             {
-                if (hab)
-                {
-                    planets= _exoService.CacheExoPlanets().Where(p => p.Hab == true).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                }
-                if (moon)
-                {
-                    return _exoService.CacheExoPlanets().Where(p => p.Moons == true).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                }
-                var dc = (int)type.ToEnum<MassEnum>();
-                if (!string.IsNullOrEmpty(type))
-                {
-                    switch (key)
-                    {
-                        case ChartType.Mass: return _exoService.CacheExoPlanets().Where(p => p.MassType == (int)type.ToEnum<MassEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                        case ChartType.Atmospere: return _exoService.CacheExoPlanets().Where(p => p.Atmosphere == (int)type.ToEnum<AtmosEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                        case ChartType.DiscoveryMetod: return _exoService.CacheExoPlanets().Where(p => p.DiscMethod == (int)type.ToEnum<DiscEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                        case ChartType.Hability: return _exoService.CacheExoPlanets().Where(p => p.HabType == (int)type.ToEnum<HabEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
-                        case ChartType.Temperature: return _exoService.CacheExoPlanets().Where(p => p.TempZone == (int)type.ToEnum<TempEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                        case ChartType.Composition: return _exoService.CacheExoPlanets().Where(p => p.Comp == (int)type.ToEnum<CompEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                    }
-                }
-                if (!string.IsNullOrEmpty(name))
-                {
-                    return _exoService.CacheExoPlanets().Where(p => p.Name.ToLower().Contains(name.ToLower())).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                }
-                return _exoService.CacheExoPlanets().OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-            }
-            catch (Exception e) {
-
-                throw;
-
+                return _exoService.CacheExoPlanets().Where(p => p.Name.ToLower().Contains(name.ToLower())&&p.Hab == hab).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
             }
 
-         
+            if (!string.IsNullOrEmpty(name) &&moon)
+            {
+                return _exoService.CacheExoPlanets().Where(p => p.Name.ToLower().Contains(name.ToLower()) && p.Moons == moon).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+            }
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                return _exoService.CacheExoPlanets().Where(p => p.Name.ToLower().Contains(name.ToLower())).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+            }
+
+
+
+            if (hab)
+            {
+                return _exoService.CacheExoPlanets().Where(p => p.Hab == hab).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+            }
+            if (moon)
+            {
+                return _exoService.CacheExoPlanets().Where(p => p.Moons == moon).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+            }
             
+            if (!string.IsNullOrEmpty(type))
+            {
+                switch (key)
+                {
+                    case ChartType.Mass: return _exoService.CacheExoPlanets().Where(p => p.MassType == (int)type.ToEnum<MassEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                    case ChartType.Atmospere: return _exoService.CacheExoPlanets().Where(p => p.Atmosphere == (int)type.ToEnum<AtmosEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                    case ChartType.DiscoveryMetod: return _exoService.CacheExoPlanets().Where(p => p.DiscMethod == (int)type.ToEnum<DiscEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                    case ChartType.Hability: return _exoService.CacheExoPlanets().Where(p => p.HabType == (int)type.ToEnum<HabEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
+                    case ChartType.Temperature: return _exoService.CacheExoPlanets().Where(p => p.TempZone == (int)type.ToEnum<TempEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                    case ChartType.Composition: return _exoService.CacheExoPlanets().Where(p => p.Comp == (int)type.ToEnum<CompEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                }
+            }
+           
+            return _exoService.CacheExoPlanets().OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
         }
 
         [HttpGet("GetImages")]
