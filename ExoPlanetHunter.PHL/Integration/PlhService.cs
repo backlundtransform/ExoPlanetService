@@ -68,6 +68,42 @@ namespace ExoPlanetHunter.PHL.Integration
            return _constellations;
         }
 
+        private Star OurSolarSystem() {
+
+            var star = new Star()
+            {
+                Name = "Sun",
+
+           
+                Type = "G2V",
+                Mass = values[38].ToNullable<decimal>(),
+                Radius = values[39].ToNullable<decimal>(),
+                Teff = values[40].ToNullable<decimal>(),
+                Luminosity = values[41].ToNullable<decimal>(),
+                FeH = values[42].ToNullable<decimal>(),
+                Age = values[43].ToNullable<decimal>(),
+                ApparMag = values[44].ToNullable<decimal>(),
+                Distance = values[45].ToNullable<decimal>(),
+                Ra = values[46].ToNullable<decimal>(),
+                Dec = values[47].ToNullable<decimal>(),
+                MagfromPlanet = values[48].ToNullable<decimal>(),
+
+                SizefromPlanet = values[49].ToNullable<decimal>(),
+
+                NoPlanets = values[50].ToNullable<int>(),
+
+                NoPlanetsHZ = values[51].ToNullable<int>(),
+                HabZoneMin = values[52].ToNullable<decimal>(),
+
+                HabZoneMax = values[53].ToNullable<decimal>(),
+
+                HabCat = values[62].ConvertToBoolToNullable(),
+                Planets = new List<Planet>() { }
+            };
+
+            return new Star();
+        }
+
         private Star GetStar(string starname, string[] values)
         {
             var star = new Star()
