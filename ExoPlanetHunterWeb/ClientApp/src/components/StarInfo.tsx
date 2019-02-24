@@ -181,7 +181,7 @@ export default class StarInfo extends React.Component<any> {
       <p>
         {`${resource.starname[0]} ${star.name} ${
           resource.starname[1]
-        } ${resource.const[star.constellation] &&
+        } ${star.constellation&&resource.const[star.constellation] &&
           resource.const[star.constellation]}.`}{' '}
         {`${
           star.luminosity === 9
