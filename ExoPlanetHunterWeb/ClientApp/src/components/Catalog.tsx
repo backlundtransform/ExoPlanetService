@@ -122,7 +122,7 @@ export default class Catalog extends React.Component<any, any> {
                   </Link>
                 </Card.Header>
                 <Card.Description>
-                  <span>{`Discovered: ${item.discYear}`}</span>
+                {item.discYear&& <span>{`Discovered: ${item.discYear}`}</span>}
                 </Card.Description>
                 <Card.Description>
                   {`${item.type && item.type !== null ? item.type : ''}`}{' '}

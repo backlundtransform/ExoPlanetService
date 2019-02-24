@@ -255,6 +255,7 @@ namespace ExoPlanetHunter.Service.Services
             {
                 return "neptunian";
             }
+           
             if (p.AtmosphereClass.Equals("no-atmosphere"))
             {
                 if (p.MassClass.Equals("Jovian"))

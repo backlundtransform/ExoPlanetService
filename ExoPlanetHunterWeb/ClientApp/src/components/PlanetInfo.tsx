@@ -46,6 +46,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
   render() {
     const { planet, loading } = this.state
 
+
     let size = window.innerWidth / 5 > 200 ? window.innerWidth / 5 : 200
 
     size = size > 400 ? 400 : size
@@ -113,55 +114,55 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                   <Header className={'post-preview'}>{planet.name}</Header>
                   <Table celled>
                     <Table.Body>
-                      {planet.mass && (
+                      {planet.mass ?(
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[0]}</Table.Cell>
                           <Table.Cell>{`${planet.mass}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
-                      )}
-                      {planet.radiusEu && (
+                      ):''}
+                      {planet.radiusEu ? (
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[1]}</Table.Cell>
                           <Table.Cell>{`${planet.radiusEu}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
-                      )}
-                      {planet.density && (
+                      ):''}
+                      {planet.density ? (
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[2]}</Table.Cell>
                           <Table.Cell>{`${planet.density}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
-                      )}
+                      ):''}
 
-                      {planet.gravity && (
+                      {planet.gravity ? (
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[3]}</Table.Cell>
                           <Table.Cell>{`${planet.gravity}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
-                      )}
-                      {planet.surfacePressure && (
+                      ):''}
+                      {planet.surfacePressure ?(
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[4]}</Table.Cell>
-                          <Table.Cell>{`${planet.surfacePressure}*${
+                          <Table.Cell>{`${planet.surfacePressure }*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
-                      )}
-                      {planet.escapeVelocity && (
+                      ):''}
+                      {planet.escapeVelocity ? (
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[5]}</Table.Cell>
                           <Table.Cell>{`${planet.escapeVelocity}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
-                      )}
+                      ):''}
                     </Table.Body>
                   </Table>
                   <Link
@@ -192,8 +193,8 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
             <Container>
               {`${resource.planetname[0]} ${planet.name} ${
                 resource.planetname[1]
-              }  ${planet.star.name}  ${resource.planetname[2]} ${
-                resource.const[planet.star.constellation] === undefined
+              }  ${planet.star.name}  ${ resource.const[planet.star.constellation] ?resource.planetname[2]:""} ${
+                planet.star.constellation&&resource.const[planet.star.constellation] === undefined
                   ? ''
                   : resource.const[planet.star.constellation]
               }`}{' '}
@@ -243,9 +244,9 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                   ? ''
                   : resource.atmosinfo[planet.atmosphere] + ' '
               }${planet.moons ? resource.moon : ''}`}</p>
-              <p>{`${planet.discYear === undefined ? '' : resource.disc} ${
-                planet.discYear === undefined ? '' : planet.discYear
-              }.`}</p>
+              <p>{`${planet.discYear ==null? '' : resource.disc} ${
+                planet.discYear ==null ? '' : planet.discYear+'.'
+              }`}</p>
               <p>{`${
                 resource.discinfo[planet.discMethod] == undefined
                   ? ''
