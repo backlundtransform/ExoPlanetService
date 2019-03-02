@@ -50,6 +50,7 @@ export default class Simulator extends React.Component<
     const { location, match } = this.props as any
     this._isMounted = true;
 
+
   
     const starname =location.state!==undefined?location.state.star:{ name:match.params.starId}
    
@@ -171,13 +172,14 @@ export default class Simulator extends React.Component<
                     <Image
                       width="180"
                       height="190"
-                      x={this.RotateX(width / 2 - 2 * p.radius+p.starDistance*p.eccentricity/2, p.starDistance  )}
+                      x={this.RotateX(width / 2 - 2 * p.radius+p.starDistance*p.eccentricity/2, p.starDistance)}
                       y={this.RotateY(
                         height / 2 - 2 * p.radius,
                         p.starDistance * 0.3
                       )}
+                  
                       href={`../img/${p.img.uri}.jpg`}
-                      clipPath={`url(#${index.toString()}`}
+                      clipPath={`url(#${index.toString()})`}
                     />
                     <Circle
                       id={p.name}

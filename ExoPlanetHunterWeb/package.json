@@ -25,6 +25,7 @@
     "material-icons-react": "^1.0.4",
     "react": "^16.5.2",
     "react-adsense": "0.0.6",
+    "react-app-polyfill": "^0.2.1",
     "react-dom": "^16.5.2",
     "react-ionicons": "^3.0.1",
     "react-native-svg-web": "^1.0.1",
