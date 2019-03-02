@@ -105,7 +105,7 @@ export default class Catalog extends React.Component<any, any> {
                       cy="100"
                       r="65"
                       fillOpacity={0.4}
-                      fill={`url(#${item.img.uri}`}
+                      fill={`url(#${item.img.uri})`}
                     />
                   </G>
                 </Svg>{' '}

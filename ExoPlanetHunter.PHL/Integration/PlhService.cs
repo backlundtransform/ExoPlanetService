@@ -86,6 +86,8 @@ namespace ExoPlanetHunter.PHL.Integration
                 NoPlanetsHZ = 2,
                 HabZoneMin = (decimal)0.9,
                 HabZoneMax = (decimal)1.5,
+                Ra =int.MaxValue,
+                Dec = int.MaxValue,
 
                 Planets = new List<Planet>()
                 {
@@ -137,6 +139,7 @@ namespace ExoPlanetHunter.PHL.Integration
                     Esi = (decimal)0.44,
                     Habitable = false,
                     Disc_Method = "ima",
+               
                     },
                     new Planet()
                     {
@@ -185,6 +188,7 @@ namespace ExoPlanetHunter.PHL.Integration
                     Esi = (decimal)0.73,
                     Habitable = false,
                     Disc_Method = "ima",
+                     
                     },
                     new Planet()
                     {
@@ -206,6 +210,7 @@ namespace ExoPlanetHunter.PHL.Integration
                     Esi = 0,
                     Habitable = false,
                     Disc_Method = "ima",
+                   
                     },
                     new Planet()
                     {
@@ -227,6 +232,7 @@ namespace ExoPlanetHunter.PHL.Integration
                     Esi = 0,
                     Habitable = false,
                     Disc_Method = "ima",
+                     
                     },
                     new Planet()
                     {

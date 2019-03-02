@@ -56,7 +56,7 @@
     decMean:["The planet is located at a distance from it star that correspond to ", "times the distance between our Earth and Sun."],
     hzd:["The planet is within the its solar system habitable zone, where alien could exist.","The planet is too close to its sun, no alien could exist here.", "The planet is too far away from its sun, no alien could exist here."],
     hza:["The planet has an atmosphere that could be suitable for life.","The planet has no atmosphere.", "The planet has an atmosphere, but it is not suitable for life."],
-    atmosinfo:["","The planet has a metal-rich atmosphere.","The planet has a hydrogen-rich atmosphere.",  ""],
+     atmosinfo: ["", " The planet has a hydrogen-rich atmosphere.","The planet has a metal-rich atmosphere.",  ""],
     meantemp:["The mean temperature of the planet is", "A hot day at", "the mean temperature is","C and on a cold day at it is" ],
     moon:"It is possible that the planet can have a habitable moon.",
     disc:"Discovered year ",

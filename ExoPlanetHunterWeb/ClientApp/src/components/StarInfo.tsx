@@ -115,37 +115,37 @@ export default class StarInfo extends React.Component<any> {
           <Header className={'post-preview'}>{star.name}</Header>
           <Table celled>
             <Table.Body>
-              {star.mass && (
+              {star.mass ? (
                 <Table.Row>
                   <Table.Cell>{`${resource.starinfo[0]}`}</Table.Cell>
                   <Table.Cell>{`${star.mass}*${
                     resource.oursun
                   }`}</Table.Cell>
                 </Table.Row>
-              )}
-              {star.radiusSu!==0&&star.radiusSu && (
+              ):''}
+              {star.radiusSu!==0&&star.radiusSu ? (
                 <Table.Row>
                   <Table.Cell>{`${resource.starinfo[1]}`}</Table.Cell>
                   <Table.Cell>{`${star.radiusSu}*${
                     resource.oursun
                   }`}</Table.Cell>
                 </Table.Row>
-              )}
-              {star.age && (
+              ):''}
+              {star.age ? (
                 <Table.Row>
                   <Table.Cell>{`${resource.starinfo[2]}`}</Table.Cell>
                   <Table.Cell>{`${star.age} ${
                    ' Gyrs'
                   }`}</Table.Cell>
                 </Table.Row>
-              )}
+              ):''}
 
-              {star.temp && (
+              {star.temp ? (
                 <Table.Row>
                   <Table.Cell>{`${resource.starinfo[3]}`}</Table.Cell>
                   <Table.Cell>{`${star.temp} C`}</Table.Cell>
                 </Table.Row>
-              )}
+              ):''}
             </Table.Body>
             <Table.Footer>
               <Table.Row />
@@ -180,10 +180,8 @@ export default class StarInfo extends React.Component<any> {
     <Container>
       <p>
         {`${resource.starname[0]} ${star.name} ${
-          resource.starname[1]
-        } ${star.constellation&&resource.const[star.constellation] &&
-          resource.const[star.constellation]}.`}{' '}
-        {`${
+         star.constellation&&resource.const[star.constellation]=== undefined ?'': `${resource.starname[1]}  ${resource.const[star.constellation]}.`}
+        ${
           star.luminosity === 9
             ? resource.startype[0]
             : resource.startype[1] +
