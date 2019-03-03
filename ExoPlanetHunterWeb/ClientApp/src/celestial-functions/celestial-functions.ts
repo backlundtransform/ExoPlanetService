@@ -1,16 +1,26 @@
 //https://www.aa.quae.nl/en/reken/hemelpositie.html#table2
-//Testing for Jupiter
-const julianDayZero = 2451545
-const angle = 0.9856076686
-const ecliptic= 23.4397* Math.PI/180
-
-const julianDay =() =>{
-  var date = new Date()
-  var time = date.getTime()
-return  Math.floor(time / 86400000 + 2440587.5 - (date.getTimezoneOffset()/1440))
+export interface CelestialObject {
+  name: string
+  coordinates: Array<number>
+  image: string
+  size: string
 }
 
-export const getMeanAnomaly = (
+const julianDayZero = 2451545
+const angle = 0.9856076686
+const ecliptic = (23.4397 * Math.PI) / 180
+const earthEccentricity = 0.01671
+const earthArgumentOmega = (288.064 * Math.PI) / 180
+const earthEclipticlongitude = (174.873 * Math.PI) / 180
+const earthMeanAnomalyZero = 357.529
+
+const julianDay = () => {
+  var date = new Date()
+  var time = date.getTime()
+  return time / 86400000 + 2440587.5 - date.getTimezoneOffset() / 1440
+}
+
+const getMeanAnomaly = (
   julianDay: number,
   meanAnomalyZero: number,
   distance: number
@@ -20,7 +30,7 @@ export const getMeanAnomaly = (
     Math.PI) /
   180
 
-export const getTrueAnomaly = (meanAnomaly: number, eccentricity: number) => {
+const getTrueAnomaly = (meanAnomaly: number, eccentricity: number) => {
   return (
     meanAnomaly +
     (2 * eccentricity - Math.pow(eccentricity, 3) / 4) * Math.sin(meanAnomaly) +
@@ -29,7 +39,7 @@ export const getTrueAnomaly = (meanAnomaly: number, eccentricity: number) => {
   )
 }
 
-export const getDistanceFromSun = (
+const getDistanceFromSun = (
   trueAnomaly: number,
   eccentricity: number,
   distance: number
@@ -37,7 +47,7 @@ export const getDistanceFromSun = (
   (distance * (1 - Math.pow(eccentricity, 2))) /
   (1 + eccentricity * Math.cos(trueAnomaly))
 
-export const getHeliocentricCoordinates = (
+const getHeliocentricCoordinates = (
   sunDistance: number,
   trueAnomaly: number,
   eclipticlongitude: number,
@@ -46,7 +56,7 @@ export const getHeliocentricCoordinates = (
 ): Array<number> => {
   const x =
     sunDistance *
-    (Math.cos(eclipticlongitude) * Math.cos(argumentOmega +trueAnomaly) -
+    (Math.cos(eclipticlongitude) * Math.cos(argumentOmega + trueAnomaly) -
       Math.sin(eclipticlongitude) *
         Math.cos(inclination) *
         Math.sin(argumentOmega + trueAnomaly))
@@ -62,81 +72,126 @@ export const getHeliocentricCoordinates = (
   return [x, y, z]
 }
 
-export const getGeocentricCoordinates = (
-  heliocoordplanet: Array<number>,
-  heliocoordearth: Array<number>
+const getGeocentricCoordinates = (
+  heliocoordplanet: Array<number>
 ): Array<number> => {
   const [px, py, pz] = heliocoordplanet
-  const [ex, ey, ez] = heliocoordearth
+  const earthmeanAnomaly = getMeanAnomaly(julianDay(), earthMeanAnomalyZero, 1)
+  const earthtrueAnomaly = getTrueAnomaly(earthmeanAnomaly, earthEccentricity)
+  const earthdistancefromsun = getDistanceFromSun(
+    earthtrueAnomaly,
+    earthEccentricity,
+    1
+  )
+  const [ex, ey, ez] = getHeliocentricCoordinates(
+    earthdistancefromsun,
+    earthtrueAnomaly,
+    earthEclipticlongitude,
+    earthArgumentOmega,
+    0
+  )
+
   return [px - ex, py - ey, pz - ez]
 }
 
-export const getGeocentricLongLat = (
-   geocoord: Array<number>,
+const getGeocentricLongLat = (geocoord: Array<number>): Array<number> => {
+  const [x, y, z] = geocoord
+  const delta = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2))
+  const longitude = Math.atan2(y, x)
+  const latitude = Math.asin(z / delta)
+  return [longitude, latitude]
+}
 
-  ): Array<number> => {
-    const [x, y, z] = geocoord
-    const delta =Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2)+Math.pow(z, 2))
-    const longitude=Math.atan2(y,x)
-    const latitude=Math.asin(z/delta)
-    return [longitude,latitude]
-  }
+const getRaDeg = (geolongLat: Array<number>): Array<number> => {
+  const [longitude, latitude] = geolongLat
+  const rightAscension = Math.atan2(
+    Math.sin(longitude) * Math.cos(ecliptic) -
+      Math.tan(latitude) * Math.sin(ecliptic),
+    Math.cos(longitude)
+  )
+  const declination = Math.asin(
+    Math.sin(latitude) * Math.cos(ecliptic) +
+      Math.cos(latitude) * Math.sin(longitude) * Math.sin(ecliptic)
+  )
 
-  export const getRaDeg = (
-    geolongLat: Array<number>,
+  return [rightAscension, declination]
+}
+
+const getCoordinates = (
+  eccentricity: number,
+  distance: number,
+  argumentOmega: number,
+  eclipticlongitude: number,
+  meanAnomalyZero: number,
+  inclination: number
+): Array<number> => {
+  const day = julianDay()
+
+  const meanAnomaly = getMeanAnomaly(day, meanAnomalyZero, distance)
+
+  const trueAnomaly = getTrueAnomaly(meanAnomaly, eccentricity)
+
+  const distancefromsun = getDistanceFromSun(
+    trueAnomaly,
+    eccentricity,
+    distance
+  )
+
+  const heliocoord = getHeliocentricCoordinates(
+    distancefromsun,
+    trueAnomaly,
+    (eclipticlongitude * Math.PI) / 180,
+    (argumentOmega * Math.PI) / 180,
+    (inclination * Math.PI) / 180
+  )
+
+  const geocoord = getGeocentricCoordinates(heliocoord)
+  const [ra, dec] = getRaDeg(getGeocentricLongLat(geocoord))
  
-   ): Array<number> => {
-     const [longitude,latitude] = geolongLat
-     const rightAscension =Math.atan2(Math.sin(longitude)*Math.cos(ecliptic)-Math.tan(latitude)*Math.sin(ecliptic),Math.cos(longitude))
-     const declination=Math.asin(Math.sin(latitude)*Math.cos(ecliptic)+Math.cos(latitude)*Math.sin(longitude)*Math.sin(ecliptic))
-  
-     return [rightAscension,declination]
-   }
-
-  export const testfunction =(
-   
-  ) => {
-    const day=julianDay()
-    console.log(2458545-day)
-     const jupitermeanAnomaly = getMeanAnomaly(2453006,20.020,
-      5.20260
-      )
-    console.log(jupitermeanAnomaly*180/Math.PI)
-    const jupitertrueAnomaly =getTrueAnomaly(jupitermeanAnomaly,0.04849)
-    console.log(jupitertrueAnomaly*180/Math.PI)
-    const jupiterdistancefromsun = getDistanceFromSun(jupitertrueAnomaly,0.04849,5.20260)
-    console.log(jupiterdistancefromsun)
-    const jupiterHeliocoord = getHeliocentricCoordinates(
-      jupiterdistancefromsun,
-      jupitertrueAnomaly,
-      100.464*Math.PI/180,
-      273.867*Math.PI/180,
-      1.303*Math.PI/180
-    )
-    console.log(jupiterHeliocoord)
- const earthmeanAnomaly = getMeanAnomaly(2453006,357.529,
-     1
-      )
-    console.log(earthmeanAnomaly*180/Math.PI)
-    const earthtrueAnomaly =getTrueAnomaly(earthmeanAnomaly,0.01671	)
-    console.log(earthtrueAnomaly*180/Math.PI)
-    const earthdistancefromsun = getDistanceFromSun(earthtrueAnomaly,0.01671,1)
-    console.log(earthdistancefromsun)
-    const earthHeliocoord = getHeliocentricCoordinates(
-      earthdistancefromsun,
-      earthtrueAnomaly,
-      174.873*Math.PI/180,
-      288.064*Math.PI/180,
-    0
-    )
-    console.log(earthHeliocoord)
-    const jupiterGeocoord =getGeocentricCoordinates(jupiterHeliocoord,earthHeliocoord)
-    console.log(jupiterGeocoord)
-    const [long,lat]= getGeocentricLongLat(jupiterGeocoord)
-    console.log(long*180/Math.PI,lat*180/Math.PI)
-    const [ra,dec]= getRaDeg(getGeocentricLongLat(jupiterGeocoord)) 
-    console.log(ra*180/Math.PI,dec*180/Math.PI)
-
-   }
-  
-  
+  return [(dec * 180) / Math.PI,ra<0?-ra * 180/ Math.PI-180:180-ra * 180 / Math.PI]
+}
+const celestialObject = [
+  {
+    name: 'Mercury',
+    image: 'img/mercury.png',
+    coordinates: getCoordinates(0.20563, 0.3871, 29.125, 48.331, 174.795, 7.005),
+    size:[30,30]
+  },
+  {
+    name: 'Venus',
+    image: 'img/venus.png',
+    coordinates: getCoordinates(0.00677, 0.72333, 54.884, 76.68, 50.416, 3.395),
+    size:[40,40]
+  },
+  {
+    name: 'Mars',
+    image: 'img/mars.png',
+    coordinates: getCoordinates(0.0934, 1.52368, 286.502, 49.558, 19.373, 1.85),
+    size:[40,40]
+  },
+  {
+    name: 'Jupiter',
+    image: 'img/jupiter.png',
+    coordinates: getCoordinates(0.04849, 5.2026, 273.867, 100.464, 20.02, 1.303),
+    size:[80,80]
+  },
+  {
+    name: 'Saturn',
+    image: 'img/saturn.png',
+    coordinates: getCoordinates( 0.05551,9.55491, 339.391, 113.666, 317.021, 2.489),
+    size:[160,80]
+  },
+  {
+    name: 'Uranus',
+    image: 'img/uranus.png',
+    coordinates: getCoordinates(0.0463, 19.21845, 98.999, 74.006, 141.05, 0.773),
+    size:[60,60]
+  },
+  {
+    name: 'Neptune',
+    image: 'img/neptune.png',
+    coordinates: getCoordinates(0.00899,30.11039,276.34, 131.784, 256.225, 1.7 ),
+    size:[60,60]
+  }
+]
+export default celestialObject
