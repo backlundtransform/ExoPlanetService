@@ -28,7 +28,7 @@ namespace ExoPlanetHunter.Service.Services
             var cacheEntry = CacheExoPlanets();
             return cacheEntry.Where(p => p.Hab == true &&
 
-              p.Star.Color != null && p.Radius != 0
+              p.Star.Color != null && p.Radius != 0&&p.Name!="Tellus"
             ).Select(p => new ExoPlanetsDto
             {
                 Name = p.Name,
