@@ -72,7 +72,7 @@ namespace ExoPlanetHunter.Service.Services
                 HabZoneMax = GetStarDistance(planets, star.HabZoneMax),
                 HabZoneMin = GetStarDistance(planets, star.HabZoneMin),
                 Radius = star.Radius,
-
+                Coordinate = planets.First().Coordinate,
                 Planets = planets.OrderBy(p => p.MeanDistance).Select(p => new ExoSystemPlanetsDto()
                 {
                     Name = p.Name,

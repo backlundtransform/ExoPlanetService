@@ -18,7 +18,7 @@ interface StarMapState {
   siderealtime: string
   planets: Array<Planet>
 }
-
+const maxzoom=12
 export default class Map extends React.Component<any, StarMapState> {
   state = {
     constlines: {} as GeoJsonObject,
@@ -45,6 +45,7 @@ export default class Map extends React.Component<any, StarMapState> {
     this._map = L.map('map', {
       zoom: 5,
       minZoom: 4,
+      maxZoom: maxzoom,
       worldCopyJump: true,
       center: [latitude, longitude] as L.LatLngExpression
     }) as L.Map
@@ -116,8 +117,9 @@ export default class Map extends React.Component<any, StarMapState> {
       }
     }).addTo(this._map)
     this._map.on('zoomend', (e: any) => {
-      const zoom = e.target._zoom
-      if (zoom === 18) {
+      const zoom =e.target!==undefined? e.target._zoom:e
+
+      if (zoom === maxzoom) {
         const center = e.target._lastCenter
         const nearestplanet = planets
           .map(p => {
@@ -133,16 +135,22 @@ export default class Map extends React.Component<any, StarMapState> {
           .sort((a, b) => {
             return a.distance - b.distance
           })[0]
-
-        if (nearestplanet.distance < 0.003) {
+    
+        if (nearestplanet.distance < 0.5) {
           this.props.history.push({
             pathname: `system/${nearestplanet.star.name}`,
-            state: { star: nearestplanet.star },
+            state: { star: nearestplanet.star, scalefactor:0.4 },
             props: { timestamp: () => new Date().toString() }
           })
         }
       }
     })
+
+if(this.props.location.state&&this.props.location.state.coord){
+    const coord =this.props.location.state.coord
+    this._map.setView([coord.latitude,coord.longitude], maxzoom-1)
+}
+   
   }
 
   updatemarker = () => {

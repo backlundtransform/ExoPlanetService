@@ -76,6 +76,7 @@ export interface Star {
   constellation?: number
   habZoneMin?: number
   habZoneMax?: number
+  coordinate?: number
   mass?: number
   age?: number
   temp?: number

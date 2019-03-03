@@ -7,7 +7,7 @@ namespace ExoPlanetHunter.Service.Dto
     {
         public string Name { get; set; }
 
-  
+        public CoordinateDto Coordinate { get; set; }
 
         public int? Color { get; set; }
 
