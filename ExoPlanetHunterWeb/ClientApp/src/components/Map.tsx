@@ -7,6 +7,7 @@ import {
 import { GeoJsonObject } from 'geojson'
 import { Icon, Statistic } from 'semantic-ui-react'
 import siderealtime from '../siderealtime/'
+import celestialObject from '../celestial-functions/celestial-functions'
 
 import { GetHabitablePlanets, Planet } from '../service/getPlanets'
 interface StarMapState {
@@ -29,9 +30,11 @@ export default class Map extends React.Component<any, StarMapState> {
   }
   _map?: L.Map
  _isMounted = false;
+ _markers = []
  _interval:any
   async componentDidMount() {
     this._isMounted = true;
+ 
     
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position =>
@@ -98,7 +101,7 @@ export default class Map extends React.Component<any, StarMapState> {
         })
       )
     })
-
+    this.updatemarker()
     const starIcon = L.icon({
       iconUrl: '/img/smarker.png',
       iconSize: [60, 60]
@@ -113,10 +116,35 @@ export default class Map extends React.Component<any, StarMapState> {
       }
     }).addTo(this._map)
   }
+
+  updatemarker=()=>{
+    const L= require("Leaflet")
+    this._markers.map(marker=>this._map.removeLayer(marker))
+ 
+    celestialObject.map(object => {
+      const objectmarker = L.marker(
+        object.coordinates as L.LatLngExpression,
+        { icon:  L.icon({
+          iconUrl: object.image,
+          iconSize: object.size
+        })}
+      )
+        .bindTooltip(object.name, { direction: 'left' })
+        .openTooltip()
+        .addTo(this._map)
+        objectmarker.addEventListener('click', () =>
+        this.props.history.push({
+          pathname: `planet/${object.name}`,
+        })
+      )
+      this._markers.push(objectmarker)
+    })
+
+  }
   updatetime = (position: number) => {
     this.setState({ siderealtime: siderealtime(position) })
     this._interval = setInterval(() => {
-      this.setState({ siderealtime: siderealtime(position) })
+      this.setState({ siderealtime: siderealtime(position) }, ()=> this.updatemarker())
     }, 60000)
   }
   onEachFeature = (feature: any, layer: any) => {

@@ -17,6 +17,9 @@ import MaterialIcon from 'material-icons-react'
 import { Link } from 'react-router-dom'
 import { Gradient } from '../styles/radialgradients'
 
+
+
+
 export const getGroupedItems = (posts: Array<any>) => {
   let groupeditems = groupBy(posts, 3)
   let groupedposts = [] as Array<any>
@@ -59,7 +62,7 @@ export default class Catalog extends React.Component<any, any> {
   }
   _isMounted = false
   async componentDidMount() {
-
+ 
     this._isMounted = true
     let filter = this.setSearchFilter()
     window.addEventListener('beforeunload', this.props.history.push({}))

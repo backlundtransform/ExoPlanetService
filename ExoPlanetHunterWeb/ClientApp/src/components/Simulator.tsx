@@ -193,9 +193,9 @@ export default class Simulator extends React.Component<
                     />
                     <Text
                       key={`text- ${index}`}
-                      x={p.radius + this.RotateX(width / 2+p.starDistance*p.eccentricity/2, p.starDistance)}
+                      x={this.RotateX(width / 2+p.starDistance*p.eccentricity/2, p.starDistance)}
                       y={
-                        2*p.radius +
+                        p.radius +
                         this.RotateY(height / 2, p.starDistance * 0.3)
                       }
                       textAnchor="end"
