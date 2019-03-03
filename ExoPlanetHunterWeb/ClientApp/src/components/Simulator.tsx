@@ -42,6 +42,7 @@ export default class Simulator extends React.Component<
     loading: true,
   
   }
+  _viewer = null;
  _isMounted = false;
  _interval:any
  
@@ -50,7 +51,7 @@ export default class Simulator extends React.Component<
     const { location, match } = this.props as any
     this._isMounted = true;
 
-
+  
   
     const starname =location.state!==undefined?location.state.star:{ name:match.params.starId}
    
@@ -58,7 +59,7 @@ export default class Simulator extends React.Component<
     star.radius = getStarSize(star)
     this._interval = setInterval(() => this.updateHandler(), 1000)
    
-      this._isMounted&& this.setState({ star, loading: false })
+      this._isMounted&& this.setState({ star, loading: false },()=>this._viewer&&this._viewer.zoomOnViewerCenter(1))
    
   }
   updateHandler = () => this.setState({ alpha: this.state.alpha + 1 / 50 })
@@ -89,7 +90,7 @@ export default class Simulator extends React.Component<
     let width = window.innerWidth - 20
 
     let height = window.innerHeight - 120
- 
+
 
     return (
       <div className={'space'}>
@@ -99,7 +100,9 @@ export default class Simulator extends React.Component<
        </Dimmer>
         ) : (
           <ReactSVGPanZoom
-      
+          onChangeValue={(e:any)=>console.log(e.d)}
+             ref={Viewer => this._viewer = Viewer}
+             
             width={width}
             height={height}
             SVGBackground={'transparent'}
