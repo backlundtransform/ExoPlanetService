@@ -179,7 +179,7 @@ const celestialObject = [
     name: 'Saturn',
     image: 'img/saturn.png',
     coordinates: getCoordinates( 0.05551,9.55491, 339.391, 113.666, 317.021, 2.489),
-    size:[160,80]
+    size:[180,80]
   },
   {
     name: 'Uranus',
