@@ -111,7 +111,7 @@ namespace ExoPlanetHunter.Service.Services
                     Temp = p.TsMean - (decimal)273.15,
                     TempMax = p.TsMax - (decimal)273.15,
                     TempMin = p.TsMin - (decimal)273.15,
-                    Coordinate = new CoordinateDto { Latitude = p.Star.Dec!= null?p.Star.Dec:int.MaxValue, Longitude = p.Star.Ra != null ? -15 * (p.Star.Ra - 12):int.MaxValue },
+                    Coordinate = new CoordinateDto { Latitude = p.Star.Dec, Longitude = -15 * (p.Star.Ra - 12) },
                     DiscYear = p.Disc_Year,
                     Comp = (int)p.CompositionClass.ToEnum<CompEnum>(),
                     Mass=p.Mass,
