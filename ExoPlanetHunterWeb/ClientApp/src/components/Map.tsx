@@ -32,7 +32,8 @@ export default class Map extends React.Component<any, StarMapState> {
   _isMounted = false
   _markers = []
   _interval: any
-  async componentDidMount() {
+
+async componentDidMount() {
     this._isMounted = true
 
     if (navigator.geolocation) {

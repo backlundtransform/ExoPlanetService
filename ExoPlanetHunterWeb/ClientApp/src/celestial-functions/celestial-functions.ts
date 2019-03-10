@@ -147,7 +147,7 @@ const getCoordinates = (
 
   const geocoord = getGeocentricCoordinates(heliocoord)
   const [ra, dec] = getRaDeg(getGeocentricLongLat(geocoord))
-  return [(dec * 180) / Math.PI,ra<0?-ra * 180/ Math.PI-180:180-ra * 180 / Math.PI]
+  return [(dec * 180) / Math.PI,(ra+180)%180 / Math.PI]
 }
 const celestialObject = [
   {
