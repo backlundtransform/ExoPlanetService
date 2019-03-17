@@ -6,7 +6,7 @@ export interface CelestialObject {
   size: string
 }
 
-const julianDayZero = 2451545
+const julianDayZero = 2451544.5
 const angle = 0.9856076686
 const ecliptic = (23.4397 * Math.PI) / 180
 const earthEccentricity = 0.01671
@@ -15,9 +15,62 @@ const earthEclipticlongitude = (174.873 * Math.PI) / 180
 const earthMeanAnomalyZero = 357.529
 
 const julianDay = () => {
-  var date = new Date()
-  var time = date.getTime()
+  let date = new Date()
+  let time = date.getTime()
   return time / 86400000 + 2440587.5 - date.getTimezoneOffset() / 1440
+}
+
+const CalculateMoonPosition = () => {
+  const julianday = julianDay()
+  const lValue = 218.316 + 13.176396 * (julianday - julianDayZero)
+  const mValue = 134.963 + 13.064993 * (julianday - julianDayZero)
+  const fValue = 93.272 + 13.22935 * (julianday - julianDayZero)
+  const longitude = lValue + 6.289 * Math.sin((mValue * Math.PI) / 180)
+  const latitude = 5.128 * Math.sin((fValue * Math.PI) / 180)
+  const [ra, dec] = getRaDeg([
+    (longitude * Math.PI) / 180,
+    (latitude * Math.PI) / 180
+  ])
+  return [
+    (dec * 180) / Math.PI,
+    ra < 0 ? (-ra * 180) / Math.PI - 180 : 180 - (ra * 180) / Math.PI
+  ]
+}
+
+const getMoonPhase = () => {
+  const julianday = julianDay()
+
+  const daysSince = julianday - 2451549.5
+  const daysIntoCycle = ((daysSince / 29.53) % 1) * 29.53
+  console.log(daysIntoCycle)
+
+  if (daysIntoCycle < 2) {
+    return ''
+  }
+  if (daysIntoCycle < 4) {
+    return 'img/cresent.png'
+  }
+  if (daysIntoCycle < 8) {
+    return 'img/quater.png'
+  }
+  if (daysIntoCycle < 14) {
+    return 'img/gibbous.png'
+  }
+  if (daysIntoCycle < 18) {
+    return 'img/moon.png'
+  }
+  if (daysIntoCycle < 22) {
+    return 'img/gibbous.png'
+  }
+  if (daysIntoCycle < 26) {
+    return 'img/quater.png'
+  }
+  if (daysIntoCycle < 28) {
+    return 'img/cresent.png'
+  }
+  if (daysIntoCycle < 30) {
+    return ''
+  }
 }
 
 const getMeanAnomaly = (
@@ -147,50 +200,94 @@ const getCoordinates = (
 
   const geocoord = getGeocentricCoordinates(heliocoord)
   const [ra, dec] = getRaDeg(getGeocentricLongLat(geocoord))
-  return [(dec * 180) / Math.PI,(ra+180)%180 / Math.PI]
+  return [
+    (dec * 180) / Math.PI,
+    ra < 0 ? (-ra * 180) / Math.PI - 180 : 180 - (ra * 180) / Math.PI
+  ]
 }
 const celestialObject = [
   {
     name: 'Mercury',
     image: 'img/mercury.png',
-    coordinates: getCoordinates(0.20563, 0.3871, 29.125, 48.331, 174.795, 7.005),
-    size:[30,30]
+    coordinates: getCoordinates(
+      0.20563,
+      0.3871,
+      29.125,
+      48.331,
+      174.795,
+      7.005
+    ),
+    size: [30, 30]
   },
   {
     name: 'Venus',
     image: 'img/venus.png',
     coordinates: getCoordinates(0.00677, 0.72333, 54.884, 76.68, 50.416, 3.395),
-    size:[40,40]
+    size: [40, 40]
   },
   {
     name: 'Mars',
     image: 'img/mars.png',
     coordinates: getCoordinates(0.0934, 1.52368, 286.502, 49.558, 19.373, 1.85),
-    size:[40,40]
+    size: [40, 40]
   },
   {
     name: 'Jupiter',
     image: 'img/jupiter.png',
-    coordinates: getCoordinates(0.04849, 5.2026, 273.867, 100.464, 20.02, 1.303),
-    size:[80,80]
+    coordinates: getCoordinates(
+      0.04849,
+      5.2026,
+      273.867,
+      100.464,
+      20.02,
+      1.303
+    ),
+    size: [80, 80]
   },
   {
     name: 'Saturn',
     image: 'img/saturn.png',
-    coordinates: getCoordinates( 0.05551,9.55491, 339.391, 113.666, 317.021, 2.489),
-    size:[180,80]
+    coordinates: getCoordinates(
+      0.05551,
+      9.55491,
+      339.391,
+      113.666,
+      317.021,
+      2.489
+    ),
+    size: [180, 80]
   },
   {
     name: 'Uranus',
     image: 'img/uranus.png',
-    coordinates: getCoordinates(0.0463, 19.21845, 98.999, 74.006, 141.05, 0.773),
-    size:[60,60]
+    coordinates: getCoordinates(
+      0.0463,
+      19.21845,
+      98.999,
+      74.006,
+      141.05,
+      0.773
+    ),
+    size: [60, 60]
   },
   {
     name: 'Neptune',
     image: 'img/neptune.png',
-    coordinates: getCoordinates(0.00899,30.11039,276.34, 131.784, 256.225, 1.7 ),
-    size:[60,60]
+    coordinates: getCoordinates(
+      0.00899,
+      30.11039,
+      276.34,
+      131.784,
+      256.225,
+      1.7
+    ),
+    size: [60, 60]
+  },
+  {
+    name: 'Moon',
+    image: getMoonPhase(),
+    coordinates: CalculateMoonPosition(),
+    size: [80, 80]
   }
 ]
 export default celestialObject

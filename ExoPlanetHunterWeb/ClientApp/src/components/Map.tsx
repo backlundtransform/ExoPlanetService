@@ -5,7 +5,7 @@ import {
   GetStarsMarkers
 } from '../service/getConstellations'
 import { GeoJsonObject } from 'geojson'
-import { Icon, Statistic, IconGroup } from 'semantic-ui-react'
+import { Icon, Statistic } from 'semantic-ui-react'
 import siderealtime from '../siderealtime/'
 import celestialObject from '../celestial-functions/celestial-functions'
 
@@ -18,7 +18,7 @@ interface StarMapState {
   siderealtime: string
   planets: Array<Planet>
 }
-const maxzoom=12
+const maxzoom = 12
 export default class Map extends React.Component<any, StarMapState> {
   state = {
     constlines: {} as GeoJsonObject,
@@ -33,7 +33,7 @@ export default class Map extends React.Component<any, StarMapState> {
   _markers = []
   _interval: any
 
-async componentDidMount() {
+  async componentDidMount() {
     this._isMounted = true
 
     if (navigator.geolocation) {
@@ -118,7 +118,7 @@ async componentDidMount() {
       }
     }).addTo(this._map)
     this._map.on('zoomend', (e: any) => {
-      const zoom =e.target!==undefined? e.target._zoom:e
+      const zoom = e.target !== undefined ? e.target._zoom : e
 
       if (zoom === maxzoom) {
         const center = e.target._lastCenter
@@ -136,22 +136,21 @@ async componentDidMount() {
           .sort((a, b) => {
             return a.distance - b.distance
           })[0]
-    
+
         if (nearestplanet.distance < 0.5) {
           this.props.history.push({
             pathname: `system/${nearestplanet.star.name}`,
-            state: { star: nearestplanet.star, scalefactor:0.4 },
+            state: { star: nearestplanet.star, scalefactor: 0.4 },
             props: { timestamp: () => new Date().toString() }
           })
         }
       }
     })
 
-if(this.props.location.state&&this.props.location.state.coord){
-    const coord =this.props.location.state.coord
-    this._map.setView([coord.latitude,coord.longitude], maxzoom-1)
-}
-   
+    if (this.props.location.state && this.props.location.state.coord) {
+      const coord = this.props.location.state.coord
+      this._map.setView([coord.latitude, coord.longitude], maxzoom - 1)
+    }
   }
 
   updatemarker = () => {
@@ -168,11 +167,16 @@ if(this.props.location.state&&this.props.location.state.coord){
         .bindTooltip(object.name, { direction: 'left' })
         .openTooltip()
         .addTo(this._map)
-      objectmarker.addEventListener('click', () =>
+      objectmarker.addEventListener('click', () => {
+        if (object.name === 'Moon') {
+          return
+        }
+
         this.props.history.push({
           pathname: `planet/${object.name}`
         })
-      )
+      })
+
       this._markers.push(objectmarker)
     })
   }
