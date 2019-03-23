@@ -42,10 +42,10 @@ const getMoonPhase = () => {
   const daysSince = julianday - 2451549.5
   const daysIntoCycle = ((daysSince / 29.53) % 1) * 29.53
 
-  if (daysIntoCycle < 3) {
+  if (daysIntoCycle < 6) {
     return 'img/cresent.png'
   }
-  if (daysIntoCycle < 8) {
+  if (daysIntoCycle < 10) {
     return 'img/quater.png'
   }
   if (daysIntoCycle < 14) {
@@ -54,17 +54,14 @@ const getMoonPhase = () => {
   if (daysIntoCycle < 18) {
     return 'img/moon.png'
   }
-  if (daysIntoCycle < 20) {
+  if (daysIntoCycle < 21) {
     return 'img/rtgibbous.png'
   }
   if (daysIntoCycle < 24) {
     return 'img/rtquater.png'
   }
-  if (daysIntoCycle < 27) {
-    return 'img/rtcresent.png'
-  }
+return 'img/rtcresent.png'
 
-  return ''
 }
 
 const getMeanAnomaly = (

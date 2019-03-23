@@ -164,7 +164,8 @@ export default class Map extends React.Component<any, StarMapState> {
     celestialObject.map(object => {
       const objectmarker = L.marker(object.coordinates as L.LatLngExpression, {
         icon: L.divIcon({
-          html:`<img class="leaflet-marker-icon leaflet-zoom-animated" src="${object.image}" style="margin-left: ${isDownUnder?30:-30}px; margin-top: ${isDownUnder?30:-30}px;width:${object.size[0]}px; height: ${object.size[1]}px;transform: rotate(${isDownUnder?180:0}deg);  -webkit-transform: rotate(${isDownUnder?180:0}deg); -moz-transform:rotate(${isDownUnder?180:0}deg);" />`
+          html:`<img class="leaflet-marker-icon leaflet-zoom-animated" src="${object.image}" style="margin-left: ${isDownUnder?30:-30}px; margin-top: ${isDownUnder?30:-30}px;width:${object.size[0]}px; height: ${object.size[1]}px;transform: rotate(${isDownUnder?180:0}deg);  -webkit-transform: rotate(${isDownUnder?180:0}deg); -moz-transform:rotate(${isDownUnder?180:0}deg);" />`,
+          className: 'dummy' 
         })
       })
         .bindTooltip(object.name, { direction: 'left' })
