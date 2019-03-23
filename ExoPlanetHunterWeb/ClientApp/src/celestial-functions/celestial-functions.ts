@@ -43,24 +43,24 @@ const getMoonPhase = () => {
   const daysIntoCycle = ((daysSince / 29.53) % 1) * 29.53
 
   if (daysIntoCycle < 6) {
-    return 'img/cresent.png'
+    return 'img/rtcresent.png'
   }
   if (daysIntoCycle < 10) {
-    return 'img/quater.png'
+    return 'img/rtquater.png'
   }
   if (daysIntoCycle < 14) {
-    return 'img/gibbous.png'
+    return 'img/rtgibbous.png'
   }
   if (daysIntoCycle < 18) {
     return 'img/moon.png'
   }
   if (daysIntoCycle < 21) {
-    return 'img/rtgibbous.png'
+    return 'img/gibbous.png'
   }
   if (daysIntoCycle < 24) {
-    return 'img/rtquater.png'
+    return 'img/quater.png'
   }
-return 'img/rtcresent.png'
+return 'img/cresent.png'
 
 }
 
