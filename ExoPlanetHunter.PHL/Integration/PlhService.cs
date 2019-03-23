@@ -86,8 +86,7 @@ namespace ExoPlanetHunter.PHL.Integration
                 NoPlanetsHZ = 2,
                 HabZoneMin = (decimal)0.9,
                 HabZoneMax = (decimal)1.5,
-                Ra =int.MaxValue,
-                Dec = int.MaxValue,
+    
 
                 Planets = new List<Planet>()
                 {

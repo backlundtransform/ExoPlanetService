@@ -17,8 +17,9 @@ interface StarMapState {
   latitude: number
   siderealtime: string
   planets: Array<Planet>
+  isDownUnder:Boolean
 }
-
+const maxzoom = 12
 export default class Map extends React.Component<any, StarMapState> {
   state = {
     constlines: {} as GeoJsonObject,
@@ -26,26 +27,30 @@ export default class Map extends React.Component<any, StarMapState> {
     longitude: -90,
     latitude: 40,
     siderealtime: '',
+    isDownUnder:false,
     planets: [] as Array<Planet>
   }
   _map?: L.Map
- _isMounted = false;
- _markers = []
- _interval:any
+  _isMounted = false
+  _markers = []
+  _interval: any
+
   async componentDidMount() {
-    this._isMounted = true;
- 
-    
+    this._isMounted = true
+   let { longitude, latitude, isDownUnder } = this.state
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position =>
-        this.updatetime(position.coords.longitude)
+      navigator.geolocation.getCurrentPosition(position =>{
+        isDownUnder = position.coords.latitude<0
+        this.updatetime(position.coords.longitude)}
       )
     }
-    const { longitude, latitude } = this.state
-   const L= require("Leaflet")
+ 
+    const L = require('Leaflet')
+  
     this._map = L.map('map', {
       zoom: 5,
       minZoom: 4,
+      maxZoom: maxzoom,
       worldCopyJump: true,
       center: [latitude, longitude] as L.LatLngExpression
     }) as L.Map
@@ -54,15 +59,16 @@ export default class Map extends React.Component<any, StarMapState> {
     let planets = (await GetHabitablePlanets()) as Array<Planet>
     this._map.on('moveend', () => {
       const { lng, lat } = this._map.getCenter()
-      this._isMounted&&this.setState({ longitude: lng, latitude: lat })
+      this._isMounted && this.setState({ longitude: lng, latitude: lat })
     })
 
     L.tileLayer('/img/tile.png', {}).addTo(this._map)
-    this._isMounted&&this.setState({ constlines, planets, stars }, () => this.init())
+    this._isMounted &&
+      this.setState({ constlines, planets, stars ,  isDownUnder}, () => this.init())
   }
-  componentWillUnmount(){
-    this._isMounted = false;
-    clearInterval(this._interval);
+  componentWillUnmount() {
+    this._isMounted = false
+    clearInterval(this._interval)
   }
 
   init = () => {
@@ -73,7 +79,7 @@ export default class Map extends React.Component<any, StarMapState> {
       weight: 5,
       opacity: 1
     }
-    const L= require("Leaflet")
+    const L = require('Leaflet')
     L.geoJSON(constlines, {
       style: lineStyle,
       onEachFeature: this.onEachFeature
@@ -97,7 +103,7 @@ export default class Map extends React.Component<any, StarMapState> {
         this.props.history.push({
           pathname: `system/${planet.star.name}`,
           state: { star: planet.star },
-         props:{timestamp:()=>new Date().toString()}
+          props: { timestamp: () => new Date().toString() }
         })
       )
     })
@@ -106,45 +112,84 @@ export default class Map extends React.Component<any, StarMapState> {
       iconUrl: '/img/smarker.png',
       iconSize: [60, 60]
     })
- 
+
     L.geoJSON(stars, {
-      pointToLayer: (feature:any, latlng:any) => {
+      pointToLayer: (feature: any, latlng: any) => {
         return L.marker(latlng, { icon: starIcon })
           .bindTooltip(feature.properties.name, { direction: 'left' })
           .openTooltip()
           .addTo(this._map)
       }
     }).addTo(this._map)
+    this._map.on('zoomend', (e: any) => {
+      const zoom = e.target !== undefined ? e.target._zoom : e
+
+      if (zoom === maxzoom) {
+        const center = e.target._lastCenter
+        const nearestplanet = planets
+          .map(p => {
+            return {
+              name: p.name,
+              star: p.star,
+              distance: Math.sqrt(
+                Math.pow(p.coordinate.longitude - center.lng, 2) +
+                  Math.pow(p.coordinate.latitude - center.lat, 2)
+              )
+            }
+          })
+          .sort((a, b) => {
+            return a.distance - b.distance
+          })[0]
+
+        if (nearestplanet.distance < 0.5) {
+          this.props.history.push({
+            pathname: `system/${nearestplanet.star.name}`,
+            state: { star: nearestplanet.star, scalefactor: 0.4 },
+            props: { timestamp: () => new Date().toString() }
+          })
+        }
+      }
+    })
+
+    if (this.props.location.state && this.props.location.state.coord) {
+      const coord = this.props.location.state.coord
+      this._map.setView([coord.latitude, coord.longitude], maxzoom - 1)
+    }
   }
 
-  updatemarker=()=>{
-    const L= require("Leaflet")
-    this._markers.map(marker=>this._map.removeLayer(marker))
- 
+  updatemarker = () => {
+    const L = require('Leaflet')
+    this._markers.map(marker => this._map.removeLayer(marker))
+    const {isDownUnder} = this.state
     celestialObject.map(object => {
-      const objectmarker = L.marker(
-        object.coordinates as L.LatLngExpression,
-        { icon:  L.icon({
-          iconUrl: object.image,
-          iconSize: object.size
-        })}
-      )
+      const objectmarker = L.marker(object.coordinates as L.LatLngExpression, {
+        icon: L.divIcon({
+          html:`<img class="leaflet-marker-icon leaflet-zoom-animated" src="${object.image}" style="margin-left: ${isDownUnder?30:-30}px; margin-top: ${isDownUnder?30:-30}px;width:${object.size[0]}px; height: ${object.size[1]}px;transform: rotate(${isDownUnder?180:0}deg);  -webkit-transform: rotate(${isDownUnder?180:0}deg); -moz-transform:rotate(${isDownUnder?180:0}deg);" />`,
+          className: 'dummy' 
+        })
+      })
         .bindTooltip(object.name, { direction: 'left' })
         .openTooltip()
         .addTo(this._map)
-        objectmarker.addEventListener('click', () =>
+      objectmarker.addEventListener('click', () => {
+        if (object.name === 'Moon') {
+          return
+        }
+
         this.props.history.push({
-          pathname: `planet/${object.name}`,
+          pathname: `planet/${object.name}`
         })
-      )
+      })
+
       this._markers.push(objectmarker)
     })
-
   }
   updatetime = (position: number) => {
     this.setState({ siderealtime: siderealtime(position) })
     this._interval = setInterval(() => {
-      this.setState({ siderealtime: siderealtime(position) }, ()=> this.updatemarker())
+      this.setState({ siderealtime: siderealtime(position) }, () =>
+        this.updatemarker()
+      )
     }, 60000)
   }
   onEachFeature = (feature: any, layer: any) => {
@@ -157,7 +202,7 @@ export default class Map extends React.Component<any, StarMapState> {
       fillOpacity: 0
     }
     const coord = feature.geometry.coordinates
-    const L= require("Leaflet")
+    const L = require('Leaflet')
     if (feature.properties.constellation != null) {
       const marker = L.circleMarker([coord[0][1], coord[0][0]], options)
         .addTo(this._map)
@@ -198,7 +243,6 @@ export default class Map extends React.Component<any, StarMapState> {
             </Statistic.Value>
             <Statistic.Label>{'Declination'}</Statistic.Label>
           </Statistic>
-
           <Statistic>
             <Statistic.Value>
               <Icon name="clock" />
@@ -206,7 +250,6 @@ export default class Map extends React.Component<any, StarMapState> {
             </Statistic.Value>
             <Statistic.Label>{'Sidereal time'}</Statistic.Label>
           </Statistic>
-
           <Statistic>
             <Statistic.Value>
               <Icon name="compass" />
