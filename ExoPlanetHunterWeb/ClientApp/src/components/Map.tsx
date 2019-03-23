@@ -17,6 +17,7 @@ interface StarMapState {
   latitude: number
   siderealtime: string
   planets: Array<Planet>
+  isDownUnder:Boolean
 }
 const maxzoom = 12
 export default class Map extends React.Component<any, StarMapState> {
@@ -26,6 +27,7 @@ export default class Map extends React.Component<any, StarMapState> {
     longitude: -90,
     latitude: 40,
     siderealtime: '',
+    isDownUnder:false,
     planets: [] as Array<Planet>
   }
   _map?: L.Map
@@ -35,14 +37,16 @@ export default class Map extends React.Component<any, StarMapState> {
 
   async componentDidMount() {
     this._isMounted = true
-
+   let { longitude, latitude, isDownUnder } = this.state
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position =>
-        this.updatetime(position.coords.longitude)
+      navigator.geolocation.getCurrentPosition(position =>{
+        isDownUnder = position.coords.latitude<0
+        this.updatetime(position.coords.longitude)}
       )
     }
-    const { longitude, latitude } = this.state
+ 
     const L = require('Leaflet')
+  
     this._map = L.map('map', {
       zoom: 5,
       minZoom: 4,
@@ -60,7 +64,7 @@ export default class Map extends React.Component<any, StarMapState> {
 
     L.tileLayer('/img/tile.png', {}).addTo(this._map)
     this._isMounted &&
-      this.setState({ constlines, planets, stars }, () => this.init())
+      this.setState({ constlines, planets, stars ,  isDownUnder}, () => this.init())
   }
   componentWillUnmount() {
     this._isMounted = false
@@ -156,12 +160,11 @@ export default class Map extends React.Component<any, StarMapState> {
   updatemarker = () => {
     const L = require('Leaflet')
     this._markers.map(marker => this._map.removeLayer(marker))
-
+    const {isDownUnder} = this.state
     celestialObject.map(object => {
       const objectmarker = L.marker(object.coordinates as L.LatLngExpression, {
-        icon: L.icon({
-          iconUrl: object.image,
-          iconSize: object.size
+        icon: L.divIcon({
+          html:`<img class="leaflet-marker-icon leaflet-zoom-animated" src="${object.image}" style="margin-left: ${isDownUnder?30:-30}px; margin-top: ${isDownUnder?30:-30}px;width:${object.size[0]}px; height: ${object.size[1]}px;transform: rotate(${isDownUnder?180:0}deg);  -webkit-transform: rotate(${isDownUnder?180:0}deg); -moz-transform:rotate(${isDownUnder?180:0}deg);" />`
         })
       })
         .bindTooltip(object.name, { direction: 'left' })
@@ -239,7 +242,6 @@ export default class Map extends React.Component<any, StarMapState> {
             </Statistic.Value>
             <Statistic.Label>{'Declination'}</Statistic.Label>
           </Statistic>
-
           <Statistic>
             <Statistic.Value>
               <Icon name="clock" />
@@ -247,7 +249,6 @@ export default class Map extends React.Component<any, StarMapState> {
             </Statistic.Value>
             <Statistic.Label>{'Sidereal time'}</Statistic.Label>
           </Statistic>
-
           <Statistic>
             <Statistic.Value>
               <Icon name="compass" />

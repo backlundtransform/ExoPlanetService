@@ -153,7 +153,7 @@ const getRaDeg = (geolongLat: Array<number>): Array<number> => {
   const [longitude, latitude] = geolongLat
   const rightAscension = Math.atan2(
     Math.sin(longitude) * Math.cos(ecliptic) -
-      Math.tan(latitude) * Math.sin(ecliptic),
+    Math.tan(latitude) * Math.sin(ecliptic),
     Math.cos(longitude)
   )
   const declination = Math.asin(
