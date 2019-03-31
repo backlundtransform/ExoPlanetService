@@ -17,8 +17,8 @@ namespace ExoPlanetHunter.Service.Dto
                 return p => new PlanetDistanceDto
                 {
                     Title = p.Name,
-                    Distance =p.Star.Distance,
-                    Angle= -15 * (p.Star.Ra - 12)
+                    Distance= (decimal)3.26156 * (p.Star.Distance ?? 0),
+                    Angle=p.Star.Ra==null?0: p.Star.Ra 
                 };
             }
         }

@@ -2,9 +2,12 @@ import * as React from 'react'
 import { Grid, Statistic } from 'semantic-ui-react'
 import HertzsprungRussell from '../chart/Hertzsprung–Russell'
 import StockChart from '../chart/StockChart'
+import  Distance from '../chart/DistanceChart'
 import {
   getHertzsprungRussell,
+  getPlanetDistance,
   initBubbleChart,
+  initPolarChart,
   initStockChart,
   getPlanetTypes
 } from '../service/getChart'
@@ -14,6 +17,7 @@ import { GetStatisticsAsync , statistics} from '../service/getPlanets'
 import MdPlanet from 'react-ionicons/lib/MdPlanet'
 import MdGlobe from 'react-ionicons/lib/MdGlobe'
 import MdMoon from 'react-ionicons/lib/MdMoon'
+import { XYChart,XYChart3D } from '@amcharts/amcharts4/charts';
 export default class Chart extends React.Component<any, any> {
   constructor(props: any) {
     super(props)
@@ -22,11 +26,13 @@ export default class Chart extends React.Component<any, any> {
     }
   }
 
-  bubblechart: any
-  stockchart: any
+  bubblechart: XYChart
+  stockchart: XYChart3D
+  polarchart: any
   componentDidMount = async () => {
     await this.getBubbleData()
     await this.getStockData(0)
+    await this.getPolarData()
   const stat =  await  GetStatisticsAsync()
   this.setState({stat})
   }
@@ -37,6 +43,11 @@ export default class Chart extends React.Component<any, any> {
     const bubblechart = initBubbleChart(this)
     bubblechart.data = data
     this.bubblechart = bubblechart
+  }
+
+  async getPolarData() {
+    let data = await getPlanetDistance()
+    this.polarchart= initPolarChart(data)
   }
   async getStockData(type: number) {
     var stockchart = initStockChart(this, type)
@@ -66,6 +77,9 @@ export default class Chart extends React.Component<any, any> {
     if (this.stockchart) {
       this.stockchart.dispose()
     }
+    if (this.polarchart) {
+      this.polarchart.dispose()
+    }
   }
 
   mainPost = () => {
@@ -81,12 +95,13 @@ export default class Chart extends React.Component<any, any> {
         key: 'stock',
 
         component: <StockChart updateParent={this.setStockType} />
-      }
+      },
+      
     ]
     for (let item of options) {
       posts.push(<Grid.Column key={item.key}>{item.component}</Grid.Column>)
     }
-
+    posts.push(<Grid.Row key={'polar'}><Grid.Column><Distance/></Grid.Column></Grid.Row>)
     return posts
   }
 

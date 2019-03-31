@@ -17,9 +17,6 @@ import MaterialIcon from 'material-icons-react'
 import { Link } from 'react-router-dom'
 import { Gradient } from '../styles/radialgradients'
 
-
-
-
 export const getGroupedItems = (posts: Array<any>) => {
   let groupeditems = groupBy(posts, 3)
   let groupedposts = [] as Array<any>
