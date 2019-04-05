@@ -26,9 +26,14 @@ namespace ExoPlanetHunter.Service.Services
             .Select(HertzsprungRussellDto.FromEntities).Where(p => p.Color != null);
         }
 
-        public IQueryable<PlanetDistanceDto> GetPlanetDistance(int? max=null)
+        public IQueryable<PlanetDistanceDto> GetPlanetDistance(double? max=null)
         {
-            return _context.Planets.AsQueryable().Where(p => p.Habitable==true && (max!=null?p.Star.Distance< max:true)).Select(PlanetDistanceDto.FromEntities);
+            if (max != null)
+            {
+                return _context.Planets.AsQueryable().Where(p => p.Habitable == true && 3.26156 * (double)p.Star.Distance < max).Select(PlanetDistanceDto.FromEntities);
+
+            }
+            return _context.Planets.AsQueryable().Where(p => p.Habitable == true).Select(PlanetDistanceDto.FromEntities);
         }
 
         public IQueryable<IGrouping<string, Planet>> GetPlanetTypes(ChartType type)
