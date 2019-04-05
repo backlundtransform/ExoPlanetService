@@ -49,11 +49,11 @@ export const getHertzsprungRussell = async (
     `../api/Chart/HertzsprungRussell?habitableOnly=${habitableOnly}`
   )) as Promise<Array<HertzsprungRussell>>
 
-export const getPlanetDistance= async (
+export const getPlanetDistance= async (max: Number | null
  
 ): Promise<Array<PlanetDistance>> =>
   (await getData(
-    `../api/Chart/PlanetDistance`
+    `../api/Chart/PlanetDistance?max=${max}`
   )) as Promise<Array<PlanetDistance>>
 
 export const getPlanetTypes = async (
@@ -240,6 +240,6 @@ export const initPolarChart = (
   series1.data =seriesData
   chart.legend = new am4charts.Legend()
   chart.cursor = new am4charts.RadarCursor()
-  chart.cursor.behavior = 'zoomY'
+  chart.cursor.behavior = 'none'
   return chart
 }

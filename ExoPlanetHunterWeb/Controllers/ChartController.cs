@@ -33,9 +33,9 @@ namespace ExoPlanetHunterWeb.Controllers
 
         
         [HttpGet("PlanetDistance")]
-        public IQueryable<PlanetDistanceDto> GetPlanetDistance()
+        public IQueryable<PlanetDistanceDto> GetPlanetDistance(int? max)
         {
-            return _chart.GetPlanetDistance();
+            return _chart.GetPlanetDistance(max);
         }
     }
 }

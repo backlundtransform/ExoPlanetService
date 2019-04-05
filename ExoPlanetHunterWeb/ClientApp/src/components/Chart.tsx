@@ -21,7 +21,7 @@ import { XYChart,XYChart3D } from '@amcharts/amcharts4/charts';
 export default class Chart extends React.Component<any, any> {
   constructor(props: any) {
     super(props)
-    this.state = { habitableOnly: true,
+    this.state = { habitableOnly: true, distance:2500,
       stat:{} as statistics
     }
   }
@@ -45,8 +45,8 @@ export default class Chart extends React.Component<any, any> {
     this.bubblechart = bubblechart
   }
 
-  async getPolarData() {
-    let data = await getPlanetDistance()
+  async getPolarData(distance=null) {
+    let data = await getPlanetDistance(distance)
     this.polarchart= initPolarChart(data)
   }
   async getStockData(type: number) {
@@ -81,7 +81,13 @@ export default class Chart extends React.Component<any, any> {
       this.polarchart.dispose()
     }
   }
-
+  ZoomCallback=async()=>{
+  
+    let {distance} = this.state 
+    distance =distance<20? 0.9 *distance:0.95*distance
+    await this.getPolarData(distance)
+    this.setState({distance})
+  }
   mainPost = () => {
     let posts = [] as Array<any>
 
@@ -101,7 +107,7 @@ export default class Chart extends React.Component<any, any> {
     for (let item of options) {
       posts.push(<Grid.Column key={item.key}>{item.component}</Grid.Column>)
     }
-    posts.push(<Grid.Row key={'polar'}><Grid.Column><Distance/></Grid.Column></Grid.Row>)
+    posts.push(<Grid.Row key={'polar'}><Grid.Column><Distance ZoomCallback={async()=>this.ZoomCallback()}/></Grid.Column></Grid.Row>)
     return posts
   }
 
