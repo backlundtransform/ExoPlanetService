@@ -236,7 +236,7 @@ export const initPolarChart = (
   image.adapter.add('tooltipY', (tooltipY, target) => {
     return -target
   })
-  image.tooltipText = '[bold]{title}:[/]'
+  image.tooltipText = '[bold]{title}[/]'
  image.events.on(
     'hit',
     (ev: any) => {
@@ -248,11 +248,11 @@ export const initPolarChart = (
     },
     this
   )
- 
-  console.log("dcvdf")
+
   image.cursorOverStyle = am4core.MouseCursorStyle.pointer
   series1.sequencedInterpolation = true
   series1.sequencedInterpolationDelay = 10
+  seriesData.push({distance:0, angle:24, title:'Tellus' })
   series1.data = seriesData
   chart.legend = new am4charts.Legend()
   chart.cursor = new am4charts.RadarCursor()
