@@ -11,6 +11,7 @@ namespace ExoPlanetHunter.Service.Interfaces
     public interface IChartService
     {
         IQueryable<HertzsprungRussellDto> GetHertzsprungRussell(bool habitableOnly);
-      IQueryable<IGrouping<string, Planet>> GetPlanetTypes(ChartType type);
+        IQueryable<IGrouping<string, Planet>> GetPlanetTypes(ChartType type);
+        IQueryable<PlanetDistanceDto> GetPlanetDistance(double? max);
     }
 }

@@ -30,5 +30,12 @@ namespace ExoPlanetHunterWeb.Controllers
         {
             return _chart.GetPlanetTypes(type).Select(p=>new PlanetTypes { Title=p.Key, Value=p.Count()});
         }
+
+        
+        [HttpGet("PlanetDistance")]
+        public IQueryable<PlanetDistanceDto> GetPlanetDistance(double? max)
+        {
+            return _chart.GetPlanetDistance(max);
+        }
     }
 }

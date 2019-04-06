@@ -1,8 +1,8 @@
 import { Star } from './getPlanets'
 import * as am4core from '@amcharts/amcharts4/core'
 import * as am4charts from '@amcharts/amcharts4/charts'
-
 import am4themes_dark from '@amcharts/amcharts4/themes/dark'
+import am4themes_animated from '@amcharts/amcharts4/themes/animated'
 
 export const planetTypes = [
   'Mass',
@@ -25,6 +25,11 @@ export interface PlanetTypes {
   title: string
   value: string
 }
+export interface PlanetDistance {
+  angle: number
+  distance: number
+  title: string
+}
 const getData = async (uri: string): Promise<any> => {
   const data = await fetch(uri)
     .then(response => {
@@ -44,6 +49,13 @@ export const getHertzsprungRussell = async (
     `../api/Chart/HertzsprungRussell?habitableOnly=${habitableOnly}`
   )) as Promise<Array<HertzsprungRussell>>
 
+export const getPlanetDistance = async (
+  max: Number | null
+): Promise<Array<PlanetDistance>> =>
+  (await getData(`../api/Chart/PlanetDistance?max=${max}`)) as Promise<
+    Array<PlanetDistance>
+  >
+
 export const getPlanetTypes = async (
   planetType: number
 ): Promise<Array<PlanetTypes>> =>
@@ -53,7 +65,7 @@ export const getPlanetTypes = async (
 export const initStockChart = (
   parent: any,
   planetType: number
-): am4charts.XYChart => {
+): am4charts.XYChart3D => {
   am4core.useTheme(am4themes_dark)
   let chart = am4core.create('stockchartdiv', am4charts.XYChart3D)
   chart.exporting.menu = new am4core.ExportMenu()
@@ -188,5 +200,62 @@ export const initBubbleChart = (parent: any): am4charts.XYChart => {
   bullet.circle.adapter.add('tooltipY', (tooltipY, target) => {
     return -target.radius
   })
+  return chart
+}
+
+export const initPolarChart = (
+  seriesData: Array<PlanetDistance> = [],
+  parent: any
+): am4charts.RadarChart => {
+  am4core.useTheme(am4themes_animated)
+  let chart = am4core.create('polarchartdiv', am4charts.RadarChart)
+  let xAxis = chart.xAxes.push(new am4charts.ValueAxis() as any)
+  xAxis.renderer.maxLabelPosition = 0.99
+  let yAxis = chart.yAxes.push(new am4charts.ValueAxis() as any)
+  yAxis.renderer.labels.template.verticalCenter = 'bottom'
+  yAxis.renderer.labels.template.horizontalCenter = 'right'
+  yAxis.renderer.maxLabelPosition = 0.99
+  yAxis.renderer.labels.template.paddingBottom = 1
+  yAxis.renderer.labels.template.paddingRight = 3
+  let series1 = chart.series.push(new am4charts.RadarSeries())
+  let bullet = series1.bullets.push(new am4charts.CircleBullet())
+  series1.strokeOpacity = 0
+  series1.dataFields.valueX = 'angle'
+  series1.dataFields.valueY = 'distance'
+  series1.name='potentially habitable exoplanets'
+  var image = bullet.createChild(am4core.Image)
+  image.href = '/img/ic_launcher_web.png'
+  image.width = 30
+  image.height = 30
+  image.horizontalCenter = 'middle'
+  image.verticalCenter = 'middle'
+  image.adapter.add('tooltipText', (text: string, s: any) => {
+     const title = s.dataItem._dataContext.title
+     return text.replace('{title}', title)
+  })
+  image.adapter.add('tooltipY', (tooltipY, target) => {
+    return -target
+  })
+  image.tooltipText = '[bold]{title}:[/]'
+ image.events.on(
+    'hit',
+    (ev: any) => {
+      let name = (ev.target.dataItem as any)._dataContext.title
+      parent.props.history.push({
+        pathname: `../planet/${name}`,
+      
+      })
+    },
+    this
+  )
+ 
+  console.log("dcvdf")
+  image.cursorOverStyle = am4core.MouseCursorStyle.pointer
+  series1.sequencedInterpolation = true
+  series1.sequencedInterpolationDelay = 10
+  series1.data = seriesData
+  chart.legend = new am4charts.Legend()
+  chart.cursor = new am4charts.RadarCursor()
+  chart.cursor.behavior = 'none'
   return chart
 }
