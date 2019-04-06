@@ -248,6 +248,9 @@ export const initPolarChart = (
     },
     this
   )
+ 
+  console.log("dcvdf")
+  image.cursorOverStyle = am4core.MouseCursorStyle.pointer
   series1.sequencedInterpolation = true
   series1.sequencedInterpolationDelay = 10
   series1.data = seriesData
