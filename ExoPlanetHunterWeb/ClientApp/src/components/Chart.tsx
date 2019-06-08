@@ -160,7 +160,7 @@ export default class Chart extends React.Component<any, any> {
               <MdMoon fontSize="50px" />      {stat.possibleHabitableMoons}
             </Statistic.Value>
             <Statistic.Label>Potentially</Statistic.Label>
-            <Statistic.Label>Habitable Moons</Statistic.Label></Link>
+            <Statistic.Label>Habitable Moons</Statistic.Label><Statistic.Label>Candidates</Statistic.Label></Link>
           </Statistic>
         </Statistic.Group>
         <br />
