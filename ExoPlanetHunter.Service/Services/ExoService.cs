@@ -90,58 +90,74 @@ namespace ExoPlanetHunter.Service.Services
             List<ExoPlanetsDto> cacheExo;
             if (!_cache.TryGetValue("Exoplanets", out cacheExo))
             {
-                cacheExo = _context.Planets.OrderByDescending(p => p.Disc_Year).Include(z => z.Star).Include(z => z.Star.Planets).Select(p => new ExoPlanetsDto
-                {
-                    Name = p.Name,
-                    Img = new ImgDto() { Uri = GetPlanetColor(p) },
-                    Type = p.MassClass,
-                    Esi = p.Esi,
-                    Sph = p.Sph,
-                    Hza = p.Hza,
-                    Hab = p.Habitable,
-                    Gravity = p.Gravity,
-                    Moons = p.HabMoon,
-                    TempZone = (int)p.ZoneClass.ToEnum<TempEnum>(),
-                    Density = p.Density,
-                    Period = p.Period,
-                    SurfacePressure = p.SurfPress,
-                    RadiusEu = p.Radius ?? 0,
-                    EscapeVelocity = p.EscVel,
-                    Distance = (decimal)3.26156 * (p.Star.Distance ?? 0),
-                    Temp = p.TsMean - (decimal)273.15,
-                    TempMax = p.TsMax - (decimal)273.15,
-                    TempMin = p.TsMin - (decimal)273.15,
-                    Coordinate = new CoordinateDto { Latitude = p.Star.Dec, Longitude = -15 * (p.Star.Ra - 12) },
-                    DiscYear = p.Disc_Year,
-                    Comp = (int)p.CompositionClass.ToEnum<CompEnum>(),
-                    Mass=p.Mass,
-                    HabType = (int)p.HabitableClass.ToEnum<HabEnum>(),
-                    MassType = (int)p.MassClass.ToEnum<MassEnum>(),
-                    Atmosphere = (int)p.AtmosphereClass.ToEnum<AtmosEnum>(),
-                    DiscMethod = (int)p.Disc_Method.ToEnum<DiscEnum>(),
-                    Radius = ((15 * p.Radius > 50) ? 50 : (15 * p.Radius < 10 ? 10 : 15 * p.Radius)) ?? 30,
-                    MeanDistance = p.MeanDistance,
-                    Eccentricity = p.Eccentricity,
 
-                    Star = new ExoStarDto()
+                var planets = _context.Planets.OrderByDescending(p => p.Disc_Year).Include(z => z.Star).Include(z => z.Star.Constellation).Include(z => z.Star.Planets);
+
+                cacheExo = new List<ExoPlanetsDto>();
+                foreach (var p in planets) {
+
+                    try { 
+
+                    cacheExo.Add(new ExoPlanetsDto
                     {
-                        Constellation = (int)p.Star.Constellation.Name.ToEnum<ConstellationsEnum>(),
-                        Radius = (75 * p.Star.Radius > 100 ? 100 : (75 * p.Star.Radius < 60 ? 60 : 75 * p.Star.Radius)) ?? 75,
-                        Color = GetStarColor(p),
-                        HabZoneMax = p.Star.HabZoneMax,
-                        HabZoneMin = p.Star.HabZoneMin,
-                        Name = p.Star.Name,
-                        Temp = p.Star.Teff - (decimal)273.15,
-                        Age = p.Star.Age,
-                        Luminosity = (int)GetStarLuminosity(p),
-                        NoHabPlanets = p.Star.NoPlanetsHZ,
-                        RadiusSu = p.Star.Radius ?? 0,
-                        Mass = p.Star.Mass,
-                        NoPlanets = p.Star.NoPlanets,
-                        Type = p.Star.Type,
-                        Magnitude = p.ApparSize < 7 ? (int)MagnitudeEnum.visible : (int)MagnitudeEnum.unvisible
+                        Name = p.Name,
+                        Img = new ImgDto() { Uri = GetPlanetColor(p) },
+                        Type = p.MassClass,
+                        Esi = p.Esi,
+                        Sph = p.Sph,
+                        Hza = p.Hza,
+                        Hab = p.Habitable,
+                        Gravity = p.Gravity,
+                        Moons = p.HabMoon,
+                        TempZone = (int)p.ZoneClass.ToEnum<TempEnum>(),
+                        Density = p.Density,
+                        Period = p.Period,
+                        SurfacePressure = p.SurfPress,
+                        RadiusEu = p.Radius ?? 0,
+                        EscapeVelocity = p.EscVel,
+                        Distance = (decimal)3.26156 * (p.Star.Distance ?? 0),
+                        Temp = p.TsMean - (decimal)273.15,
+                        TempMax = p.TsMax - (decimal)273.15,
+                        TempMin = p.TsMin - (decimal)273.15,
+                        Coordinate = new CoordinateDto { Latitude = p.Star.Dec, Longitude = p.Star.Ra },
+                        DiscYear = p.Disc_Year,
+   
+                        Mass = p.Mass,
+                        HabType = (int)p.HabitableClass.ToEnum<HabEnum>(),
+                        MassType = (int)p.MassClass.ToEnum<MassEnum>(),
+                  
+                        DiscMethod = (int)p.Disc_Method.ToEnum<DiscEnum>(),
+                        Radius = ((15 * p.Radius > 50) ? 50 : (15 * p.Radius < 10 ? 10 : 15 * p.Radius)) ?? 30,
+                        MeanDistance = p.MeanDistance,
+                        Eccentricity = p.Eccentricity,
+
+                        Star = new ExoStarDto()
+                        {
+                            Constellation = (int)p.Star.Constellation.Name.ToEnum<ConstellationsEnum>(),
+                            Radius = (75 * p.Star.Radius > 100 ? 100 : (75 * p.Star.Radius < 60 ? 60 : 75 * p.Star.Radius)) ?? 75,
+                            Color = GetStarColor(p),
+                            HabZoneMax = p.Star.HabZoneMax,
+                            HabZoneMin = p.Star.HabZoneMin,
+                            Name = p.Star.Name,
+                            Temp = p.Star.Teff - (decimal)273.15,
+                            Age = p.Star.Age,
+                            Luminosity = (int)GetStarLuminosity(p),
+                            NoHabPlanets = p.Star.NoPlanetsHZ,
+                            RadiusSu = p.Star.Radius ?? 0,
+                            Mass = p.Star.Mass,
+                            NoPlanets = p.Star.NoPlanets,
+                            Type = p.Star.Type,
+                            Magnitude = p.ApparSize < 7 ? (int)MagnitudeEnum.visible : (int)MagnitudeEnum.unvisible
+                        }
+                    });
+                    }catch(Exception e)
+                    {
+
+                        continue;
                     }
-                }).ToList();
+
+                }
+        
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions();
                 _cache.Set("Exoplanets", cacheExo, cacheEntryOptions);

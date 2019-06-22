@@ -15,7 +15,7 @@ namespace ExoPlanetHunter.PHL.Integration
     {
         private string exoplaneturl = $"http://www.hpcf.upr.edu/~abel/phl/hec2/database/phl_exoplanet_catalog.csv";
         private List<Constellation> _constellations = $"And;Ant;Aqr;Apu;Aps;Aql;Ari;Ara;Aur;Boo;Cae;Cam;Cnc;CVn;CMa;CMi;Cap;Car;Cas;Cen;Cep;Cet;Cha;Cir;Col;Com;CrA;CrB;Crv;Crt;Cru;Cyg;Del;Dor;Dra;Equ;Eri;For;Gem;Gru;Her;Hor;Hya;Hyi;Ind;Lac;Leo;LMi;Lep;Lib;Lup;Lyn;Lyr;Men;Mic;Mon;Mus;Nor;Oct;Oph;Ori;Pav;Peg;Per;Phe;Pic;Psc;PsA;Pup;Pyx;Ret;Sge;Sgr;Sco;Scl;Sct;Ser;Sex;Tau;Tel;Tri;TrA;Tuc;UMa;UMi;Vel;Vir;Vol;Vul".Split(new char[] { ';' }).Select(p => new Constellation { Name = p, Stars = new List<Star>() { } }).ToList();
-
+        private string[] _headers=null;
         public void UpdateConstellations(List<Constellation> constellations)
         {
             using (var context = new ExoContext())
@@ -37,24 +37,39 @@ namespace ExoPlanetHunter.PHL.Integration
 
             using (var client = new WebClient())
             {
-                var lines = client.DownloadString(exoplaneturl).Split(new[] { Environment.NewLine }, StringSplitOptions.None); ;
-              
-                           
-                              foreach (var line in lines)
-                                {
-                         
-                                    var values = line.Split(',');
-                                    var starname = values[41];
-                                    if (starname != "S. Name")
-                                    {
-                                        if (!Starlist.Any(o => o.Name == starname))
-                                        {
-                                            Starlist.Add(GetStar(starname, values));
-                                        }
-                                        var star = Starlist.First(o => o.Name == starname);
-                                        star.Planets.Add(GetPlanet(values, star));
-                                    }
-                                }
+                var lines = client.DownloadString(exoplaneturl);
+
+                try {
+
+                    using (StringReader reader = new StringReader(lines))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+
+                            if (_headers==null)
+                            {
+                                _headers = line.Split(",").ToArray();
+                                continue;
+                            }
+                            var values = line.Split("\",\"").Select(p=>p.Trim('"')).ToArray();
+
+                            var starname = values[Array.IndexOf(_headers, "S_NAME")];
+
+                            if (!Starlist.Any(o => o.Name == starname))
+                            {
+                                Starlist.Add(GetStar(starname, values));
+                            }
+                            var star = Starlist.First(o => o.Name == starname);
+                            star.Planets.Add(GetPlanet(values, star));
+                        }
+                    }
+
+                }
+                catch (Exception e) {
+                    
+
+                }
             return _constellations;
             }
         }
@@ -276,103 +291,108 @@ namespace ExoPlanetHunter.PHL.Integration
 
         private Star GetStar(string starname, string[] values)
         {
+
+         
             var star = new Star()
             {
                 Name = starname,
              
-                Constellation = _constellations.FirstOrDefault(p => p.Name == values[107]),
-                Type = values[57],
-                Mass = values[51].ToNullable<decimal>(),
+                Constellation = _constellations.FirstOrDefault(p => p.Name == values[Array.IndexOf(_headers, "S_CONSTELLATION_ABR")]),
+                Type = values[Array.IndexOf(_headers, "S_TYPE")],
+                Mass = values[Array.IndexOf(_headers, "S_MASS")].ToNullable<decimal>(),
 
                    
-                Radius = values[54].ToNullable<decimal>(),
-                Teff = values[61].ToNullable<decimal>(),
-                Luminosity = values[89].ToNullable<decimal>(),
+                Radius = values[Array.IndexOf(_headers, "S_RADIUS")].ToNullable<decimal>(),
+                Teff = values[Array.IndexOf(_headers, "S_TEMPERATURE")].ToNullable<decimal>(),
+                Luminosity = values[Array.IndexOf(_headers, "S_LUMINOSITY")].ToNullable<decimal>(),
               
-                Age = values[58].ToNullable<decimal>(),
-                ApparMag = values[44].ToNullable<decimal>(),
-                Distance = values[45].ToNullable<decimal>(),
+                Age = values[Array.IndexOf(_headers, "S_AGE")].ToNullable<decimal>(),
+                ApparMag = values[Array.IndexOf(_headers, "S_MAG")].ToNullable<decimal>(),
+                Distance = values[Array.IndexOf(_headers, "S_DISTANCE")].ToNullable<decimal>(),
 
-                Ra = values[42].ToNullable<decimal>(),
-                Dec = values[43].ToNullable<decimal>(),
+                Ra = values[Array.IndexOf(_headers, "S_RA")].ToNullable<decimal>(),
+                Dec = values[Array.IndexOf(_headers, "S_DEC")].ToNullable<decimal>(),
                // MagfromPlanet = values[48].ToNullable<decimal>(),
                 //SizefromPlanet = values[49].ToNullable<decimal>(),
                 //NoPlanets = values[50].ToNullable<int>(),
                 //NoPlanetsHZ = values[51].ToNullable<int>(),
-                HabZoneMin = values[90].ToNullable<decimal>(),
-                HabZoneMax = values[91].ToNullable<decimal>(),
+                HabZoneMin = values[Array.IndexOf(_headers, "S_HZ_OPT_MIN")].ToNullable<decimal>(),
+                HabZoneMax = values[Array.IndexOf(_headers, "S_HZ_OPT_MAX")].ToNullable<decimal>(),
                // HabCat = values[62].ConvertToBoolToNullable(),
                 Planets = new List<Planet>() { }
             };
-            _constellations.FirstOrDefault(p => p.Name == values[36]).Stars.Add(star);
+            _constellations.FirstOrDefault(p => p.Name == values[Array.IndexOf(_headers, "S_CONSTELLATION_ABR")]).Stars.Add(star);
             return star;
         }
 
         private Planet GetPlanet(string[] values, Star star)
         {
-            return new Planet()
-            {
-                Name = values[0],
 
-                // NameKepler = values[1],
-                // NameKOI = values[2],
-                ZoneClass = values[103],
+            var planet = new Planet();
+           planet.Name = values[Array.IndexOf(_headers, "P_NAME")];
+            ;
 
-                MassClass = values[83],
+            // NameKepler = values[1],
+            // NameKOI = values[2],
+            planet.ZoneClass = values[Array.IndexOf(_headers, "P_TYPE_TEMP")]; ;
 
-                // CompositionClass = values[5],
-                AtmosphereClass = values[40],
-                //  HabitableClass = values[7],
+            planet.MassClass = values[Array.IndexOf(_headers, "P_TYPE")]; ;
 
-                //MinMass = values[8].ToNullable<decimal>(),
-                Mass = values[2].ToNullable<decimal>(),
-                //  MaxMass = values[10].ToNullable<decimal>(),
-                Radius = values[5].ToNullable<decimal>(),
-                Density = values[71].ToNullable<decimal>(),
-                Gravity = values[70].ToNullable<decimal>(),
-                EscVel = values[68].ToNullable<decimal>(),
-                SFluxMin = values[78].ToNullable<decimal>(),
-                SFluxMean = values[77].ToNullable<decimal>(),
-                SFluxMax = values[76].ToNullable<decimal>(),
-                TeqMin = values[81].ToNullable<decimal>(),
-                TeqMean = values[80].ToNullable<decimal>(),
-                TeqMax = values[82].ToNullable<decimal>(),
+            // CompositionClass = values[5],
+            planet.AtmosphereClass = values[Array.IndexOf(_headers, "P_ATMOSPHERE")]; ;
+            //  HabitableClass = values[7],
+
+            //MinMass = values[8].ToNullable<decimal>(),
+            planet.Mass = values[Array.IndexOf(_headers, "P_MASS")].ToNullable<decimal>();
+            //  MaxMass = values[10].ToNullable<decimal>(),
+            planet.Radius = values[Array.IndexOf(_headers, "P_RADIUS")].ToNullable<decimal>();
+            planet.Density = values[Array.IndexOf(_headers, "P_DENSITY")].ToNullable<decimal>();
+            planet.Gravity = values[Array.IndexOf(_headers, "P_GRAVITY")].ToNullable<decimal>();
+            planet.EscVel = values[Array.IndexOf(_headers, "P_ESCAPE")].ToNullable<decimal>();
+            planet.SFluxMin = values[Array.IndexOf(_headers, "P_FLUX_MIN")].ToNullable<decimal>();
+            planet.SFluxMean = values[Array.IndexOf(_headers, "P_FLUX")].ToNullable<decimal>();
+            planet.SFluxMax = values[Array.IndexOf(_headers, "P_FLUX_MAX")].ToNullable<decimal>();
+            planet.TeqMin = values[Array.IndexOf(_headers, "P_TEMP_EQUIL_MIN")].ToNullable<decimal>();
+            planet.TeqMean = values[Array.IndexOf(_headers, "P_TEMP_EQUIL")].ToNullable<decimal>();
+            planet.TeqMax = values[Array.IndexOf(_headers, "P_TEMP_EQUIL_MAX")].ToNullable<decimal>();
+
+            planet.TsMin= values[Array.IndexOf(_headers, "P_TEMP_EQUIL_MIN")].ToNullable<decimal>();
+            planet.TsMean = values[Array.IndexOf(_headers, "P_TEMP_EQUIL")].ToNullable<decimal>();
+            planet.TsMax = values[Array.IndexOf(_headers, "P_TEMP_EQUIL_MAX")].ToNullable<decimal>();
 
 
-                TsMin = values[81].ToNullable<decimal>(),
-                TsMean = values[80].ToNullable<decimal>(),
-                TsMax = values[82].ToNullable<decimal>(),
-                // SurfPress = values[24].ToNullable<decimal>(),
-                // Mag = values[25].ToNullable<decimal>(),
-                // ApparSize = values[26].ToNullable<decimal>(),
-                Period = values[10].ToNullable<decimal>(),
-                SemMajorAxis = values[111].ToNullable<decimal>(),
-                Eccentricity = values[16].ToNullable<decimal>(),
-                MeanDistance = values[73].ToNullable<decimal>(),
-                Inclination = values[19].ToNullable<decimal>(),
-                Omega = values[22].ToNullable<decimal>(),
+           
+            // SurfPress = values[24].ToNullable<decimal>(),
+            // Mag = values[25].ToNullable<decimal>(),
+            // ApparSize = values[26].ToNullable<decimal>(),
+            planet.Period = values[Array.IndexOf(_headers, "P_PERIOD")].ToNullable<decimal>();
+            planet.SemMajorAxis = values[Array.IndexOf(_headers, "P_SEMI_MAJOR_AXIS_EST")].ToNullable<decimal>();
+            planet.Eccentricity = values[Array.IndexOf(_headers, "P_ECCENTRICITY")].ToNullable<decimal>();
+            planet.MeanDistance = values[Array.IndexOf(_headers, "P_DISTANCE")].ToNullable<decimal>();
+            planet.Inclination = values[Array.IndexOf(_headers, "P_INCLINATION")].ToNullable<decimal>();
+            planet.Omega = values[Array.IndexOf(_headers, "P_OMEGA")].ToNullable<decimal>();
 
-                // Hzd = values[54].ToNullable<decimal>(),
-                //Hzc = values[55].ToNullable<decimal>(),
-                // Hza = values[56].ToNullable<decimal>(),
-                // Hzi = values[57].ToNullable<decimal>(),
-                // Sph = values[58].ToNullable<decimal>(),
+            // Hzd = values[54].ToNullable<decimal>(),
+            //Hzc = values[55].ToNullable<decimal>(),
+            // Hza = values[56].ToNullable<decimal>(),
+            // Hzi = values[57].ToNullable<decimal>(),
+            // Sph = values[58].ToNullable<decimal>(),
 
-                // IntEsi = values[59].ToNullable<decimal>(),
-                //SurfEsi = values[60].ToNullable<decimal>(),
-                Esi = values[105].ToNullable<decimal>(),
+            // IntEsi = values[59].ToNullable<decimal>(),
+            //SurfEsi = values[60].ToNullable<decimal>(),
+            planet.Esi = values[Array.IndexOf(_headers, "P_ESI")].ToNullable<decimal>();
+            var hab = Convert.ToInt32(values[Array.IndexOf(_headers, "P_HABITABLE")], CultureInfo.InvariantCulture);
+            planet.Habitable = hab == 2 || hab == 1;
 
-                Habitable = Convert.ToInt32(values[104], CultureInfo.InvariantCulture) == 2,
+            //HabMoon = values[64].ConvertToBoolToNullable(),
 
-                //HabMoon = values[64].ConvertToBoolToNullable(),
+            //planet.Confirmed = Convert.ToInt32(values[1], CultureInfo.InvariantCulture) == 3;
+            
+            planet.Disc_Method = values[Array.IndexOf(_headers, "P_DETECTION")];
+            planet.Disc_Year = values[Array.IndexOf(_headers, "P_YEAR")].ConvertYearIntToNullable();
 
-                Confirmed = Convert.ToInt32(values[1], CultureInfo.InvariantCulture) == 3,
-
-                Disc_Method = values[36],
-                Disc_Year = values[8].ConvertYearIntToNullable(),
-
-                Star = star
-            };
+            planet.Star = star;
+            return planet;
         }
     }
 }
