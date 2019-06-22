@@ -310,7 +310,7 @@ namespace ExoPlanetHunter.PHL.Integration
                 ApparMag = values[Array.IndexOf(_headers, "S_MAG")].ToNullable<decimal>(),
                 Distance = values[Array.IndexOf(_headers, "S_DISTANCE")].ToNullable<decimal>(),
 
-                Ra = values[Array.IndexOf(_headers, "S_RA")].ToNullable<decimal>(),
+                Ra = values[Array.IndexOf(_headers, "S_RA_H")].ToNullable<decimal>(),
                 Dec = values[Array.IndexOf(_headers, "S_DEC")].ToNullable<decimal>(),
                // MagfromPlanet = values[48].ToNullable<decimal>(),
                 //SizefromPlanet = values[49].ToNullable<decimal>(),
@@ -388,7 +388,7 @@ namespace ExoPlanetHunter.PHL.Integration
 
             //planet.Confirmed = Convert.ToInt32(values[1], CultureInfo.InvariantCulture) == 3;
             
-            planet.Disc_Method = values[Array.IndexOf(_headers, "P_DETECTION")];
+            planet.Disc_Method = values[Array.IndexOf(_headers, "P_DETECTION")].Replace(" ", string.Empty);
             planet.Disc_Year = values[Array.IndexOf(_headers, "P_YEAR")].ConvertYearIntToNullable();
 
             planet.Star = star;

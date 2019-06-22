@@ -39,7 +39,6 @@ const row = (post: any) => (
 const options = [
   { key: 'all', text: 'All Planets', value: 'all' },
   { key: 'Hab', text: 'Habitable Planets', value: 'Hab' },
-  { key: 'Moons', text: 'Potentially Habitable Moon', value: 'Moons' }
 ]
 
 export default class Catalog extends React.Component<any, any> {

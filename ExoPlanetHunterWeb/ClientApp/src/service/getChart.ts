@@ -6,11 +6,9 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated'
 
 export const planetTypes = [
   'Mass',
-  'Discovery',
-  'Composition',
-  'Atmosphere',
+  'Discovery method',
   'Zone',
-  'Habitable'
+  'Year',
 ]
 export interface HertzsprungRussell {
   title: string
