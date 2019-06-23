@@ -6,6 +6,7 @@ namespace ExoPlanetHunter.Service.Enum
 {
    public enum ChartType
     {
-        Mass, DiscoveryMetod, Composition, Atmospere, Temperature, Hability, DiscoveryYear
+        Mass, DiscoveryMetod, Temperature, DiscoveryYear
+  
     }
 }

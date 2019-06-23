@@ -79,11 +79,8 @@ namespace ExoPlanetHunterWeb.Controllers
                 switch (key)
                 {
                     case ChartType.Mass: return _exoService.CacheExoPlanets().Where(p => p.MassType == (int)type.ToEnum<MassEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                    case ChartType.Atmospere: return _exoService.CacheExoPlanets().Where(p => p.Atmosphere == (int)type.ToEnum<AtmosEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
                     case ChartType.DiscoveryMetod: return _exoService.CacheExoPlanets().Where(p => p.DiscMethod == (int)type.ToEnum<DiscEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                    case ChartType.Hability: return _exoService.CacheExoPlanets().Where(p => p.HabType == (int)type.ToEnum<HabEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30).ToList();
                     case ChartType.Temperature: return _exoService.CacheExoPlanets().Where(p => p.TempZone == (int)type.ToEnum<TempEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
-                    case ChartType.Composition: return _exoService.CacheExoPlanets().Where(p => p.Comp == (int)type.ToEnum<CompEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
                 }
             }
            

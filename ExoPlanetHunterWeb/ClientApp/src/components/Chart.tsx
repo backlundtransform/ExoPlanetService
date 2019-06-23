@@ -148,20 +148,7 @@ export default class Chart extends React.Component<any, any> {
             <Statistic.Label>Potentially</Statistic.Label>
             <Statistic.Label>Habitable Planets</Statistic.Label></Link>
           </Statistic>
-          <Statistic>
-          <Link
-          className="ui statistic"
-                to={{
-                  pathname: `/catalog`,
-                  state: { selectedvalue: "Moons" }
-                }}
-              >
-            <Statistic.Value>
-              <MdMoon fontSize="50px" />      {stat.possibleHabitableMoons}
-            </Statistic.Value>
-            <Statistic.Label>Potentially</Statistic.Label>
-            <Statistic.Label>Habitable Moons</Statistic.Label><Statistic.Label>Candidates</Statistic.Label></Link>
-          </Statistic>
+
         </Statistic.Group>
         <br />
         <Grid container stackable columns={'equal'}>
