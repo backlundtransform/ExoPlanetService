@@ -8,7 +8,7 @@ import MaterialIcon from 'material-icons-react'
 import Svg, { Rect } from 'react-native-svg-web'
 import { Link } from 'react-router-dom'
 import { getSolarSystem } from '../service/getSolarSystem'
-
+import significantRound from '../util/math-round'
 
 export default class StarInfo extends React.Component<any> {
   state = {
@@ -118,7 +118,7 @@ export default class StarInfo extends React.Component<any> {
               {star.mass ? (
                 <Table.Row>
                   <Table.Cell>{`${resource.starinfo[0]}`}</Table.Cell>
-                  <Table.Cell>{`${star.mass}*${
+                  <Table.Cell>{`${significantRound(star.mass)}*${
                     resource.oursun
                   }`}</Table.Cell>
                 </Table.Row>
@@ -126,7 +126,7 @@ export default class StarInfo extends React.Component<any> {
               {star.radiusSu!==0&&star.radiusSu ? (
                 <Table.Row>
                   <Table.Cell>{`${resource.starinfo[1]}`}</Table.Cell>
-                  <Table.Cell>{`${star.radiusSu}*${
+                  <Table.Cell>{`${significantRound(star.radiusSu)}*${
                     resource.oursun
                   }`}</Table.Cell>
                 </Table.Row>
@@ -134,7 +134,7 @@ export default class StarInfo extends React.Component<any> {
               {star.age ? (
                 <Table.Row>
                   <Table.Cell>{`${resource.starinfo[2]}`}</Table.Cell>
-                  <Table.Cell>{`${star.age} ${
+                  <Table.Cell>{`${significantRound(star.age)} ${
                    ' Gyrs'
                   }`}</Table.Cell>
                 </Table.Row>
@@ -143,7 +143,7 @@ export default class StarInfo extends React.Component<any> {
               {star.temp ? (
                 <Table.Row>
                   <Table.Cell>{`${resource.starinfo[3]}`}</Table.Cell>
-                  <Table.Cell>{`${star.temp} C`}</Table.Cell>
+                  <Table.Cell>{`${significantRound(star.temp)} C`}</Table.Cell>
                 </Table.Row>
               ):''}
             </Table.Body>

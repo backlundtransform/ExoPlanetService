@@ -4,6 +4,7 @@ namespace ExoPlanetHunter.Service.Dto
 {
     public class ExoPlanetsDto
     {
+      public int Id { get; set; }
       public string  Name  { get; set; }
       public ImgDto Img { get; set; }
       public decimal? Period { get; set; }

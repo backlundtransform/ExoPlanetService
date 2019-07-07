@@ -17,6 +17,7 @@ import MaterialIcon from 'material-icons-react'
 import Svg, { Circle, G, ClipPath, Image, Defs } from 'react-native-svg-web'
 import { Link } from 'react-router-dom'
 import RelatedContents from '../common/relatedcontents'
+import significantRound from '../util/math-round'
 
 interface PlanetState {
   planet: Planet
@@ -117,7 +118,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                       {planet.mass ?(
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[0]}</Table.Cell>
-                          <Table.Cell>{`${planet.mass}*${
+                          <Table.Cell>{`${significantRound(planet.mass)}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
@@ -125,7 +126,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                       {planet.radiusEu ? (
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[1]}</Table.Cell>
-                          <Table.Cell>{`${planet.radiusEu}*${
+                          <Table.Cell>{`${significantRound(planet.radiusEu)}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
@@ -133,7 +134,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                       {planet.density ? (
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[2]}</Table.Cell>
-                          <Table.Cell>{`${planet.density}*${
+                          <Table.Cell>{`${significantRound(planet.density)}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
@@ -142,7 +143,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                       {planet.gravity ? (
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[3]}</Table.Cell>
-                          <Table.Cell>{`${planet.gravity}*${
+                          <Table.Cell>{`${significantRound(planet.gravity)}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
@@ -150,7 +151,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                       {planet.surfacePressure ?(
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[4]}</Table.Cell>
-                          <Table.Cell>{`${planet.surfacePressure }*${
+                          <Table.Cell>{`${significantRound(planet.surfacePressure)}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>
@@ -158,7 +159,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                       {planet.escapeVelocity ? (
                         <Table.Row>
                           <Table.Cell>{resource.planetinfo[5]}</Table.Cell>
-                          <Table.Cell>{`${planet.escapeVelocity}*${
+                          <Table.Cell>{`${significantRound(planet.escapeVelocity)}*${
                             resource.earth
                           }`}</Table.Cell>
                         </Table.Row>

@@ -1,9 +1,12 @@
 ﻿using ExoPlanetHunter.Database.Entity;
 using ExoPlanetHunter.PHL.Schedules;
+using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Service.Interfaces;
 using ExoPlanetHunter.Web.ViewModel;
 using ExoPlanetHunterWeb.ViewModel;
+using LiteDB;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -20,9 +23,11 @@ namespace ExoPlanetHunter.Web.Controllers
         private readonly IPostService _postService;
         private readonly IExoService _planetService;
         private readonly IStatisticsService _statisticsService;
+        private IHostingEnvironment _env;
 
-        public PostsController(IPostService postService, IExoService planetService, IStatisticsService statisticsService)
+        public PostsController(IPostService postService, IExoService planetService, IStatisticsService statisticsService, IHostingEnvironment env)
         {
+            _env = env;
             _postService = postService;
             _planetService = planetService;
             _statisticsService = statisticsService;
@@ -185,7 +190,12 @@ namespace ExoPlanetHunter.Web.Controllers
         {
             var job = new MyJob();
             job.Execute();
-            _planetService.CacheExoPlanets();
+            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
+            {
+                var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
+                col.Delete(Query.All());
+            }
+                _planetService.CacheExoPlanets();
             return Content("job done");
         }
     }
