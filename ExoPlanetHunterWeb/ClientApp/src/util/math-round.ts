@@ -17,7 +17,7 @@ const significantRound = (a: number) => {
     if (numberofdigits === 1) {
         return Math.round(100 * a) / 100
     }
-
+  
     return a
 }
 
