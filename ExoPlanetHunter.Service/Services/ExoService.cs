@@ -7,7 +7,6 @@ using LiteDB;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,74 +17,106 @@ namespace ExoPlanetHunter.Service.Services
     public class ExoService : IExoService
     {
         private readonly ExoContext _context;
-        private IMemoryCache _cache;
+     
         private IHostingEnvironment _env;
 
-        public ExoService(ExoContext context, IMemoryCache memoryCache, IHostingEnvironment env)
+        public ExoService(ExoContext context, IHostingEnvironment env)
         {
             _context = context;
-            _cache = memoryCache;
+         
             _env = env;
         }
 
         public List<ExoPlanetsDto> GetHabitablePlanets()
         {
-            var cacheEntry = CacheExoPlanets();
-            return cacheEntry.Where(p => p.Hab == true &&p.Star.Color != null && p.Radius != 0&&p.Name!="Tellus"
-            ).Select(p => new ExoPlanetsDto
+
+            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
             {
-                Name = p.Name,
-                Coordinate = p.Coordinate,
-                Star = p.Star
-            }).GroupBy(p => p.Coordinate)
+                var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
+
+                return col.Find(Query.And(Query.EQ("Hab", true), Query.Not("Name", "Tellus"))).Select(p => new ExoPlanetsDto
+                {
+                    Name = p.Name,
+                    Coordinate = p.Coordinate,
+                    Star = p.Star
+                }).GroupBy(p => p.Coordinate)
+            .Select(g => g.First()).ToList(); 
+            }
+             
+        }
+        public List<ExoPlanetsDto> GetAllPlanets()
+        {
+            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
+            {
+                var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
+
+                return col.FindAll().Select(p => new ExoPlanetsDto
+                {
+                    Hab=p.Hab,
+                    Name = p.Name,
+                    Coordinate = p.Coordinate,
+                    Star = p.Star
+                }).GroupBy(p => p.Coordinate)
             .Select(g => g.First()).ToList();
+            }
+
         }
 
         public List<ExoSolarSystemDto> GetSolarSystemPerConstellation(ConstellationsEnum id, int? page = null)
         {
-            if (page == null)
+            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
             {
-                return CacheExoPlanets().Where(p => p.Star.Constellation == (int)id).GroupBy(p => p.Star).Select(g => g.Key).GroupBy(p => p.Name).Select(p => new ExoSolarSystemDto()
+                var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
+              
+            if (page == null)
+                {
+                    return col.Find(p => p.Star.Constellation == (int)id).GroupBy(p => p.Star).Select(g => g.Key).GroupBy(p => p.Name).Select(p => new ExoSolarSystemDto()
+                    {
+                        Name = p.Key,
+                        Color = p.FirstOrDefault()?.Color,
+                        Radius = p.FirstOrDefault().Radius
+                    }).ToList();
+                }
+
+                return col.Find(p => p.Star.Constellation == (int)id).GroupBy(p => p.Star).Select(g => g.Key).GroupBy(p => p.Name).Select(p => new ExoSolarSystemDto()
                 {
                     Name = p.Key,
                     Color = p.FirstOrDefault()?.Color,
                     Radius = p.FirstOrDefault().Radius
-                }).ToList();
+                }).Skip((int)page * 30).Take(30).ToList();
             }
-
-            return CacheExoPlanets().Where(p => p.Star.Constellation == (int)id).GroupBy(p => p.Star).Select(g => g.Key).GroupBy(p => p.Name).Select(p => new ExoSolarSystemDto()
-            {
-                Name = p.Key,
-                Color = p.FirstOrDefault()?.Color,
-                Radius = p.FirstOrDefault().Radius
-            }).Skip((int)page * 30).Take(30).ToList();
         }
 
         public ExoSolarSystemDto GetSolarSystemPerStar(string name)
         {
-            var cacheEntry = CacheExoPlanets();
-            var planets = cacheEntry.Where(p => p.Star.Name == name).ToList();
-
-            var star = planets.First().Star;
-            var solarsystem = new ExoSolarSystemDto()
+            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
             {
-                Name = star.Name,
-                Color = star.Color,
-                Luminosity = star.Luminosity,
-                HabZoneMax = GetStarDistance(planets, star.HabZoneMax),
-                HabZoneMin = GetStarDistance(planets, star.HabZoneMin),
-                Radius = star.Radius,
-                Coordinate = planets.First().Coordinate,
-                Planets = planets.OrderBy(p => p.MeanDistance).Select(p => new ExoSystemPlanetsDto()
+                var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
+                var planets =col.Find(p => p.Star.Name == name).ToList();
+
+                var star = planets.First().Star;
+                var solarsystem = new ExoSolarSystemDto()
                 {
-                    Name = p.Name,
-                    Img = p.Img,
-                    Radius = p.Radius,
-                    Eccentricity = p.Eccentricity,
-                    StarDistance = GetStarDistance(planets, p.MeanDistance) + p.Radius
-                }).ToList()
-            };
-            return solarsystem;
+                    Name = star.Name,
+                    Color = star.Color,
+                    Luminosity = star.Luminosity,
+                    HabZoneMax = GetStarDistance(planets, star.HabZoneMax),
+                    HabZoneMin = GetStarDistance(planets, star.HabZoneMin),
+                    Radius = star.Radius,
+                    Coordinate = planets.First().Coordinate,
+                    Planets = planets.OrderBy(p => p.MeanDistance).Select(p => new ExoSystemPlanetsDto()
+                    {
+                        Name = p.Name,
+                        Img = p.Img,
+                        Radius = p.Radius,
+                        Eccentricity = p.Eccentricity,
+                        StarDistance = GetStarDistance(planets, p.MeanDistance) + p.Radius
+                    }).ToList()
+                };
+                return solarsystem;
+            }
+              
+         
         }
 
         public IEnumerable<ExoPlanetsDto> CacheExoPlanets()
@@ -159,8 +190,6 @@ namespace ExoPlanetHunter.Service.Services
                 return col.FindAll().ToList();
             }
 
-          
-     
         }
 
         public IQueryable<ExoPlanetsDto> GetExoPlanets(ODataQueryOptions opts)
@@ -331,6 +360,53 @@ namespace ExoPlanetHunter.Service.Services
                 }
                 return "noimg";
             }
+        }
+
+        public IEnumerable<ExoPlanetsDto> GetPaginatedPlanets(int page, bool hab, bool moon, string type, ChartType key, string name)
+        {
+
+            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
+            {
+                var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
+                if (!string.IsNullOrEmpty(name) && hab)
+                {
+                    return col.Find(p => p.Name.ToLower().Contains(name.ToLower()) && p.Hab == hab).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                }
+
+                if (!string.IsNullOrEmpty(name) && moon)
+                {
+                    return col.Find(p => p.Name.ToLower().Contains(name.ToLower()) && p.Moons == moon).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                }
+
+                if (!string.IsNullOrEmpty(name))
+                {
+                    return col.Find(p => p.Name.ToLower().Contains(name.ToLower())).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                }
+
+                if (hab)
+                {
+                    return col.Find(p => p.Hab == hab).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                }
+                if (moon)
+                {
+                    return col.Find(p => p.Moons == moon).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                }
+
+                if (!string.IsNullOrEmpty(type))
+                {
+                    switch (key)
+                    {
+                        case ChartType.Mass: return col.Find(p => p.MassType == (int)type.ToEnum<MassEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                        case ChartType.DiscoveryMetod: return col.Find(p => p.DiscMethod == (int)type.ToEnum<DiscEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                        case ChartType.Temperature: return col.Find(p => p.TempZone == (int)type.ToEnum<TempEnum>()).OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30);
+                    }
+                }
+
+                return col.FindAll().OrderByDescending(p => p.DiscYear).Skip(page * 30).Take(30); 
+
+            }
+
+          
         }
     }
 }

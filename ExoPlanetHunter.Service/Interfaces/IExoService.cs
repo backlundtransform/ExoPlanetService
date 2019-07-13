@@ -18,5 +18,9 @@ namespace ExoPlanetHunter.Service.Interfaces
         IEnumerable<ExoPlanetsDto> CacheExoPlanets();
 
         List<ExoPlanetsDto> GetHabitablePlanets();
+
+        List<ExoPlanetsDto> GetAllPlanets();
+
+        IEnumerable<ExoPlanetsDto> GetPaginatedPlanets(int page, bool hab, bool moon, string type, ChartType key, string name);
     }
 }
