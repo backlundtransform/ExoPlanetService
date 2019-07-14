@@ -52,12 +52,18 @@ namespace ExoPlanetHunter.Service.Services
 
                 return col.FindAll().Select(p => new ExoPlanetsDto
                 {
-                    Hab=p.Hab,
+                    Hab = p.Hab,
                     Name = p.Name,
                     Coordinate = p.Coordinate,
                     Star = p.Star
                 }).GroupBy(p => p.Coordinate)
-            .Select(g => g.First()).ToList();
+            .Select(g => new ExoPlanetsDto()
+            {
+                Hab = g.Any(c => c.Hab == true),
+                Coordinate = g.First().Coordinate,
+                Star = g.First().Star
+
+            }).ToList();
             }
 
         }

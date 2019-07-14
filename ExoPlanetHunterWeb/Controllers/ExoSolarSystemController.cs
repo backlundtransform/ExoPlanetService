@@ -46,7 +46,7 @@ namespace ExoPlanetHunterWeb.Controllers
         {
             return _exoService.GetHabitablePlanets();
         }
-        [HttpGet("GetHabitablePlanets")]
+        [HttpGet("GetAllPlanets")]
         public List<ExoPlanetsDto> GetAllPlanets()
         {
             return _exoService.GetAllPlanets();
