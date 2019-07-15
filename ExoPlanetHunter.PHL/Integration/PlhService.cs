@@ -297,7 +297,7 @@ namespace ExoPlanetHunter.PHL.Integration
                 Name = starname,
              
                 Constellation = _constellations.FirstOrDefault(p => p.Name == values[Array.IndexOf(_headers, "S_CONSTELLATION_ABR")]),
-                Type = values[Array.IndexOf(_headers, "S_TYPE")],
+                Type = values[Array.IndexOf(_headers, "S_TYPE_TEMP")],
                 Mass = values[Array.IndexOf(_headers, "S_MASS")].ToNullable<decimal>(),
 
                    

@@ -220,29 +220,31 @@ namespace ExoPlanetHunter.Service.Services
 
         private int? GetStarColor(Planet p)
         {
+     
             var type = p.Star?.Type;
 
-            if (type == null)
+            if (String.IsNullOrEmpty(type))
             {
                 return null;
             }
-            if (type.StartsWith("O") || type.StartsWith("B") || type.StartsWith("A"))
+            if (type[0]=='O' || type[0] == 'B' || type[0] == 'A')
             {
                 return 0;
             }
 
-            if (type.StartsWith("F"))
+            if (type[0] == 'F')
             {
                 return 1;
             }
-            if (type.StartsWith("G") || type.StartsWith("K"))
+            if (type[0] == 'G' || type[0] == 'K')
             {
                 return 2;
             }
-            if (type.StartsWith("M") || type.StartsWith("L") || type.StartsWith("T"))
+            if (type[0] == 'M' || type[0] == 'L' || type[0] == 'T')
             {
                 return 3;
             }
+       
 
             return null;
         }
