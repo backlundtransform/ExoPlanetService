@@ -112,6 +112,7 @@ namespace ExoPlanetHunter.Service.Services
                     Coordinate = planets.First().Coordinate,
                     Planets = planets.OrderBy(p => p.MeanDistance).Select(p => new ExoSystemPlanetsDto()
                     {
+                        Id=p.Id,
                         Name = p.Name,
                         Img = p.Img,
                         Radius = p.Radius,
