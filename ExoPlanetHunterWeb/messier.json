@@ -1,0 +1,20 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        type:"Open cluster",
+        name:"Butterfly Cluster",
+        messier:"M6",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.6484375,
+          -32.565473550710278
+        ]
+      }
+    }
+  ]
+}
