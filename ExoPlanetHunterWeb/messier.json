@@ -4,15 +4,150 @@
     {
       "type": "Feature",
       "properties": {
-        type:"Open cluster",
-        name:"Butterfly Cluster",
-        messier:"M6",
+        "type": "Supernova remnant",
+        "name": "Crab Nebula",
+        "messier": "M1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          98,
+          22
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "Globular cluster",
+        "name": "-",
+        "messier": "M2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "Globular cluster",
+        "name": "-",
+        "messier": "M3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -27,
+          28
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "Globular cluster",
+        "name": "-",
+        "messier": "M4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -65,
+          -26
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "Globular cluster",
+        "name": "-",
+        "messier": "M5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -50,
+          2
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "Open cluster",
+        "name": "Butterfly Cluster",
+        "messier": "M6"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
           -85.6484375,
           -32.565473550710278
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "Open cluster",
+        "name": "Ptolemy Cluster",
+        "messier": "M7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87,
+          -34.4
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "Diffuse nebula",
+        "name": "Lagoon Nebula",
+        "messier": "M8"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -88,
+          -24.2
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "Globular cluster",
+        "name": "-",
+        "messier": "M9"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78,
+          -18.3
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "Globular cluster",
+        "name": "-",
+        "messier": "M10"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75,
+          -4
         ]
       }
     }
