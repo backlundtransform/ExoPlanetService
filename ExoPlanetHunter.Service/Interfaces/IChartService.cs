@@ -13,5 +13,7 @@ namespace ExoPlanetHunter.Service.Interfaces
         IQueryable<HertzsprungRussellDto> GetHertzsprungRussell(bool habitableOnly);
         IQueryable<IGrouping<string, Planet>> GetPlanetTypes(ChartType type);
         IQueryable<PlanetDistanceDto> GetPlanetDistance(double? max);
+        IQueryable<MassOrbitDto> GetMassOrbit();
+        IQueryable<EsiDistanceDto> GetEsiDistance();
     }
 }

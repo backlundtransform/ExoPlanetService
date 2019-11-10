@@ -3,6 +3,8 @@ using ExoPlanetHunter.Database.entity;
 using ExoPlanetHunter.Service.Dto;
 using ExoPlanetHunter.Service.Enum;
 using ExoPlanetHunter.Service.Interfaces;
+using LiteDB;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +15,31 @@ namespace ExoPlanetHunter.Service.Services
     {
         private readonly ExoContext _context;
 
-        public ChartService(ExoContext context)
+        private IHostingEnvironment _env;
+
+        public ChartService(ExoContext context, IHostingEnvironment env)
         {
             _context = context;
+
+            _env = env;
+        }
+
+        public IQueryable<EsiDistanceDto> GetEsiDistance()
+        {
+            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
+            {
+                var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
+
+
+                return col.Find(p => p.Distance != null && p.Esi >1).Select(p => new EsiDistanceDto()
+                {
+                    StarName = p.Star.Name,
+                    PlanetName = p.Name,
+                    Esi= (double)p.Esi,
+                    Distance = (double)p.Distance
+                }).AsQueryable();
+
+            }
         }
 
         public IQueryable<HertzsprungRussellDto> GetHertzsprungRussell(bool habitableOnly)
@@ -48,6 +72,24 @@ namespace ExoPlanetHunter.Service.Services
                 default: return _context.Planets.GroupBy(p => p.Name);
             }
           
+        }
+
+        public IQueryable<MassOrbitDto> GetMassOrbit()
+        {
+            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
+            {
+                var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
+
+
+                return col.Find(p=>p.Mass!=null && p.Period!=null).Select(p => new MassOrbitDto()
+                {
+                    StarName = p.Star.Name,
+                    PlanetName = p.Name,
+                    Orbit = (double)p.Mass,
+                    Mass = (double)p.Period
+                }).AsQueryable();
+  
+            }
         }
     }
 }
