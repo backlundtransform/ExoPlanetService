@@ -9,7 +9,12 @@ distance:number
  
   return (<React.Fragment>
         <Segment inverted attached="bottom" >
-          <h3>{'Distance diagram (light-years from Earth)'} <Button circular icon='zoom-in' disabled={props.distance<=8} onClick={()=>props.ZoomCallback(0)} /><Button circular icon='zoom-out' disabled={props.distance>= props.max} onClick={()=>props.ZoomCallback(1)} /></h3>
+          <h3>{'Distance diagram (light-years from Earth)'} 
+          <Button circular icon='zoom-in' disabled={props.distance<=8}
+           onClick={()=>props.ZoomCallback(0)} />
+          <Button circular icon='zoom-out' disabled={props.distance>= props.max} 
+          onClick={()=>props.ZoomCallback(1)} />
+          </h3>
          
           <div
             id="polarchartdiv"

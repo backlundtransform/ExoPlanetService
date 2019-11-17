@@ -3,22 +3,25 @@ import { Grid, Statistic } from 'semantic-ui-react'
 import HertzsprungRussell from '../chart/Hertzsprung–Russell'
 import StockChart from '../chart/StockChart'
 import  Distance from '../chart/DistanceChart'
+import MassOrbit from '../chart/MassOrbitChart'
 import {
   getHertzsprungRussell,
   getPlanetDistance,
+  getPlanetTypes,
+  getMassOrbit,
   initBubbleChart,
   initPolarChart,
   initStockChart,
-  getPlanetTypes
+  initMassOrbitChart,
+
 } from '../service/getChart'
 import { Link } from 'react-router-dom'
 
 import { GetStatisticsAsync , statistics} from '../service/getPlanets'
 import MdPlanet from 'react-ionicons/lib/MdPlanet'
 import MdGlobe from 'react-ionicons/lib/MdGlobe'
-import MdMoon from 'react-ionicons/lib/MdMoon'
 import { XYChart,XYChart3D } from '@amcharts/amcharts4/charts';
-import { NumberFormatter } from '@amcharts/amcharts4/core';
+
 export default class Chart extends React.Component<any, any> {
   constructor(props: any) {
     super(props)
@@ -26,7 +29,7 @@ export default class Chart extends React.Component<any, any> {
       stat:{} as statistics
     }
   }
-
+  massorbitchart: XYChart
   bubblechart: XYChart
   stockchart: XYChart3D
   polarchart: any
@@ -34,6 +37,7 @@ export default class Chart extends React.Component<any, any> {
     await this.getBubbleData()
     await this.getStockData(0)
     await this.getPolarData(null)
+    await this.getMassOrbitData()
   const stat =  await  GetStatisticsAsync()
   this.setState({stat})
   }
@@ -61,6 +65,15 @@ export default class Chart extends React.Component<any, any> {
 
     this.stockchart = stockchart
   }
+  async getMassOrbitData() {
+    let data = await getMassOrbit()
+
+    const  massorbitchart = initMassOrbitChart(this)
+    massorbitchart.data = data
+    this.massorbitchart =  massorbitchart
+  }
+
+
   isHabitable = () => {
     this.setState({ habitableOnly: !this.state.habitableOnly }, () =>
       this.getBubbleData()
@@ -110,6 +123,8 @@ export default class Chart extends React.Component<any, any> {
       posts.push(<Grid.Column key={item.key}>{item.component}</Grid.Column>)
     }
     posts.push(<Grid.Row key={'polar'}><Grid.Column><Distance ZoomCallback={async(factor:number)=>this.ZoomCallback(factor)} distance={distance} max={max}/></Grid.Column></Grid.Row>)
+
+    posts.push(<Grid.Row key={'polar'}><Grid.Column><MassOrbit></MassOrbit></Grid.Column></Grid.Row>)
     return posts
   }
 

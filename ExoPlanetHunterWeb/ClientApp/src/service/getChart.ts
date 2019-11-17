@@ -28,6 +28,12 @@ export interface PlanetDistance {
   distance: number
   title: string
 }
+export interface MassOrbit {
+  starName:string,
+  planetName:string,
+  orbit:number,
+  mass:number
+}
 const getData = async (uri: string): Promise<any> => {
   const data = await fetch(uri)
     .then(response => {
@@ -53,6 +59,10 @@ export const getPlanetDistance = async (
   (await getData(`../api/Chart/PlanetDistance?max=${max}`)) as Promise<
     Array<PlanetDistance>
   >
+
+export const getMassOrbit = async (): Promise<Array<MassOrbit>> =>
+    (await getData(`../api/Chart/MassOrbit`)) as Promise<
+      Array<MassOrbit>>
 
 export const getPlanetTypes = async (
   planetType: number
@@ -198,6 +208,66 @@ export const initBubbleChart = (parent: any): am4charts.XYChart => {
   bullet.circle.adapter.add('tooltipY', (tooltipY, target) => {
     return -target.radius
   })
+  return chart
+}
+
+
+export const initMassOrbitChart = (parent: any): am4charts.XYChart => {
+  am4core.useTheme(am4themes_dark)
+  let chart = am4core.create('massorbitdiv', am4charts.XYChart)
+  chart.exporting.menu = new am4core.ExportMenu()
+
+  chart.hiddenState.properties.opacity = 0
+
+  let valueAxisX = chart.xAxes.push(new am4charts.ValueAxis())
+  let valueAxisY = chart.yAxes.push(new am4charts.ValueAxis())
+
+  valueAxisY.title.text = 'Orbit days'
+
+  valueAxisX.title.text = 'Mass EU'
+  valueAxisX.renderer.labels.template.rotation = 45
+
+  valueAxisX.logarithmic = false
+  valueAxisX.renderer.inversed = false
+  valueAxisY.logarithmic = false
+
+  chart.cursor = new am4charts.XYCursor()
+  chart.cursor.behavior = 'zoomXY'
+  chart.responsive.enabled = true
+  chart.scrollbarX = new am4core.Scrollbar()
+  chart.scrollbarY = new am4core.Scrollbar()
+
+  let series = chart.series.push(new am4charts.LineSeries())
+  series.dataFields.valueX = 'mass'
+  series.dataFields.valueY = 'orbit'
+  
+
+  series.strokeOpacity = 0
+  series.sequencedInterpolation = true
+  series.yAxis = valueAxisY
+
+  let bullet = series.bullets.push(new am4charts.CircleBullet())
+  bullet.fill = am4core.color('#ff0000')
+
+  bullet.strokeOpacity = 0.7
+  bullet.strokeWidth = 2
+  bullet.fillOpacity = 0.7
+  bullet.stroke = am4core.color('#ffffff')
+  bullet.circle.events.on(
+    'hit',
+    (ev: any) => {
+      let name = (ev.target.dataItem as any)._dataContext.starName
+      parent.props.history.push({
+        pathname: `../system/${name}`,
+        state: { star: { name } as Star }
+      })
+    },
+    this
+  )
+  
+  let hoverState = bullet.states.create('hover')
+  hoverState.properties.fillOpacity = 1
+  hoverState.properties.strokeOpacity = 1
   return chart
 }
 

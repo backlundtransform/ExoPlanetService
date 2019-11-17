@@ -85,8 +85,8 @@ namespace ExoPlanetHunter.Service.Services
                 {
                     StarName = p.Star.Name,
                     PlanetName = p.Name,
-                    Orbit = (double)p.Mass,
-                    Mass = (double)p.Period
+                    Orbit = (double)p.Period,
+                    Mass = (double)p.Mass
                 }).AsQueryable();
   
             }
