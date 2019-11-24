@@ -74,21 +74,37 @@ namespace ExoPlanetHunter.Service.Services
           
         }
 
-        public IQueryable<MassOrbitDto> GetMassOrbit()
+        public List<MassOrbitDto> GetMassOrbit()
         {
-            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
+          
+           using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
             {
                 var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
 
 
-                return col.Find(p=>p.Mass!=null && p.Period!=null).Select(p => new MassOrbitDto()
+               var cols = col.Find(p => p.Mass != null && p.Period != null).Select(p => new MassOrbitDto()
                 {
                     StarName = p.Star.Name,
                     PlanetName = p.Name,
                     Orbit = (double)p.Period,
                     Mass = (double)p.Mass
-                }).AsQueryable();
-  
+                }).ToList();
+
+                var groupedstars = cols.GroupBy(p => p.StarName).Select(p =>p.Key).ToList();
+                var colors = new List<string>();
+                var random = new Random();
+                for (int i = 0; i < groupedstars.Count(); i++)
+                {
+                    colors.Add(String.Format("#{0:X6}", random.Next(0x1000000)));
+                }
+
+
+                foreach (var item in cols)
+                {
+                  item.Color = colors[groupedstars.IndexOf(item.StarName)];
+                }
+
+                return cols;
             }
         }
     }

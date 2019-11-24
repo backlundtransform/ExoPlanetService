@@ -51,7 +51,7 @@ export default class Chart extends React.Component<any, any> {
   }
 
   async getPolarData(distance:number | null) {
-  let data = await getPlanetDistance(distance)
+   let data = await getPlanetDistance(distance)
    const max =Math.max(...data.map(p=>p.distance))
    this.polarchart= initPolarChart(data,this)
     this.setState({distance:max, max:distance==null?max: this.state.max})
@@ -124,7 +124,7 @@ export default class Chart extends React.Component<any, any> {
     }
     posts.push(<Grid.Row key={'polar'}><Grid.Column><Distance ZoomCallback={async(factor:number)=>this.ZoomCallback(factor)} distance={distance} max={max}/></Grid.Column></Grid.Row>)
 
-    posts.push(<Grid.Row key={'polar'}><Grid.Column><MassOrbit></MassOrbit></Grid.Column></Grid.Row>)
+    posts.push(<Grid.Row key={'massorbit'}><Grid.Column><MassOrbit></MassOrbit></Grid.Column></Grid.Row>)
     return posts
   }
 

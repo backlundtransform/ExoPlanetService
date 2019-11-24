@@ -3,6 +3,7 @@ using ExoPlanetHunter.Service.Enum;
 using ExoPlanetHunter.Service.Interfaces;
 using ExoPlanetHunterWeb.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ExoPlanetHunterWeb.Controllers
@@ -43,7 +44,7 @@ namespace ExoPlanetHunterWeb.Controllers
             return _chart.GetEsiDistance();
         }
         [HttpGet("MassOrbit")]
-        public IQueryable<MassOrbitDto> GetMassOrbit()
+        public List<MassOrbitDto> GetMassOrbit()
         {
             return _chart.GetMassOrbit();
         }

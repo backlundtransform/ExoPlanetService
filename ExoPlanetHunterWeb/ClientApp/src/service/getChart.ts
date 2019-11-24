@@ -33,6 +33,7 @@ export interface MassOrbit {
   planetName:string,
   orbit:number,
   mass:number
+  color:string
 }
 const getData = async (uri: string): Promise<any> => {
   const data = await fetch(uri)
@@ -241,14 +242,13 @@ export const initMassOrbitChart = (parent: any): am4charts.XYChart => {
   series.dataFields.valueX = 'mass'
   series.dataFields.valueY = 'orbit'
   
-
   series.strokeOpacity = 0
   series.sequencedInterpolation = true
   series.yAxis = valueAxisY
 
   let bullet = series.bullets.push(new am4charts.CircleBullet())
   bullet.fill = am4core.color('#ff0000')
-
+  bullet.propertyFields.fill = 'color'
   bullet.strokeOpacity = 0.7
   bullet.strokeWidth = 2
   bullet.fillOpacity = 0.7
@@ -264,6 +264,10 @@ export const initMassOrbitChart = (parent: any): am4charts.XYChart => {
     },
     this
   )
+  bullet.circle.cursorOverStyle = am4core.MouseCursorStyle.pointer
+  bullet.circle.tooltipText =
+    '[bold]{planetName}[/]\nMass: {valueX.value} M🜨\nOrbit period: {valueY.value} days'
+
   
   let hoverState = bullet.states.create('hover')
   hoverState.properties.fillOpacity = 1

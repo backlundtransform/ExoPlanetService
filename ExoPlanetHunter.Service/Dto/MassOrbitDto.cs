@@ -9,6 +9,7 @@ namespace ExoPlanetHunter.Service.Dto
         public double Mass { get; set; }
         public string StarName{ get; set; }
         public string PlanetName { get; set; }
+        public string Color { get; set; }
         public double Orbit { get; set; }
     }
 }
