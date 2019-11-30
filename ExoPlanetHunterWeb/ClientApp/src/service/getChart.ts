@@ -35,6 +35,16 @@ export interface MassOrbit {
   mass:number
   color:string
 }
+
+export interface EsiDistance {
+  starName:string,
+  planetName:string,
+  Esi:number,
+  Distance:number
+  color:string
+}
+
+
 const getData = async (uri: string): Promise<any> => {
   const data = await fetch(uri)
     .then(response => {
@@ -64,6 +74,10 @@ export const getPlanetDistance = async (
 export const getMassOrbit = async (): Promise<Array<MassOrbit>> =>
     (await getData(`../api/Chart/MassOrbit`)) as Promise<
       Array<MassOrbit>>
+
+      export const getEsiDistance = async (): Promise<Array<EsiDistance>> =>
+    (await getData(`../api/Chart/EsiDistance`)) as Promise<
+      Array<EsiDistance>>
 
 export const getPlanetTypes = async (
   planetType: number
