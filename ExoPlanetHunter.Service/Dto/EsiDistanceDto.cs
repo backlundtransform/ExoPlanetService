@@ -6,5 +6,6 @@
         public string StarName { get; set; }
         public string PlanetName { get; set; }  
         public double Esi { get; set; }
+        public string Color { get; set; }
     }
 }

@@ -14,6 +14,6 @@ namespace ExoPlanetHunter.Service.Interfaces
         IQueryable<IGrouping<string, Planet>> GetPlanetTypes(ChartType type);
         IQueryable<PlanetDistanceDto> GetPlanetDistance(double? max);
         List<MassOrbitDto> GetMassOrbit();
-        IQueryable<EsiDistanceDto> GetEsiDistance();
+        List<EsiDistanceDto> GetEsiDistance();
     }
 }

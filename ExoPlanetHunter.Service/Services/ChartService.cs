@@ -24,20 +24,29 @@ namespace ExoPlanetHunter.Service.Services
             _env = env;
         }
 
-        public IQueryable<EsiDistanceDto> GetEsiDistance()
+        public List<EsiDistanceDto> GetEsiDistance()
         {
             using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
             {
                 var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
 
 
-                return col.Find(p => p.Distance != null && p.Esi != null).Select(p => new EsiDistanceDto()
+              var cols= col.Find(p => p.Distance != null && p.Esi != null).Select(p => new EsiDistanceDto()
                 {
                     StarName = p.Star.Name,
                     PlanetName = p.Name,
                     Esi= (double)p.Esi,
                     Distance = (double)p.Distance
-                }).AsQueryable();
+                }).ToList();
+                var groupedstars = cols.GroupBy(p => p.StarName).Select(p => p.Key).ToList();
+                var colors = GetColors(cols.GroupBy(p => p.StarName).Select(p => p.Key).ToList());
+
+                foreach (var item in cols)
+                {
+                    item.Color = colors[groupedstars.IndexOf(item.StarName)];
+                }
+
+                return cols;
 
             }
         }
@@ -89,15 +98,8 @@ namespace ExoPlanetHunter.Service.Services
                     Orbit = (double)p.Period,
                     Mass = (double)p.Mass
                 }).ToList();
-
-                var groupedstars = cols.GroupBy(p => p.StarName).Select(p =>p.Key).ToList();
-                var colors = new List<string>();
-                var random = new Random();
-                for (int i = 0; i < groupedstars.Count(); i++)
-                {
-                    colors.Add(String.Format("#{0:X6}", random.Next(0x1000000)));
-                }
-
+                var groupedstars = cols.GroupBy(p => p.StarName).Select(p => p.Key).ToList();
+                var colors = GetColors(cols.GroupBy(p => p.StarName).Select(p => p.Key).ToList());
 
                 foreach (var item in cols)
                 {
@@ -106,6 +108,17 @@ namespace ExoPlanetHunter.Service.Services
 
                 return cols;
             }
+        }
+        private List<string> GetColors(List<string> groupedstars)
+        {
+            var colors = new List<string>();
+            var random = new Random();
+            for (int i = 0; i < groupedstars.Count(); i++)
+            {
+                colors.Add(String.Format("#{0:X6}", random.Next(0x1000000)));
+            }
+
+            return colors;
         }
     }
 }

@@ -39,7 +39,7 @@ namespace ExoPlanetHunterWeb.Controllers
         }
 
         [HttpGet("EsiDistance")]
-        public IQueryable<EsiDistanceDto> GetEsiDistance()
+        public List<EsiDistanceDto> GetEsiDistance()
         {
             return _chart.GetEsiDistance();
         }

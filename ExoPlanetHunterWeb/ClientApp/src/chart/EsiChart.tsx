@@ -1,13 +1,13 @@
 import * as React from 'react'
 import {  Segment } from 'semantic-ui-react'
 
- const MassOrbitChart =()=> {
+ const EsiChart =()=> {
 
         return(<React.Fragment>
             <Segment inverted attached="bottom">
-              <h3>{'Period mass diagram'}</h3>
+              <h3>{'ESI distance diagram'}</h3>
               <div
-                id="massorbitdiv"
+                id="esidiv"
                 style={{
                   width: '100%',
                   maxHeight: '700px',
@@ -18,4 +18,4 @@ import {  Segment } from 'semantic-ui-react'
             </Segment>
         </React.Fragment>) 
   }
-export default MassOrbitChart
+export default EsiChart

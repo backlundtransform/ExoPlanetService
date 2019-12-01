@@ -4,15 +4,18 @@ import HertzsprungRussell from '../chart/Hertzsprung–Russell'
 import StockChart from '../chart/StockChart'
 import  Distance from '../chart/DistanceChart'
 import MassOrbit from '../chart/MassOrbitChart'
+import EsiDistance from '../chart/EsiChart'
 import {
   getHertzsprungRussell,
   getPlanetDistance,
   getPlanetTypes,
   getMassOrbit,
+  getEsiDistance,
   initBubbleChart,
   initPolarChart,
   initStockChart,
   initMassOrbitChart,
+  initEsiDistanceChart
 
 } from '../service/getChart'
 import { Link } from 'react-router-dom'
@@ -30,6 +33,7 @@ export default class Chart extends React.Component<any, any> {
     }
   }
   massorbitchart: XYChart
+  esidistancechart: XYChart
   bubblechart: XYChart
   stockchart: XYChart3D
   polarchart: any
@@ -38,6 +42,7 @@ export default class Chart extends React.Component<any, any> {
     await this.getStockData(0)
     await this.getPolarData(null)
     await this.getMassOrbitData()
+    await this.getEsiDistanceData()
   const stat =  await  GetStatisticsAsync()
   this.setState({stat})
   }
@@ -71,6 +76,14 @@ export default class Chart extends React.Component<any, any> {
     const  massorbitchart = initMassOrbitChart(this)
     massorbitchart.data = data
     this.massorbitchart =  massorbitchart
+  }
+
+  async getEsiDistanceData() {
+    let data = await getEsiDistance()
+
+    const  esidistancechart = initEsiDistanceChart(this)
+    esidistancechart.data = data
+    this.esidistancechart =  esidistancechart
   }
 
 
@@ -124,7 +137,7 @@ export default class Chart extends React.Component<any, any> {
     }
     posts.push(<Grid.Row key={'polar'}><Grid.Column><Distance ZoomCallback={async(factor:number)=>this.ZoomCallback(factor)} distance={distance} max={max}/></Grid.Column></Grid.Row>)
 
-    posts.push(<Grid.Row key={'massorbit'}><Grid.Column><MassOrbit></MassOrbit></Grid.Column></Grid.Row>)
+    posts.push(<Grid.Row key={'massorbit'}><Grid.Column><MassOrbit></MassOrbit></Grid.Column><Grid.Column><EsiDistance></EsiDistance></Grid.Column></Grid.Row>)
     return posts
   }
 

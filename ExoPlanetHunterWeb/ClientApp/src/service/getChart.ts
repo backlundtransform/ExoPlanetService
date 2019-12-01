@@ -75,7 +75,7 @@ export const getMassOrbit = async (): Promise<Array<MassOrbit>> =>
     (await getData(`../api/Chart/MassOrbit`)) as Promise<
       Array<MassOrbit>>
 
-      export const getEsiDistance = async (): Promise<Array<EsiDistance>> =>
+export const getEsiDistance = async (): Promise<Array<EsiDistance>> =>
     (await getData(`../api/Chart/EsiDistance`)) as Promise<
       Array<EsiDistance>>
 
@@ -281,6 +281,67 @@ export const initMassOrbitChart = (parent: any): am4charts.XYChart => {
   bullet.circle.cursorOverStyle = am4core.MouseCursorStyle.pointer
   bullet.circle.tooltipText =
     '[bold]{planetName}[/]\nMass: {valueX.value} M🜨\nOrbit period: {valueY.value} days'
+
+  
+  let hoverState = bullet.states.create('hover')
+  hoverState.properties.fillOpacity = 1
+  hoverState.properties.strokeOpacity = 1
+  return chart
+}
+export const initEsiDistanceChart = (parent: any): am4charts.XYChart => {
+  am4core.useTheme(am4themes_dark)
+  let chart = am4core.create('esidiv', am4charts.XYChart)
+  chart.exporting.menu = new am4core.ExportMenu()
+
+  chart.hiddenState.properties.opacity = 0
+
+  let valueAxisX = chart.xAxes.push(new am4charts.ValueAxis())
+  let valueAxisY = chart.yAxes.push(new am4charts.ValueAxis())
+
+  valueAxisY.title.text = 'ESI'
+
+  valueAxisX.title.text = 'Distance'
+  valueAxisX.renderer.labels.template.rotation = 45
+
+  valueAxisX.logarithmic = false
+  valueAxisX.renderer.inversed = false
+  valueAxisY.logarithmic = false
+
+  chart.cursor = new am4charts.XYCursor()
+  chart.cursor.behavior = 'zoomXY'
+  chart.responsive.enabled = true
+  chart.scrollbarX = new am4core.Scrollbar()
+  chart.scrollbarY = new am4core.Scrollbar()
+
+  let series = chart.series.push(new am4charts.LineSeries())
+  series.dataFields.valueX = 'distance'
+  series.dataFields.valueY = 'esi'
+  
+  series.strokeOpacity = 0
+  series.sequencedInterpolation = true
+  series.yAxis = valueAxisY
+
+  let bullet = series.bullets.push(new am4charts.CircleBullet())
+  bullet.fill = am4core.color('#ff0000')
+  bullet.propertyFields.fill = 'color'
+  bullet.strokeOpacity = 0.7
+  bullet.strokeWidth = 2
+  bullet.fillOpacity = 0.7
+  bullet.stroke = am4core.color('#ffffff')
+  bullet.circle.events.on(
+    'hit',
+    (ev: any) => {
+      let name = (ev.target.dataItem as any)._dataContext.starName
+      parent.props.history.push({
+        pathname: `../system/${name}`,
+        state: { star: { name } as Star }
+      })
+    },
+    this
+  )
+  bullet.circle.cursorOverStyle = am4core.MouseCursorStyle.pointer
+  bullet.circle.tooltipText =
+    '[bold]{planetName}[/]\nEsi: {valueX.value} \nOrbit distance: {valueY.value} light years'
 
   
   let hoverState = bullet.states.create('hover')
