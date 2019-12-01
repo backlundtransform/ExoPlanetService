@@ -341,7 +341,7 @@ export const initEsiDistanceChart = (parent: any): am4charts.XYChart => {
   )
   bullet.circle.cursorOverStyle = am4core.MouseCursorStyle.pointer
   bullet.circle.tooltipText =
-    '[bold]{planetName}[/]\nEsi: {valueX.value} \nOrbit distance: {valueY.value} light years'
+    '[bold]{planetName}[/]\nEsi: {valueY.value} \nDistance: {valueX.value} light years'
 
   
   let hoverState = bullet.states.create('hover')

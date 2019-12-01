@@ -31,7 +31,7 @@ namespace ExoPlanetHunter.Service.Services
                 var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
 
 
-              var cols= col.Find(p => p.Distance != null && p.Esi != null).Select(p => new EsiDistanceDto()
+              var cols= col.Find(p => p.Distance != null && p.Esi != null &&p.Hab==true).Select(p => new EsiDistanceDto()
                 {
                     StarName = p.Star.Name,
                     PlanetName = p.Name,
