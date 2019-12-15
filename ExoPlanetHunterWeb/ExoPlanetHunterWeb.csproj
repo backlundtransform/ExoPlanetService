@@ -33,6 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="exo.db">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
     <None Update="ExoPlanetHunter.Web.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

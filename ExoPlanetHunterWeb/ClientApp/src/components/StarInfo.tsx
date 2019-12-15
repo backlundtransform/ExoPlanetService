@@ -205,9 +205,9 @@ export default class StarInfo extends React.Component<any> {
       </p>
 
       {star.habZoneMin != null && star.habZoneMax != null
-        ? `${resource.habzone[0]} ${star.habZoneMin} AU ${
+        ? `${resource.habzone[0]} ${significantRound(star.habZoneMin)} AU ${
             resource.habzone[1]
-          } ${star.habZoneMax} AU. `
+          } ${significantRound(star.habZoneMax)} AU. `
         : ''}
       {planetext == null ? <React.Fragment /> : planetext}
     </Container>

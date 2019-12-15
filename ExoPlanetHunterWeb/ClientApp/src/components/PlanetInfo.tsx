@@ -200,7 +200,7 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                   : resource.const[planet.star.constellation]
               }`}{' '}
               {`${resource.decFormatdist[0]}${
-                planet.distance !== 0 ? Math.round(planet.distance) : ''
+                planet.distance !== 0 ? significantRound(planet.distance) : ''
               } ${resource.decFormatdist[1]} `}
               <p>
                 {resource.massInfo[planet.massType] === undefined
@@ -210,24 +210,24 @@ export default class PlanetInfo extends React.Component<any, PlanetState> {
                   ? ''
                   : resource.compInfo[planet.comp]}{' '}
                 {planet.temp != null
-                  ? `${resource.meantemp[0]} ${planet.temp}. `
+                  ? `${resource.meantemp[0]} ${significantRound(planet.temp)}. `
                   : ''}
                 {planet.tempMax != null && planet.tempMin != null
                   ? `${resource.meantemp[1]} ${planet.name} ${
                       resource.meantemp[2]
-                    } ${planet.tempMax} ${resource.meantemp[3]} ${
-                      planet.tempMin
+                    } ${significantRound(planet.tempMax)} ${resource.meantemp[3]} ${
+                      significantRound(planet.tempMin)
                     }`
                   : ''}
               </p>
               <p>
                 {planet.period != null
-                  ? `${resource.orbit[0]} ${planet.period} ${
+                  ? `${resource.orbit[0]} ${significantRound(planet.period)} ${
                       resource.orbit[1]
                     } `
                   : ''}
                 {planet.meanDistance != null
-                  ? `${resource.decMean[0]} ${planet.meanDistance} ${
+                  ? `${resource.decMean[0]} ${significantRound(planet.meanDistance)} ${
                       resource.decMean[1]
                     }`
                   : ''}
