@@ -62,7 +62,7 @@ export default class Map extends React.Component<any, StarMapState> {
       this._isMounted && this.setState({ longitude: lng, latitude: lat })
     })
 
-    L.tileLayer('/img/tile.png', {}).addTo(this._map)
+    L.tileLayer('/img/map.png', {}).addTo(this._map)
     this._isMounted &&
       this.setState({ constlines, planets, stars ,  isDownUnder}, () => this.init())
   }
