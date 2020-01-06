@@ -38,13 +38,15 @@ export default class Chart extends React.Component<any, any> {
   stockchart: XYChart3D
   polarchart: any
   componentDidMount = async () => {
-    await this.getBubbleData()
-    await this.getStockData(0)
-    await this.getPolarData(null)
-    await this.getMassOrbitData()
-    await this.getEsiDistanceData()
+   
   const stat =  await  GetStatisticsAsync()
-  this.setState({stat})
+      this.setState({ stat }, async () => {
+          await this.getBubbleData()
+          await this.getStockData(0)
+          await this.getPolarData(null)
+          await this.getEsiDistanceData()
+          await this.getMassOrbitData()
+      })
   }
 
   async getBubbleData() {
