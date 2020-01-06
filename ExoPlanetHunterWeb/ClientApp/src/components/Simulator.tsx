@@ -23,6 +23,7 @@ interface SimulatorState {
   alpha: number
   star: Star
   loading: boolean
+ 
 
 }
 interface SimulatorProps {
@@ -40,18 +41,26 @@ export default class Simulator extends React.Component<
     alpha: 0,
     star: {} as Star,
     loading: true,
+   
   
   }
   _viewer = null;
  _isMounted = false;
+ _isFullscreen = false;
  _interval:any
- 
+ async componentDidMount() {
+
+  if(this._isFullscreen){
+    var elem = document.getElementById("space");
+    this.setState({},  ()=> setTimeout(()=>{  elem.requestFullscreen() }, 100))
+  
+  } 
+ }
 
   async componentWillMount() {
     const { location, match } = this.props as any
     this._isMounted = true;
-
-  
+    this._isFullscreen =document.fullscreen
   
     const starname =location.state!==undefined?location.state.star:{ name:match.params.starId}
     const scalefactor =location.state&&location.state.scalefactor?location.state.scalefactor:1
@@ -96,9 +105,25 @@ export default class Simulator extends React.Component<
 
 
  }
+ openFullscreen=()=> {
 
+  var elem = document.getElementById("space");
+  if (!document.fullscreen) {
+    elem.requestFullscreen()
+    this.setState({ fullscreen:true})
+  } 
+
+    if (document.fullscreen) {
+    document.exitFullscreen()
+    this.setState({ fullscreen:false})}
+    else
+    {
+       elem.requestFullscreen()
+    }
+  
+}
   render() {
-    const { star, loading } = this.state
+    const { star, loading} = this.state
     let width = window.innerWidth - 20
 
     let height = window.innerHeight - 120
@@ -106,7 +131,7 @@ export default class Simulator extends React.Component<
 
 
     return (
-      <div className={'space'}>
+      <div className={'space'} id={'space'}>  <button className={"leaflet-control-zoom-fullscreen fullscreen-icon"} title={document.fullscreen?'Exit Full Screen':'Full Screen'} style ={{width:25, height:25, border:'none', cursor: "pointer" }} onClick={() =>  this.openFullscreen()}></button>
         {loading ? (
        <Dimmer active>
        <Loader  />

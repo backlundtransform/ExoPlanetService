@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 import {
   GetConstellationsLines,
   GetStarsMarkers
@@ -8,6 +7,7 @@ import { GeoJsonObject } from 'geojson'
 import { Icon, Statistic } from 'semantic-ui-react'
 import siderealtime from '../siderealtime/'
 import celestialObject from '../celestial-functions/celestial-functions'
+
 
 import { GetHabitablePlanets, Planet } from '../service/getPlanets'
 interface StarMapState {
@@ -72,6 +72,7 @@ export default class Map extends React.Component<any, StarMapState> {
   }
 
   init = () => {
+
     const { constlines, planets, stars } = this.state
 
     const lineStyle = {
@@ -80,6 +81,11 @@ export default class Map extends React.Component<any, StarMapState> {
       opacity: 1
     }
     const L = require('Leaflet')
+
+    require('Leaflet.fullscreen')
+    this._map.addControl(L.control.fullscreen())
+  
+   
     L.geoJSON(constlines, {
       style: lineStyle,
       onEachFeature: this.onEachFeature
