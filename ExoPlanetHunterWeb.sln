@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.Database", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.PHL", "ExoPlanetHunter.PHL\ExoPlanetHunter.PHL.csproj", "{20E2757B-203B-42A2-B568-1E8E26F75F19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExoPlanetHunter.Electron", "ExoPlanetHunter.Electron\ExoPlanetHunter.Electron.csproj", "{CF94E931-51A5-4AF6-A15A-5F97251B0830}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{20E2757B-203B-42A2-B568-1E8E26F75F19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20E2757B-203B-42A2-B568-1E8E26F75F19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20E2757B-203B-42A2-B568-1E8E26F75F19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF94E931-51A5-4AF6-A15A-5F97251B0830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF94E931-51A5-4AF6-A15A-5F97251B0830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF94E931-51A5-4AF6-A15A-5F97251B0830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF94E931-51A5-4AF6-A15A-5F97251B0830}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
