@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunterWeb", "ExoPlanetHunterWeb\ExoPlanetHunterWeb.csproj", "{423F5EA0-392D-4EE4-A178-8C300CDBEA74}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.Database", "ExoPlanetHunter.Database\ExoPlanetHunter.Database.csproj", "{EC169868-02E1-40B8-8854-476503271EDB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.PHL", "ExoPlanetHunter.PHL\ExoPlanetHunter.PHL.csproj", "{20E2757B-203B-42A2-B568-1E8E26F75F19}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExoPlanetHunter.IntegrationTests", "ExoPlanetHunter.IntegrationTests\ExoPlanetHunter.IntegrationTests.csproj", "{F56B18F1-A8A1-4B1F-AE28-26925FFC6631}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExoplanetHunter.UnitTest", "ExoplanetsTest\ExoplanetHunter.UnitTest.csproj", "{DDBA9C20-C5FC-4026-9833-AAC1C10396FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{20E2757B-203B-42A2-B568-1E8E26F75F19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20E2757B-203B-42A2-B568-1E8E26F75F19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20E2757B-203B-42A2-B568-1E8E26F75F19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F56B18F1-A8A1-4B1F-AE28-26925FFC6631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F56B18F1-A8A1-4B1F-AE28-26925FFC6631}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F56B18F1-A8A1-4B1F-AE28-26925FFC6631}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F56B18F1-A8A1-4B1F-AE28-26925FFC6631}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDBA9C20-C5FC-4026-9833-AAC1C10396FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDBA9C20-C5FC-4026-9833-AAC1C10396FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDBA9C20-C5FC-4026-9833-AAC1C10396FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDBA9C20-C5FC-4026-9833-AAC1C10396FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
