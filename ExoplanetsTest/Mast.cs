@@ -1,3 +1,4 @@
+using ExoPlanetHunter.Service.Dto;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
@@ -20,8 +21,24 @@ namespace ExoplanetsTest
             {
                 client.BaseAddress = new Uri("https://mast.stsci.edu");
 
+                var ra = 140.468;
 
-                var json = "{\"service\":\"Mast.Caom.Cone\",\"format\":\"extjs\",\"pagesize\":5000,\"timeout\":10,\"removenullcolumns\":false,\"data\":null,\"params\":{\"ra\":140.468,\"dec\":-18.866,\"radius\":0.2,\"verb\":3,\"input\":\"140.468 -18.866\",\"cacheBreaker\":\"3bfffd71-4e1b-4030-b630-b3f640c1c621\"},\"clearcache\":false,\"columnsconfigid\":\"Mast.Caom.Cone\",\"page\":1}";
+                var dec = -18.866;
+
+                var radius= 0.2;
+
+                var mastRequest = new MastServiceDto {
+                    Service = "Mast.Caom.Cone",
+                    Format = "json",
+                    PageSize = 2000,
+                    RemoveNullColumns = true,
+                    TimeOut = 30,
+                    RemoveCache = true,
+                    Params = new MastParamsDto() { Dec = dec, Ra =ra, Radius = radius }
+
+                };
+
+               var json = JsonConvert.s(mastRequest);
                 var content = new StringContent($"request={json}", Encoding.UTF8, "application/json");
                 var result = await client.GetAsync($"/api/v0/invoke?request={json}");
                 var resultContent = await result.Content.ReadAsStringAsync();
