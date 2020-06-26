@@ -38,7 +38,7 @@ namespace ExoplanetsTest
 
                 };
 
-               var json = JsonConvert.s(mastRequest);
+               var json = JsonConvert.SerializeObject(mastRequest);
                 var content = new StringContent($"request={json}", Encoding.UTF8, "application/json");
                 var result = await client.GetAsync($"/api/v0/invoke?request={json}");
                 var resultContent = await result.Content.ReadAsStringAsync();
