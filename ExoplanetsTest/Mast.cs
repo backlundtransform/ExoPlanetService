@@ -1,8 +1,10 @@
 using ExoPlanetHunter.Service.Dto;
+using ExoPlanetHunter.Service.Dto.Mast;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.WebSockets;
 using System.Text;
@@ -25,7 +27,7 @@ namespace ExoplanetsTest
 
                 var dec = -18.866;
 
-                var radius= 0.2;
+                var radius= 0.5;
 
                 var mastRequest = new MastServiceDto {
                     Service = "Mast.Caom.Cone",
@@ -39,47 +41,42 @@ namespace ExoplanetsTest
                 };
 
                var json = JsonConvert.SerializeObject(mastRequest);
-                var content = new StringContent($"request={json}", Encoding.UTF8, "application/json");
+              
                 var result = await client.GetAsync($"/api/v0/invoke?request={json}");
                 var resultContent = await result.Content.ReadAsStringAsync();
 
-                var resultAsObject = JsonConvert.DeserializeObject<dynamic>(resultContent);
+                var resultAsObject = JsonConvert.DeserializeObject<MastObjectDto>(resultContent);
 
-                var tables= resultAsObject.data.Tables;
+                var timeSerie = new List<TransitTimeserie>();
+    
 
-                var obsIds = new List<string>();
-           
-
-                foreach (var table in tables) {
-
-                    var rows = table.Rows;
-                    foreach (var row in rows)
-                    {
-
-
-                        if (row[12].ToString()== "timeseries")
+                foreach (var table in resultAsObject.Data) {
+    
+                   if (table.DataProductType == "timeseries")
+                   {
+                        var mastDataDeliveryRequest = new MastServiceDto
                         {
-                            obsIds.Add(row[9].ToString());
+                            Service = "Mast.DataDelivery",
+                            Format = "json",
+                            PageSize = 2000,
+                            RemoveNullColumns = true,
+                            TimeOut = 30,
+                            RemoveCache = true,
+                            Params = new MastParamsDto() { ObsIds = table.ObsId, Missions = table.Project, Filters = table.Filters, Urls = "None", Targets = "None" }
 
-                        }
+                        };
 
-                    }
+                        var dataJson = JsonConvert.SerializeObject(mastDataDeliveryRequest); ;
+                        var dataResult = await client.GetAsync($"/api/v0/invoke?request={dataJson}");
+                        var dataResultContent = await dataResult.Content.ReadAsStringAsync();
+                       
+                        var dataResultAsObject = JsonConvert.DeserializeObject<List<MastTimeserieDTO>>(dataResultContent).First();
 
-                
+                        timeSerie.AddRange(dataResultAsObject.PlotSeries.First().Select(p => new TransitTimeserie() { Index = p.First(), Value = p.Last(), Label = table.ObsId }));
+            }
                 }
 
-                var dataJson = "{\"service\":\"Mast.DataDelivery\",\"params\":{\"missions\":\"TESS\",\"obsids\":\"tess2019085135100-s0010-0000000038591861-0140-s\",\"filters\":\"TESS\",\"urls\":\"NONE\",\"targets\":\"NONE\",\"cacheBreaker\":\"730d2290-4ee6-4aa6-bdfe-986721f75049\"},\"format\":\"datadelivery\",\"timeout\":10,\"page\":1,\"pagesize\":1000}";
-                var dataResult= await client.GetAsync($"/api/v0/invoke?request={dataJson}");
-                var dataResultContent = await dataResult.Content.ReadAsStringAsync();
-
-                var dataResultAsObject = JsonConvert.DeserializeObject<dynamic>(dataResultContent);
-
-
-
             }
-
-
-
 
         }
     }
