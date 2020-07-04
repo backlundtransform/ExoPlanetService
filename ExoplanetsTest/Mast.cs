@@ -12,16 +12,19 @@ using System.Threading.Tasks;
 
 namespace ExoplanetsTest
 {
+
+
     [TestClass]
     public class MastTest
     {
+        private const string endpoint = "https://mast.stsci.edu";
         [TestMethod]
         public async Task GetMast()
         {
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://mast.stsci.edu");
+                client.BaseAddress = new Uri(endpoint);
 
                 var ra = 140.468;
 
@@ -70,11 +73,16 @@ namespace ExoplanetsTest
                         var dataResult = await client.GetAsync($"/api/v0/invoke?request={dataJson}");
                         var dataResultContent = await dataResult.Content.ReadAsStringAsync();
                        
-                        var dataResultAsObject = JsonConvert.DeserializeObject<List<MastTimeserieDTO>>(dataResultContent).First();
+                        var dataResultAsObject = JsonConvert.DeserializeObject<List<MastTimeserieDTO>>(dataResultContent).FirstOrDefault();
+                        if (dataResultAsObject!=null&&dataResultAsObject.PlotSeries.FirstOrDefault() != null)
+                        {
+                            timeSerie.AddRange(dataResultAsObject.PlotSeries.First().Select(p => new TransitTimeserie() { Index = p.First(), Value = p.Last(), Label = table.ObsId }));
 
-                        timeSerie.AddRange(dataResultAsObject.PlotSeries.First().Select(p => new TransitTimeserie() { Index = p.First(), Value = p.Last(), Label = table.ObsId }));
-            }
+                        }
+                       
+                    }
                 }
+                Assert.IsTrue(timeSerie.Any());
 
             }
 
