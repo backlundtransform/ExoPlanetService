@@ -25,16 +25,13 @@ namespace ExoPlanetHunter.Service
             services.AddTransient<IPlanetService, PlanetService>().AddTransient<IStarService, StarService>()
                 .AddTransient<IConstellationService, ConstellationService>().AddTransient<IPostService, PostService>()
                  .AddTransient<IExoService,ExoService>().AddTransient<IStatisticsService, StatisticsService>()
-                  .AddTransient<IChartService, ChartService>();
-               
-
+                  .AddTransient<IChartService, ChartService>()
+                    .AddTransient<IMastService, MastService>();
+   
             Mapper.Reset();
             Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
             Db.Startup(services, Configuration);
-         
-            
 
- // Phl.Startup(Configuration);
 
          
         }

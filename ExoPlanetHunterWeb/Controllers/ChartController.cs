@@ -5,6 +5,7 @@ using ExoPlanetHunterWeb.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ExoPlanetHunterWeb.Controllers
 {
@@ -13,10 +14,12 @@ namespace ExoPlanetHunterWeb.Controllers
     public class ChartController : Controller
     {
         private readonly IChartService _chart;
+        private readonly IMastService _mast;
 
-        public ChartController(IChartService chart)
+        public ChartController(IChartService chart, IMastService mast)
         {
             _chart = chart;
+            _mast = mast;
         }
 
         [HttpGet("HertzsprungRussell")]
@@ -48,5 +51,12 @@ namespace ExoPlanetHunterWeb.Controllers
         {
             return _chart.GetMassOrbit();
         }
+
+        [HttpGet("Mast")]
+        public async Task<List<TransitTimeserie>> GetMast(double ra, double dec, double radius)
+        {
+            return await _mast.GetMast(ra,  dec, radius);
+        }
+
     }
 }
