@@ -76,7 +76,7 @@ namespace ExoplanetsTest
                         var dataResultAsObject = JsonConvert.DeserializeObject<List<MastTimeserieDTO>>(dataResultContent).FirstOrDefault();
                         if (dataResultAsObject!=null&&dataResultAsObject.PlotSeries.FirstOrDefault() != null)
                         {
-                            timeSerie.AddRange(dataResultAsObject.PlotSeries.First().Select(p => new TransitTimeserie() { Index = p.First(), Value = p.Last(), Label = table.ObsId }));
+                            timeSerie.AddRange(dataResultAsObject.PlotSeries.First().Where(p=> !double.IsNaN(p.Last())).Select(p => new TransitTimeserie() { Index = p.First(), Value = p.Last(), Label = table.ObsId }));
 
                         }
                        
