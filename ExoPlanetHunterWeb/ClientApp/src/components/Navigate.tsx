@@ -5,6 +5,7 @@ import Map from './Map'
 import Chart from './Chart'
 import PlanetInfo from './PlanetInfo'
 import Simulator from './Simulator'
+import TransitFinder from './TransitsFinder'
 import Constellations from './Constellations'
 import StarInfo from './StarInfo'
 import HertzsprungRussell  from '../chart/Hertzsprung–Russell'
@@ -63,6 +64,16 @@ export default class Navigate extends React.Component {
                 <Icon name="map" />
                 {'Star map'}
               </Menu.Item>
+              <Menu.Item
+                name="/finder"
+                active={activeItem === '/finder'}
+                as={Link}
+                to="/finder"
+                onClick={this.handleItemClick}
+              >
+                <Icon name="search" />
+                {'Transit finder'}
+              </Menu.Item>
            
             </Menu>
             <Route exact path="/catalog" component={Catalog} />
@@ -70,6 +81,7 @@ export default class Navigate extends React.Component {
             <Route exact path="/dashboard" component={Chart} />
             <Route exact path="/dashboard/hertz" component={HertzsprungRussell} />
             <Route exact path="/dashboard/planets" component={StockChart} />
+            <Route exact path="/finder" component={TransitFinder} />
         
             <Route
               name="planet"
