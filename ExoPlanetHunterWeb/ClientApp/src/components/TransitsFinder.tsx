@@ -1,19 +1,18 @@
 import * as React from 'react'
 
-import { useState } from 'react';
+import { useMap, useBaseLayer } from '../../hooks/useMap';
 
-function TransitFinder() {
-  // Declare a new state variable, which we'll call "count"
-  const [count, setCount] = useState(0);
+const TransitFinder=()=> {
+
+  const [map, setReference] = useMap({ lat:11, lng:11, zoom:11, minZoom:2, maxZoom:7 })
+
+ useBaseLayer(map, '/img/map.png')
 
   return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
-    </div>
-  );
+    <div  ref={setReference}  style ={{
+      width: '100vw',
+      height: '100vh'}}/>
+  )
 }
 
 export default TransitFinder
