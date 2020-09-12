@@ -16,7 +16,7 @@ const TransitFinder=()=> {
 
   const [siderealtime, setSiderealtime] = useState<string>('')
 
-  const [stars,GeoJsonObject] = useState<Array<GeoJsonObject> | null>(null)
+  const [stars,setStars] = useState<Array<GeoJsonObject> | null>(null)
 
   const [ constlines, setConstlines] = useState<GeoJsonObject>(null)
 
@@ -35,6 +35,8 @@ const TransitFinder=()=> {
       setIsDownUnder(position.coords.latitude<0)
        updatetime(position.coords.longitude)}
      )}
+   GetConstellationsLines().then((p)=>setConstlines(p))
+   GetStarsMarkers().then((p)=>setStars(p))
 
  },[])
 
@@ -47,6 +49,85 @@ const TransitFinder=()=> {
   })
 
 },[map])
+
+useEffect(()=>{
+
+
+  constlines&&init()
+
+},[stars,constlines])
+
+
+const init = () => {
+
+ 
+  console.log(constlines)
+  const lineStyle = {
+    color: '#fff',
+    weight: 5,
+    opacity: 1
+  }
+  const L = require('Leaflet')
+
+  require('Leaflet.fullscreen')
+  map.addControl(L.control.fullscreen())
+
+ 
+  L.geoJSON(constlines, {
+    style: lineStyle,
+    onEachFeature: onEachFeature
+  } as any).addTo(map)
+
+
+  const starIcon = L.icon({
+    iconUrl: '/img/smarker.png',
+    iconSize: [60, 60]
+  })
+
+  L.geoJSON(stars, {
+    pointToLayer: (feature: any, latlng: any) => {
+      return L.marker(latlng, { icon: starIcon })
+        .bindTooltip(feature.properties.name, { direction: 'left' })
+        .openTooltip()
+        .addTo(map)
+    }
+  }).addTo(map)
+  
+    
+}
+
+const onEachFeature = (feature: any, layer: any) => {
+  let options = {
+    radius: 100,
+    fillColor: 'white',
+    color: 'white',
+    weight: 0,
+    opacity: 0,
+    fillOpacity: 0
+  }
+  const coord = feature.geometry.coordinates
+  const L = require('Leaflet')
+  if (feature.properties.constellation != null) {
+   L.circleMarker([coord[0][1], coord[0][0]], options)
+      .addTo(map)
+      .bindTooltip(feature.properties.constellation, {
+        permanent: true,
+        direction: 'left'
+      })
+      .openTooltip()
+  }
+  options = {
+    radius: 6,
+    fillColor: 'white',
+    color: 'white',
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 1
+  }
+  coord.map((p: any) => {
+    L.circleMarker([p[1], p[0]], options).addTo(map)
+  })
+}
 
 
 const updatetime = (position: number) => {
