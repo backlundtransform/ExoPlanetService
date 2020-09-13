@@ -8,9 +8,10 @@ import {
   GetStarsMarkers
 } from '../service/getConstellations'
 import { GeoJsonObject } from 'geojson'
+import { useHistory } from 'react-router-dom'
 
 const TransitFinder=()=> {
-
+  let history =useHistory()
   const [longitude, setLongitude] = useState<number>(-90)
   const [latitude, setLatitude] = useState<number>(40)
 
@@ -60,8 +61,6 @@ useEffect(()=>{
 
 const init = () => {
 
- 
-  console.log(constlines)
   const lineStyle = {
     color: '#fff',
     weight: 5,
@@ -108,13 +107,18 @@ const onEachFeature = (feature: any, layer: any) => {
   const coord = feature.geometry.coordinates
   const L = require('Leaflet')
   if (feature.properties.constellation != null) {
-   L.circleMarker([coord[0][1], coord[0][0]], options)
+   const marker= L.circleMarker([coord[0][1], coord[0][0]], options)
       .addTo(map)
       .bindTooltip(feature.properties.constellation, {
         permanent: true,
         direction: 'left'
       })
       .openTooltip()
+      marker.addEventListener('click', () =>
+     history.push({
+        pathname: `constellation/${feature.properties.constellationid}`,
+        state: { constellation: feature.properties.constellationid }
+      }))
   }
   options = {
     radius: 6,
