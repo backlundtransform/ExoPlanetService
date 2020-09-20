@@ -29,6 +29,7 @@ const createMap = (
         zoom,
         maxZoom,
         minZoom,
+        drawControl: true
   
     })
 }

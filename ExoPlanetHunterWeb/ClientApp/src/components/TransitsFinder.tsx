@@ -30,7 +30,6 @@ const TransitFinder=()=> {
 
  useEffect(()=>{
 
-
    if (navigator.geolocation) {
      navigator.geolocation.getCurrentPosition(position =>{
       setIsDownUnder(position.coords.latitude<0)
@@ -53,7 +52,6 @@ const TransitFinder=()=> {
 
 useEffect(()=>{
 
-
   constlines&&init()
 
 },[stars,constlines])
@@ -69,7 +67,18 @@ const init = () => {
   const L = require('Leaflet')
 
   require('Leaflet.fullscreen')
+ require('leaflet-draw')
+  
   map.addControl(L.control.fullscreen())
+
+
+  var drawnItems = new L.FeatureGroup();
+  map.addLayer(drawnItems);
+  var drawControl = new L.Control.Draw({
+      edit: {
+          featureGroup: drawnItems
+      }
+  });
 
  
   L.geoJSON(constlines, {
