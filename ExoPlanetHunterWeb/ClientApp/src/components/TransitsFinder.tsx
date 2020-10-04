@@ -9,6 +9,7 @@ import {
 } from '../service/getConstellations'
 import { GeoJsonObject } from 'geojson'
 import { useHistory } from 'react-router-dom'
+import { circleMarker } from 'leaflet';
 
 const TransitFinder=()=> {
   let history =useHistory()
@@ -24,12 +25,12 @@ const TransitFinder=()=> {
   const [ isDownUnder, setIsDownUnder] = useState<Boolean>(true)
 
 
-  const [map, setReference] = useMap({ lat:latitude, lng:longitude, zoom:11, minZoom:2, maxZoom:7 })
+  const [map, setMap] = useMap({ lat:latitude, lng:longitude, zoom:11, minZoom:2, maxZoom:7 })
 
- useBaseLayer(map, '/img/map.png')
+  useBaseLayer(map, '/img/map.png')
 
  useEffect(()=>{
-
+ 
    if (navigator.geolocation) {
      navigator.geolocation.getCurrentPosition(position =>{
       setIsDownUnder(position.coords.latitude<0)
@@ -52,9 +53,53 @@ const TransitFinder=()=> {
 
 useEffect(()=>{
 
-  constlines&&init()
+  stars&&constlines&&init()
 
 },[stars,constlines])
+
+useEffect(()=>{
+
+  if(map===null){
+    return
+  }
+
+  const L = require('Leaflet')
+
+require('Leaflet.fullscreen')
+ require('leaflet-draw')
+map.addControl(L.control.fullscreen())
+ var drawnItems = new L.FeatureGroup();
+ map&& map.addLayer(drawnItems);
+  var drawControl = new L.Control.Draw({
+      edit: {
+          featureGroup: drawnItems
+      },
+      draw: {
+        rectangle:false,
+        polygon:false,
+        polyline:false,
+        marker:false,
+        circlemarker:false
+    }
+     
+  });
+  map&&map.addControl(drawControl)
+ new L.Draw.Circle(map, drawControl.options.circle).enable()
+ map.on(L.Draw.Event.CREATED, (event:any)=> {
+  const layer = event.layer
+
+  layer.on('dblclick', (e:any)=> { 
+    console.log(e)
+    console.log(e.target._latlng)
+    console.log(e.target.options.radius) 
+  
+  })
+
+  drawnItems.addLayer(layer)
+})
+
+
+},[constlines])
 
 
 const init = () => {
@@ -65,20 +110,6 @@ const init = () => {
     opacity: 1
   }
   const L = require('Leaflet')
-
-  require('Leaflet.fullscreen')
- require('leaflet-draw')
-  
-  map.addControl(L.control.fullscreen())
-
-
-  var drawnItems = new L.FeatureGroup();
-  map.addLayer(drawnItems);
-  var drawControl = new L.Control.Draw({
-      edit: {
-          featureGroup: drawnItems
-      }
-  });
 
  
   L.geoJSON(constlines, {
@@ -144,7 +175,7 @@ const onEachFeature = (feature: any, layer: any) => {
 
 
 const updatetime = (position: number) => {
-  setSiderealtime(sideClock(position) )
+  setSiderealtime(sideClock(position))
   setInterval(() => {
     setSiderealtime(sideClock(position) )
   }, 60000)
@@ -175,7 +206,7 @@ const updatetime = (position: number) => {
         <Statistic.Label>{'Right ascension'}</Statistic.Label>
       </Statistic>
     </Statistic.Group>
-    <div  ref={setReference}  style ={{
+    <div  ref={setMap}  style ={{
       width: '100vw',
       height: '95vh'}}/>
   </>

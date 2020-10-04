@@ -82,3 +82,4 @@ width: 100%!important;
 .leaflet-control-zoom-fullscreen { background-image: url(https://github.com/brunob/leaflet.fullscreen/raw/master/icon-fullscreen.png); }
 .leaflet-retina .leaflet-control-zoom-fullscreen { background-image: url(https://github.com/brunob/leaflet.fullscreen/raw/master/icon-fullscreen-2x.png); background-size: 26px 26px; }
 
+.sr-only {display:none}
