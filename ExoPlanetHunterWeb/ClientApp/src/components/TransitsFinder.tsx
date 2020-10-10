@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useState, useEffect} from 'react'
-import { Icon, Statistic } from 'semantic-ui-react'
+import { Icon, Statistic,Modal } from 'semantic-ui-react'
 import { useMap, useBaseLayer } from '../../hooks/useMap'
 import sideClock from '../siderealtime/'
 import {
@@ -9,12 +9,14 @@ import {
 } from '../service/getConstellations'
 import { GeoJsonObject } from 'geojson'
 import { useHistory } from 'react-router-dom'
-import { circleMarker } from 'leaflet';
+import { LatLngLiteral } from 'leaflet';
+
 
 const TransitFinder=()=> {
   let history =useHistory()
   const [longitude, setLongitude] = useState<number>(-90)
   const [latitude, setLatitude] = useState<number>(40)
+
 
   const [siderealtime, setSiderealtime] = useState<string>('')
 
@@ -24,6 +26,11 @@ const TransitFinder=()=> {
 
   const [ isDownUnder, setIsDownUnder] = useState<Boolean>(true)
 
+  const [ isGraphOpen, setIsGraphOpen] = useState<boolean>(false)
+
+  const [radius, setRadius] = useState<boolean>(false)
+
+  const [coordinates, setCoordinates ] = useState<LatLngLiteral>({ lat:0, lng:0 })
 
   const [map, setMap] = useMap({ lat:latitude, lng:longitude, zoom:11, minZoom:2, maxZoom:7 })
 
@@ -89,9 +96,12 @@ map.addControl(L.control.fullscreen())
   const layer = event.layer
 
   layer.on('dblclick', (e:any)=> { 
-    console.log(e)
-    console.log(e.target._latlng)
-    console.log(e.target.options.radius) 
+  
+    setCoordinates(e.target._latlng)
+
+
+    setIsGraphOpen(true)
+    setRadius(e.target.options.radius)
   
   })
 
@@ -182,7 +192,22 @@ const updatetime = (position: number) => {
 }
 
   return (
-    <>
+    <> <Modal
+    onClose={() => setIsGraphOpen(false)}
+    open={isGraphOpen}
+  
+  >
+  
+    <Modal.Content>
+
+      <Modal.Description>
+      <b>{coordinates.lat},{coordinates.lat}</b><br/>
+      <b>{radius}</b>
+       
+      </Modal.Description>
+    </Modal.Content>
+
+  </Modal>
     <Statistic.Group widths="three">
       <Statistic>
         <Statistic.Value>
