@@ -9,7 +9,8 @@ import {
 } from '../service/getConstellations'
 import { GeoJsonObject } from 'geojson'
 import { useHistory } from 'react-router-dom'
-import { LatLngLiteral } from 'leaflet';
+import { LatLngLiteral } from 'leaflet'
+import TimeSeriesChart from '../chart/TimeSeriesChart'
 
 
 const TransitFinder=()=> {
@@ -199,11 +200,8 @@ const updatetime = (position: number) => {
   >
   
     <Modal.Content>
-
       <Modal.Description>
-      <b>{coordinates.lat},{coordinates.lat}</b><br/>
-      <b>{radius}</b>
-       
+      <TimeSeriesChart />    
       </Modal.Description>
     </Modal.Content>
 
