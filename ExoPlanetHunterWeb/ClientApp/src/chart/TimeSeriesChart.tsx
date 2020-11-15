@@ -1,15 +1,18 @@
 import * as React from 'react'
 import {useState, useEffect} from 'react'
-import {
-    InitTimeSerieGraph 
-  
-  } from '../service/getChart'
+
   import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
+import {GetTransitAsync  } from '../service/getMast'
+
 const TimeSeriesChart=()=> {
+  const [data, setData]= useState([])
+  useEffect(()=>{
+  GetTransitAsync().then(setData)
   
+  },[])
  useEffect(()=>{
     am4core.useTheme(am4themes_animated);
 
