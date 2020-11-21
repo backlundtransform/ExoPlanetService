@@ -4,8 +4,8 @@ export interface TransitTimeserie {
     value: number,
   }
 
-export const GetTransitAsync = async (): Promise<Array<TransitTimeserie>> => {
-    const transit = await fetch(`../api/Chart/Mast`)
+export const GetTransitAsync = async (ra:number,  dec:number, radius:number): Promise<Array<TransitTimeserie>> => {
+    const transit = await fetch(`../api/Chart/Mast?ra=${ra}&dec=${dec}&radius=${radius}`)
       .then(response => {
         return response.json()
       })

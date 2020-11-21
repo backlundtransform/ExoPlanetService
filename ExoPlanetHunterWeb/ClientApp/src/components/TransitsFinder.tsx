@@ -29,7 +29,7 @@ const TransitFinder=()=> {
 
   const [ isGraphOpen, setIsGraphOpen] = useState<boolean>(false)
 
-  const [radius, setRadius] = useState<boolean>(false)
+  const [radius, setRadius] = useState<number>(0)
 
   const [coordinates, setCoordinates ] = useState<LatLngLiteral>({ lat:0, lng:0 })
 
@@ -100,9 +100,11 @@ map.addControl(L.control.fullscreen())
   
     setCoordinates(e.target._latlng)
 
+    console.log(e.target.options.radius)
 
-    setIsGraphOpen(true)
     setRadius(e.target.options.radius)
+    setIsGraphOpen(true)
+  
   
   })
 
@@ -111,6 +113,8 @@ map.addControl(L.control.fullscreen())
 
 
 },[constlines])
+
+
 
 
 const init = () => {
@@ -201,7 +205,7 @@ const updatetime = (position: number) => {
   
     <Modal.Content>
       <Modal.Description>
-      <TimeSeriesChart />    
+  {radius>0&&<TimeSeriesChart  radius={radius/111111} dec={Math.round(100 * latitude) / 100} ra={Math.round(100 * (12 + (-1 * longitude) / 15)) / 100}/>}    
       </Modal.Description>
     </Modal.Content>
 

@@ -7,19 +7,22 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
 import {GetTransitAsync  } from '../service/getMast'
 
-const TimeSeriesChart=()=> {
+const TimeSeriesChart=({ra,dec,radius}:{ra:number,  dec:number, radius:number}): JSX.Element=> {
   const [data, setData]= useState([])
   useEffect(()=>{
-  GetTransitAsync().then(setData)
+  GetTransitAsync(ra,dec, radius).then(setData)
   
   },[])
  useEffect(()=>{
+   if(data.length===1){
+      return
+   }
     am4core.useTheme(am4themes_animated);
 
   
     let chart = am4core.create("timeseriesdiv", am4charts.XYChart);
     
-    let data = [];
+ 
     let value = 50;
     for(var i = 0; i < 300; i++){
       let date = new Date();
