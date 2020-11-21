@@ -205,7 +205,7 @@ const updatetime = (position: number) => {
   
     <Modal.Content>
       <Modal.Description>
-  {radius>0&&<TimeSeriesChart  radius={radius/111111} dec={Math.round(100 * latitude) / 100} ra={Math.round(100 * (12 + (-1 * longitude) / 15)) / 100}/>}    
+  {radius>0&&<TimeSeriesChart  radius={radius/1000} dec={Math.round(100 * latitude) / 100} ra={Math.round(100 * (12 + (-1 * longitude) / 15)) / 100}/>}    
       </Modal.Description>
     </Modal.Content>
 
