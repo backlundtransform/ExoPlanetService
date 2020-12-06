@@ -40,12 +40,7 @@ const TimeSeriesChart=({ra,dec,radius}:{ra:number,  dec:number, radius:number}):
     categoryAxis.dataFields.category = 'index'
     let valueAxis = x.yAxes.push(new am4charts.ValueAxis())
     valueAxis.dataFields.data = 'value'
-
-    
-  
-    
     x.cursor = new am4charts.XYCursor()
-    //x.cursor.snapToSeries = series
     x.cursor.xAxis =categoryAxis 
     chart.current =x
     return () => {
@@ -58,7 +53,7 @@ const TimeSeriesChart=({ra,dec,radius}:{ra:number,  dec:number, radius:number}):
  
   if (chart && chart.current) {
    let groupedData = groupBy(data, "label")
-   console.log(groupedData )
+
 
  for(const item of Object.keys(groupedData)){
    let series = chart.current.series.push(new am4charts.LineSeries())

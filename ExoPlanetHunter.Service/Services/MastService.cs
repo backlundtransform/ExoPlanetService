@@ -18,15 +18,16 @@ namespace ExoPlanetHunter.Service.Services
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(endpoint); 
+                client.BaseAddress = new Uri(endpoint);
+
 
                 var mastRequest = new MastServiceDto
                 {
                     Service = "Mast.Caom.Cone",
                     Format = "json",
-                    PageSize = 2000,
+                    PageSize = 20,
                     RemoveNullColumns = true,
-                    TimeOut = 30,
+                    TimeOut = 3000,
                     RemoveCache = true,
                     Params = new MastParamsDto() { Dec = dec, Ra = ra, Radius = radius }
 
@@ -51,9 +52,9 @@ namespace ExoPlanetHunter.Service.Services
                         {
                             Service = "Mast.DataDelivery",
                             Format = "json",
-                            PageSize = 2000,
+                            PageSize = 20,
                             RemoveNullColumns = true,
-                            TimeOut = 30,
+                            TimeOut = 30000,
                             RemoveCache = true,
                             Params = new MastParamsDto() { ObsIds = table.ObsId, Missions = table.Project, Filters = table.Filters, Urls = "None", Targets = "None" }
 
@@ -72,7 +73,7 @@ namespace ExoPlanetHunter.Service.Services
 
                     }
                 }
-                return timeSerie;
+                return timeSerie.ToList();
             }
         }
     }
