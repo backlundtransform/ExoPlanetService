@@ -70,7 +70,7 @@ const TimeSeriesChart=({ra,dec,radius}:{ra:number,  dec:number, radius:number}):
 
 },[data])
 
-return <div id ={'timeseriesdiv'}   style={{
+return <div id ={'timeseriesdiv'}  style={{
     width: '100%',
     maxHeight: '700px',
     height: '69vh',

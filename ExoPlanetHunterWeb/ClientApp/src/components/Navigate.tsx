@@ -64,7 +64,7 @@ export default class Navigate extends React.Component {
                 <Icon name="map" />
                 {'Star map'}
               </Menu.Item>
-              <Menu.Item
+              {/* <Menu.Item
                 name="/finder"
                 active={activeItem === '/finder'}
                 as={Link}
@@ -73,7 +73,7 @@ export default class Navigate extends React.Component {
               >
                 <Icon name="search" />
                 {'Transit finder'}
-              </Menu.Item>
+              </Menu.Item> */}
            
             </Menu>
             <Route exact path="/catalog" component={Catalog} />
@@ -81,7 +81,7 @@ export default class Navigate extends React.Component {
             <Route exact path="/dashboard" component={Chart} />
             <Route exact path="/dashboard/hertz" component={HertzsprungRussell} />
             <Route exact path="/dashboard/planets" component={StockChart} />
-            <Route exact path="/finder" component={TransitFinder} />
+            {/* <Route exact path="/finder" component={TransitFinder} /> */}
         
             <Route
               name="planet"
