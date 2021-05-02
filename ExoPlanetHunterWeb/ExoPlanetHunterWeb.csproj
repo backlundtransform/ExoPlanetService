@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
 <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+<UserSecretsId>2ce0f3b2-20f2-40a3-a911-fdcd2dd0be05</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
