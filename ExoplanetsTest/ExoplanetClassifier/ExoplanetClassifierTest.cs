@@ -22,7 +22,7 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
             FeH = null,
             Age = (decimal)4.6,
             ApparMag = null,
-            Distance = (decimal)303.7,
+            Distance = (decimal)93.1846,
             NoPlanets = 1,
             NoPlanetsHZ =null,
             HabZoneMin = null,
@@ -54,12 +54,15 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
         [TestMethod]
         public void CalculateGoldiLockZone()
         {
+            var magnitude = 4.72307;
+            var mv = magnitude - (5 * Math.Log10((double)_star.Distance/10));
+            var mbol = mv - 0.4;
+            var lStar=Math.Pow(10, (mbol-4.72)/-2.5);
+            _star.HabZoneMin = (decimal)Math.Sqrt(lStar / 1.1);
+            _star.HabZoneMax = (decimal)Math.Sqrt(lStar / 0.21);
 
-            _star.HabZoneMin = (decimal)Math.Sqrt(Math.Pow(10, (double)_star.Luminosity)/1.1);
-            _star.HabZoneMax = (decimal)Math.Sqrt(Math.Pow(10, (double)_star.Luminosity) /0.53);
-
-            Assert.IsTrue(_star.HabZoneMin == (decimal)10.1);
-            Assert.IsTrue(_star.HabZoneMax == (decimal)24.8);
+            Assert.IsTrue(_star.HabZoneMin >=(decimal)10.1);
+            Assert.IsTrue(_star.HabZoneMax <= (decimal)24.8);
 
         }
        
