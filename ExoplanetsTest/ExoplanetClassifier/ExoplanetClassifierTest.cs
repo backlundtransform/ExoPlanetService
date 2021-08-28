@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
 {
@@ -60,12 +61,57 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
             var lStar=Math.Pow(10, (mbol-4.72)/-2.5);
             _star.HabZoneMin = (decimal)Math.Sqrt(lStar / 1.1);
             _star.HabZoneMax = (decimal)Math.Sqrt(lStar / 0.21);
-
             Assert.IsTrue(_star.HabZoneMin >=(decimal)10.1);
             Assert.IsTrue(_star.HabZoneMax <= (decimal)24.8);
 
         }
-       
-      
+
+
+        [TestMethod]
+        public void CalculateMassClass()
+        {
+            var mass = _star.Planets.First().Mass;
+            if (mass <= (decimal)0.1)
+            {
+                _star.Planets.First().MassClass = "Mercurian";
+
+            }
+
+            if (mass <= (decimal)0.5 && mass > (decimal)0.1)
+            {
+                _star.Planets.First().MassClass = "Subterran";
+
+            }
+
+            if (mass <= 2 && mass > (decimal)0.5)
+            {
+                _star.Planets.First().MassClass = "Terran";
+
+            }
+
+            if (mass <= 10 && mass > 2)
+            {
+                _star.Planets.First().MassClass = "Superterran";
+
+            }
+
+
+            if (mass <= 50 && mass > 10)
+            {
+                _star.Planets.First().MassClass = "Neptunian";
+
+            }
+
+            if (mass > 50)
+            {
+                _star.Planets.First().MassClass = "Jovian";
+
+            }
+
+
+
+            Assert.IsTrue(_star.Planets.First().MassClass =="Jovian");
+        }
+
     }
 }
