@@ -33,11 +33,10 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
                    new Planet()
                    {
                     Name = "11 Com b",
+                    TeqMean =(decimal)799.44963,
                     ZoneClass =null,
                     MassClass =null,
-                    CompositionClass = null,
-                    AtmosphereClass = null,
-                    HabitableClass = null,
+                
                     Mass =  6165,
                     Radius = null,
                     Density = (decimal)0.984,
@@ -112,6 +111,39 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
 
             Assert.IsTrue(_star.Planets.First().MassClass =="Jovian");
         }
+
+
+        [TestMethod]
+        public void CalculateZoneClass()
+        {
+            var temp= _star.Planets.First().TeqMean;
+            if (temp >= (decimal)273.15 && temp <= (decimal)323.15)
+            {
+                _star.Planets.First().ZoneClass= "Warm";
+
+            }
+
+            if (temp > (decimal)323.15)
+            {
+                _star.Planets.First().ZoneClass = "Hot";
+
+            }
+
+            if (temp < (decimal)273.15)
+            {
+                _star.Planets.First().ZoneClass = "Cold";
+
+            }
+
+
+
+            Assert.IsTrue(_star.Planets.First().ZoneClass == "Hot");
+        }
+
+
+
+
+     
 
     }
 }
