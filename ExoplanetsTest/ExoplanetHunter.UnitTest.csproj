@@ -18,4 +18,10 @@
     <ProjectReference Include="..\ExoPlanetHunter.Service\ExoPlanetHunter.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="constellation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
