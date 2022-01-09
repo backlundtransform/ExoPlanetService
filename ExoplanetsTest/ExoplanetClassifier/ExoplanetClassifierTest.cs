@@ -46,7 +46,9 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
                     TeqMean =(decimal)799.44963,
                     ZoneClass =null,
                     MassClass =null,
-                
+                    
+
+
                     Mass =  6165,
                     Radius = null,
                     Density = (decimal)0.984,
@@ -163,7 +165,7 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
 
        private string GetConstellation(double ra, double dec)
         {
-            string json = File.ReadAllText(@"constellation.json"); ;
+            string json = File.ReadAllText(@"constellation.json");
 
             var table = JsonConvert.DeserializeObject<dynamic[][]>(json);
             var convh = Math.PI / 180.0;
@@ -186,6 +188,22 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
                 return (string)table[i][3];
             }
             return "";    
+        }
+
+        [TestMethod]
+        public void CalculateEsi()
+        {
+            var radius = 0.77;
+
+            var temp = 267;
+            var tempEarth = 288;
+
+
+            var esi = 1 - Math.Sqrt(0.5*(Math.Pow((temp- tempEarth)/ (temp + tempEarth), 2)+ Math.Pow((radius-1)/ (radius + 1), 2)));
+
+            Assert.IsTrue(Math.Round(esi,1) == 0.9);
+ 
+
         }
 
 
