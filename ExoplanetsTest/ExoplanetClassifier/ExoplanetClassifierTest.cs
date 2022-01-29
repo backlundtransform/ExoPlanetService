@@ -1,4 +1,5 @@
 ﻿using ExoPlanetHunter.Database.entity;
+using ExoPlanetHunter.PHL.Integration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
@@ -60,6 +61,28 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
                     Disc_Method = "Radial Velocity",
                     Disc_Year = 2017,
 
+                    },
+
+                    new Planet()
+                   {
+                    Name = "11 Com b",
+                    TeqMean =(decimal)7229.44963,
+                    ZoneClass =null,
+                    MassClass =null,
+
+
+
+                    Mass =  616522,
+                    Radius = null,
+                    Density = (decimal)022.984,
+                    Eccentricity =(decimal) 022.231,
+                    MeanDistance =  (decimal)1.29,
+                    Period = (decimal)32622.03,
+                    Esi = null,
+                    Habitable = null,
+                    Disc_Method = "Radial Velocity",
+                    Disc_Year = 2019,
+
                     }
                 }
         };
@@ -76,6 +99,18 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
             Assert.IsTrue(_star.HabZoneMax <= (decimal)24.8);
 
         }
+        [TestMethod]
+        public void DownloadAndClassifieStars()
+        {
+
+            var planetclass = new PlanetClassifier();
+            var stars = planetclass.DownloadAndClassifieStars();
+
+            var planets = stars.SelectMany(p => p.Planets).Count();
+
+            Assert.IsTrue(planets == 756);
+        }
+
 
 
         [TestMethod]
