@@ -12,9 +12,7 @@ namespace ExoPlanetHunter.PHL.Integration
     public class PlanetClassifier: IPlanetClassifier
     {
 
-        private readonly double _tempEarth = 288;
-
-        private readonly string _exoplanetpath = $"D:/Exoplanetdata/PS_2022.01.29_15.51.36.csv";
+        private readonly string _exoplanetpath = $"D:/Exoplanetdata/PS_2022.01.30_08.26.54.csv";
 
         public List<Star> DownloadAndClassifieStars()
         {
@@ -30,6 +28,7 @@ namespace ExoPlanetHunter.PHL.Integration
         
                 var starName = values[Array.IndexOf(headers, "hostname")];
                 var planetName = values[Array.IndexOf(headers, "pl_name")];
+               
                 try
                 {
                     var ra = values[Array.IndexOf(headers, "ra")].ToNullable<double>();
@@ -39,17 +38,29 @@ namespace ExoPlanetHunter.PHL.Integration
                     {
 
                         var type = values[Array.IndexOf(headers, "st_spectype")];
+                      
                         var mass = values[Array.IndexOf(headers, "st_mass")].ToNullable<decimal>();
 
                         var radius = values[Array.IndexOf(headers, "st_rad")].ToNullable<decimal>();
                         var teff = values[Array.IndexOf(headers, "st_teff")].ToNullable<decimal>();
+                        if (type == "")
+                        {
+                            type = GetSpectralFromTemp(teff);
+
+                        }
                         var luminosity = values[Array.IndexOf(headers, "st_lum")].ToNullable<decimal>();
 
                         var age = values[Array.IndexOf(headers, "st_age")].ToNullable<decimal>();
                         var apparMag = values[Array.IndexOf(headers, "sy_vmag")].ToNullable<decimal>();
                         var distance = values[Array.IndexOf(headers, "sy_dist")].ToNullable<decimal>();
 
-                        var (habZoneMin, habZoneMax) = CalculateGoldiLockZone(apparMag, distance);
+                        var (habZoneMin, habZoneMax) = CalculateGoldiLockZone(apparMag, distance, type);
+
+                        if(habZoneMin==null && habZoneMax == null)
+                        {
+
+                            continue;
+                        }
 
                         var star = new Star()
                         {
@@ -71,13 +82,13 @@ namespace ExoPlanetHunter.PHL.Integration
                             }
                         };
 
-                        var planet = GetPlanet(values, headers, planetName, habZoneMin, habZoneMax);
+                        var planet = GetPlanet(values, headers, planetName, habZoneMin, habZoneMax, mass);
                         star.Planets.Add(planet);
 
                         stars.Add(star);
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     continue;
 
@@ -94,11 +105,11 @@ namespace ExoPlanetHunter.PHL.Integration
                         try
                         {
 
-                            var planet = GetPlanet(values, headers, planetName, (decimal)oldstar.HabZoneMin, (decimal)oldstar.HabZoneMax);
+                            var planet = GetPlanet(values, headers, planetName,oldstar.HabZoneMin, oldstar.HabZoneMax,oldstar.Mass);
 
                             oldstar.Planets.Add(planet);
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
                             continue;
 
@@ -113,7 +124,58 @@ namespace ExoPlanetHunter.PHL.Integration
 
         }
 
-        public Planet GetPlanet(string[] values, string[] headers, string planetName, decimal? habZoneMin, decimal? habZoneMax)
+        public string GetSpectralFromTemp(decimal? temp) { 
+
+
+        
+            if (temp == null)
+            {
+                return "";
+            }
+
+            if (temp >= 30000)
+            {
+                return "O";
+            }
+
+            if (temp >= 10000 && temp< 30000)
+            {
+                return "B";
+            }
+
+            if (temp >= 7500 && temp < 10000)
+            {
+                return "A";
+            }
+
+            if (temp >= 6000 && temp < 7500)
+            {
+                return "F";
+            }
+
+            if (temp >= 5200 && temp < 6000)
+            {
+                return "G";
+            }
+
+            if (temp >= 3700 && temp < 5200)
+            {
+                return "K";
+            }
+
+            if (temp >= 2400 && temp < 3700)
+            {
+                return "M";
+            }
+
+
+
+            return "";
+
+
+        }
+
+        public Planet GetPlanet(string[] values, string[] headers, string planetName, decimal? habZoneMin, decimal? habZoneMax, decimal? starMass)
         {
             var teq = values[Array.IndexOf(headers, "pl_eqt")].ToNullable<decimal>();
             var teqmin = teq+values[Array.IndexOf(headers, "pl_eqterr2")].ToNullable<decimal>();
@@ -126,17 +188,27 @@ namespace ExoPlanetHunter.PHL.Integration
 
             var meandist = (maxdist + mindist) / 2;
 
-            var mass = values[Array.IndexOf(headers, "pl_bmasse")].ToNullable<decimal>();
+            var period = values[Array.IndexOf(headers, "pl_orbper")].ToNullable<decimal>();
+
+            if (meandist==null && period != null && starMass!=null)
+            {
+
+                meandist = (decimal)Math.Pow((double)starMass * 7.5 * Math.Pow((double)period, 2), 1 / 3) / 100;
+            }
+
+                var mass = values[Array.IndexOf(headers, "pl_bmasse")].ToNullable<decimal>();
 
             var massClass = CalculateMassClass(mass, radius);
+            var flux = values[Array.IndexOf(headers, "pl_insol")].ToNullable<decimal>();
+           
 
-            var esi = (decimal)CalculateEsi(radius, teq);
+            var esi = (decimal)CalculateEsi(radius, flux);
 
 
             return new Planet()
             {
                 Name = planetName,
-                ZoneClass = CalculateZoneClass(teq),
+                ZoneClass = CalculateZoneClass(teq, meandist, habZoneMin, habZoneMax),
                 TeqMax = teqmax,
                 TeqMean = teq,
                 TeqMin = teqmin,
@@ -147,7 +219,7 @@ namespace ExoPlanetHunter.PHL.Integration
                 MassClass = CalculateMassClass(mass, radius),
                 Radius = values[Array.IndexOf(headers, "pl_rade")].ToNullable<decimal>(),
                 Density = values[Array.IndexOf(headers, "pl_dens")].ToNullable<decimal>(),
-                Period = values[Array.IndexOf(headers, "pl_orbper")].ToNullable<decimal>(),
+                Period = period,
                 Eccentricity = values[Array.IndexOf(headers, "pl_orbeccen")].ToNullable<decimal>(),
                 SemMajorAxis = values[Array.IndexOf(headers, "pl_orbsmax")].ToNullable<decimal>(),
                 MeanDistance = meandist,
@@ -211,32 +283,78 @@ namespace ExoPlanetHunter.PHL.Integration
                 context.SaveChanges();
             }
         }
-        public (decimal? habZoneMin, decimal? habZoneMax) CalculateGoldiLockZone(decimal? magnitude, decimal? starDistance)
+        public (decimal? habZoneMin, decimal? habZoneMax) CalculateGoldiLockZone(decimal? magnitude, decimal? starDistance, string type)
         {
-            if(magnitude ==null || starDistance == null)
+
+            if(magnitude ==null || starDistance == null || type.Length ==0)
             {
 
                 return (null, null);
+
+               
+            }
+
+            var bc = 0.0;
+            if (type[0] == 'A')
+            {
+                bc = -0.3;
+            }
+            if (type[0] == 'B')
+            {
+                bc = -0.3;
+            }
+
+            if (type[0] == 'F')
+            {
+                bc = -0.15;
+            }
+
+            if (type[0] == 'G')
+            {
+                bc = -0.4;
+            }
+
+            if (type[0] == 'K')
+            {
+                bc = -0.8;
+            }
+
+            if (type[0] == 'M')
+            {
+                bc = -2.0;
+            }
+
+            if (type[0] == 'O')
+            {
+                bc = -2.0;
+            }
+
+            if (bc==0.0)
+            {
+
+                return (null, null);
+
+
             }
 
             var mv = (double)magnitude - (5 * Math.Log10((double)starDistance / 10));
-            var mbol = mv - 0.4;
+            var mbol = mv + bc;
             var lStar = Math.Pow(10, (mbol - 4.72) / -2.5);
-            return ((decimal)Math.Sqrt(lStar / 1.1), (decimal)Math.Sqrt(lStar / 0.21));
+            return ((decimal)Math.Sqrt(lStar / 1.1), (decimal)Math.Sqrt(lStar / 0.53));
 
         }
 
-        public double CalculateEsi(decimal? radius, decimal? temp)
+        public double CalculateEsi(decimal? radius, decimal? flux)
         {
 
-            if (radius == null || temp == null)
+            if (radius == null || flux == null)
             {
 
                 return 0;
             }
 
 
-            var esi = 1 - Math.Sqrt(0.5 * (Math.Pow(((double)temp - _tempEarth) / ((double)temp + _tempEarth), 2) + Math.Pow(((double)radius - 1) / (double)(radius + 1), 2)));
+            var esi = 1 - Math.Sqrt(0.5 * (Math.Pow(((double)flux - 1) / ((double)flux + 1), 2) + Math.Pow(((double)radius - 1) / (double)(radius + 1), 2)));
 
             return esi;
 
@@ -311,8 +429,31 @@ namespace ExoPlanetHunter.PHL.Integration
             return (ra2, dec2);
         }
 
-        public string CalculateZoneClass(decimal? temp)
+        public string CalculateZoneClass(decimal? temp, decimal? meandist, decimal? habZoneMin , decimal? habZoneMax)
         {
+
+            if(temp == null && meandist !=null && habZoneMin !=null && habZoneMax!=null)
+            {
+
+                if(meandist >= habZoneMin && meandist <= habZoneMax)
+                {
+                    return "Warm";
+
+                }
+
+                if (meandist >  habZoneMax)
+                {
+                    return "Cold";
+
+                }
+
+                if (meandist < habZoneMin)
+                {
+                    return "Hot";
+
+                }
+
+            }
 
             if (temp >= (decimal)273.15 && temp <= (decimal)323.15)
             {
