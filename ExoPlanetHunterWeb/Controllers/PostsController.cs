@@ -198,5 +198,22 @@ namespace ExoPlanetHunter.Web.Controllers
                 _planetService.CacheExoPlanets();
             return Content("job done");
         }
+
+   
+        [HttpPost]
+      
+        [Route("api/update")]
+        public IActionResult ExecuteJob2()
+        {
+            var job = new MyJob();
+            job.Execute2();
+            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
+            {
+                var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
+                col.Delete(Query.All());
+            }
+            _planetService.CacheExoPlanets();
+            return Content("job done");
+        }
     }
 }

@@ -9,12 +9,12 @@ using System.ComponentModel;
 
 namespace ExoPlanetHunter.PHL.Integration
 {
-    public class PlanetClassifier
+    public class PlanetClassifier: IPlanetClassifier
     {
 
         private readonly double _tempEarth = 288;
 
-        private readonly string _exoplanetpath = $"D:/Exoplanetdata/PS_2022.01.29_09.22.08.csv";
+        private readonly string _exoplanetpath = $"D:/Exoplanetdata/PS_2022.01.29_15.51.36.csv";
 
         public List<Star> DownloadAndClassifieStars()
         {
@@ -22,9 +22,12 @@ namespace ExoPlanetHunter.PHL.Integration
 
             var headers = readText.First();
             var stars = new List<Star>();
+        
 
             foreach (var values in readText.Skip(1))
             {
+
+        
                 var starName = values[Array.IndexOf(headers, "hostname")];
                 var planetName = values[Array.IndexOf(headers, "pl_name")];
                 try
@@ -110,16 +113,26 @@ namespace ExoPlanetHunter.PHL.Integration
 
         }
 
-        public Planet GetPlanet(string[] values, string[] headers, string planetName, decimal habZoneMin, decimal habZoneMax)
+        public Planet GetPlanet(string[] values, string[] headers, string planetName, decimal? habZoneMin, decimal? habZoneMax)
         {
             var teq = values[Array.IndexOf(headers, "pl_eqt")].ToNullable<decimal>();
-            var teqmin = values[Array.IndexOf(headers, "pl_eqterr2")].ToNullable<decimal>();
-            var teqmax = values[Array.IndexOf(headers, "pl_eqterr1")].ToNullable<decimal>();
-            var mass = values[Array.IndexOf(headers, "pl_masse")].ToNullable<decimal>();
+            var teqmin = teq+values[Array.IndexOf(headers, "pl_eqterr2")].ToNullable<decimal>();
+            var teqmax = teq+values[Array.IndexOf(headers, "pl_eqterr1")].ToNullable<decimal>();
+         
             var radius = values[Array.IndexOf(headers, "pl_rade")].ToNullable<decimal>();
-            var mindist = values[Array.IndexOf(headers, "pl_orbsmaxerr2")].ToNullable<decimal>();
-            var maxdist = values[Array.IndexOf(headers, "pl_orbsmaxerr1")].ToNullable<decimal>();
+            var dist = values[Array.IndexOf(headers, "pl_orbsmax")].ToNullable<decimal>();
+            var mindist = dist+values[Array.IndexOf(headers, "pl_orbsmaxerr2")].ToNullable<decimal>();
+            var maxdist = dist+values[Array.IndexOf(headers, "pl_orbsmaxerr1")].ToNullable<decimal>();
+
             var meandist = (maxdist + mindist) / 2;
+
+            var mass = values[Array.IndexOf(headers, "pl_bmasse")].ToNullable<decimal>();
+
+            var massClass = CalculateMassClass(mass, radius);
+
+            var esi = (decimal)CalculateEsi(radius, teq);
+
+
             return new Planet()
             {
                 Name = planetName,
@@ -131,17 +144,18 @@ namespace ExoPlanetHunter.PHL.Integration
                 TsMin = teqmin,
                 TsMax = teqmax,
                 Mass = mass,
-                MassClass = CalculateMassClass(mass),
+                MassClass = CalculateMassClass(mass, radius),
                 Radius = values[Array.IndexOf(headers, "pl_rade")].ToNullable<decimal>(),
                 Density = values[Array.IndexOf(headers, "pl_dens")].ToNullable<decimal>(),
                 Period = values[Array.IndexOf(headers, "pl_orbper")].ToNullable<decimal>(),
                 Eccentricity = values[Array.IndexOf(headers, "pl_orbeccen")].ToNullable<decimal>(),
                 SemMajorAxis = values[Array.IndexOf(headers, "pl_orbsmax")].ToNullable<decimal>(),
                 MeanDistance = meandist,
-                Habitable = meandist >= habZoneMin && meandist <= habZoneMax,
-                Esi = (decimal)CalculateEsi(radius,teq),
+                Habitable = meandist >= habZoneMin && meandist <= habZoneMax && (massClass == "Superterran" || massClass == "Terran") && esi>(decimal)0.6,
+                Esi = esi,
                 Disc_Method = values[Array.IndexOf(headers, "discoverymethod")].Replace(" ", string.Empty),
                 Disc_Year = values[Array.IndexOf(headers, "disc_year")].ConvertYearIntToNullable(),
+                AtmosphereClass = "",
             };
 
         }
@@ -176,6 +190,12 @@ namespace ExoPlanetHunter.PHL.Integration
 
                         var oldstar = oldstars.First(p => p.Name == star.Name);
 
+                        if (oldstar.Planets == null)
+                        {
+
+                            continue;
+                        }
+
                         foreach (var planet in oldstar.Planets)
                         {
                             if (!oldstar.Planets.Any(p => p.Name == planet.Name))
@@ -191,12 +211,12 @@ namespace ExoPlanetHunter.PHL.Integration
                 context.SaveChanges();
             }
         }
-        public (decimal habZoneMin, decimal habZoneMax) CalculateGoldiLockZone(decimal? magnitude, decimal? starDistance)
+        public (decimal? habZoneMin, decimal? habZoneMax) CalculateGoldiLockZone(decimal? magnitude, decimal? starDistance)
         {
             if(magnitude ==null || starDistance == null)
             {
 
-                return (0, 0);
+                return (null, null);
             }
 
             var mv = (double)magnitude - (5 * Math.Log10((double)starDistance / 10));
@@ -254,9 +274,7 @@ namespace ExoPlanetHunter.PHL.Integration
             var cdr = Math.PI / 180.0;
             var csr = cdr / 3600.0;
             var a = Math.Cos(dec1);
-            var x1 = new[] {
-        a * Math.Cos(ra1), a * Math.Sin(ra1), Math.Sin(dec1)
-      };
+            var x1 = new[] { a * Math.Cos(ra1), a * Math.Sin(ra1), Math.Sin(dec1)};
             var t = 0.001 * (epoch2 - epoch1);
             var st = 0.001 * (epoch1 - 1900.0);
             a = csr * t * (23042.53 + st * (139.75 + 0.06 * st) + t * (30.23 - 0.27 * st + 18.0 * t));
@@ -269,20 +287,10 @@ namespace ExoPlanetHunter.PHL.Integration
             var cosb = Math.Cos(b);
             var cosc = Math.Cos(c);
             var r = new double[][] {
-        new [] {
-          0.0,
-          0.0,
-          0.0
-        }, new [] {
-          0.0,
-          0.0,
-          0.0
-        }, new [] {
-          0.0,
-          0.0,
-          0.0
-        }
-      };
+                new [] { 0.0, 0.0, 0.0 },
+                new [] { 0.0,0.0, 0.0},
+                new [] { 0.0, 0.0,0.0 }
+            };
             r[0][0] = cosa * cosb * cosc - sina * sinb;
             r[0][1] = -cosa * sinb - sina * cosb * cosc;
             r[0][2] = -cosb * sinc;
@@ -292,11 +300,8 @@ namespace ExoPlanetHunter.PHL.Integration
             r[2][0] = cosa * sinc;
             r[2][1] = -sina * sinc;
             r[2][2] = cosc;
-            var x2 = new[] {
-        0.0,
-        0.0,
-        0.0
-      };
+            var x2 = new[] { 0.0, 0.0, 0.0};
+
             for (var i = 0; i < 3; i++)
                 x2[i] = r[i][0] * x1[0] + r[i][1] * x1[1] + r[i][2] * x1[2];
             var ra2 = Math.Atan2(x2[1], x2[0]);
@@ -329,9 +334,48 @@ namespace ExoPlanetHunter.PHL.Integration
             return "";
         }
 
-        public string CalculateMassClass(decimal? mass)
+        public string CalculateMassClass(decimal? mass, decimal? radius)
         {
+            if (mass == null && radius != null) {
+                if (radius <= (decimal)0.4)
+                {
+                    return "Mercurian";
 
+                }
+
+                if (radius <= (decimal)0.6 && radius > (decimal)0.4)
+                {
+                    return "Subterran";
+
+                }
+
+
+                if (radius <= (decimal)2.0 && radius > (decimal)0.6)
+                {
+                    return "Terran";
+
+                }
+
+                if (radius <= (decimal)4.0 && radius > (decimal)2.0)
+                {
+                    return "Superterran";
+
+                }
+
+                if (radius <= (decimal)9.0 && radius > (decimal)4.0)
+                {
+                    return "Neptunian";
+
+                }
+
+                if (radius > (decimal)9.0)
+                {
+                    return "Jovian";
+
+                }
+
+
+            }
             if (mass <= (decimal)0.1)
             {
                 return "Mercurian";

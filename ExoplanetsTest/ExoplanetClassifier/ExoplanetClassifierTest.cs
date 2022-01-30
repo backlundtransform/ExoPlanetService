@@ -108,7 +108,7 @@ namespace ExoplanetHunter.UnitTest.ExoplantetClassifier
 
             var planets = stars.SelectMany(p => p.Planets).Count();
 
-            Assert.IsTrue(planets == 756);
+            Assert.IsTrue(planets == 755);
         }
 
 
