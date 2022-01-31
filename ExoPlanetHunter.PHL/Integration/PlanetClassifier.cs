@@ -13,10 +13,13 @@ namespace ExoPlanetHunter.PHL.Integration
     {
 
         private readonly string _exoplanetpath = $"D:/Exoplanetdata/PS_2022.01.30_08.26.54.csv";
+        private readonly string _exoplanethabpath = $"D:/Exoplanetdata/habexo.csv";
 
         public List<Star> DownloadAndClassifieStars()
         {
             var readText = File.ReadAllLines(_exoplanetpath).Select(x => x.Split(",")).ToArray();
+
+            var habDict = File.ReadAllLines(_exoplanethabpath).Select(x => x.Split(",")).ToDictionary(p=>p[0], p => p[1].ToNullable<decimal>());
 
             var headers = readText.First();
             var stars = new List<Star>();
@@ -56,11 +59,13 @@ namespace ExoPlanetHunter.PHL.Integration
 
                         var (habZoneMin, habZoneMax) = CalculateGoldiLockZone(apparMag, distance, type);
 
-                        if(habZoneMin==null && habZoneMax == null)
+                        if(habZoneMin==null && habZoneMax == null && !habDict.ContainsKey(planetName))
                         {
 
                             continue;
                         }
+
+                   
 
                         var star = new Star()
                         {
@@ -82,7 +87,7 @@ namespace ExoPlanetHunter.PHL.Integration
                             }
                         };
 
-                        var planet = GetPlanet(values, headers, planetName, habZoneMin, habZoneMax, mass);
+                        var planet = GetPlanet(values, headers, planetName, habZoneMin, habZoneMax, mass, habDict);
                         star.Planets.Add(planet);
 
                         stars.Add(star);
@@ -105,7 +110,7 @@ namespace ExoPlanetHunter.PHL.Integration
                         try
                         {
 
-                            var planet = GetPlanet(values, headers, planetName,oldstar.HabZoneMin, oldstar.HabZoneMax,oldstar.Mass);
+                            var planet = GetPlanet(values, headers, planetName,oldstar.HabZoneMin, oldstar.HabZoneMax,oldstar.Mass, habDict);
 
                             oldstar.Planets.Add(planet);
                         }
@@ -175,7 +180,7 @@ namespace ExoPlanetHunter.PHL.Integration
 
         }
 
-        public Planet GetPlanet(string[] values, string[] headers, string planetName, decimal? habZoneMin, decimal? habZoneMax, decimal? starMass)
+        public Planet GetPlanet(string[] values, string[] headers, string planetName, decimal? habZoneMin, decimal? habZoneMax, decimal? starMass, Dictionary<string,decimal?> habDic)
         {
             var teq = values[Array.IndexOf(headers, "pl_eqt")].ToNullable<decimal>();
             var teqmin = teq+values[Array.IndexOf(headers, "pl_eqterr2")].ToNullable<decimal>();
@@ -200,9 +205,8 @@ namespace ExoPlanetHunter.PHL.Integration
 
             var massClass = CalculateMassClass(mass, radius);
             var flux = values[Array.IndexOf(headers, "pl_insol")].ToNullable<decimal>();
-           
 
-            var esi = (decimal)CalculateEsi(radius, flux);
+            var esi = habDic.ContainsKey(planetName)? habDic[planetName]: (decimal)CalculateEsi(radius, flux);
 
 
             return new Planet()
@@ -484,32 +488,32 @@ namespace ExoPlanetHunter.PHL.Integration
 
                 }
 
-                if (radius <= (decimal)0.6 && radius > (decimal)0.4)
+                if (radius <= (decimal)0.8 && radius > (decimal)0.4)
                 {
                     return "Subterran";
 
                 }
 
 
-                if (radius <= (decimal)2.0 && radius > (decimal)0.6)
+                if (radius <= (decimal)1.6 && radius > (decimal)0.8)
                 {
                     return "Terran";
 
                 }
 
-                if (radius <= (decimal)4.0 && radius > (decimal)2.0)
+                if (radius <= (decimal)2.5 && radius > (decimal)1.6)
                 {
                     return "Superterran";
 
                 }
 
-                if (radius <= (decimal)9.0 && radius > (decimal)4.0)
+                if (radius <= (decimal)7.0 && radius > (decimal)2.5)
                 {
                     return "Neptunian";
 
                 }
 
-                if (radius > (decimal)9.0)
+                if (radius > (decimal)7.0)
                 {
                     return "Jovian";
 

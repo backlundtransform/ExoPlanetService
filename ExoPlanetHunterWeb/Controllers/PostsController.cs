@@ -201,8 +201,7 @@ namespace ExoPlanetHunter.Web.Controllers
 
    
         [HttpPost]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Route("api/update")]
         public IActionResult ExecuteJob2()
         {
             var job = new MyJob();
