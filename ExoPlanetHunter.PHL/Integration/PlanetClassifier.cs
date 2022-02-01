@@ -81,6 +81,8 @@ namespace ExoPlanetHunter.PHL.Integration
                             Distance = distance,
                             HabZoneMin = habZoneMin,
                             HabZoneMax = habZoneMax,
+                            Ra = (decimal)ra,
+                            Dec = (decimal)dec,
                             Constellation = new Constellation()
                             {
                                 Name = GetConstellation((double)ra, (double)dec)
