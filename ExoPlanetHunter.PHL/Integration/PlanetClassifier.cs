@@ -208,7 +208,7 @@ namespace ExoPlanetHunter.PHL.Integration
             var massClass = CalculateMassClass(mass, radius);
             var flux = values[Array.IndexOf(headers, "pl_insol")].ToNullable<decimal>();
 
-            var esi = habDic.ContainsKey(planetName)? habDic[planetName]: (decimal)CalculateEsi(radius, flux);
+            var esi = habDic.ContainsKey(planetName)? habDic[planetName]: null;
 
 
             return new Planet()
@@ -347,22 +347,6 @@ namespace ExoPlanetHunter.PHL.Integration
             var mbol = mv + bc;
             var lStar = Math.Pow(10, (mbol - 4.72) / -2.5);
             return ((decimal)Math.Sqrt(lStar / 1.1), (decimal)Math.Sqrt(lStar / 0.53));
-
-        }
-
-        public double CalculateEsi(decimal? radius, decimal? flux)
-        {
-
-            if (radius == null || flux == null)
-            {
-
-                return 0;
-            }
-
-
-            var esi = 1 - Math.Sqrt(0.5 * (Math.Pow(((double)flux - 1) / ((double)flux + 1), 2) + Math.Pow(((double)radius - 1) / (double)(radius + 1), 2)));
-
-            return esi;
 
         }
 
