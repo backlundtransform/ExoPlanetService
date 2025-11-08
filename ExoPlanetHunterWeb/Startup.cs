@@ -19,6 +19,8 @@ using System;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
 
 namespace ExoPlanetHunter.Web
 {
@@ -94,7 +96,30 @@ namespace ExoPlanetHunter.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseStaticFiles();
+
+           
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "astro3d")),
+                RequestPath = "/astro3d"
+            });
+            app.MapWhen(context => context.Request.Path.StartsWithSegments("/astro3d") &&
+                        !Path.HasExtension(context.Request.Path.Value),
+    builder =>
+    {
+        builder.Run(async context =>
+        {
+            context.Response.ContentType = "text/html";
+            await context.Response.SendFileAsync(Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "astro3d",
+                "index.html"
+            ));
+        });
+    });
+
             app.UseSwagger();
             app.UseCookiePolicy();
             app.UseHttpsRedirection();
@@ -123,7 +148,9 @@ namespace ExoPlanetHunter.Web
                     new { controller = "Account", action = "login" }).MapSpaFallbackRoute(
                     name: "spa-fallback",
                     defaults: new { controller = "App", action = "Index" });
-         
+
+        
+
                 routeBuilder.EnableDependencyInjection(b =>
                 {
                     b.AddService(Microsoft.OData.ServiceLifetime.Singleton, typeof(ODataUriResolver), sp => new StringAsEnumResolver());
@@ -140,9 +167,9 @@ namespace ExoPlanetHunter.Web
                 var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
                 using (var context = scope.ServiceProvider.GetService<PostContext>())
                 {
-                    var con = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText("config.json"));
-                    var user = new IdentityUser { UserName = con.Name, Email = con.Email.ToString() };
-                    await manager.CreateAsync(user, con.PassWord.ToString());
+                    //var con = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText("config.json"));
+                   // var user = new IdentityUser { UserName = con.Name, Email = con.Email.ToString() };
+                    //await manager.CreateAsync(user, con.PassWord.ToString());
                     context.SaveChanges();
                 }
             }
