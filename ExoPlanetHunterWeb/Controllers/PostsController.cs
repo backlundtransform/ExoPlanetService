@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace ExoPlanetHunter.Web.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class PostsController : Controller
     {
         private const string _title= "Exoplanets Exploring the universe";
@@ -206,6 +207,21 @@ namespace ExoPlanetHunter.Web.Controllers
         {
             var job = new MyJob();
             job.Execute2();
+            using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
+            {
+                var col = db.GetCollection<ExoPlanetsDto>("exoplanet");
+                col.Delete(Query.All());
+            }
+            _planetService.CacheExoPlanets();
+            return Content("job done");
+        }
+
+        [HttpGet]
+        [Route("api/newupdate")]
+
+        public IActionResult ExecuteUpdate()
+        {
+          
             using (var db = new LiteDatabase($@"{_env.ContentRootPath}\nosqlexo.db"))
             {
                 var col = db.GetCollection<ExoPlanetsDto>("exoplanet");

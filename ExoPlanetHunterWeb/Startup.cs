@@ -81,10 +81,10 @@ namespace ExoPlanetHunter.Web
                 c.IncludeXmlComments(xmlPath);
             });
             Logic.Startup(services, _env);
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/build";
-            });
+            //services.AddSpaStaticFiles(configuration =>
+            //{
+            //    configuration.RootPath = "ClientApp/build";
+            //});
 
             services.AddRouting();
         }
@@ -97,28 +97,43 @@ namespace ExoPlanetHunter.Web
                 app.UseDeveloperExceptionPage();
             }
 
-           
+
 
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "astro3d")),
                 RequestPath = "/astro3d"
             });
-            app.MapWhen(context => context.Request.Path.StartsWithSegments("/astro3d") &&
-                        !Path.HasExtension(context.Request.Path.Value),
-    builder =>
-    {
-        builder.Run(async context =>
-        {
-            context.Response.ContentType = "text/html";
-            await context.Response.SendFileAsync(Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "wwwroot",
-                "astro3d",
-                "index.html"
-            ));
-        });
-    });
+
+            app.MapWhen(context =>
+            {
+                var path = context.Request.Path.Value;
+                // Om root eller "/index.html", servera landing page
+                return string.IsNullOrEmpty(path) || path == "/";
+            }, builder =>
+            {
+                builder.Run(async context =>
+                {
+                    context.Response.ContentType = "text/html";
+                    await context.Response.SendFileAsync(Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "index.html"
+                    ));
+                });
+            });
+
+            app.MapWhen(context =>
+                context.Request.Path.StartsWithSegments("/astro3d") &&
+                !Path.HasExtension(context.Request.Path.Value),
+            builder =>
+            {
+                builder.Run(async context =>
+                {
+                    context.Response.ContentType = "text/html";
+                    await context.Response.SendFileAsync(Path.Combine(env.WebRootPath, "astro3d", "index.html"));
+                });
+            });
 
             app.UseSwagger();
             app.UseCookiePolicy();
@@ -136,18 +151,7 @@ namespace ExoPlanetHunter.Web
                 routeBuilder.MapODataServiceRoute("odata", "odata", model);
 
 
-                routeBuilder.MapRoute(
-                    "default",
-                 "{action}/{id?}/{title?}",
-                    new { controller = "Posts", action = "index" }).MapRoute(
-                    "Account",
-                    "{controller}/{action}/{id?}",
-                    new { controller = "Account", action = "login" }).MapRoute(
-                    "Tags",
-                    "{controller}/{action}/{id?}",
-                    new { controller = "Account", action = "login" }).MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "App", action = "Index" });
+                
 
         
 
