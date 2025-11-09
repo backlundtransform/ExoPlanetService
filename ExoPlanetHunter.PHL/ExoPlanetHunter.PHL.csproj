@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <None Update="constellation.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

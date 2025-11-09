@@ -105,6 +105,12 @@ namespace ExoPlanetHunter.Web
                 RequestPath = "/astro3d"
             });
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "astro3d", "textures")),
+                RequestPath = "/textures"
+            });
+
             app.MapWhen(context =>
             {
                 var path = context.Request.Path.Value;
