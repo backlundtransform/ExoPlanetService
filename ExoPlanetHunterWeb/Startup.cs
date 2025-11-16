@@ -97,38 +97,42 @@ namespace ExoPlanetHunter.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            // Serve privacy policy and other HTML files
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "html")),
+                RequestPath = "/html"
+            });
 
-
+            // Serve astro3d assets
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "astro3d")),
                 RequestPath = "/astro3d"
             });
 
+            // Serve astro3d textures
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "astro3d", "textures")),
                 RequestPath = "/textures"
             });
 
+            // Serve root index.html for landing page
             app.MapWhen(context =>
             {
                 var path = context.Request.Path.Value;
-                // Om root eller "/index.html", servera landing page
                 return string.IsNullOrEmpty(path) || path == "/";
             }, builder =>
             {
                 builder.Run(async context =>
                 {
                     context.Response.ContentType = "text/html";
-                    await context.Response.SendFileAsync(Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "wwwroot",
-                        "index.html"
-                    ));
+                    await context.Response.SendFileAsync(Path.Combine(env.WebRootPath, "index.html"));
                 });
             });
 
+            // Serve astro3d SPA index.html for any unmatched /astro3d route
             app.MapWhen(context =>
                 context.Request.Path.StartsWithSegments("/astro3d") &&
                 !Path.HasExtension(context.Request.Path.Value),
@@ -156,15 +160,10 @@ namespace ExoPlanetHunter.Web
             {
                 routeBuilder.MapODataServiceRoute("odata", "odata", model);
 
-
-                
-
-        
-
                 routeBuilder.EnableDependencyInjection(b =>
                 {
                     b.AddService(Microsoft.OData.ServiceLifetime.Singleton, typeof(ODataUriResolver), sp => new StringAsEnumResolver());
-                }); ;
+                });
             });
 
             Initialize(app.ApplicationServices);
