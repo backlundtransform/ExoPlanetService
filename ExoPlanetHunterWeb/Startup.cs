@@ -156,6 +156,19 @@ namespace ExoPlanetHunter.Web
 
             IEdmModel model = GetEdmModel(app.ApplicationServices);
             app.UseAuthentication();
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+
+                if (context.Response.StatusCode == 404 &&
+                    !Path.HasExtension(context.Request.Path.Value))
+                {
+                    context.Response.StatusCode = 200;
+                    context.Response.ContentType = "text/html";
+                    await context.Response.SendFileAsync(Path.Combine(env.WebRootPath, "index.html"));
+                }
+            });
             app.UseMvc(routeBuilder =>
             {
                 routeBuilder.MapODataServiceRoute("odata", "odata", model);
