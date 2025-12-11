@@ -253,6 +253,11 @@ namespace ExoPlanetHunter.Service.Services
         public LumEnum GetStarLuminosity(Planet p)
         {
             var type = p.Star?.Type;
+
+            if(type == null)
+            {
+                return LumEnum.Nodata;
+            }
             if (type.EndsWith("0"))
             {
                 return LumEnum.very_luminous_supergiant;
@@ -302,14 +307,14 @@ namespace ExoPlanetHunter.Service.Services
 
         private string GetPlanetColor(Planet p)
         {
-            if (p.MassClass.Equals("Neptunian"))
+            if (p.MassClass!= null&& p.MassClass.Equals("Neptunian"))
             {
                 return "neptunian";
             }
            
-            if (p.AtmosphereClass.Equals("no-atmosphere"))
+            if (p.AtmosphereClass != null&&p.AtmosphereClass.Equals("no-atmosphere") | p.AtmosphereClass == null)
             {
-                if (p.MassClass.Equals("Jovian"))
+                if (p.MassClass != null && p.MassClass.Equals("Jovian"))
                 {
                     return "jovian";
                 }
@@ -317,52 +322,52 @@ namespace ExoPlanetHunter.Service.Services
             }
             else
             {
-                if (p.ZoneClass.Equals("Hot"))
+                if (p.ZoneClass != null && p.ZoneClass.Equals("Hot"))
                 {
-                    if (p.MassClass.Equals("Superterran"))
+                    if (p.MassClass != null && p.MassClass.Equals("Superterran"))
                     {
                         return "hotsuperearth";
                     }
 
-                    if (p.MassClass.Equals("Jovian"))
+                    if (p.MassClass != null && p.MassClass.Equals("Jovian"))
                     {
                         return "hotjupiter";
                     }
 
-                    if (p.MassClass.Equals("Terran") || p.MassClass.Equals("Subterran"))
+                    if (p.MassClass != null && (p.MassClass.Equals("Terran") || p.MassClass.Equals("Subterran")))
                     {
                         return "hotstone";
                     }
                 }
 
-                if (p.ZoneClass.Equals("Cold"))
+                if (p.ZoneClass != null && p.ZoneClass.Equals("Cold"))
                 {
-                    if (p.MassClass.Equals("Superterran"))
+                    if (p.MassClass != null && p.MassClass.Equals("Superterran"))
                     {
                         return "coldsuperearth";
                     }
 
-                    if (p.MassClass.Equals("Jovian"))
+                    if (p.MassClass != null && p.MassClass.Equals("Jovian"))
                     {
                         return "jovian";
                     }
-                    if (p.MassClass.Equals("Terran") || p.MassClass.Equals("Subterran"))
+                    if (p.MassClass != null && (p.MassClass.Equals("Terran") || p.MassClass.Equals("Subterran")))
                     {
                         return "coldstone";
                     }
                 }
                 else
                 {
-                    if (p.MassClass.Equals("Superterran"))
+                    if (p.MassClass != null && p.MassClass.Equals("Superterran"))
                     {
                         return "superearth";
                     }
 
-                    if (p.MassClass.Equals("Jovian"))
+                    if (p.MassClass != null && p.MassClass.Equals("Jovian"))
                     {
                         return "jovian";
                     }
-                    if (p.MassClass.Equals("Terran") || p.MassClass.Equals("Subterran"))
+                    if (p.MassClass != null && (p.MassClass.Equals("Terran") || p.MassClass.Equals("Subterran")))
                     {
                         return "stone";
                     }

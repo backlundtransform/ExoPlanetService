@@ -30,6 +30,7 @@
   <ItemGroup>
     <Folder Include="ClientApp\" />
     <Folder Include="logs\" />
+    <Folder Include="Views\App\" />
     <Folder Include="wwwroot\logs\" />
   </ItemGroup>
 

@@ -81,10 +81,10 @@ namespace ExoPlanetHunter.Web
                 c.IncludeXmlComments(xmlPath);
             });
             Logic.Startup(services, _env);
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/build";
-            });
+            //services.AddSpaStaticFiles(configuration =>
+            //{
+            //    configuration.RootPath = "ClientApp/build";
+            //});
 
             services.AddRouting();
         }
@@ -97,28 +97,53 @@ namespace ExoPlanetHunter.Web
                 app.UseDeveloperExceptionPage();
             }
 
-           
+            // Serve privacy policy and other HTML files
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "html")),
+                RequestPath = "/html"
+            });
 
+            // Serve astro3d assets
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "astro3d")),
                 RequestPath = "/astro3d"
             });
-            app.MapWhen(context => context.Request.Path.StartsWithSegments("/astro3d") &&
-                        !Path.HasExtension(context.Request.Path.Value),
-    builder =>
-    {
-        builder.Run(async context =>
-        {
-            context.Response.ContentType = "text/html";
-            await context.Response.SendFileAsync(Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "wwwroot",
-                "astro3d",
-                "index.html"
-            ));
-        });
-    });
+
+            // Serve astro3d textures
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "astro3d", "textures")),
+                RequestPath = "/textures"
+            });
+
+            // Serve root index.html for landing page
+            app.MapWhen(context =>
+            {
+                var path = context.Request.Path.Value;
+                return string.IsNullOrEmpty(path) || path == "/";
+            }, builder =>
+            {
+                builder.Run(async context =>
+                {
+                    context.Response.ContentType = "text/html";
+                    await context.Response.SendFileAsync(Path.Combine(env.WebRootPath, "index.html"));
+                });
+            });
+
+            // Serve astro3d SPA index.html for any unmatched /astro3d route
+            app.MapWhen(context =>
+                context.Request.Path.StartsWithSegments("/astro3d") &&
+                !Path.HasExtension(context.Request.Path.Value),
+            builder =>
+            {
+                builder.Run(async context =>
+                {
+                    context.Response.ContentType = "text/html";
+                    await context.Response.SendFileAsync(Path.Combine(env.WebRootPath, "astro3d", "index.html"));
+                });
+            });
 
             app.UseSwagger();
             app.UseCookiePolicy();
@@ -131,30 +156,27 @@ namespace ExoPlanetHunter.Web
 
             IEdmModel model = GetEdmModel(app.ApplicationServices);
             app.UseAuthentication();
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+
+                if (context.Response.StatusCode == 404 &&
+                    !Path.HasExtension(context.Request.Path.Value))
+                {
+                    context.Response.StatusCode = 200;
+                    context.Response.ContentType = "text/html";
+                    await context.Response.SendFileAsync(Path.Combine(env.WebRootPath, "index.html"));
+                }
+            });
             app.UseMvc(routeBuilder =>
             {
                 routeBuilder.MapODataServiceRoute("odata", "odata", model);
 
-
-                routeBuilder.MapRoute(
-                    "default",
-                 "{action}/{id?}/{title?}",
-                    new { controller = "Posts", action = "index" }).MapRoute(
-                    "Account",
-                    "{controller}/{action}/{id?}",
-                    new { controller = "Account", action = "login" }).MapRoute(
-                    "Tags",
-                    "{controller}/{action}/{id?}",
-                    new { controller = "Account", action = "login" }).MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "App", action = "Index" });
-
-        
-
                 routeBuilder.EnableDependencyInjection(b =>
                 {
                     b.AddService(Microsoft.OData.ServiceLifetime.Singleton, typeof(ODataUriResolver), sp => new StringAsEnumResolver());
-                }); ;
+                });
             });
 
             Initialize(app.ApplicationServices);
