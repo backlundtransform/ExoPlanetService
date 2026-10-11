@@ -1,0 +1,22 @@
+{
+  "path": "/api/Chart/PlanetDistance?max=100",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "angle": {
+          "type": "number"
+        },
+        "distance": {
+          "type": "number"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

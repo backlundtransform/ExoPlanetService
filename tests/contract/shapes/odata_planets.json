@@ -1,0 +1,6 @@
+{
+  "path": "/odata/Planets?$top=1",
+  "status": 500,
+  "isJson": false,
+  "shape": null
+}

@@ -200,7 +200,7 @@ namespace ExoPlanetHunter.Web.Controllers
             return Content("job done");
         }
 
-   
+        [Authorize]
         [HttpPost]
         [Route("api/update")]
         public IActionResult ExecuteJob2()
@@ -216,9 +216,9 @@ namespace ExoPlanetHunter.Web.Controllers
             return Content("job done");
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/newupdate")]
-
         public IActionResult ExecuteUpdate()
         {
           

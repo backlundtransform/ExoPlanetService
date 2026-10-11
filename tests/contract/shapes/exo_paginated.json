@@ -1,0 +1,204 @@
+{
+  "path": "/api/ExoSolarSystems/GetPaginatedPlanets?page=1&hab=false&moon=false&type=&key=Mass&name=",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "atmosphere": {
+          "type": "number"
+        },
+        "comp": {
+          "type": "number"
+        },
+        "coordinate": {
+          "type": "object",
+          "properties": {
+            "latitude": {
+              "type": "number",
+              "nullable": true
+            },
+            "longitude": {
+              "type": "number"
+            }
+          }
+        },
+        "density": {
+          "type": "number",
+          "nullable": true
+        },
+        "discMethod": {
+          "type": "number"
+        },
+        "discYear": {
+          "type": "number"
+        },
+        "distance": {
+          "type": "number"
+        },
+        "eccentricity": {
+          "type": "number",
+          "nullable": true
+        },
+        "escapeVelocity": {
+          "type": "number",
+          "nullable": true
+        },
+        "esi": {
+          "type": "number",
+          "nullable": true
+        },
+        "gravity": {
+          "type": "number",
+          "nullable": true
+        },
+        "hab": {
+          "type": "boolean"
+        },
+        "habType": {
+          "type": "number"
+        },
+        "hza": {
+          "type": "null"
+        },
+        "hzc": {
+          "type": "null"
+        },
+        "hzd": {
+          "type": "null"
+        },
+        "hzi": {
+          "type": "null"
+        },
+        "id": {
+          "type": "number"
+        },
+        "img": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string"
+            }
+          }
+        },
+        "mass": {
+          "type": "number",
+          "nullable": true
+        },
+        "massType": {
+          "type": "number"
+        },
+        "meanDistance": {
+          "type": "number"
+        },
+        "message": {
+          "type": "null"
+        },
+        "moons": {
+          "type": "null"
+        },
+        "name": {
+          "type": "string"
+        },
+        "period": {
+          "type": "number",
+          "nullable": true
+        },
+        "radius": {
+          "type": "number"
+        },
+        "radiusEu": {
+          "type": "number"
+        },
+        "sph": {
+          "type": "null"
+        },
+        "star": {
+          "type": "object",
+          "properties": {
+            "age": {
+              "type": "number",
+              "nullable": true
+            },
+            "color": {
+              "type": "number",
+              "nullable": true
+            },
+            "constellation": {
+              "type": "number"
+            },
+            "habZoneMax": {
+              "type": "number"
+            },
+            "habZoneMin": {
+              "type": "number",
+              "nullable": true
+            },
+            "luminosity": {
+              "type": "number"
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "mass": {
+              "type": "number"
+            },
+            "message": {
+              "type": "null"
+            },
+            "name": {
+              "type": "string"
+            },
+            "noHabPlanets": {
+              "type": "null"
+            },
+            "noPlanets": {
+              "type": "number"
+            },
+            "radius": {
+              "type": "number"
+            },
+            "radiusSu": {
+              "type": "number"
+            },
+            "temp": {
+              "type": "number",
+              "nullable": true
+            },
+            "type": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        },
+        "starDistance": {
+          "type": "null"
+        },
+        "surfacePressure": {
+          "type": "null"
+        },
+        "temp": {
+          "type": "number",
+          "nullable": true
+        },
+        "tempMax": {
+          "type": "number",
+          "nullable": true
+        },
+        "tempMin": {
+          "type": "number",
+          "nullable": true
+        },
+        "tempZone": {
+          "type": "number"
+        },
+        "type": {
+          "type": "string",
+          "nullable": true
+        }
+      }
+    }
+  }
+}

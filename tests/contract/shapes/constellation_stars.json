@@ -1,0 +1,102 @@
+{
+  "path": "/api/Constellations/1/stars",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "number"
+      },
+      "name": {
+        "type": "string"
+      },
+      "stars": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "age": {
+              "type": "number",
+              "nullable": true
+            },
+            "apparMag": {
+              "type": "number"
+            },
+            "constellation": {
+              "type": "string"
+            },
+            "dec": {
+              "type": "number"
+            },
+            "distance": {
+              "type": "number"
+            },
+            "feH": {
+              "type": "null"
+            },
+            "habCat": {
+              "type": "null"
+            },
+            "habZoneMax": {
+              "type": "number",
+              "nullable": true
+            },
+            "habZoneMin": {
+              "type": "number",
+              "nullable": true
+            },
+            "id": {
+              "type": "number"
+            },
+            "luminosity": {
+              "type": "number",
+              "nullable": true
+            },
+            "magfromPlanet": {
+              "type": "null"
+            },
+            "mass": {
+              "type": "number"
+            },
+            "message": {
+              "type": "null"
+            },
+            "name": {
+              "type": "string"
+            },
+            "nameHD": {
+              "type": "null"
+            },
+            "nameHIP": {
+              "type": "null"
+            },
+            "planets": {
+              "type": "number"
+            },
+            "ra": {
+              "type": "number"
+            },
+            "radius": {
+              "type": "number",
+              "nullable": true
+            },
+            "sizefromPlanet": {
+              "type": "null"
+            },
+            "teff": {
+              "type": "number",
+              "nullable": true
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "message": {
+        "type": "null"
+      }
+    }
+  }
+}

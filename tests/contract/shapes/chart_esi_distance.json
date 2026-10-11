@@ -1,0 +1,28 @@
+{
+  "path": "/api/Chart/EsiDistance",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string"
+        },
+        "distance": {
+          "type": "number"
+        },
+        "esi": {
+          "type": "number"
+        },
+        "planetName": {
+          "type": "string"
+        },
+        "starName": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

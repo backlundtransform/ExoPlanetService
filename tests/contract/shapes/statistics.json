@@ -1,0 +1,22 @@
+{
+  "path": "/api/Statistics",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "object",
+    "properties": {
+      "confirmedPlanets": {
+        "type": "number"
+      },
+      "confirmedHabitablePlanets": {
+        "type": "number"
+      },
+      "possibleHabitableMoons": {
+        "type": "number"
+      },
+      "dateUpdated": {
+        "type": "string"
+      }
+    }
+  }
+}

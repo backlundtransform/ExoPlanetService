@@ -1,0 +1,45 @@
+200     378 ms  stars_list  4192
+200     205 ms  stars_odata_top  5
+204     210 ms  stars_odata_top_orderby  
+204     214 ms  stars_odata_filter  
+204     212 ms  stars_odata_select  
+200     214 ms  star_by_id  
+200     192 ms  star_planets  
+204     237 ms  star_not_found  
+200     418 ms  planets_list  5649
+200     181 ms  planets_odata_top  5
+204     184 ms  planets_odata_top_orderby  
+200     253 ms  planet_by_id  
+200     192 ms  constellations_list  89
+200     233 ms  constellation_by_id  
+200     211 ms  constellation_stars  
+200     188 ms  constellation_star  
+200     237 ms  constellation_star_planets  
+200    2249 ms  exo_planets  5649
+200     445 ms  exo_planets_odata_top  5
+200     405 ms  exo_system_by_name  
+200     430 ms  exo_systems_per_constellation  707
+200     322 ms  exo_systems_per_constellation_page  30
+200     499 ms  exo_habitable_planets  72
+200     680 ms  exo_all_planets  5649
+200     436 ms  exo_paginated  30
+200     308 ms  exo_paginated_habitable  30
+200     253 ms  exo_images  
+200     209 ms  chart_hr  
+200     378 ms  chart_hr_all  
+200     310 ms  chart_types_mass  6
+200     190 ms  chart_types_method  7
+200     234 ms  chart_types_temperature  3
+200     213 ms  chart_types_year  36
+200     213 ms  chart_planet_distance  73
+200     212 ms  chart_planet_distance_max  28
+200     316 ms  chart_esi_distance  73
+200     742 ms  chart_mass_orbit  5377
+500   17464 ms  chart_mast  
+200     191 ms  maps_constellation_lines  
+200     229 ms  maps_star_markers  
+200     244 ms  statistics  
+200     202 ms  related_content  0
+200     183 ms  odata_metadata  
+500     169 ms  odata_planets  
+500     191 ms  odata_stars  

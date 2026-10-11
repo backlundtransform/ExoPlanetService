@@ -1,0 +1,79 @@
+{
+  "path": "/api/Stars/2",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "number"
+      },
+      "name": {
+        "type": "string"
+      },
+      "nameHD": {
+        "type": "null"
+      },
+      "nameHIP": {
+        "type": "null"
+      },
+      "constellation": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "mass": {
+        "type": "number"
+      },
+      "radius": {
+        "type": "number"
+      },
+      "teff": {
+        "type": "number"
+      },
+      "luminosity": {
+        "type": "number"
+      },
+      "feH": {
+        "type": "null"
+      },
+      "age": {
+        "type": "number"
+      },
+      "apparMag": {
+        "type": "number"
+      },
+      "distance": {
+        "type": "number"
+      },
+      "ra": {
+        "type": "number"
+      },
+      "dec": {
+        "type": "number"
+      },
+      "magfromPlanet": {
+        "type": "null"
+      },
+      "sizefromPlanet": {
+        "type": "null"
+      },
+      "habZoneMin": {
+        "type": "number"
+      },
+      "habZoneMax": {
+        "type": "number"
+      },
+      "habCat": {
+        "type": "null"
+      },
+      "planets": {
+        "type": "number"
+      },
+      "message": {
+        "type": "null"
+      }
+    }
+  }
+}

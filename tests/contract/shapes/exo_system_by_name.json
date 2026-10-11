@@ -1,0 +1,73 @@
+{
+  "path": "/api/ExoSolarSystems/GetExoSolarSystemByName?name=TRAPPIST-1",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "coordinate": {
+        "type": "object",
+        "properties": {
+          "longitude": {
+            "type": "number"
+          },
+          "latitude": {
+            "type": "number"
+          }
+        }
+      },
+      "color": {
+        "type": "number"
+      },
+      "luminosity": {
+        "type": "number"
+      },
+      "radius": {
+        "type": "number"
+      },
+      "habZoneMin": {
+        "type": "number"
+      },
+      "habZoneMax": {
+        "type": "number"
+      },
+      "planets": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "eccentricity": {
+              "type": "number"
+            },
+            "id": {
+              "type": "number"
+            },
+            "img": {
+              "type": "object",
+              "properties": {
+                "uri": {
+                  "type": "string"
+                }
+              }
+            },
+            "name": {
+              "type": "string"
+            },
+            "radius": {
+              "type": "number"
+            },
+            "starDistance": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "message": {
+        "type": "null"
+      }
+    }
+  }
+}

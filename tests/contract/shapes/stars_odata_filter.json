@@ -1,0 +1,6 @@
+{
+  "path": "/api/Stars?$filter=constellation eq 'Lyr'&$top=5",
+  "status": 204,
+  "isJson": false,
+  "shape": null
+}
