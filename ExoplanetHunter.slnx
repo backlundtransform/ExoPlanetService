@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ExoplanetHunter.Api/ExoplanetHunter.Api.csproj" />
+    <Project Path="src/ExoplanetHunter.Domain/ExoplanetHunter.Domain.csproj" />
+  </Folder>
+</Solution>
