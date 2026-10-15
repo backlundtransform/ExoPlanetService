@@ -13,27 +13,30 @@ public sealed class CatalogStore
 {
     private CatalogView _current;
 
-    public CatalogStore(CatalogSnapshot snapshot) => _current = new CatalogView(new Domain.Catalog.Catalog(snapshot));
+    public CatalogStore(CatalogSnapshot snapshot) => _current = new CatalogView(snapshot);
 
     public CatalogView Current => Volatile.Read(ref _current);
 
-    public void Replace(CatalogSnapshot snapshot) => Volatile.Write(ref _current, new CatalogView(new Domain.Catalog.Catalog(snapshot)));
+    public void Replace(CatalogSnapshot snapshot) => Volatile.Write(ref _current, new CatalogView(snapshot));
 }
 
 /// <summary>A catalogue plus the per-planet presentation records derived from it.</summary>
 public sealed class CatalogView
 {
-    public CatalogView(Domain.Catalog.Catalog catalog)
+    public CatalogView(CatalogSnapshot snapshot)
     {
-        Catalog = catalog;
-        ExoPlanets = catalog.Planets
+        Snapshot = snapshot;
+        Catalog = new Domain.Catalog.Catalog(snapshot);
+        ExoPlanets = Catalog.Planets
             .Select(p =>
             {
-                var star = catalog.StarOf(p);
-                return LegacyPresentation.ToExoPlanet(p, star, catalog.PlanetsOf(star).Count());
+                var star = Catalog.StarOf(p);
+                return LegacyPresentation.ToExoPlanet(p, star, Catalog.PlanetsOf(star).Count());
             })
             .ToArray();
     }
+
+    public CatalogSnapshot Snapshot { get; }
 
     public Domain.Catalog.Catalog Catalog { get; }
 

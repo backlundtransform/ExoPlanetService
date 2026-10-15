@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExoplanetHunter.Domain\ExoplanetHunter.Domain.csproj" />
+    <!-- Git submodule until the habitability helpers ship in a CSharpNumerics NuGet release. -->
+    <ProjectReference Include="..\..\external\CSharpNumerics\Numerics\Numerics\CSharpNumerics.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Classification\constellation-boundaries.json"
+                      LogicalName="ExoplanetHunter.Ingest.Classification.constellation-boundaries.json" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

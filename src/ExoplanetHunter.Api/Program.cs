@@ -1,14 +1,28 @@
 using System.Threading.RateLimiting;
 using ExoplanetHunter.Api.Catalog;
 using ExoplanetHunter.Api.Endpoints;
-using ExoplanetHunter.Domain.Catalog;
+using ExoplanetHunter.Ingest.Nasa;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// The catalogue shipped with the deployment, or a newer one saved by the scheduled refresh.
+var refreshOptions = builder.Configuration.GetSection(CatalogRefreshOptions.Section).Get<CatalogRefreshOptions>() ?? new();
 var catalogPath = Path.Combine(AppContext.BaseDirectory, builder.Configuration["Catalog:Path"] ?? "Data/catalog.json.gz");
-var snapshot = await CatalogSnapshot.LoadAsync(catalogPath);
-builder.Services.AddSingleton(new CatalogStore(snapshot));
+using (var bootstrap = LoggerFactory.Create(logging => logging.AddConsole()))
+{
+    var initial = await CatalogRefreshService.LoadInitialAsync(catalogPath, refreshOptions, bootstrap.CreateLogger("Catalog"));
+    builder.Services.AddSingleton(new CatalogStore(initial));
+}
+
+builder.Services.Configure<CatalogRefreshOptions>(builder.Configuration.GetSection(CatalogRefreshOptions.Section));
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddHttpClient<NasaArchiveClient>(http =>
+{
+    http.Timeout = TimeSpan.FromMinutes(5);
+    http.DefaultRequestHeaders.UserAgent.ParseAdd("ExoplanetHunter/1.0 (+https://exoplanethunter.com)");
+});
+builder.Services.AddHostedService<CatalogRefreshService>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
@@ -54,8 +68,9 @@ app.MapExoSolarSystemEndpoints();
 app.MapChartEndpoints();
 app.MapMiscEndpoints();
 
-app.Logger.LogInformation("Serving catalog '{Source}' generated {GeneratedAt}: {Stars} stars, {Planets} planets",
-    snapshot.Source, snapshot.GeneratedAt, snapshot.Stars.Count, snapshot.Planets.Count);
+var served = app.Services.GetRequiredService<CatalogStore>().Current.Snapshot;
+app.Logger.LogInformation("Serving catalog '{Source}' generated {GeneratedAt:u}: {Stars} stars, {Planets} planets",
+    served.Source, served.GeneratedAt, served.Stars.Count, served.Planets.Count);
 
 app.Run();
 

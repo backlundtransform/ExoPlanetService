@@ -39,7 +39,7 @@ NASA-härledda värden med produktionens ögonblicksbild från `record.py`.
 | inclination | 76 % | `pl_orbincl` | – |
 | omega | 28 % | `pl_orblper` | – |
 | esi | 95 % | 1 − √(½[((S−1)/(S+1))² + ((R−1)/(R+1))²]) | 90 % / 98 % |
-| massClass | 99 % | Trösklar på M (reserv R), oförändrad logik | – |
+| massClass | 99 % | Trösklar på **R** (reserv M), som PHL. 97 % av produktionens klasser följer radietrösklarna, bara 75 % masströsklarna | 96,5 % identiska |
 | zoneClass | 95 % | Hot/Warm/Cold utifrån S mot den beboeliga zonen | – |
 | habitable | 1 % | Se *Beboelighet* nedan | 62/72 |
 | disc_Method | 99 % | `discoverymethod` utan mellanslag (samma värden som idag) | – |
@@ -112,3 +112,33 @@ Följande formler behövs i importen men finns inte i `AstronomyExtensions` idag
 - Ett modellval i `CalculateGoldilocksZone`, eftersom den idag bara ger de konservativa
   gränserna (Runaway/Maximum greenhouse). API:et behöver de optimistiska (Recent Venus/Early
   Mars) för att behålla dagens `habZoneMin`/`habZoneMax`.
+
+## Resultat av första importen (2026-10-15)
+
+`ExoplanetHunter.Ingest.Cli` mot NASA, med produktionsdatan som föregående katalog:
+
+- Stjärnor: 4 192 → 4 843 (704 nya, 53 borttagna).
+- Planeter: 5 649 → 6 453 (880 nya, 76 borttagna).
+- Beboeliga planeter: 73 → 78. Sex planeter faller bort, bland annat GJ 3293 d och HD 40307 g. Tretton tillkommer, bland annat L 98-59 f och TOI-1266 d.
+- Andel identiska eller nära värden bland planeter och stjärnor som finns i båda:
+
+| Fält | Överens |
+|---|---|
+| massClass, zoneClass, habitable | 96,5 %, 99,7 %, 99,9 % identiska |
+| esi, teqMean, meanDistance, radius | 95–98 % inom ±5 % |
+| star.constellation | 99,9 % identiska |
+| habZoneMin/Max | 91 % inom ±5 % för stjärnor med intakt gammal data |
+
+Fullständig rapport: `data/ingest-report.txt`.
+
+### Fel i produktionsdatan som importen rättar
+
+Omkring 28 % av stjärnorna i dagens produktion har trasiga koordinater:
+
+- **535 stjärnor har RA i grader i stället för timmar.** Det gäller de som den gamla
+  NASA-importen (`PlanetClassifier`) lade till. RA blir 15 gånger för stort, så stjärnorna
+  hamnar på fel plats i stjärnkartan och 3D-vyn.
+- **Omkring 635 stjärnor har förskjutna kolumner,** till exempel deklinationen i RA-fältet.
+  Den gamla PHL-importen delade CSV-rader på varje komma, även inuti citerade fält.
+
+Den nya importen tolkar CSV enligt RFC 4180 och omvandlar RA från grader till timmar.

@@ -12,12 +12,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExoplanetHunter.Domain\ExoplanetHunter.Domain.csproj" />
+    <ProjectReference Include="..\ExoplanetHunter.Ingest\ExoplanetHunter.Ingest.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Data\**" CopyToOutputDirectory="PreserveNewest" />
-    <!-- Until the NASA ingest (phase 2) produces catalogs, serve the legacy production snapshot. -->
-    <None Include="..\..\data\catalog.legacy.json.gz" Link="Data\catalog.json.gz" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Catalogue built by ExoplanetHunter.Ingest.Cli from the NASA Exoplanet Archive. -->
+    <None Include="..\..\data\catalog.json.gz" Link="Data\catalog.json.gz" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

@@ -8,6 +8,8 @@ on:
     paths:
       - 'src/**'
       - 'data/**'
+      - 'external/**'
+      - 'tests/ExoplanetHunter.*/**'
       - 'tests/contract/**'
       - 'ExoplanetHunter.slnx'
       - '.github/workflows/api.yml'
@@ -18,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true
 
       - uses: actions/setup-dotnet@v4
         with:
@@ -29,6 +33,9 @@ jobs:
 
       - name: Build
         run: dotnet build ExoplanetHunter.slnx -c Release -warnaserror
+
+      - name: Unit tests
+        run: dotnet test ExoplanetHunter.slnx -c Release --no-build
 
       - name: Start API
         run: |

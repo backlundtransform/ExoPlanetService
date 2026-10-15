@@ -15,6 +15,14 @@ public sealed record CatalogSnapshot
     public required IReadOnlyList<Star> Stars { get; init; }
     public required IReadOnlyList<Planet> Planets { get; init; }
 
+    /// <summary>
+    /// Next id to assign to a new star or planet. Ids of objects that left the catalogue are
+    /// never reused, so this can be higher than the largest id present.
+    /// </summary>
+    public int? NextStarId { get; init; }
+
+    public int? NextPlanetId { get; init; }
+
     public static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
     public static async Task<CatalogSnapshot> LoadAsync(string path, CancellationToken cancellationToken = default)

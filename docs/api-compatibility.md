@@ -23,6 +23,17 @@ production on 2026-10-11.
 | `GET /api/GetRelatedContent` | Related blog posts | Always `[]`, since the blog has been retired |
 | `POST /api/update`, `GET /api/newupdate` | Admin-only import triggers | Removed. The catalogue is refreshed by the ingest job |
 
+## Data
+
+The catalogue now comes from the NASA Exoplanet Archive (`pscomppars`) instead of the PHL
+catalogue. With `Catalog:Refresh:Enabled` it is rebuilt on a schedule (weekly by default),
+and ids stay the same across rebuilds. It has more planets (6,453 instead
+of 5,649) and corrects the coordinates of about 1,170 stars that were wrong before. Derived
+fields follow the same methodology, see `docs/field-mapping.md`.
+
+`star.noHabPlanets` (in the `ExoSolarSystems` responses) now holds the number of potentially
+habitable planets for every star. Before, it was only set for the Sun.
+
 ## New
 
 - `GET /health`: health check.

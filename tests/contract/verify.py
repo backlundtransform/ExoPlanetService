@@ -131,6 +131,8 @@ def main():
                 problems.append(f"expected a JSON array, got {response['status']}")
             elif not expected:
                 pass  # no recording available (CI): the array check above is all we can do
+            elif not args.values:
+                compatible(record.shape_of(expected), response["body"], "$", problems)
             elif len(response["body"]) < len(expected):
                 problems.append(f"expected at least {len(expected)} items, got {len(response['body'])}")
             else:
