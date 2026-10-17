@@ -1,257 +1,212 @@
-
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-html, body, #root {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: black;
-}
-
-.canvas-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex: 1;
-}
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  background-color: #0d1117; /* samma som app-bakgrund */
-  overflow: hidden; /* förhindra scroll som visar “bakomgrunden” */
-}
+/* ---------- Layout ---------- */
 
 .app-container {
-  padding: 0px;
-  font-family: 'Arial', sans-serif;
-  background: #0d1117;
-  min-height: 100vh;
-  color: #fff;
+  position: relative;
+  display: flex;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.starmap-container,
+.starmap,
+.system-view {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg);
+}
+
+.page-message {
   display: flex;
   flex-direction: column;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.status {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.status.error {
-  color: #ff6b6b;
-}
-
-.star-grid-container {
-  flex: 1; /* Tar kvarvarande höjd */
-  overflow-y: auto; /* Scrollbar vid behov */
-  padding-right: 10px;
-  margin-top: 10px;
-}
-
-.star-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 15px;
-  justify-items: center;
-}
-
-.star-button {
-  background: #1e90ff;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.star-button:hover {
-  background: #00bfff;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-/* ======================= */
-/* APP CONTAINER           */
-/* ======================= */
-.app-container {
-  display: flex;
-  height: 100vh;
-  background-color: #000000;
-  color: #e6edf3;
-  overflow: hidden;
-  flex-direction: row; /* desktop */
-  align-items: stretch;
-  position: relative;
-  font-family: sans-serif;
-}
-
-/* ======================= */
-/* SIDOPANEL               */
-/* ======================= */
-.sidebar {
-  width: 280px; /* fast bredd */
-  background-color: #161b22;
-  border-right: 1px solid #30363d;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100dvh;
+  margin: 0;
   padding: 16px;
-  overflow-y: auto; /* scroll vid behov */
-  box-shadow: 0 0 10px rgba(0,0,0,0.4);
-  box-sizing: border-box;
+  text-align: center;
+  color: var(--muted);
+}
+
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.error { color: var(--danger); }
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  background-color: var(--panel);
+  border-right: 1px solid var(--border);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   z-index: 10;
   transition: transform 0.3s ease;
 }
 
-.sidebar h2 {
-  color: #58a6ff;
-  margin-top: 0;
+.sidebar__title {
+  margin: 0 0 12px;
+  font-size: 1.4rem;
+  color: var(--accent);
 }
 
-.sidebar input[type="text"] {
+.sidebar__search {
   width: 100%;
-  padding: 8px 10px;
+  padding: 10px 12px;
   margin-bottom: 10px;
   border-radius: 6px;
-  border: 1px solid #30363d;
-  background-color: #0d1117;
-  color: #e6edf3;
-  font-size: 14px;
-  outline: none;
+  border: 1px solid var(--border);
+  background-color: var(--bg);
+  color: var(--text);
+  font-size: 16px; /* 16px keeps iOS from zooming in on focus */
 }
 
-.sidebar label {
+.sidebar__filter {
   display: flex;
   align-items: center;
-  font-size: 14px;
+  gap: 8px;
   margin-bottom: 10px;
+  font-size: 14px;
   cursor: pointer;
   user-select: none;
 }
 
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.sidebar__filter input {
+  accent-color: var(--accent);
+  width: 18px;
+  height: 18px;
 }
 
-.sidebar ul li button {
-  width: 100%;
-  text-align: left;
-  background-color: #21262d;
-  border: 1px solid #30363d;
-  border-radius: 6px;
-  padding: 8px 10px;
+.star-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.star-list li {
   margin-bottom: 6px;
-  color: #e6edf3;
-  cursor: pointer;
+}
+
+.star-list__item {
+  width: 100%;
+  min-height: 40px; /* comfortable touch target */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  padding: 8px 10px;
+  text-align: left;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: var(--panel-raised);
+  transition: background-color 0.2s ease;
 }
 
-.sidebar ul li button:hover {
+.star-list__item:hover {
   background-color: #1f6feb22;
 }
 
-.sidebar ul li button span span {
+.habitable-dot {
   width: 10px;
   height: 10px;
+  flex-shrink: 0;
   border-radius: 50%;
-  background-color: #2ea043;
-  display: inline-block;
+  background-color: var(--habitable);
   box-shadow: 0 0 6px #2ea043aa;
 }
 
-.sidebar p {
-  font-size: 13px;
-  color: #8b949e;
-  margin-bottom: 8px;
+/* ---------- Floating controls and cards ---------- */
+
+.sidebar-toggle,
+.back-button,
+.gps-button {
+  position: absolute;
+  z-index: 20;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: var(--panel);
+  color: var(--accent);
 }
 
-.sidebar p.error {
-  color: #f85149;
-}
-
-/* ======================= */
-/* STAR MAP                */
-/* ======================= */
-.starmap-container {
-  flex: 1;
-  position: relative;
-}
-
-/* ======================= */
-/* TOGGLE-KNAPP FÖR MOBIL  */
-/* ======================= */
 .sidebar-toggle {
   display: none;
-  position: absolute;
-  top: 10px;
+  top: max(10px, env(safe-area-inset-top));
   left: 10px;
-  z-index: 20;
-  background-color: #161b22;
-  color: #58a6ff;
-  border: 1px solid #30363d;
-  border-radius: 6px;
-  padding: 6px 10px;
-  cursor: pointer;
+  font-size: 18px;
 }
 
-/* ======================= */
-/* OVERLAY FÖR MOBIL       */
-/* ======================= */
-.overlay {
-  display: none;
+.back-button {
+  top: max(10px, env(safe-area-inset-top));
+  left: 10px;
+  background-color: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: white;
 }
 
-/* ======================= */
-/* MOBIL (<768px)           */
-/* ======================= */
+.gps-button {
+  top: max(10px, env(safe-area-inset-top));
+  right: 10px;
+  font-size: 22px;
+}
+
+.gps-button--active {
+  background-color: #7a99c9;
+}
+
+.info-card {
+  position: absolute;
+  z-index: 10;
+  width: 260px;
+  max-width: calc(100vw - 20px);
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 14px;
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+.info-card--star,
+.info-card--planet {
+  top: max(10px, env(safe-area-inset-top));
+  right: 10px;
+}
+
+.starmap .info-card--star {
+  right: 70px;
+}
+
+.info-card--device {
+  bottom: max(50px, env(safe-area-inset-bottom));
+  right: 10px;
+  width: 150px;
+}
+
+.habitable-note {
+  margin-top: 4px;
+  color: lime;
+}
+
+/* ---------- Phones ---------- */
+
 @media (max-width: 768px) {
-  .app-container {
-    flex-direction: column;
-  }
-
   .sidebar-toggle {
     display: block;
   }
 
   .sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
+    inset: 0 auto 0 0;
+    width: min(85vw, 320px);
     transform: translateX(-100%);
     z-index: 30;
   }
@@ -261,39 +216,29 @@ h1 {
   }
 
   .overlay {
-    display: block;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.4);
-    z-index: 20;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 25;
   }
 
-  .starmap-container {
-    flex: none;
-    height: 100vh;
-      z-index: 0; /* under overlay och sidebar */
+  /* Centre the planet card so it is not hidden under a finger. */
+  .info-card--planet {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
   }
 
+  .info-card--star {
+    top: auto;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 10px;
+    right: 10px;
+    width: auto;
+  }
 
-}
-
-.gps-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-  background-color: #21262d;
-  color: #58a6ff;
-  border: 1px solid #30363d;
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.gps-button:hover {
-  background-color: #1f6feb22;
+  .starmap .info-card--star {
+    right: 10px;
+  }
 }

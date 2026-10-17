@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { Line, Tube } from '@react-three/drei'
 import * as THREE from 'three'
 import { LineMaterial } from 'three-stdlib'
-import type { PlanetData } from './types'
+import type { Planet as PlanetData } from './types'
 
 interface OrbitPathProps {
   semiMajorAxis: number

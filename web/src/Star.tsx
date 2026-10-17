@@ -1,5 +1,6 @@
 import { useLoader } from "@react-three/fiber"
 import { TextureLoader } from "three"
+import { SUN_TEXTURE } from "./textures"
 
 
 interface StarProps {
@@ -21,7 +22,7 @@ const scaleSolarRadiusToUnits = (radiusSolarRadii: number) =>
   export const Star: React.FC<StarProps> = ({ radius, spectralType, onHover }) => {
     const scaledRadius = scaleSolarRadiusToUnits(radius)
     const color = getStarColor(spectralType)
-    const texture = useLoader(TextureLoader, '/textures/sun.png') 
+    const texture = useLoader(TextureLoader, SUN_TEXTURE) 
   
     return (
       <mesh

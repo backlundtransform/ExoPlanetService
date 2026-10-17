@@ -18,13 +18,19 @@
     "planet_discovery_year": "Upptäcktsår",
     "star_type": "Stjärntyp",
     "star_mass": "Stjärnmassa",
-
     "star_temperature": "Stjärntemperatur",
-    "star_luminosity": "Stjärnljusstyrka",  
+    "star_luminosity": "Stjärnljusstyrka",
     "star_radius": "Stjärnradie",
     "unknown": "Okänt",
     "no": "Nej",
     "yes": "Ja",
-    "star_distance": "Avstånd till stjärnan"
+    "star_distance": "Avstånd till stjärnan",
+    "back_to_map": "Stjärnkarta",
+    "not_found": "Stjärnan finns inte i katalogen.",
+    "retry": "Försök igen",
+    "offline": "Offline – visar sparad data",
+    "planets_count": "{{count}} planeter",
+    "share": "Kopiera länk",
+    "link_copied": "Länken kopierad"
   }
 }

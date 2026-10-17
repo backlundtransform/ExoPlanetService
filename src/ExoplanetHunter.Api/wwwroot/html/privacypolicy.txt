@@ -1,0 +1,32 @@
+Privacy Policy for Exoplanethunter
+
+Thank you for using Exoplanethunter. Our app retrieves data from an API to provide you with the latest information. We want to assure you that we do not store any personal information or data locally on your device.
+
+Collected Information:
+
+Our app does not collect any personal information, identifiers, or other sensitive data from the user.
+Use of API:
+
+We use an external API to fetch data displayed in the app.
+The retrieved data includes Exoplanets.
+
+Location Information:
+
+Our app utilizes your device's location to provide you with location-based content, such as maps. This allows us to enhance your experience by showing relevant information based on your geographical location.
+We collect and use your device's location information solely for the purpose of displaying location-based content within the app.
+We do not share your precise location data with third parties. Your location information is used exclusively within the app to provide you with relevant content.
+In order to access your device's location, our app may request permission to use location services. You can manage these permissions in your device settings.
+
+Cookies and Tracking:
+
+Our app does not use cookies or tracking technologies to collect or track your activity.
+Security:
+
+We prioritize the security and privacy of our users. Since we do not collect or store any personal information, the risk of security issues is minimized.
+We take the security and privacy of your location data seriously. Your location information is processed securely and is not stored on our servers.
+Changes to the Policy:
+
+Any changes to our privacy policy will be notified through updates in the app. We recommend that you regularly review the policy to stay informed.
+Contact Information:
+
+If you have any questions or concerns regarding privacy and data protection related to our app, please contact us at gbanm06@gmail.com

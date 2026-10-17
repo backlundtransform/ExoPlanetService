@@ -1,12 +1,13 @@
 name: API
 
-# Builds the .NET 10 API and checks it against the recorded legacy contract
+# Builds the web app and the .NET 10 API, and checks the API against the recorded legacy contract
 # (tests/contract/shapes). Value comparison needs the full recordings, which are not
 # in git, so CI checks shapes only; run `verify.py --values` locally for parity.
 on:
   push:
     paths:
       - 'src/**'
+      - 'web/**'
       - 'data/**'
       - 'external/**'
       - 'tests/ExoplanetHunter.*/**'
@@ -31,6 +32,19 @@ jobs:
         with:
           python-version: '3.13'
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Web app (lint and build into the API's wwwroot)
+        working-directory: web
+        run: |
+          npm ci
+          npm run lint
+          npm run build
+
       - name: Build
         run: dotnet build ExoplanetHunter.slnx -c Release -warnaserror
 
@@ -39,9 +53,18 @@ jobs:
 
       - name: Start API
         run: |
-          dotnet src/ExoplanetHunter.Api/bin/Release/net10.0/ExoplanetHunter.Api.dll --urls http://localhost:5099 &
+          dotnet src/ExoplanetHunter.Api/bin/Release/net10.0/ExoplanetHunter.Api.dll --urls http://localhost:5099 --contentRoot "$PWD/src/ExoplanetHunter.Api" &
           for i in $(seq 1 30); do curl -sf http://localhost:5099/health && exit 0; sleep 1; done
           echo "API did not become healthy" && exit 1
 
       - name: Verify contract
         run: python tests/contract/verify.py --base http://localhost:5099
+
+      - name: Verify website
+        run: |
+          curl -sf -o /dev/null http://localhost:5099/
+          curl -sf -o /dev/null http://localhost:5099/astro3d/star/1
+          curl -sf -o /dev/null http://localhost:5099/astro3d/manifest.webmanifest
+          curl -sf -o /dev/null http://localhost:5099/astro3d/sw.js
+          asset=$(curl -sf http://localhost:5099/astro3d/ | grep -oE '/astro3d/assets/index-[^"]+\.js' | head -1)
+          curl -sf -o /dev/null "http://localhost:5099$asset"

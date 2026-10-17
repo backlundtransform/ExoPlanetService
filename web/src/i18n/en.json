@@ -24,7 +24,13 @@
     "star_radius": "Star Radius",
     "unknown": "unknown",
     "no": "no",
-    "yes": "yes"
-
+    "yes": "yes",
+    "back_to_map": "Star map",
+    "not_found": "This star is not in the catalogue.",
+    "retry": "Try again",
+    "offline": "Offline – showing saved data",
+    "planets_count": "{{count}} planets",
+    "share": "Copy link",
+    "link_copied": "Link copied"
   }
 }

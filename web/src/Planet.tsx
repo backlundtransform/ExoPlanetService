@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Mesh } from 'three'
-import type { PlanetData, SystemData } from './types'
+import type { Planet as PlanetData } from './types'
 import { usePlanetMaterial } from './planetMaterial'
 import { getPositionFromAngle } from './utils'
 
@@ -9,7 +9,8 @@ interface PlanetProps {
   planet: PlanetData
   scaleDistanceFn: (distanceAU: number) => number
   scaleRadiusFn: (radiusEarthRadii: number) => number
-  system: SystemData
+  /** All planets of the system; the fastest one sets the animation speed. */
+  planets: PlanetData[]
   onHover: (planet: PlanetData | null) => void
   orbitSpeedMultiplier?: number // global speed multiplier
 }
@@ -18,7 +19,7 @@ export const Planet: React.FC<PlanetProps> = ({
   planet,
   scaleDistanceFn,
   scaleRadiusFn,
-  system,
+  planets,
   onHover,
   orbitSpeedMultiplier = 0.3, // Långsammare rotation som default
 }) => {
@@ -31,7 +32,7 @@ export const Planet: React.FC<PlanetProps> = ({
   const e = planet.eccentricity ?? 0
   const i = planet.inclination ?? 0
 
-  const shortestPeriod = Math.min(...system.planets.map(p => p.period ?? 1))
+  const shortestPeriod = Math.min(...planets.map(p => p.period ?? 1))
   const periodDays = planet.period ?? 1
   const fastestOrbitSeconds = 20 // bas för snabbaste planeten
 

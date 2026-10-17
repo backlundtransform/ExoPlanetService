@@ -1,147 +1,100 @@
-import React, { useState, useEffect } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
+import { Bloom, EffectComposer } from '@react-three/postprocessing'
+import { useTranslation } from 'react-i18next'
 import { Planet } from './Planet'
 import { Star } from './Star'
-import { Bloom, EffectComposer } from '@react-three/postprocessing'
 import { HabitableZone } from './HabitableZone'
 import { OrbitPathInteractive } from './OrbitRing'
-import type { SystemData, PlanetData } from './types'
-import { makeScaleDistanceFn, makeScaleRadiusFn, scaleStarRadiusToUnits, significantDigits } from './utils'
-import { useTranslation } from 'react-i18next'
+import type { Planet as PlanetData, StarSystem } from './types'
+import {
+  LIGHT_YEARS_PER_PARSEC,
+  formatValue,
+  makeScaleDistanceFn,
+  makeScaleRadiusFn,
+  scaleStarRadiusToUnits,
+} from './utils'
 
 interface ExoplanetSystemProps {
-  system: SystemData
+  system: StarSystem
   onBack: () => void
 }
 
 export const ExoplanetSystem: React.FC<ExoplanetSystemProps> = ({ system, onBack }) => {
-  const [hoveredPlanet, setHoveredPlanet] = useState<PlanetData | null>(null)
-  const [hoveredStar, setHoveredStar] = useState<boolean>(false)
   const { t } = useTranslation()
-  const [isMobile, setIsMobile] = useState(false)
+  const [hoveredPlanet, setHoveredPlanet] = useState<PlanetData | null>(null)
+  const [hoveredStar, setHoveredStar] = useState(false)
+  const { star, planets } = system
+  const unknown = t('app.unknown')
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  const scaleDistanceFn = makeScaleDistanceFn(system, 200)
-  const scaleRadiusFn = makeScaleRadiusFn(system, 5, 0.8)
-  const maxDistanceAU = Math.max(...system.planets.map(p => p.meanDistance ?? 0))
-  const maxDistance = scaleDistanceFn(maxDistanceAU)
-  const cameraZ = maxDistance * 1.5
-
-  
-  
-  const handleBackgroundClick = () => {
-    if (isMobile) setHoveredPlanet(null)
-  }
+  const scaleDistanceFn = useMemo(() => makeScaleDistanceFn(planets, 200), [planets])
+  const scaleRadiusFn = useMemo(() => makeScaleRadiusFn(planets, 5, 0.8), [planets])
+  const maxDistance = scaleDistanceFn(Math.max(0, ...planets.map((p) => p.meanDistance ?? 0)))
+  const cameraZ = Math.max(maxDistance * 1.5, 30)
 
   return (
-    <div className="canvas-container" style={{ width: '100%', height: '100%', position: 'relative' }} onClick={handleBackgroundClick}>
-      <button
-        onClick={onBack}
-        style={{
-          position: 'absolute',
-          top: 10,
-          left: 10,
-          zIndex: 10,
-          padding: '8px 12px',
-          borderRadius: 4,
-          border: 'none',
-          backgroundColor: '#007bff',
-          color: 'white',
-          cursor: 'pointer',
-        }}
-      >
-        ← {t('app.title')}
+    <div className="system-view">
+      <button className="back-button" onClick={onBack}>
+        ← {t('app.back_to_map')}
       </button>
 
       {hoveredPlanet && (
-        <div
-          style={{
-            position: 'absolute',
-            top: isMobile ? '50%' : 10,
-            left: isMobile ? '50%' : undefined,
-            right: isMobile ? undefined : 10,
-            transform: isMobile ? 'translate(-50%, -50%)' : undefined,
-            zIndex: 10,
-            backgroundColor: 'rgba(0,0,0,0.75)',
-            color: 'white',
-            padding: '12px 16px',
-            borderRadius: '8px',
-            width: '250px',
-            lineHeight: '1.4',
-          }}
-        >
+        <div className="info-card info-card--planet">
           <b>{hoveredPlanet.name}</b>
           <br />
-          {t('app.planet_mass')}: {significantDigits(hoveredPlanet.mass ?? 0)} M⊕
+          {t('app.planet_mass')}: {formatValue(hoveredPlanet.mass, 'M⊕', unknown)}
           <br />
-          {t('app.planet_radius')}: {significantDigits(hoveredPlanet.radius ?? 0)} R⊕
+          {t('app.planet_radius')}: {formatValue(hoveredPlanet.radius, 'R⊕', unknown)}
           <br />
-          {t('app.planet_distance')}: {significantDigits(hoveredPlanet.meanDistance ?? 0)} AU
+          {t('app.planet_distance')}: {formatValue(hoveredPlanet.meanDistance, 'AU', unknown)}
           <br />
-          {t('app.planet_temp')}: {hoveredPlanet.tsMean ? `${significantDigits(hoveredPlanet.tsMean)} K` : 'N/A'}
+          {t('app.planet_temp')}: {formatValue(hoveredPlanet.tsMean, 'K', unknown)}
           <br />
-          {t('app.planet_period')}: {significantDigits(hoveredPlanet.period ?? 0)} {t('app.planet_days')}
+          {t('app.planet_period')}: {formatValue(hoveredPlanet.period, t('app.planet_days'), unknown)}
           <br />
-          {t('app.planet_discovery_method')}: {hoveredPlanet.disc_Method ?? t('app.unknown')}
+          {t('app.planet_discovery_method')}: {hoveredPlanet.disc_Method ?? unknown}
           <br />
           {t('app.planet_habitability')}: {hoveredPlanet.habitable ? t('app.yes') : t('app.no')}
           <br />
-          {t('app.planet_discovery_year')}: {hoveredPlanet.disc_Year ?? t('app.unknown')}
-          
+          {t('app.planet_discovery_year')}: {hoveredPlanet.disc_Year ?? unknown}
         </div>
       )}
+
       {hoveredStar && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 10,
-            right: 10,
-            zIndex: 10,
-            backgroundColor: 'rgba(0,0,0,0.75)',
-            color: 'white',
-            padding: '12px 16px',
-            borderRadius: '8px',
-            width: '250px',
-            lineHeight: '1.4',
-          }}
-        >
-          <b>{system.name}</b>
+        <div className="info-card info-card--star">
+          <b>{star.name}</b>
           <br />
-          {t('app.star_distance')}: {significantDigits(3.262 * (system.distance ?? 0))} ly
+          {t('app.star_distance')}: {formatValue(star.distance == null ? null : star.distance * LIGHT_YEARS_PER_PARSEC, 'ly', unknown)}
           <br />
-          {t('app.star_mass')}: {significantDigits(system.mass ?? 0)} M☉
+          {t('app.star_mass')}: {formatValue(star.mass, 'M☉', unknown)}
           <br />
-          {t('app.star_temperature')}: {significantDigits(system.teff ?? 0)} K
+          {t('app.star_temperature')}: {formatValue(star.teff, 'K', unknown)}
           <br />
-          {t('app.star_luminosity')}: {significantDigits(system.luminosity ?? 0)} L☉
+          {t('app.star_luminosity')}: {formatValue(star.luminosity, 'L☉', unknown)}
           <br />
-          {t('app.star_radius')}: {significantDigits(system.radius ?? 0)} R☉
+          {t('app.star_radius')}: {formatValue(star.radius, 'R☉', unknown)}
           <br />
-          {t('app.star_type')}: {system.type ?? t('app.unknown')}
-
-
-
-
+          {t('app.star_type')}: {star.type || unknown}
         </div>
-      )}  
+      )}
 
-      <Canvas camera={{ position: [0, maxDistance * 0.3, cameraZ], fov: 50 }}>
+      <Canvas
+        camera={{ position: [0, maxDistance * 0.3, cameraZ], fov: 50 }}
+        dpr={[1, 2]}
+        // Tapping empty space closes the info card on touch screens.
+        onPointerMissed={() => setHoveredPlanet(null)}
+      >
         <ambientLight intensity={0.3} />
         <pointLight position={[0, 0, 0]} intensity={2} />
         <Stars radius={300} depth={60} count={10000} factor={7} saturation={0} fade speed={1} />
 
-        <Star 
-        radius={scaleStarRadiusToUnits(system.radius ?? 0, maxDistance)} spectralType={system.type} onHover={setHoveredStar} />
-        <HabitableZone innerRadius={system.habZoneMin} outerRadius={system.habZoneMax} scaleDistanceFn={scaleDistanceFn} />
+        <Star radius={scaleStarRadiusToUnits(star.radius ?? 1, maxDistance)} spectralType={star.type ?? ''} onHover={setHoveredStar} />
+        {star.habZoneMin != null && star.habZoneMax != null && (
+          <HabitableZone innerRadius={star.habZoneMin} outerRadius={star.habZoneMax} scaleDistanceFn={scaleDistanceFn} />
+        )}
 
-        {system.planets.map((planet) => (
+        {planets.map((planet) => (
           <React.Fragment key={planet.id}>
             <OrbitPathInteractive
               semiMajorAxis={scaleDistanceFn(planet.meanDistance ?? 0)}
@@ -152,9 +105,9 @@ export const ExoplanetSystem: React.FC<ExoplanetSystemProps> = ({ system, onBack
             />
             <Planet
               planet={planet}
+              planets={planets}
               scaleDistanceFn={scaleDistanceFn}
               scaleRadiusFn={scaleRadiusFn}
-              system={system}
               onHover={setHoveredPlanet}
             />
           </React.Fragment>
