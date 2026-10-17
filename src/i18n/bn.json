@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "এক্সোপ্ল্যানেট হান্টার",
+    "search_placeholder": "তারকা অনুসন্ধান করুন...",
+    "show_habitable_only": "শুধুমাত্র বাসযোগ্য সিস্টেম দেখান",
+    "loading": "লোড হচ্ছে...",
+    "error": "ত্রুটি: {{message}}",
+    "showing_count": "{{total}} তারকার মধ্যে {{count}} প্রদর্শিত হচ্ছে",
+    "habitable_tooltip": "সম্ভাব্য বাসযোগ্য গ্রহ",
+    "planet_mass": "ভর",
+    "planet_radius": "ব্যাসার্ধ",
+    "planet_distance": "দূরত্ব",
+    "planet_temp": "তাপমাত্রা",
+    "planet_period": "কক্ষীয় সময়কাল",
+    "planet_days": "দিন",
+    "planet_discovery_method": "আবিষ্কারের পদ্ধতি",
+    "planet_habitability": "বাসযোগ্যতা",
+    "planet_discovery_year": "আবিষ্কারের বছর",
+    "star_type": "তারকার ধরন",
+    "star_mass": "তারকার ভর",
+    "star_temperature": "তারকার তাপমাত্রা",
+    "star_luminosity": "তারকার উজ্জ্বলতা",
+    "star_radius": "তারকার ব্যাসার্ধ",
+    "unknown": "অজানা",
+    "no": "না",
+    "yes": "হ্যাঁ",
+    "star_distance": "তারকার দূরত্ব"
+  }
+}

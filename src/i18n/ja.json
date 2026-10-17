@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "エキソプラネットハンター",
+    "search_placeholder": "星を検索...",
+    "show_habitable_only": "居住可能なシステムのみ表示",
+    "loading": "読み込み中...",
+    "error": "エラー: {{message}}",
+    "showing_count": "{{total}}個の星のうち{{count}}個を表示中",
+    "habitable_tooltip": "居住可能な惑星の可能性",
+    "planet_mass": "質量",
+    "planet_radius": "半径",
+    "planet_distance": "距離",
+    "planet_temp": "温度",
+    "planet_period": "公転周期",
+    "planet_days": "日",
+    "planet_discovery_method": "発見方法",
+    "planet_habitability": "居住可能性",
+    "planet_discovery_year": "発見年",
+    "star_type": "恒星の種類",
+    "star_mass": "恒星の質量",
+    "star_temperature": "恒星の温度",
+    "star_luminosity": "恒星の光度",
+    "star_radius": "恒星の半径",
+    "unknown": "不明",
+    "no": "いいえ",
+    "yes": "はい",
+    "star_distance": "星までの距離"
+  }
+}

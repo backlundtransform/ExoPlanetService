@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "系外行星猎人",
+    "search_placeholder": "搜索恒星...",
+    "show_habitable_only": "仅显示宜居系统",
+    "loading": "加载中...",
+    "error": "错误：{{message}}",
+    "showing_count": "显示 {{count}} / {{total}} 颗恒星",
+    "habitable_tooltip": "潜在宜居行星",
+    "planet_mass": "质量",
+    "planet_radius": "半径",
+    "planet_distance": "距离",
+    "planet_temp": "温度",
+    "planet_period": "轨道周期",
+    "planet_days": "天",
+    "planet_discovery_method": "发现方法",
+    "planet_habitability": "宜居性",
+    "planet_discovery_year": "发现年份",
+    "star_type": "恒星类型",
+    "star_mass": "恒星质量",
+    "star_temperature": "恒星温度",
+    "star_luminosity": "恒星光度",
+    "star_radius": "恒星半径",
+    "unknown": "未知",
+    "no": "否",
+    "yes": "是",
+    "star_distance": "星到的距离"
+  }
+}

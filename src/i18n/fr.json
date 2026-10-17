@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "Chasseur d'exoplanètes",
+    "search_placeholder": "Rechercher des étoiles...",
+    "show_habitable_only": "Afficher uniquement les systèmes habitables",
+    "loading": "Chargement...",
+    "error": "Erreur : {{message}}",
+    "showing_count": "Affichage de {{count}} sur {{total}} étoiles",
+    "habitable_tooltip": "Planète potentiellement habitable",
+    "planet_mass": "Masse",
+    "planet_radius": "Rayon",
+    "planet_distance": "Distance",
+    "planet_temp": "Température",
+    "planet_period": "Période orbitale",
+    "planet_days": "jours",
+    "planet_discovery_method": "Méthode de découverte",
+    "planet_habitability": "Habitabilité",
+    "planet_discovery_year": "Année de découverte",
+    "star_type": "Type d'étoile",
+    "star_mass": "Masse de l'étoile",
+    "star_temperature": "Température de l'étoile",
+    "star_luminosity": "Luminosité de l'étoile",
+    "star_radius": "Rayon de l'étoile",
+    "unknown": "Inconnu",
+    "no": "Non",
+    "yes": "Oui",
+    "star_distance": "Distance à l'étoile"
+  }
+}
