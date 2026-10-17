@@ -19,7 +19,7 @@
     "babel-preset-env": "^1.7.0",
     "bootstrap": "^4.3.1",
     "ckeditor": "^4.12.1",
-    "css-loader": "^0.28.11",
+    "css-loader": "^7.1.5",
     "file-loader": "^1.1.11",
     "fontawesome": "^4.7.2",
     "jquery": "^3.5.0",
