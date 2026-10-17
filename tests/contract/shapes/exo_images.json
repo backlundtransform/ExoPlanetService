@@ -1,0 +1,43 @@
+{
+  "path": "/api/ExoSolarSystems/GetImages",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "object",
+    "properties": {
+      "jovian": {
+        "type": "string"
+      },
+      "iron": {
+        "type": "string"
+      },
+      "hotsuperearth": {
+        "type": "string"
+      },
+      "hotjupiter": {
+        "type": "string"
+      },
+      "hotstone": {
+        "type": "string"
+      },
+      "coldsuperearth": {
+        "type": "string"
+      },
+      "coldstone": {
+        "type": "string"
+      },
+      "superearth": {
+        "type": "string"
+      },
+      "stone": {
+        "type": "string"
+      },
+      "neptunian": {
+        "type": "string"
+      },
+      "noimg": {
+        "type": "string"
+      }
+    }
+  }
+}

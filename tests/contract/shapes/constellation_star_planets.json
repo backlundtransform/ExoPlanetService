@@ -1,0 +1,171 @@
+{
+  "path": "/api/Constellations/1/stars/1996/planets",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "number"
+      },
+      "name": {
+        "type": "string"
+      },
+      "planets": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "apparSize": {
+              "type": "null"
+            },
+            "atmosphereClass": {
+              "type": "null"
+            },
+            "compositionClass": {
+              "type": "null"
+            },
+            "confirmed": {
+              "type": "null"
+            },
+            "density": {
+              "type": "number"
+            },
+            "disc_Method": {
+              "type": "string"
+            },
+            "disc_Year": {
+              "type": "number"
+            },
+            "eccentricity": {
+              "type": "number"
+            },
+            "escVel": {
+              "type": "number"
+            },
+            "esi": {
+              "type": "number"
+            },
+            "gravity": {
+              "type": "number"
+            },
+            "habMoon": {
+              "type": "null"
+            },
+            "habitable": {
+              "type": "boolean"
+            },
+            "habitableClass": {
+              "type": "null"
+            },
+            "hza": {
+              "type": "null"
+            },
+            "hzc": {
+              "type": "null"
+            },
+            "hzd": {
+              "type": "null"
+            },
+            "hzi": {
+              "type": "null"
+            },
+            "id": {
+              "type": "number"
+            },
+            "inclination": {
+              "type": "null"
+            },
+            "intEsi": {
+              "type": "null"
+            },
+            "mag": {
+              "type": "null"
+            },
+            "mass": {
+              "type": "number"
+            },
+            "massClass": {
+              "type": "string"
+            },
+            "maxMass": {
+              "type": "null"
+            },
+            "meanDistance": {
+              "type": "number"
+            },
+            "message": {
+              "type": "null"
+            },
+            "minMass": {
+              "type": "null"
+            },
+            "name": {
+              "type": "string"
+            },
+            "nameKOI": {
+              "type": "null"
+            },
+            "nameKepler": {
+              "type": "null"
+            },
+            "omega": {
+              "type": "number"
+            },
+            "period": {
+              "type": "number"
+            },
+            "radius": {
+              "type": "number"
+            },
+            "sFluxMax": {
+              "type": "number"
+            },
+            "sFluxMean": {
+              "type": "number"
+            },
+            "sFluxMin": {
+              "type": "number"
+            },
+            "semMajorAxis": {
+              "type": "null"
+            },
+            "sph": {
+              "type": "null"
+            },
+            "surfEsi": {
+              "type": "null"
+            },
+            "surfPress": {
+              "type": "null"
+            },
+            "teqMax": {
+              "type": "number"
+            },
+            "teqMean": {
+              "type": "number"
+            },
+            "teqMin": {
+              "type": "number"
+            },
+            "tsMax": {
+              "type": "number"
+            },
+            "tsMean": {
+              "type": "number"
+            },
+            "tsMin": {
+              "type": "number"
+            },
+            "zoneClass": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "message": {
+        "type": "null"
+      }
+    }
+  }
+}

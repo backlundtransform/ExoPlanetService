@@ -1,0 +1,30 @@
+{
+  "app": {
+    "title": "एक्सोप्लॅनेट हंटर",
+    "search_placeholder": "तारे शोधा...",
+    "show_habitable_only": "फक्त राहण्यायोग्य प्रणाली दाखवा",
+    "loading": "लोड होत आहे...",
+    "error": "त्रुटी: {{message}}",
+    "showing_count": "{{total}} तार्‍यांपैकी {{count}} दर्शविले जात आहेत",
+    "habitable_tooltip": "संभाव्य राहण्यायोग्य ग्रह",
+    "planet_mass": "वजन",
+    "planet_radius": "त्रिज्या",
+    "planet_distance": "अंतर",
+    "planet_temp": "तापमान",
+    "planet_period": "कक्षीय कालावधी",
+    "planet_days": "दिवस",
+    "planet_discovery_method": "शोध पद्धत",
+    "planet_habitability": "राहण्यायोग्यता",
+    "planet_discovery_year": "शोध वर्ष",
+    "star_type": "ताऱ्याचा प्रकार",
+    "star_mass": "ताऱ्याचे वजन",
+    "star_temperature": "ताऱ्याची तापमान",
+    "star_luminosity": "ताऱ्याची उज्ज्वलता",
+    "star_radius": "ताऱ्याचा त्रिज्या",
+    "unknown": "अज्ञात",
+    "no": "नाही",
+    "yes": "होय",
+    "star_distance": "ताऱ्याची अंतर"
+
+  }
+}

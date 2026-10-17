@@ -1,0 +1,244 @@
+/* ---------- Layout ---------- */
+
+.app-container {
+  position: relative;
+  display: flex;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.starmap-container,
+.starmap,
+.system-view {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg);
+}
+
+.page-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100dvh;
+  margin: 0;
+  padding: 16px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.error { color: var(--danger); }
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  background-color: var(--panel);
+  border-right: 1px solid var(--border);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 10;
+  transition: transform 0.3s ease;
+}
+
+.sidebar__title {
+  margin: 0 0 12px;
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+
+.sidebar__search {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: var(--bg);
+  color: var(--text);
+  font-size: 16px; /* 16px keeps iOS from zooming in on focus */
+}
+
+.sidebar__filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sidebar__filter input {
+  accent-color: var(--accent);
+  width: 18px;
+  height: 18px;
+}
+
+.star-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.star-list li {
+  margin-bottom: 6px;
+}
+
+.star-list__item {
+  width: 100%;
+  min-height: 40px; /* comfortable touch target */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  text-align: left;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: var(--panel-raised);
+  transition: background-color 0.2s ease;
+}
+
+.star-list__item:hover {
+  background-color: #1f6feb22;
+}
+
+.habitable-dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--habitable);
+  box-shadow: 0 0 6px #2ea043aa;
+}
+
+/* ---------- Floating controls and cards ---------- */
+
+.sidebar-toggle,
+.back-button,
+.gps-button {
+  position: absolute;
+  z-index: 20;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: var(--panel);
+  color: var(--accent);
+}
+
+.sidebar-toggle {
+  display: none;
+  top: max(10px, env(safe-area-inset-top));
+  left: 10px;
+  font-size: 18px;
+}
+
+.back-button {
+  top: max(10px, env(safe-area-inset-top));
+  left: 10px;
+  background-color: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: white;
+}
+
+.gps-button {
+  top: max(10px, env(safe-area-inset-top));
+  right: 10px;
+  font-size: 22px;
+}
+
+.gps-button--active {
+  background-color: #7a99c9;
+}
+
+.info-card {
+  position: absolute;
+  z-index: 10;
+  width: 260px;
+  max-width: calc(100vw - 20px);
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 14px;
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+.info-card--star,
+.info-card--planet {
+  top: max(10px, env(safe-area-inset-top));
+  right: 10px;
+}
+
+.starmap .info-card--star {
+  right: 70px;
+}
+
+.info-card--device {
+  bottom: max(50px, env(safe-area-inset-bottom));
+  right: 10px;
+  width: 150px;
+}
+
+.habitable-note {
+  margin-top: 4px;
+  color: lime;
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 768px) {
+  .sidebar-toggle {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(85vw, 320px);
+    transform: translateX(-100%);
+    z-index: 30;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 25;
+  }
+
+  /* Centre the planet card so it is not hidden under a finger. */
+  .info-card--planet {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+  }
+
+  .info-card--star {
+    top: auto;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 10px;
+    right: 10px;
+    width: auto;
+  }
+
+  .starmap .info-card--star {
+    right: 10px;
+  }
+}

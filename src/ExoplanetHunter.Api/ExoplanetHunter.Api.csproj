@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExoplanetHunter.Domain\ExoplanetHunter.Domain.csproj" />
+    <ProjectReference Include="..\ExoplanetHunter.Ingest\ExoplanetHunter.Ingest.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Data\**" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Catalogue built by ExoplanetHunter.Ingest.Cli from the NASA Exoplanet Archive. -->
+    <None Include="..\..\data\catalog.json.gz" Link="Data\catalog.json.gz" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

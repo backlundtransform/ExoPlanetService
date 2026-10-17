@@ -1,0 +1,41 @@
+{
+  "path": "/api/ExoSolarSystems/GetSolarSystemPerConstellation?constellation=Lyr",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "number",
+          "nullable": true
+        },
+        "coordinate": {
+          "type": "null"
+        },
+        "habZoneMax": {
+          "type": "null"
+        },
+        "habZoneMin": {
+          "type": "null"
+        },
+        "luminosity": {
+          "type": "null"
+        },
+        "message": {
+          "type": "null"
+        },
+        "name": {
+          "type": "string"
+        },
+        "planets": {
+          "type": "null"
+        },
+        "radius": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

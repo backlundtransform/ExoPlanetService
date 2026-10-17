@@ -1,0 +1,163 @@
+{
+  "path": "/api/Planets?$top=5",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "apparSize": {
+          "type": "null"
+        },
+        "atmosphereClass": {
+          "type": "string"
+        },
+        "compositionClass": {
+          "type": "string"
+        },
+        "confirmed": {
+          "type": "null"
+        },
+        "density": {
+          "type": "number"
+        },
+        "disc_Method": {
+          "type": "string",
+          "nullable": true
+        },
+        "disc_Year": {
+          "type": "number",
+          "nullable": true
+        },
+        "eccentricity": {
+          "type": "number"
+        },
+        "escVel": {
+          "type": "number"
+        },
+        "esi": {
+          "type": "number"
+        },
+        "gravity": {
+          "type": "number"
+        },
+        "habMoon": {
+          "type": "null"
+        },
+        "habitable": {
+          "type": "boolean"
+        },
+        "habitableClass": {
+          "type": "string"
+        },
+        "hza": {
+          "type": "null"
+        },
+        "hzc": {
+          "type": "null"
+        },
+        "hzd": {
+          "type": "null"
+        },
+        "hzi": {
+          "type": "null"
+        },
+        "id": {
+          "type": "number"
+        },
+        "inclination": {
+          "type": "null"
+        },
+        "intEsi": {
+          "type": "null"
+        },
+        "mag": {
+          "type": "null"
+        },
+        "mass": {
+          "type": "number"
+        },
+        "massClass": {
+          "type": "string"
+        },
+        "maxMass": {
+          "type": "null"
+        },
+        "meanDistance": {
+          "type": "number"
+        },
+        "message": {
+          "type": "null"
+        },
+        "minMass": {
+          "type": "null"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameKOI": {
+          "type": "null"
+        },
+        "nameKepler": {
+          "type": "null"
+        },
+        "omega": {
+          "type": "null"
+        },
+        "period": {
+          "type": "number"
+        },
+        "radius": {
+          "type": "number"
+        },
+        "sFluxMax": {
+          "type": "null"
+        },
+        "sFluxMean": {
+          "type": "null"
+        },
+        "sFluxMin": {
+          "type": "null"
+        },
+        "semMajorAxis": {
+          "type": "null"
+        },
+        "sph": {
+          "type": "number",
+          "nullable": true
+        },
+        "surfEsi": {
+          "type": "null"
+        },
+        "surfPress": {
+          "type": "number",
+          "nullable": true
+        },
+        "teqMax": {
+          "type": "null"
+        },
+        "teqMean": {
+          "type": "null"
+        },
+        "teqMin": {
+          "type": "null"
+        },
+        "tsMax": {
+          "type": "number",
+          "nullable": true
+        },
+        "tsMean": {
+          "type": "number"
+        },
+        "tsMin": {
+          "type": "number",
+          "nullable": true
+        },
+        "zoneClass": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

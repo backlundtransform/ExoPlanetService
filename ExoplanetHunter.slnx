@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/external/" />
+  <Folder Name="/external/CSharpNumerics/" />
+  <Folder Name="/external/CSharpNumerics/Numerics/" />
+  <Folder Name="/external/CSharpNumerics/Numerics/Numerics/">
+    <Project Path="external/CSharpNumerics/Numerics/Numerics/CSharpNumerics.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/ExoplanetHunter.Api/ExoplanetHunter.Api.csproj" />
+    <Project Path="src/ExoplanetHunter.Domain/ExoplanetHunter.Domain.csproj" />
+    <Project Path="src/ExoplanetHunter.Ingest.Cli/ExoplanetHunter.Ingest.Cli.csproj" />
+    <Project Path="src/ExoplanetHunter.Ingest/ExoplanetHunter.Ingest.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ExoplanetHunter.Ingest.Tests/ExoplanetHunter.Ingest.Tests.csproj" />
+  </Folder>
+</Solution>

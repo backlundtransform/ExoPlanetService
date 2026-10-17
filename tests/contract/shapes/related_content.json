@@ -1,0 +1,9 @@
+{
+  "path": "/api/GetRelatedContent?tag=exoplanet",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "array",
+    "items": null
+  }
+}

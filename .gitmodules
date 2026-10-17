@@ -1,0 +1,4 @@
+[submodule "external/CSharpNumerics"]
+	path = external/CSharpNumerics
+	url = https://github.com/backlundtransform/CSharpNumerics.git
+	branch = feat/exoplanet-habitability

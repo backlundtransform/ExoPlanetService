@@ -1,0 +1,6 @@
+{
+  "path": "/api/Stars?$top=5&$orderby=name",
+  "status": 204,
+  "isJson": false,
+  "shape": null
+}

@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "एक्सोप्लानेट हंटर",
+    "search_placeholder": "सितारों की खोज करें...",
+    "show_habitable_only": "केवल रहने योग्य प्रणाली दिखाएं",
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि: {{message}}",
+    "showing_count": "{{total}} सितारों में से {{count}} दिखा रहे हैं",
+    "habitable_tooltip": "संभावित रहने योग्य ग्रह",
+    "planet_mass": "द्रव्यमान",
+    "planet_radius": "त्रिज्या",
+    "planet_distance": "दूरी",
+    "planet_temp": "तापमान",
+    "planet_period": "कक्षीय अवधि",
+    "planet_days": "दिन",
+    "planet_discovery_method": "खोज विधि",
+    "planet_habitability": "रहने योग्य",
+    "planet_discovery_year": "खोज वर्ष",
+    "star_type": "तारे का प्रकार",
+    "star_mass": "तारे का द्रव्यमान",
+    "star_temperature": "तारे का तापमान",
+    "star_luminosity": "तारे की चमक",
+    "star_radius": "तारे की त्रिज्या",
+    "unknown": "अज्ञात",
+    "no": "नहीं",
+    "yes": "हाँ",
+    "star_distance": "तारे की दूरी"
+  }
+}

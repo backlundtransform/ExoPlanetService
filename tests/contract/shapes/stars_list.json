@@ -1,0 +1,96 @@
+{
+  "path": "/api/Stars",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "age": {
+          "type": "number",
+          "nullable": true
+        },
+        "apparMag": {
+          "type": "number",
+          "nullable": true
+        },
+        "constellation": {
+          "type": "string",
+          "nullable": true
+        },
+        "dec": {
+          "type": "number",
+          "nullable": true
+        },
+        "distance": {
+          "type": "number",
+          "nullable": true
+        },
+        "feH": {
+          "type": "number",
+          "nullable": true
+        },
+        "habCat": {
+          "type": "null"
+        },
+        "habZoneMax": {
+          "type": "number",
+          "nullable": true
+        },
+        "habZoneMin": {
+          "type": "number",
+          "nullable": true
+        },
+        "id": {
+          "type": "number"
+        },
+        "luminosity": {
+          "type": "number",
+          "nullable": true
+        },
+        "magfromPlanet": {
+          "type": "null"
+        },
+        "mass": {
+          "type": "number",
+          "nullable": true
+        },
+        "message": {
+          "type": "null"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameHD": {
+          "type": "null"
+        },
+        "nameHIP": {
+          "type": "null"
+        },
+        "planets": {
+          "type": "number"
+        },
+        "ra": {
+          "type": "number",
+          "nullable": true
+        },
+        "radius": {
+          "type": "number",
+          "nullable": true
+        },
+        "sizefromPlanet": {
+          "type": "null"
+        },
+        "teff": {
+          "type": "number",
+          "nullable": true
+        },
+        "type": {
+          "type": "string",
+          "nullable": true
+        }
+      }
+    }
+  }
+}

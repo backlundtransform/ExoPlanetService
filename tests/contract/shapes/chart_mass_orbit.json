@@ -1,0 +1,28 @@
+{
+  "path": "/api/Chart/MassOrbit",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string"
+        },
+        "mass": {
+          "type": "number"
+        },
+        "orbit": {
+          "type": "number"
+        },
+        "planetName": {
+          "type": "string"
+        },
+        "starName": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

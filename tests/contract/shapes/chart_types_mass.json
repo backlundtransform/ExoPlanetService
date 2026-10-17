@@ -1,0 +1,19 @@
+{
+  "path": "/api/Chart/PlanetTypes?type=Mass",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

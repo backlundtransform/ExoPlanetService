@@ -1,0 +1,25 @@
+{
+  "path": "/api/Constellations",
+  "status": 200,
+  "isJson": true,
+  "shape": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "message": {
+          "type": "null"
+        },
+        "name": {
+          "type": "string"
+        },
+        "stars": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
