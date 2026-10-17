@@ -1,0 +1,30 @@
+{
+  "app": {
+    "title": "Охотник за экзопланетами",
+    "search_placeholder": "Поиск звезд...",
+    "show_habitable_only": "Показывать только обитаемые системы",
+    "loading": "Загрузка...",
+    "error": "Ошибка: {{message}}",
+    "showing_count": "Показано {{count}} из {{total}} звезд",
+    "habitable_tooltip": "Потенциально обитаемая планета",
+    "planet_mass": "Масса",
+    "planet_radius": "Радиус",
+    "planet_distance": "Расстояние",
+    "planet_temp": "Температура",
+    "planet_period": "Орбитальный период",
+    "planet_days": "дни",
+    "planet_discovery_method": "Метод обнаружения",
+    "planet_habitability": "Обитаемость",
+    "planet_discovery_year": "Год обнаружения",
+    "star_type": "Тип звезды",
+    "star_mass": "Масса звезды",
+    "star_temperature": "Температура звезды",
+    "star_luminosity": "Яркость звезды",
+    "star_radius": "Радиус звезды",
+    "unknown": "Неизвестно",
+    "no": "Нет",
+    "yes": "Да",
+    "star_distance": "Расстояние до звезды"
+
+  }
+}

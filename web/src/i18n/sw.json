@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "Mwindaji wa Sayari Nje ya Jua",
+    "search_placeholder": "Tafuta nyota...",
+    "show_habitable_only": "Onyesha mifumo inayoweza kukaliwa pekee",
+    "loading": "Inapakia...",
+    "error": "Hitilafu: {{message}}",
+    "showing_count": "Inaonyesha {{count}} kati ya {{total}} nyota",
+    "habitable_tooltip": "Sayari inayoweza kukaliwa",
+    "planet_mass": "Misa",
+    "planet_radius": "Kipenyo",
+    "planet_distance": "Umbali",
+    "planet_temp": "Joto",
+    "planet_period": "Kipindi cha obiti",
+    "planet_days": "siku",
+    "planet_discovery_method": "Njia ya ugunduzi",
+    "planet_habitability": "Uwezekano wa kuishi",
+    "planet_discovery_year": "Mwaka wa ugunduzi",
+    "star_type": "Aina ya nyota",
+    "star_mass": "Misa ya nyota",
+    "star_temperature": "Joto la nyota",
+    "star_luminosity": "Mwangaza wa nyota",
+    "star_radius": "Kipenyo cha nyota",
+    "unknown": "Haijulikani",
+    "no": "Hapana",
+    "yes": "Ndiyo",
+    "star_distance": "Umbali wa nyota"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "Exoplanetenjäger",
+    "search_placeholder": "Sterne suchen...",
+    "show_habitable_only": "Nur bewohnbare Systeme anzeigen",
+    "loading": "Wird geladen...",
+    "error": "Fehler: {{message}}",
+    "showing_count": "Zeigt {{count}} von {{total}} Sternen",
+    "habitable_tooltip": "Potentiell bewohnbarer Planet",
+    "planet_mass": "Masse",
+    "planet_radius": "Radius",
+    "planet_distance": "Entfernung",
+    "planet_temp": "Temperatur",
+    "planet_period": "Umlaufzeit",
+    "planet_days": "Tage",
+    "planet_discovery_method": "Entdeckungsmethode",
+    "planet_habitability": "Bewohnbarkeit",
+    "planet_discovery_year": "Entdeckungsjahr",
+    "star_type": "Sternentyp",
+    "star_mass": "Sternmasse",
+    "star_temperature": "Sternentemperatur",
+    "star_luminosity": "Sternleuchtkraft",
+    "star_radius": "Sternradius",
+    "unknown": "Unbekannt",
+    "no": "Nein",
+    "yes": "Ja",
+    "star_distance": "Sternentfernung"
+  }
+}

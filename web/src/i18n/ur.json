@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "ایکسوپلینٹ ہنٹر",
+    "search_placeholder": "ستارے تلاش کریں...",
+    "show_habitable_only": "صرف رہنے کے قابل نظام دکھائیں",
+    "loading": "لوڈ ہو رہا ہے...",
+    "error": "خرابی: {{message}}",
+    "showing_count": "{{total}} ستاروں میں سے {{count}} دکھا رہا ہے",
+    "habitable_tooltip": "ممکنہ طور پر قابل رہائش سیارہ",
+    "planet_mass": "کمیت",
+    "planet_radius": "رداس",
+    "planet_distance": "فاصلہ",
+    "planet_temp": "درجہ حرارت",
+    "planet_period": "مداری مدت",
+    "planet_days": "دن",
+    "planet_discovery_method": "دریافت کا طریقہ",
+    "planet_habitability": "قابل رہائش",
+    "planet_discovery_year": "دریافت کا سال",
+    "star_type": "ستارے کی قسم",
+    "star_mass": "ستارے کی کمیت",
+    "star_temperature": "ستارے کا درجہ حرارت",
+    "star_luminosity": "ستارے کی چمک",
+    "star_radius": "ستارے کا رداس", 
+    "unknown": "نامعلوم",
+    "no": "نہیں",
+    "yes": "ہاں",
+    "star_distance": "ستارے کی فاصلہ" 
+  }
+}

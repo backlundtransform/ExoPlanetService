@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name"> Exoplanet Hunter</string>
+    <string name="title_activity_main"> Exoplanet Hunter</string>
+    <string name="package_name">com.varoid.exoplanethunter</string>
+    <string name="custom_url_scheme">com.varoid.exoplanethunter</string>
+</resources>
