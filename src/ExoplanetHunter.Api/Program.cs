@@ -3,6 +3,7 @@ using ExoplanetHunter.Api;
 using ExoplanetHunter.Api.Catalog;
 using ExoplanetHunter.Api.Endpoints;
 using ExoplanetHunter.Ingest.Nasa;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,7 +40,18 @@ builder.Services.AddResponseCompression(options =>
 // The API is public and read-only, so any origin may call it.
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().WithMethods("GET")));
 
-// Anonymous callers are limited per client IP. API keys with their own quotas come later.
+// Azure App Service's front end appends the caller's address to X-Forwarded-For. Only the last
+// entry (added by the front end) is used, so clients cannot spoof it; locally there is no header.
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.ForwardLimit = 1;
+    options.KnownIPNetworks.Clear(); // the front end's addresses are not fixed
+    options.KnownProxies.Clear();
+});
+
+// Anonymous callers are limited per client IP (mobile networks put many users behind one
+// address, hence the generous default). API keys with their own quotas come later.
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -48,13 +60,14 @@ builder.Services.AddRateLimiter(options =>
             context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
             _ => new FixedWindowRateLimiterOptions
             {
-                PermitLimit = builder.Configuration.GetValue("RateLimiting:PermitsPerMinute", 300),
+                PermitLimit = builder.Configuration.GetValue("RateLimiting:PermitsPerMinute", 1200),
                 Window = TimeSpan.FromMinutes(1),
             }));
 });
 
 var app = builder.Build();
 
+app.UseForwardedHeaders();
 app.UseExceptionHandler();
 app.UseStatusCodePages();
 app.UseResponseCompression();
