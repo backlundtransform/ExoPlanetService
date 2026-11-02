@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { globalIgnores } from 'eslint/config'
 
 export default tseslint.config([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'android']), // android/ holds Gradle build output and copied web assets
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

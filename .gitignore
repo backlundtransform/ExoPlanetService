@@ -32,17 +32,10 @@ _ReSharper*/
 packages/
 node_modules
 
-ExoPlanetHunterWeb/config.json
-
-lib
-
-
-
 *.db
 *\Properties\*
+# Publish profiles can contain deployment credentials
 PublishProfiles
-ExoPlanetHunterWeb/wwwroot/js/react.build.js
-ExoPlanetHunterWeb/wwwroot/js/*
 
 # Built by web/ (npm run build)
 src/ExoplanetHunter.Api/wwwroot/astro3d/
