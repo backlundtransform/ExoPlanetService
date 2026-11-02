@@ -6,7 +6,7 @@ namespace ExoplanetHunter.Api.Legacy;
 /// <summary>
 /// Display values the legacy service derived from the catalogue: planet textures, star
 /// colour classes, clamped display radii and Celsius temperatures. Ported rule for rule
-/// from ExoPlanetHunter.Service so existing clients render the same.
+/// from the legacy ExoPlanetHunter.Service (git tag legacy-final) so existing clients render the same.
 /// Arithmetic is done in decimal, as in the legacy code, so values serialize identically.
 /// </summary>
 public static class LegacyPresentation
