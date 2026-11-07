@@ -102,6 +102,7 @@ app.MapCatalogEndpoints();
 app.MapExoSolarSystemEndpoints();
 app.MapChartEndpoints();
 app.MapMiscEndpoints();
+app.MapTransitEndpoints();
 
 // Unknown API paths are 404s, not the website.
 app.Map("/api/{**rest}", () => Results.Problem(statusCode: StatusCodes.Status404NotFound)).ExcludeFromDescription();
