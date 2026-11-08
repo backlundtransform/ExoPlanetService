@@ -10,7 +10,8 @@
        never by the API, so the two CSharpNumerics builds never meet in one process. -->
   <ItemGroup>
     <PackageReference Include="CSharpNumerics" Version="4.3.0" />
-    <PackageReference Include="CSharpNumerics.Engines" Version="1.0.3" />
+    <!-- 1.0.4: standard transit SNR, refined BLS period, masked multi-planet search, TransitCandidate.Validation. -->
+    <PackageReference Include="CSharpNumerics.Engines" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>

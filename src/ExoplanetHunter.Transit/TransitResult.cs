@@ -48,6 +48,12 @@ public sealed record TransitCandidateResult
 
     /// <summary>Name of the catalogue planet this candidate corresponds to, if any.</summary>
     public string? MatchedPlanet { get; init; }
+
+    /// <summary>
+    /// Set when the signal has the period of a found planet but sits half an orbit after its
+    /// transits: the planet passing behind its star (secondary eclipse), not another planet.
+    /// </summary>
+    public string? SecondaryEclipseOf { get; init; }
 }
 
 public sealed record KnownPlanetMatch(string Name, double? PeriodDays, string Status, int? CandidateIndex);

@@ -35,6 +35,20 @@ public sealed class TransitAnalyzerTests
     }
 
     [TestMethod]
+    public void MarkSecondaryEclipses_HalfPhaseAtSamePeriod_IsTheOccultation()
+    {
+        var planet = Candidate(0.94145) with { EpochBtjd = 4180.699, MatchedPlanet = "WASP-18 b" };
+        var occultation = Candidate(0.94139) with { EpochBtjd = 4180.230 };   // 0.498 of a period later
+        var other = Candidate(0.94145) with { EpochBtjd = 4180.9 };           // same period, phase 0.21
+
+        var marked = new TransitAnalyzer().MarkSecondaryEclipses([planet, occultation, other]);
+
+        Assert.AreEqual("WASP-18 b", marked[1].SecondaryEclipseOf);
+        Assert.IsNull(marked[2].SecondaryEclipseOf);
+        Assert.IsNull(marked[0].SecondaryEclipseOf);
+    }
+
+    [TestMethod]
     public void Bin_AveragesPointsPerBin()
     {
         var (time, flux, error) = TransitAnalyzer.Bin([0, 0.1, 0.2, 1.05, 1.1], [1, 2, 3, 4, 6], [1, 1, 1, 1, 1], width: 1);

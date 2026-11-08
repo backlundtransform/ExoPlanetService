@@ -70,6 +70,7 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
         var known = MatchKnownPlanets(knownPlanets, candidateResults, config.MaxPeriodDays);
         foreach (var match in known.Where(k => k.CandidateIndex is not null))
             candidateResults[match.CandidateIndex!.Value] = candidateResults[match.CandidateIndex.Value] with { MatchedPlanet = match.Name };
+        candidateResults = MarkSecondaryEclipses(candidateResults);
 
         var (displayTime, displayFlux, _) = Bin(processed.Time, processed.Flux, processed.FluxError, _options.DisplayBinMinutes / 1440.0);
 
@@ -91,7 +92,8 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
 
     private static TransitCandidateResult ToResult(TransitCandidate candidate, LightCurve processed, TransitDetectionConfig config)
     {
-        var validation = TransitValidator.Validate(candidate, processed, config);
+        // The pipeline's own validation, made with earlier signals masked; it is what the candidate was accepted on.
+        var validation = candidate.Validation ?? TransitValidator.Validate(candidate, processed, config);
         var p = candidate.Parameters;
 
         // The engine reports the epoch modulo the period; report the first transit in the data.
@@ -166,6 +168,30 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
         }
 
         return matches;
+    }
+
+    /// <summary>
+    /// Marks unmatched candidates that repeat a matched planet's period with a phase offset of
+    /// one half: the planet's occultation behind the star, common for hot Jupiters in TESS data.
+    /// </summary>
+    internal List<TransitCandidateResult> MarkSecondaryEclipses(List<TransitCandidateResult> candidates)
+    {
+        var planets = candidates.Where(c => c.MatchedPlanet is not null).ToArray();
+        return candidates.Select(c =>
+        {
+            if (c.MatchedPlanet is not null)
+                return c;
+
+            var primary = planets.FirstOrDefault(p =>
+            {
+                if (Math.Abs(c.PeriodDays / p.PeriodDays - 1) > _options.MatchTolerance)
+                    return false;
+                double offset = ((c.EpochBtjd - p.EpochBtjd) / p.PeriodDays % 1 + 1) % 1;
+                return Math.Abs(offset - 0.5) < 0.05;
+            });
+
+            return primary is null ? c : c with { SecondaryEclipseOf = primary.MatchedPlanet };
+        }).ToList();
     }
 
     private static int FindCandidate(IReadOnlyList<TransitCandidateResult> candidates, HashSet<int> used, Func<TransitCandidateResult, bool> predicate)
