@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <!-- NuGet packages, not the submodule: this project is used only by the offline Transit CLI,
+       never by the API, so the two CSharpNumerics builds never meet in one process. -->
+  <ItemGroup>
+    <PackageReference Include="CSharpNumerics" Version="4.3.0" />
+    <!-- 1.0.4: standard transit SNR, refined BLS period, masked multi-planet search, TransitCandidate.Validation. -->
+    <PackageReference Include="CSharpNumerics.Engines" Version="1.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExoplanetHunter.Domain\ExoplanetHunter.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ExoplanetHunter.Transit.Tests" />
+  </ItemGroup>
+
+</Project>

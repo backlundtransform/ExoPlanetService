@@ -20,6 +20,8 @@
     <None Include="Data\**" CopyToOutputDirectory="PreserveNewest" />
     <!-- Catalogue built by ExoplanetHunter.Ingest.Cli from the NASA Exoplanet Archive. -->
     <None Include="..\..\data\catalog.json.gz" Link="Data\catalog.json.gz" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Transit Lab results written by ExoplanetHunter.Transit.Cli (not the target list). -->
+    <None Include="..\..\data\transit\*.json" Exclude="..\..\data\transit\targets.json" Link="Data\transit\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

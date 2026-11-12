@@ -40,3 +40,6 @@ PublishProfiles
 # Built by web/ (npm run build)
 src/ExoplanetHunter.Api/wwwroot/astro3d/
 web/dist/
+
+# Downloaded MAST light curves (ExoplanetHunter.Transit.Cli)
+.cache/
