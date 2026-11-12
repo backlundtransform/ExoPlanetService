@@ -20,7 +20,7 @@ are computed with [CSharpNumerics](https://csnumerics.com).
 | `data/` | Catalogue snapshots served by the API |
 | `external/CSharpNumerics` | Git submodule, used until the habitability helpers ship on NuGet |
 | `tests/` | Unit tests and the API contract check (`tests/contract`) |
-| `docs/` | [API compatibility notes](docs/api-compatibility.md) and the [catalogue field mapping](docs/field-mapping.md) |
+| `docs/` | [API compatibility notes](docs/api-compatibility.md), the [catalogue field mapping](docs/field-mapping.md) and [Transit Lab](docs/transit-lab.md) |
 
 ## Getting started
 

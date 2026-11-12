@@ -1,0 +1,80 @@
+name: Transit Lab
+
+# Weekly transit search over the stars in data/transit/targets.json (see docs/transit-lab.md).
+# Stars without new TESS sectors are skipped, so a quiet week changes nothing. When results
+# change, the job opens (or updates) a pull request from the branch transit-lab/results.
+# The results reach exoplanethunter.com with the next deploy after that PR is merged.
+on:
+  schedule:
+    - cron: '0 3 * * 1' # Mondays 03:00 UTC
+  workflow_dispatch:
+    inputs:
+      only:
+        description: Analyse only this star (name as in targets.json). Empty = all.
+        required: false
+        default: ''
+      force:
+        description: Analyse again even when the sectors have not changed
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: transit-lab
+  cancel-in-progress: false
+
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Downloaded TESS light curves (FITS). They never change, so they are kept between runs.
+      - name: Restore MAST cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/mast
+          key: mast-${{ github.run_id }}
+          restore-keys: mast-
+
+      - name: Build
+        run: dotnet build src/ExoplanetHunter.Transit.Cli -c Release
+
+      - name: Analyse
+        env:
+          ONLY: ${{ inputs.only }}
+          FORCE: ${{ inputs.force || false }}
+        run: |
+          args=(--summary "$RUNNER_TEMP/summary.md" --force "$FORCE")
+          if [ -n "$ONLY" ]; then args+=(--only "$ONLY"); fi
+          dotnet src/ExoplanetHunter.Transit.Cli/bin/Release/net10.0/ExoplanetHunter.Transit.Cli.dll "${args[@]}"
+          cat "$RUNNER_TEMP/summary.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Prune MAST cache
+        if: always()
+        run: find .cache/mast -type f -mtime +180 -delete 2>/dev/null || true
+
+      - name: Save MAST cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/mast
+          key: mast-${{ github.run_id }}
+
+      - name: Open pull request with new results
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: transit-lab/results
+          add-paths: data/transit/*.json
+          commit-message: 'Transit Lab: weekly results'
+          title: 'Transit Lab: new results'
+          body-path: ${{ runner.temp }}/summary.md
+          delete-branch: true

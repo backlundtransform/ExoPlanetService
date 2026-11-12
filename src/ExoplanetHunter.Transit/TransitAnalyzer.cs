@@ -35,6 +35,12 @@ public sealed record TransitAnalysisOptions
 /// </summary>
 public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
 {
+    /// <summary>
+    /// Bump when a change to the analysis (or to the Engines package) changes the results, so the
+    /// next scheduled run re-analyses every star instead of keeping results it would reuse.
+    /// </summary>
+    public const int Version = 1;
+
     private readonly TransitAnalysisOptions _options = options ?? new();
 
     public TransitResult Analyze(Star star, IEnumerable<Planet> knownPlanets, long ticId,
@@ -83,6 +89,7 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
             Sectors = sectors.Select(s => s.Sector).Order().ToArray(),
             Points = time.Length,
             GeneratedAt = generatedAt,
+            AnalysisVersion = Version,
             LightCurve = new TimeSeries(Round(displayTime, 5), Round(displayFlux, 6)),
             Periodogram = ReducePeriodogram(search.Periods.Values, search.Power.Values, _options.PeriodogramPoints),
             Candidates = candidateResults,
