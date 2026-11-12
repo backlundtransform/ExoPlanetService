@@ -2,6 +2,7 @@ using System.Threading.RateLimiting;
 using ExoplanetHunter.Api;
 using ExoplanetHunter.Api.Catalog;
 using ExoplanetHunter.Api.Endpoints;
+using ExoplanetHunter.Api.Transit;
 using ExoplanetHunter.Ingest.Nasa;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -25,6 +26,21 @@ builder.Services.AddHttpClient<NasaArchiveClient>(http =>
     http.DefaultRequestHeaders.UserAgent.ParseAdd("ExoplanetHunter/1.0 (+https://exoplanethunter.com)");
 });
 builder.Services.AddHostedService<CatalogRefreshService>();
+
+// Transit Lab results shipped with the deployment, or the copy kept up to date from GitHub.
+var transitOptions = builder.Configuration.GetSection(TransitRefreshOptions.Section).Get<TransitRefreshOptions>() ?? new();
+using (var bootstrap = LoggerFactory.Create(logging => logging.AddConsole()))
+{
+    builder.Services.AddSingleton(TransitStore.Create(Path.Combine(AppContext.BaseDirectory, "Data", "transit"), transitOptions, bootstrap.CreateLogger("Transit")));
+}
+
+builder.Services.Configure<TransitRefreshOptions>(builder.Configuration.GetSection(TransitRefreshOptions.Section));
+builder.Services.AddHttpClient<TransitRefreshService>(http =>
+{
+    http.Timeout = TimeSpan.FromMinutes(2);
+    http.DefaultRequestHeaders.UserAgent.ParseAdd("ExoplanetHunter/1.0 (+https://exoplanethunter.com)");
+});
+builder.Services.AddHostedService(services => services.GetRequiredService<TransitRefreshService>());
 
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();

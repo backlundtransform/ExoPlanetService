@@ -8,7 +8,8 @@ The analysis is precomputed and does not run in Azure:
 
 1. A GitHub Actions job runs every week ([`.github/workflows/transit.yml`](../.github/workflows/transit.yml)).
 2. The job writes one JSON file per star to [`data/transit/`](../data/transit/).
-3. The API serves those files, and the web app draws them at `/astro3d/transit`.
+3. Once the results pull request is merged, the API picks the files up from GitHub within a
+   day, and the web app draws them at `/astro3d/transit`.
 
 ## Weekly run
 
@@ -54,11 +55,35 @@ pull request or updates the open one; when nothing changed, it does nothing.
 
 ### Publishing
 
-The API reads the result files from its own build output (`Data/transit/`), so new results
-reach exoplanethunter.com only after two steps:
+Merging the pull request is enough: no deploy is needed.
 
-1. Merge the pull request.
-2. Deploy the next release to Azure.
+With `Transit:Refresh:Enabled`, the API checks `data/transit/index.json` on the `master`
+branch once a day, using raw.githubusercontent.com. It downloads only the stars whose
+`generatedAt` changed and saves them under `Transit:Refresh:StoragePath`, which survives
+restarts and deploys. It then serves them from there. The code is in
+[`TransitRefreshService`](../src/ExoplanetHunter.Api/Transit/TransitRefreshService.cs).
+
+A day with no change costs one request of about 10 KB. Merged results are therefore live within
+a day.
+
+The refresh has these safeguards:
+
+- **A broken or empty download is rejected**, and the current results stay.
+- **Newer bundled results are kept.** If the deployment ships newer results than `master`, as
+  after a deploy from another branch, the API keeps serving the bundled ones.
+- **Stars removed from the index are removed** from storage too.
+
+Without the setting, the API serves the copy shipped with the deployment (`Data/transit/`).
+
+**Production app settings (Azure App Service → Configuration):**
+
+| Setting | Value |
+|---|---|
+| `Transit__Refresh__Enabled` | `true` |
+| `Transit__Refresh__StoragePath` | `D:\home\data\transit` |
+
+Optional settings are `Transit__Refresh__Interval` (default `1.00:00:00`) and
+`Transit__Refresh__SourceUrl`.
 
 ## The analysis
 

@@ -3,7 +3,7 @@ name: Transit Lab
 # Weekly transit search over the stars in data/transit/targets.json (see docs/transit-lab.md).
 # Stars without new TESS sectors are skipped, so a quiet week changes nothing. When results
 # change, the job opens (or updates) a pull request from the branch transit-lab/results.
-# The results reach exoplanethunter.com with the next deploy after that PR is merged.
+# After that PR is merged, the API fetches the results from master within a day (Transit:Refresh).
 on:
   schedule:
     - cron: '0 3 * * 1' # Mondays 03:00 UTC

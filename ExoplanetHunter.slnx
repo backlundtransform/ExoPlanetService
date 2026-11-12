@@ -14,6 +14,7 @@
     <Project Path="src/ExoplanetHunter.Transit/ExoplanetHunter.Transit.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/ExoplanetHunter.Api.Tests/ExoplanetHunter.Api.Tests.csproj" />
     <Project Path="tests/ExoplanetHunter.Ingest.Tests/ExoplanetHunter.Ingest.Tests.csproj" />
     <Project Path="tests/ExoplanetHunter.Transit.Tests/ExoplanetHunter.Transit.Tests.csproj" />
   </Folder>
