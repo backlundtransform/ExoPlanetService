@@ -1,5 +1,5 @@
 import { Capacitor } from '@capacitor/core'
-import type { HabitablePlanet, Star, StarPlanets, StarSystem } from './types'
+import type { HabitablePlanet, Star, StarPlanets, StarSystem, TransitIndexEntry, TransitResult } from './types'
 
 // In the browser the app is served by the API itself; the Android app calls production.
 // On Android, fetch() goes through CapacitorHttp (see capacitor.config.ts), so CORS does not apply.
@@ -34,3 +34,7 @@ export async function fetchSystem(starId: number, signal?: AbortSignal): Promise
   ])
   return { star, planets: planets.planets }
 }
+
+export const fetchTransitIndex = (signal?: AbortSignal) => get<TransitIndexEntry[]>('/v2/Transits', signal)
+
+export const fetchTransit = (starId: number, signal?: AbortSignal) => get<TransitResult>(`/v2/Transits/${starId}`, signal)

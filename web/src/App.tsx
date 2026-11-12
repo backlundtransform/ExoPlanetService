@@ -7,6 +7,8 @@ import './i18n'
 // Each view pulls in the 3D libraries; loading them lazily gets the shell on screen first.
 const MapPage = lazy(() => import('./MapPage'))
 const SystemPage = lazy(() => import('./SystemPage'))
+const TransitListPage = lazy(() => import('./transit/TransitListPage'))
+const TransitPage = lazy(() => import('./transit/TransitPage'))
 
 export default function App() {
   const { t } = useTranslation()
@@ -18,6 +20,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<MapPage />} />
           <Route path="/star/:id" element={<SystemPage />} />
+          <Route path="/transit" element={<TransitListPage />} />
+          <Route path="/transit/:id" element={<TransitPage />} />
           <Route path="*" element={<MapPage />} />
         </Routes>
       </Suspense>

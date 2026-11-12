@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
 import { Bloom, EffectComposer } from '@react-three/postprocessing'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router'
 import { Planet } from './Planet'
 import { Star } from './Star'
 import { HabitableZone } from './HabitableZone'
@@ -19,9 +20,11 @@ import {
 interface ExoplanetSystemProps {
   system: StarSystem
   onBack: () => void
+  /** Link to the star's Transit Lab analysis, when there is one. */
+  transitLink?: string
 }
 
-export const ExoplanetSystem: React.FC<ExoplanetSystemProps> = ({ system, onBack }) => {
+export const ExoplanetSystem: React.FC<ExoplanetSystemProps> = ({ system, onBack, transitLink }) => {
   const { t } = useTranslation()
   const [hoveredPlanet, setHoveredPlanet] = useState<PlanetData | null>(null)
   const [hoveredStar, setHoveredStar] = useState(false)
@@ -38,6 +41,9 @@ export const ExoplanetSystem: React.FC<ExoplanetSystemProps> = ({ system, onBack
       <button className="back-button" onClick={onBack}>
         ← {t('app.back_to_map')}
       </button>
+      {transitLink && (
+        <Link className="transit-link" to={transitLink}>🔭 {t('transit.title')}</Link>
+      )}
 
       {hoveredPlanet && (
         <div className="info-card info-card--planet">

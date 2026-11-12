@@ -2,6 +2,7 @@ import { Suspense, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { ApiError, fetchSystem } from './api'
+import { useTransitIndex } from './hooks/useTransitIndex'
 import { ExoplanetSystem } from './ExoplanetSystem'
 import type { StarSystem } from './types'
 
@@ -19,6 +20,8 @@ export default function SystemPage() {
   const starId = Number(id)
   const [state, setState] = useState<State>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
+  const transitIndex = useTransitIndex()
+  const hasTransit = transitIndex?.some((e) => e.starId === starId) ?? false
 
   useEffect(() => {
     if (!Number.isInteger(starId)) {
@@ -45,7 +48,7 @@ export default function SystemPage() {
   if (state.status === 'ready') {
     return (
       <Suspense fallback={<p className="page-message">{t('app.loading')}</p>}>
-        <ExoplanetSystem system={state.system} onBack={() => navigate('/')} />
+        <ExoplanetSystem system={state.system} onBack={() => navigate('/')} transitLink={hasTransit ? `/transit/${starId}` : undefined} />
       </Suspense>
     )
   }

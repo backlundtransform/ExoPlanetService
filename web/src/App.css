@@ -242,3 +242,234 @@
     right: 10px;
   }
 }
+
+/* ---------- Transit Lab ---------- */
+
+.sidebar__link {
+  display: block;
+  margin: -4px 0 12px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.transit-link {
+  position: absolute;
+  z-index: 20;
+  top: max(56px, calc(env(safe-area-inset-top) + 46px));
+  left: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: var(--panel);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.transit-page {
+  height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  padding: max(16px, env(safe-area-inset-top)) 16px 32px;
+}
+
+.transit-page > * {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.transit-page__header h1 {
+  margin: 8px 0 4px;
+  font-size: 1.8rem;
+}
+
+.transit-section {
+  margin-top: 28px;
+}
+
+.transit-section h2 {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+}
+
+.known-planets {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.known-planet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.known-planet__icon {
+  width: 1.2em;
+  text-align: center;
+  color: var(--muted);
+}
+
+.known-planet--found .known-planet__icon,
+.known-planet--found-at-harmonic .known-planet__icon {
+  color: var(--habitable);
+}
+
+.known-planet__name {
+  font-weight: 600;
+}
+
+.chart {
+  position: relative;
+  margin-top: 8px;
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.chart svg {
+  display: block;
+}
+
+.chart__grid {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.chart__axis {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.chart__tick,
+.chart__label,
+.chart__marker-label {
+  fill: var(--muted);
+  font-size: 12px;
+}
+
+.chart__label {
+  fill: var(--text);
+}
+
+.chart__crosshair {
+  stroke: var(--text);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+.chart__tooltip {
+  position: absolute;
+  pointer-events: none;
+  min-width: 150px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: rgba(13, 17, 23, 0.92);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.chart__tooltip-title {
+  color: var(--muted);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  margin: 8px 0 0;
+}
+
+.legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend__swatch {
+  display: inline-block;
+  width: 14px;
+  height: 4px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.legend__swatch--dashed {
+  height: 0;
+  border-top: 2px dashed;
+  border-radius: 0;
+}
+
+.candidates {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.candidate-card {
+  min-width: 0; /* let the chart inside shrink with the column */
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-top: 4px solid;
+  border-radius: 8px;
+  background-color: var(--panel-raised);
+}
+
+.candidate-card h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.candidate-card__identity {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.candidate-card__table,
+.transit-index {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.candidate-card__table th,
+.transit-index th {
+  text-align: left;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.candidate-card__table th,
+.candidate-card__table td,
+.transit-index th,
+.transit-index td {
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.candidate-card__table td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.candidate-card__warnings {
+  margin: 8px 0 0;
+  padding-left: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 13px;
+}

@@ -1,5 +1,5 @@
 import { useDeferredValue, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import StarMap from './StarMap'
 import { useCatalog } from './hooks/useCatalog'
@@ -41,6 +41,7 @@ export default function MapPage() {
 
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <h1 className="sidebar__title">{t('app.title')}</h1>
+        <Link className="sidebar__link" to="/transit">🔭 {t('transit.title')}</Link>
 
         <input
           className="sidebar__search"
