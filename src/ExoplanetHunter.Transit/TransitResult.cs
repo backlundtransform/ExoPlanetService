@@ -15,6 +15,12 @@ public sealed record TransitResult
     public required int Points { get; init; }
     public required DateTimeOffset GeneratedAt { get; init; }
 
+    /// <summary>
+    /// <see cref="TransitAnalyzer.Version"/> that produced the result. 0 for results written
+    /// before the field existed.
+    /// </summary>
+    public int AnalysisVersion { get; init; }
+
     /// <summary>Detrended light curve, binned for display.</summary>
     public required TimeSeries LightCurve { get; init; }
 

@@ -198,13 +198,13 @@
         /* ── Features ── */
         .features {
             padding: 4rem 2rem;
-            max-width: 1100px;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
         .features__grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
         }
 
@@ -420,6 +420,21 @@
                 <p>Visualise confirmed exoplanets and their host stars in an interactive 3D&nbsp;scene right in your browser.</p>
             </a>
 
+            <!-- Transit Lab -->
+            <a href="/astro3d/transit" class="card">
+                <div class="card__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 200 200">
+                        <circle cx="100" cy="72" r="50" stroke="#22d3ee" stroke-width="2"/>
+                        <circle cx="116" cy="78" r="12" fill="#0f172a" stroke="#22d3ee" stroke-width="2"/>
+                        <path d="M10 150h62c8 0 10 26 18 26h20c8 0 10-26 18-26h62" stroke="#22d3ee" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="30" cy="20" r="2" fill="#475569"/>
+                        <circle cx="175" cy="35" r="1.5" fill="#475569"/>
+                    </svg>
+                </div>
+                <h3>Transit Lab</h3>
+                <p>See how planets are found: TESS light curves of nearly 100 known systems, searched weekly for the dips of transiting planets.</p>
+            </a>
+
             <!-- API -->
             <a href="/swagger" target="_blank" class="card">
                 <div class="card__icon">
@@ -494,6 +509,7 @@
             <div class="footer__col">
                 <div class="footer__col-title">Projects</div>
                 <ul> <li><a href="/astro3d">&#128301; Astro3D Explorer</a></li>
+                    <li><a href="/astro3d/transit">&#128200; Transit Lab</a></li>
                     <li><a href="https://play.google.com/store/apps/details?id=com.varoid.exoplanethunter" target="_blank" rel="noopener noreferrer">&#127757; Exoplanet Hunter App</a></li>
                            <li><a href="https://csnumerics.com" target="_blank" rel="noopener noreferrer">&#128290; CSharpNumerics</a></li>
                 </ul>
