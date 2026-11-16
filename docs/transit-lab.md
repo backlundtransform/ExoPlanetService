@@ -20,7 +20,7 @@ The analysis is precomputed and does not run in Azure:
 | Stars | [`data/transit/targets.json`](../data/transit/targets.json), 94 known systems |
 | Catalogue | [`data/catalog.json.gz`](../data/catalog.json.gz), for star ids and known planets |
 | Output | `data/transit/<starId>.json` per star, plus `data/transit/index.json` |
-| Delivery | A pull request from the branch `transit-lab/results`, with a summary table |
+| Delivery | A pull request from the branch `transit-results`, with a summary table |
 | Time | About 20–40 minutes for a run that analyses every star (most of it downloads); a few minutes when little changed |
 | Cost | Nothing: the repository is public, so Actions minutes are free; nothing runs in Azure |
 
