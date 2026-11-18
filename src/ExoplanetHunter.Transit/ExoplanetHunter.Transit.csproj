@@ -9,9 +9,10 @@
   <!-- NuGet packages, not the submodule: this project is used only by the offline Transit CLI,
        never by the API, so the two CSharpNumerics builds never meet in one process. -->
   <ItemGroup>
-    <PackageReference Include="CSharpNumerics" Version="4.3.0" />
-    <!-- 1.0.4: standard transit SNR, refined BLS period, masked multi-planet search, TransitCandidate.Validation. -->
-    <PackageReference Include="CSharpNumerics.Engines" Version="1.0.4" />
+    <PackageReference Include="CSharpNumerics" Version="4.4.0" />
+    <!-- 1.0.4: standard transit SNR, refined BLS period, masked multi-planet search, TransitCandidate.Validation.
+         1.1.0: BLS trial periods evenly spaced in frequency (finds ultra-short periods); needs core 4.4.0. -->
+    <PackageReference Include="CSharpNumerics.Engines" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

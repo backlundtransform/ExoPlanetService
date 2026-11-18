@@ -33,8 +33,8 @@ The analysis is precomputed and does not run in Azure:
 3. **Choose sectors.** Keep the longest run of consecutive sectors, at most 3 sectors (about
    80 days). When runs are equally long, keep the most recent one.
 
-   Sectors years apart are not combined: the period grid is linear, so a long gap would need
-   far more trial periods.
+   Sectors years apart are not combined: the number of trial periods needed grows with the
+   time span, so a long gap would need far more of them.
 4. **Skip if nothing changed.** If the previous result used the same sectors, the same catalogue
    planets and the same analysis version, keep it and go to the next star.
 
@@ -88,7 +88,7 @@ Optional settings are `Transit__Refresh__Interval` (default `1.00:00:00`) and
 ## The analysis
 
 The search uses `TransitDetectionPipeline` from the NuGet package
-[CSharpNumerics.Engines](https://www.nuget.org/packages/CSharpNumerics.Engines) (1.0.4), wrapped
+[CSharpNumerics.Engines](https://www.nuget.org/packages/CSharpNumerics.Engines) (1.1.0), wrapped
 by [`TransitAnalyzer`](../src/ExoplanetHunter.Transit/TransitAnalyzer.cs).
 
 1. **Clean.** Read `PDCSAP_FLUX` from each sector. Keep only points with `QUALITY = 0` and finite
@@ -100,9 +100,12 @@ by [`TransitAnalyzer`](../src/ExoplanetHunter.Transit/TransitAnalyzer.cs).
    removes stellar variability and slow instrument drifts, but is much wider than a transit, so
    it keeps the transits.
 4. **Search with BLS (Box Least Squares).** Fold the light curve on 20,000 trial periods,
-   spaced linearly from 0.3 days to half the observed span (at most 100 days). For each trial
-   period, BLS finds the box-shaped dip that best fits the folded curve. The strongest period is
-   then refined on a finer grid of 400 periods around the peak.
+   from 0.3 days to half the observed span (at most 100 days). The trial periods are spaced
+   evenly in frequency (1/period), not in period. A period error then shifts the transits by
+   the same amount over the data whatever the period, so short periods are sampled as finely
+   as long ones. For each trial period, BLS finds the box-shaped dip that best fits the folded
+   curve. The strongest period is then refined on a finer grid of 400 frequencies around the
+   peak.
 
    Requiring at least two transits in the data is what sets the longest period.
 5. **Fit.** At the best period, fit the transit epoch, depth, duration and radius ratio Rp/R★,
@@ -206,12 +209,6 @@ dotnet run --project src/ExoplanetHunter.Transit.Cli -c Release -- --only "WASP-
 
 - **Only BLS.** The search looks only for box-shaped dips. A machine-learning classifier of
   candidates may come later.
-- **Short periods.** Small planets with periods under about one day are often missed: LHS 3844 b,
-  TOI-1807 b, TOI-1685 b and Kepler-10 b. The trial periods are spaced linearly, 0.002 days
-  apart over three sectors. Over about 170 orbits, that error moves the predicted transits by
-  more than a transit duration. Deep transits survive this, which is why hot Jupiters are
-  found. The search then often locks on to 3× the period instead (LHS 3844). A grid uniform in
-  frequency in CSharpNumerics.Engines would fix it.
 - **Young or active stars.** Starspot rotation of a few days, as on HIP 67522, DS Tuc A and
   AU Mic, survives the detrending and appears as unmatched signals.
 - **At most 3 sectors and 3 candidates per star.** Planets beyond the third signal are not

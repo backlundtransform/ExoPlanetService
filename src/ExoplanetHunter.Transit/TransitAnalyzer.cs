@@ -39,7 +39,7 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
     /// Bump when a change to the analysis (or to the Engines package) changes the results, so the
     /// next scheduled run re-analyses every star instead of keeping results it would reuse.
     /// </summary>
-    public const int Version = 1;
+    public const int Version = 2;
 
     private readonly TransitAnalysisOptions _options = options ?? new();
 

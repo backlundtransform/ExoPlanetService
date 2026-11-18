@@ -1,6 +1,7 @@
 # Roadmap: ML-vetting i Transit Lab
 
-> Status 2026-11-15: plan, inget påbörjat utöver BLS-fixen i fas 0.
+> Status 2026-11-18: fas 0 klar i kod (väntar på merge och en körning av veckojobbet). Engines-delen
+> av fas 1 är skriven på grenen `feat/exoplanet-vetting-views` (ej mergad eller släppt).
 > Berör tre repon: **CSharpNumerics** (ML-byggstenar), **CSharpNumerics.Engines** (exoplanetmotorn)
 > och **ExoPlanetService** (data, träning, Transit Lab, webb).
 
@@ -81,10 +82,11 @@ kräver en Kepler-läsare men ingen ny FITS-kod, eftersom Kepler också har `PDC
 Varje fas listar vad som behövs i respektive repo. **[C]** = CSharpNumerics, **[E]** =
 CSharpNumerics.Engines, **[S]** = ExoPlanetService.
 
-### Fas 0: BLS-grunden (pågår)
+### Fas 0: BLS-grunden
 
-- [ ] **[E]** Merga `fix/exoplanet-bls-frequency-grid` (frekvensuniform BLS) och släpp 1.0.5
-- [ ] **[S]** Bumpa Engines till 1.0.5, sätt `TransitAnalyzer.Version = 2` och ta bort
+- [x] **[E]** Merga `fix/exoplanet-bls-frequency-grid` (frekvensuniform BLS). Släppt som 1.1.0,
+      tillsammans med CSharpNumerics 4.4.0
+- [x] **[S]** Bumpa Engines till 1.1.0, sätt `TransitAnalyzer.Version = 2` och ta bort
       "Short periods" ur begränsningarna i `docs/transit-lab.md`
 - [ ] **[S]** Kör veckojobbet och kontrollera att LHS 3844 b, TOI-1807 b, TOI-1685 b och
       Kepler-10 b hittas
@@ -93,22 +95,24 @@ CSharpNumerics.Engines, **[S]** = ExoPlanetService.
 
 ### Fas 1: Datamängd
 
-**[E] Engines 1.1**
+**[E] Engines 1.2** (grenen `feat/exoplanet-vetting-views`)
 
-- [ ] `TransitViewBuilder`: global vy, lokal vy, udda/jämn-vy och sekundärvy från en ljuskurva
+- [x] `TransitViewBuilder`: global vy, lokal vy, udda/jämn-vy och sekundärvy från en ljuskurva
       och en ephemeris, med fönster skalade efter varaktigheten och normaliserade vyer
-- [ ] `TransitCandidate.FromEphemeris(period, epoch, duration, depth)`, så att vyer kan byggas
+- [x] `TransitCandidate.FromEphemeris(period, epoch, duration, depth)`, så att vyer kan byggas
       från katalogens ephemeris utan BLS
-- [ ] Fler skalära features: stjärndensitet jämfört med varaktigheten (via `StellarProperties`),
-      planetradie i jordradier (kräver stjärnradie), antal transiter, SNR per transit
-      (konsistens) och centroidförskjutning om `MOM_CENTR` finns
-- [ ] `FeatureSchema` med version, så att träning och körning garanterat använder samma
-      features i samma ordning
-- [ ] Detrending: fönster i tid (dagar), separat per segment vid gap, biweight-metoden och
+- [x] Fler skalära features (`VettingFeatureExtractor`): stjärndensitet jämfört med varaktigheten
+      (via `StellarProperties`), planetradie i jordradier, antal transiter, SNR per transit
+      (konsistens), signifikans för udda/jämn-skillnad och sekundärförmörkelse, och transitform
+- [x] Versionerat schema (`VettingFeatures.SchemaVersion`, `Names`, `ToVector`), så att träning
+      och körning garanterat använder samma features i samma ordning
+- [ ] Centroidförskjutning från `MOM_CENTR1/2`. Kräver centroidkolumner i `LightCurve`, så den
+      skjuts upp tills baslinjen visar om den behövs
+- [x] Detrending (`TimeWindowDetrender`, `TransitMask`): fönster i tid (dagar), separat per segment vid gap, biweight-metoden och
       möjlighet att maska kända transiter
-- [ ] `TransitInjector`: lägger in syntetiska transiter via befintliga `TransitModel` i riktiga
+- [x] `TransitInjector`: lägger in syntetiska transiter via befintliga `TransitModel` i riktiga
       ljuskurvor, för injection–recovery och som extra positiva exempel
-- [ ] Syntetiska negativa: inverterade ljuskurvor och slumpad fas (Robovetter-metoden), samt
+- [x] Syntetiska negativa (`SyntheticNegatives`): inverterade ljuskurvor och slumpad fas (Robovetter-metoden), samt
       förmörkelsedubbelstjärnor (djupa V-formade transiter med sekundärförmörkelse)
 
 **[S] ExoPlanetService**
@@ -242,16 +246,16 @@ En Windows- eller Avalonia-app kan byggas på samma bibliotek om webbvägen inte
 ## Release-ordning
 
 ```
-Engines 1.0.5 (BLS)                 → fas 0
-Engines 1.1  (vyer, features, injector, detrending)
+Engines 1.1.0 (BLS, core 4.4.0)     → fas 0   (släppt)
+Engines 1.2  (vyer, features, injector, detrending)
                                     → fas 1
 CSharpNumerics nästa minor (GroupKFold, PredictProbability, vikter)
-   → Engines 1.2 (CandidateVetter)  → fas 2
+   → Engines 1.3 (CandidateVetter)  → fas 2
 CSharpNumerics därefter (djupare CNN, Adam, parallellisering, serialisering)
-   → Engines 1.3 (CNN + stacking)   → fas 3–4
+   → Engines 1.4 (CNN + stacking)   → fas 3–4
 ```
 
-Fas 1 i ExoPlanetService kan börja direkt efter Engines 1.1, parallellt med arbetet i
+Fas 1 i ExoPlanetService kan börja direkt efter Engines 1.2, parallellt med arbetet i
 CSharpNumerics. Tills `GroupKFold` finns i biblioteket kan den grupperade uppdelningen göras i
 ExoPlanetService.
 
