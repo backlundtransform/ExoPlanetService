@@ -46,6 +46,20 @@ public sealed class VettingDatasetTests
     }
 
     [TestMethod]
+    public void SavedTable_KeepsMissingValues()
+    {
+        // The archive leaves values out (here the period); they are NaN or null in the entry.
+        var entry = Toi(disposition: "PC", period: double.NaN) with { StarRadius = null, PeriodErrorDays = 0.0001 };
+
+        var read = ToiClient.Deserialize(ToiClient.Serialize([entry])).Single();
+
+        Assert.IsTrue(double.IsNaN(read.PeriodDays));
+        Assert.IsFalse(read.HasEphemeris);
+        Assert.IsNull(read.StarRadius);
+        Assert.AreEqual(entry with { PeriodDays = 0 }, read with { PeriodDays = 0 }); // NaN != NaN, so compare the rest
+    }
+
+    [TestMethod]
     public void Label_MapsDispositions()
     {
         foreach (var (disposition, label) in new (string, int?)[] { ("CP", 1), ("KP", 1), ("FP", 0), ("FA", 0), ("PC", null), ("APC", null), ("", null) })
