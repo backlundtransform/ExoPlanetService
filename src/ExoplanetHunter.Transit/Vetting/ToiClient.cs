@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace ExoplanetHunter.Transit.Vetting;
 
@@ -59,7 +60,11 @@ public sealed class ToiClient(HttpClient http)
     private const string Query =
         "select toi,tid,tfopwg_disp,pl_orbper,pl_orbpererr1,pl_tranmid,pl_tranmiderr1,pl_trandurh,pl_trandep,st_rad,st_teff,st_logg from toi";
 
-    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+    // Missing values are NaN, which plain JSON numbers cannot hold: write them as "NaN".
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web)
+    {
+        NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+    };
 
     /// <summary>Every TOI in the archive (about 8,000 rows).</summary>
     public async Task<IReadOnlyList<ToiEntry>> FetchAsync(CancellationToken cancellationToken = default)
@@ -76,14 +81,18 @@ public sealed class ToiClient(HttpClient http)
     public async Task<IReadOnlyList<ToiEntry>> LoadOrFetchAsync(string path, CancellationToken cancellationToken = default)
     {
         if (File.Exists(path))
-            return JsonSerializer.Deserialize<ToiEntry[]>(await File.ReadAllTextAsync(path, cancellationToken), Json)
-                ?? throw new InvalidDataException($"{path} holds no TOIs.");
+            return Deserialize(await File.ReadAllTextAsync(path, cancellationToken));
 
         var entries = await FetchAsync(cancellationToken);
         if (Path.GetDirectoryName(Path.GetFullPath(path)) is { } dir) Directory.CreateDirectory(dir);
-        await File.WriteAllTextAsync(path, JsonSerializer.Serialize(entries, Json), cancellationToken);
+        await File.WriteAllTextAsync(path, Serialize(entries), cancellationToken);
         return entries;
     }
+
+    internal static string Serialize(IReadOnlyList<ToiEntry> entries) => JsonSerializer.Serialize(entries, Json);
+
+    internal static IReadOnlyList<ToiEntry> Deserialize(string json) =>
+        JsonSerializer.Deserialize<ToiEntry[]>(json, Json) ?? throw new InvalidDataException("The file holds no TOIs.");
 
     internal static IReadOnlyList<ToiEntry> Parse(JsonArray rows)
     {
