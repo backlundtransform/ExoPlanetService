@@ -1,0 +1,151 @@
+name: Transit vetting dataset
+
+# Builds the training data for the Transit Lab vetting model (docs/transit-vetting-dataset.md):
+# labelled TESS TOIs plus synthetic examples, split over several jobs, merged into one file and
+# published as a GitHub release asset (tag dataset-<run number>). Started by hand only.
+on:
+  workflow_dispatch:
+    inputs:
+      shards:
+        description: Number of parallel jobs (stars are split evenly between them)
+        default: '16'
+      limit:
+        description: Stars per job, for a trial run. 0 = all
+        default: '0'
+      synthetic:
+        description: Synthetic examples, all | none | a list such as planets,binaries,inverted,scrambled
+        default: all
+      publish:
+        description: Publish the dataset as a release (otherwise only a workflow artifact)
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: transit-dataset
+  cancel-in-progress: false
+
+jobs:
+  toi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      shards: ${{ steps.shards.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build
+        run: dotnet build src/ExoplanetHunter.Transit.Cli -c Release
+
+      # Fetched once so every job works from the same TOI table.
+      - name: Fetch the TOI table
+        run: dotnet src/ExoplanetHunter.Transit.Cli/bin/Release/net10.0/ExoplanetHunter.Transit.Cli.dll toi --output toi.json
+
+      - name: List shards
+        id: shards
+        env:
+          SHARDS: ${{ inputs.shards }}
+        run: echo "list=$(seq -s, 0 $((SHARDS - 1)) | sed 's/^/[/;s/$/]/')" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: toi
+          path: toi.json
+
+  shard:
+    needs: toi
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJson(needs.toi.outputs.shards) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build
+        run: dotnet build src/ExoplanetHunter.Transit.Cli -c Release
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: toi
+
+      # Light curves are downloaded and deleted star by star, so the job needs little disk.
+      # --max-minutes stops starting new stars in time for the upload below.
+      - name: Build examples
+        env:
+          SHARD: ${{ matrix.shard }}
+          SHARDS: ${{ inputs.shards }}
+          LIMIT: ${{ inputs.limit }}
+          SYNTHETIC: ${{ inputs.synthetic }}
+        run: |
+          dotnet src/ExoplanetHunter.Transit.Cli/bin/Release/net10.0/ExoplanetHunter.Transit.Cli.dll dataset \
+            --toi toi.json --shard "$SHARD/$SHARDS" --limit "$LIMIT" --synthetic "$SYNTHETIC" \
+            --parallel 2 --max-minutes 300 \
+            --output "out/shard-$SHARD.bin" --skipped "out/shard-$SHARD.tsv"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shard-${{ matrix.shard }}
+          path: out/
+          if-no-files-found: ignore
+
+  merge:
+    needs: shard
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build
+        run: dotnet build src/ExoplanetHunter.Transit.Cli -c Release
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: shard-*
+          path: shards
+
+      - name: Merge
+        run: |
+          dotnet src/ExoplanetHunter.Transit.Cli/bin/Release/net10.0/ExoplanetHunter.Transit.Cli.dll dataset-merge \
+            --input shards --output vetting-dataset.bin --report report.md
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vetting-dataset
+          path: |
+            vetting-dataset.bin
+            report.md
+
+      - name: Publish release
+        if: ${{ inputs.publish }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: dataset-${{ github.run_number }}
+        run: |
+          {
+            echo "Training data for the Transit Lab vetting model, built by run ${{ github.run_id }} from ${{ github.sha }}."
+            echo
+            cat report.md
+          } > notes.md
+          gh release create "$TAG" vetting-dataset.bin report.md \
+            --title "Vetting dataset $TAG" --notes-file notes.md --target "${{ github.sha }}" --prerelease --latest=false

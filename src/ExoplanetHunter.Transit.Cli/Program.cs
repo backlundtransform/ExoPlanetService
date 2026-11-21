@@ -14,6 +14,11 @@ using ExoplanetHunter.Transit.Mast;
 // (e.g. MAST is down) keeps its previous result. A star whose previous result was made from the
 // same sectors, planets and analysis version is skipped (ResultReuse) unless --force is given.
 // --summary writes a Markdown report of the run, used as the description of the weekly PR.
+//
+// The vetting dataset commands (toi, dataset, dataset-merge) are in DatasetCommands.cs.
+
+if (args.Length > 0 && !args[0].StartsWith("--", StringComparison.Ordinal))
+    return await DatasetCommands.RunAsync(args[0], ParseArgs(args[1..]));
 
 var options = ParseArgs(args);
 string targetsPath = options.GetValueOrDefault("targets") ?? "data/transit/targets.json";

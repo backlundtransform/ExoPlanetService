@@ -11,8 +11,9 @@
   <ItemGroup>
     <PackageReference Include="CSharpNumerics" Version="4.4.0" />
     <!-- 1.0.4: standard transit SNR, refined BLS period, masked multi-planet search, TransitCandidate.Validation.
-         1.1.0: BLS trial periods evenly spaced in frequency (finds ultra-short periods); needs core 4.4.0. -->
-    <PackageReference Include="CSharpNumerics.Engines" Version="1.1.0" />
+         1.1.0: BLS trial periods evenly spaced in frequency (finds ultra-short periods); needs core 4.4.0.
+         1.2.0: views, vetting features, time-window detrending, injection (used by the vetting dataset). -->
+    <PackageReference Include="CSharpNumerics.Engines" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>

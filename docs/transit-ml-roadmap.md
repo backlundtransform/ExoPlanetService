@@ -1,7 +1,8 @@
 # Roadmap: ML-vetting i Transit Lab
 
-> Status 2026-11-18: fas 0 klar i kod (väntar på merge och en körning av veckojobbet). Engines-delen
-> av fas 1 är skriven på grenen `feat/exoplanet-vetting-views` (ej mergad eller släppt).
+> Status 2026-11-21: fas 0 mergad (väntar på en körning av veckojobbet). Fas 1: Engines-delen är
+> släppt som Engines 1.2.0; ExoPlanetService-delen är skriven (grenen `transit-ml/phase-1-dataset`)
+> men datamängden är inte byggd än.
 > Berör tre repon: **CSharpNumerics** (ML-byggstenar), **CSharpNumerics.Engines** (exoplanetmotorn)
 > och **ExoPlanetService** (data, träning, Transit Lab, webb).
 
@@ -95,7 +96,7 @@ CSharpNumerics.Engines, **[S]** = ExoPlanetService.
 
 ### Fas 1: Datamängd
 
-**[E] Engines 1.2** (grenen `feat/exoplanet-vetting-views`)
+**[E] Engines 1.2** (släppt 2026-11-21)
 
 - [x] `TransitViewBuilder`: global vy, lokal vy, udda/jämn-vy och sekundärvy från en ljuskurva
       och en ephemeris, med fönster skalade efter varaktigheten och normaliserade vyer
@@ -117,15 +118,17 @@ CSharpNumerics.Engines, **[S]** = ExoPlanetService.
 
 **[S] ExoPlanetService**
 
-- [ ] `TapClient`: läs `toi`-tabellen (tid, toi, tfopwg_disp, pl_orbper, pl_tranmid,
-      pl_trandurh, pl_trandep, st_rad, st_teff, st_logg). Konvertera BJD till BTJD (−2457000).
-- [ ] CLI-kommando `dataset`: för varje TOI, hämta SPOC-ljuskurvor (befintlig MAST-klient),
-      rensa och detrenda, bygg vyer och features, och skriv en kompakt binärfil (vyer som
-      `float`, ungefär 2 KB per exempel)
-- [ ] Workflow `transit-dataset.yml` (manuell start): delas upp med en matrix per TIC-intervall,
-      cachar FITS-filer och laddar upp datamängden som Release-asset `dataset-vN`.
-      FITS-filerna checkas aldrig in.
-- [ ] Datamängdsrapport: antal per klass, antal per sektor, och exempel som misslyckades
+- [x] `ToiClient`: läs `toi`-tabellen, inklusive period- och epokfel. Konvertera BJD till BTJD
+      (−2457000).
+- [x] CLI-kommandona `toi`, `dataset` och `dataset-merge`: för varje stjärna, hämta
+      SPOC-ljuskurvor närmast TOI:ns epok, detrenda med TOI:erna maskade, bygg vyer och features
+      plus syntetiska exempel, och skriv en kompakt binärfil (`float`, ungefär 1,9 KB per exempel).
+      Beskrivet i [transit-vetting-dataset.md](transit-vetting-dataset.md).
+- [x] Workflow `transit-dataset.yml` (manuell start): uppdelad med en matrix över stjärnorna och
+      publicerar datamängden som Release-asset `dataset-<körnummer>`. FITS-filerna laddas ner
+      och raderas stjärna för stjärna, och checkas aldrig in.
+- [x] Datamängdsrapport: antal per källa och klass, och skäl till överhoppade exempel
+- [ ] Bygg `dataset`-releasen och granska rapporten
 
 **Klart när:** `dataset-v1` finns som Release-asset med minst ~2 000 märkta exempel och en
 rapport.
