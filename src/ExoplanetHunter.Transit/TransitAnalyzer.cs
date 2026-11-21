@@ -212,7 +212,7 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
         return -1;
     }
 
-    private static (double[] Time, double[] Flux, double[] Error) Join(IEnumerable<SectorLightCurve> sectors)
+    internal static (double[] Time, double[] Flux, double[] Error) Join(IEnumerable<SectorLightCurve> sectors)
     {
         var points = sectors
             .Select(s => s.Normalized())
