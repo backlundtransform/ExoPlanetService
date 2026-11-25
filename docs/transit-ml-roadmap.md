@@ -1,8 +1,9 @@
 # Roadmap: ML-vetting i Transit Lab
 
-> Status 2026-11-21: fas 0 mergad (väntar på en körning av veckojobbet). Fas 1: Engines-delen är
-> släppt som Engines 1.2.0; ExoPlanetService-delen är skriven (grenen `transit-ml/phase-1-dataset`)
-> men datamängden är inte byggd än.
+> Status 2026-11-25: fas 0 och 1 klara (datamängden `dataset-3`: 11 776 exempel, varav 2 299 riktiga
+> TOI:er). Fas 2: CSharpNumerics 4.5.0-preview.1 och Engines 1.3.0-preview.1 är släppta som
+> förhandsversioner; träningskommandot och workflowen finns på grenen `transit-ml/phase-2-train`.
+> Stabila releaser görs när roadmapen är klar.
 > Berör tre repon: **CSharpNumerics** (ML-byggstenar), **CSharpNumerics.Engines** (exoplanetmotorn)
 > och **ExoPlanetService** (data, träning, Transit Lab, webb).
 
@@ -128,39 +129,47 @@ CSharpNumerics.Engines, **[S]** = ExoPlanetService.
       publicerar datamängden som Release-asset `dataset-<körnummer>`. FITS-filerna laddas ner
       och raderas stjärna för stjärna, och checkas aldrig in.
 - [x] Datamängdsrapport: antal per källa och klass, och skäl till överhoppade exempel
-- [ ] Bygg `dataset`-releasen och granska rapporten
+- [x] Bygg `dataset`-releasen och granska rapporten (`dataset-3`)
 
 **Klart när:** `dataset-v1` finns som Release-asset med minst ~2 000 märkta exempel och en
 rapport.
 
 ### Fas 2: Baslinje
 
-**[C] CSharpNumerics (nästa minor)**
+**[C] CSharpNumerics 4.5.0-preview.1**
 
-- [ ] `GroupKFoldCrossValidator` och `StratifiedGroupKFoldCrossValidator`, med en grupp-id per
+- [x] `GroupKFoldCrossValidator` och `StratifiedGroupKFoldCrossValidator`, med en grupp-id per
       rad
-- [ ] `PredictProbability` i `IClassificationModel` (eller ett nytt `IProbabilisticClassifier`)
-      för `RandomForest`, `Logistic`, `MLPClassifier` och sekvensklassificerarna
-- [ ] Klass- eller provvikter i `Fit` för obalanserade klasser
-- [ ] Mått: ROC-AUC, PR-AUC, precision vid given recall och kalibreringskurva
+- [x] `IProbabilisticClassifier` för `DecisionTree`, `RandomForest`, `Logistic`, `MLPClassifier`
+      och sekvensklassificerarna
+- [x] Provvikter (`ISampleWeightedModel`, `ClassWeights.Balanced`)
+- [x] Mått (`ClassificationMetrics`): ROC-AUC, PR-AUC, precision vid given recall, Brier, log loss
+      och kalibreringskurva
+- [x] Snabbare träd: sorterad split-sökning och parallell skog (krävdes för datamängdens storlek)
 
 **[E] Engines**
 
-- [ ] `CandidateVetter` (nytt API bredvid `TransitClassifierTrainer`, som kan märkas
-      `[Obsolete]`):
-      `Train(VettingSample[] samples, VetterConfig)` och
-      `Score(LightCurve, TransitCandidate) → VettingScore { Probability, ModelVersion }`
-- [ ] Baslinjemodell: `StandardScaler` och `RandomForest` på skalära features
+**Engines 1.3.0-preview.1**
+
+- [x] `CandidateVetter`: `Train`, `CrossValidate` (grupperat per stjärna, mätt på riktiga
+      exempel), `Score(LightCurve, TransitParameters, StellarProperties) → VettingScore`
+- [x] Baslinjemodell: `RandomForest` på de skalära features (ingen skalning behövs för träd)
+- [x] Sparad modell: träningsdata och inställningar, tränas om vid inläsning med
+      kontrollsumma (tills CSharpNumerics kan spara träd)
 
 **[S] ExoPlanetService**
 
-- [ ] CLI-kommando `train`: läs datamängden, kör grupperad korsvalidering, träna på allt och
-      skriv modell och metrics
-- [ ] Workflow `transit-train.yml` (manuell start): laddar upp modell och rapport
-      (`metrics.md`) som Release-asset `model-vN`
+- [x] CLI-kommando `train`: läs datamängden, kör grupperad korsvalidering, träna på allt och
+      skriv modell (`vetter.bin`), rapport (`report.md`) och `oof.csv`
+- [x] Workflow `transit-train.yml` (manuell start): publicerar som Release `vetter-<körnummer>`
+- [x] Beslut: träna på bara riktiga TOI:er som standard. Syntetiska exempel sänkte resultatet
+      på riktiga TOI:er (ROC-AUC 0,915 utan, 0,813 med full vikt; se
+      [transit-vetting-model.md](transit-vetting-model.md))
+- [ ] Kör träningsworkflowen och för in modellens egna siffror här
 
 **Klart när:** ROC-AUC och precision vid 90 % recall är kända för baslinjen. Det är siffrorna
-CNN:en ska slå.
+CNN:en ska slå. Första mätningen (scikit-learn med samma inställningar): ROC-AUC 0,915, average
+precision 0,932, precision vid 90 % recall 0,851.
 
 ### Fas 3: CNN och stacking
 
@@ -172,8 +181,9 @@ CNN:en ska slå.
       batchvis forward och backward, och återställning av bästa vikterna vid early stopping
 - [ ] Parallellisering över prov i en batch (`Parallel.For` med gradientackumulering per tråd).
       Tydligaste prestandavinsten för träning i Actions.
-- [ ] Viktserialisering i biblioteket (`ISerializableModel`), så att Engines `ModelSerializer`
-      inte behöver reflektion
+- [ ] Serialisering i biblioteket (`ISerializableModel`) för nätverk och träd, så att Engines
+      `ModelSerializer` inte behöver reflektion och `CandidateVetter` kan spara skogen i stället
+      för att träna om den
 - [ ] (Valfritt) `GradientBoostingClassifier` enligt MLExpansionRoadMap fas 1–2, som
       stacking-modell
 
@@ -250,13 +260,19 @@ En Windows- eller Avalonia-app kan byggas på samma bibliotek om webbvägen inte
 
 ```
 Engines 1.1.0 (BLS, core 4.4.0)     → fas 0   (släppt)
-Engines 1.2  (vyer, features, injector, detrending)
-                                    → fas 1
-CSharpNumerics nästa minor (GroupKFold, PredictProbability, vikter)
-   → Engines 1.3 (CandidateVetter)  → fas 2
-CSharpNumerics därefter (djupare CNN, Adam, parallellisering, serialisering)
-   → Engines 1.4 (CNN + stacking)   → fas 3–4
+Engines 1.2.0 (vyer, features, injector, detrending)
+                                    → fas 1   (släppt)
+CSharpNumerics 4.5.0-preview.1 (GroupKFold, sannolikheter, vikter, mått, snabbare träd)
+   → Engines 1.3.0-preview.1 (CandidateVetter)
+                                    → fas 2   (släppta som förhandsversioner)
+CSharpNumerics 4.5.0-preview.N (djupare CNN, Adam, parallellisering, serialisering)
+   → Engines 1.3.0-preview.N (CNN + stacking)
+                                    → fas 3–4
+CSharpNumerics 4.5.0 + Engines 1.3.0 (stabila) när roadmapen är klar
 ```
+
+Mellan de stabila releaserna publiceras förhandsversioner (`-preview.N`), som NuGet inte ger den
+som använder stabila versioner. Versionen tas från git-taggen i båda repona.
 
 Fas 1 i ExoPlanetService kan börja direkt efter Engines 1.2, parallellt med arbetet i
 CSharpNumerics. Tills `GroupKFold` finns i biblioteket kan den grupperade uppdelningen göras i

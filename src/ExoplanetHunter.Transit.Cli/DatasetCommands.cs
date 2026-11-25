@@ -3,6 +3,7 @@ using System.Globalization;
 using ExoplanetHunter.Transit;
 using ExoplanetHunter.Transit.Mast;
 using ExoplanetHunter.Transit.Vetting;
+using CSharpNumerics.Engines.Exoplanet.Vetting;
 
 /// <summary>
 /// Commands that build the vetting dataset (docs/transit-vetting-dataset.md):
@@ -12,6 +13,9 @@ using ExoplanetHunter.Transit.Vetting;
 ///                   [--synthetic all|none|planets,binaries,inverted,scrambled] [--include-undecided false]
 ///                   [--parallel 1] [--max-minutes 0] [--max-sectors 3] [--cache .cache/dataset] [--keep-cache false]
 ///   transit dataset-merge --input shards/ --output dataset.bin [--report report.md]
+///   transit train --dataset vetting-dataset.bin [--output model/] [--name vetter] [--dataset-name dataset-3]
+///                 [--sources toi|all|toi,binaries,inverted,scrambled,planets] [--synthetic-weight 1]
+///                 [--folds 5] [--trees 300] [--max-depth 12] [--min-leaf 5] [--max-features 0] [--seed 1]
 /// </summary>
 static class DatasetCommands
 {
@@ -22,7 +26,8 @@ static class DatasetCommands
             "toi" => await FetchToisAsync(options),
             "dataset" => await BuildAsync(options),
             "dataset-merge" => Merge(options),
-            _ => throw new ArgumentException($"Unknown command '{command}'. Commands: toi, dataset, dataset-merge."),
+            "train" => Train(options),
+            _ => throw new ArgumentException($"Unknown command '{command}'. Commands: toi, dataset, dataset-merge, train."),
         };
     }
 
@@ -170,6 +175,75 @@ static class DatasetCommands
         Console.WriteLine(report);
         if (reportPath is not null) File.WriteAllText(reportPath, report);
         return 0;
+    }
+
+    /// <summary>
+    /// Trains a vetting model on a dataset file and writes vetter.bin (the model), report.md and
+    /// oof.csv (the out-of-fold probability of every example) to the output folder.
+    /// </summary>
+    private static int Train(Dictionary<string, string> options)
+    {
+        string datasetPath = options.GetValueOrDefault("dataset") ?? "vetting-dataset.bin";
+        string output = options.GetValueOrDefault("output") ?? "model";
+        string datasetName = options.GetValueOrDefault("dataset-name") ?? Path.GetFileName(datasetPath);
+        int Int(string name, int fallback) => int.Parse(options.GetValueOrDefault(name) ?? fallback.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+
+        var trainingOptions = new VetterTrainingOptions
+        {
+            Name = options.GetValueOrDefault("name") ?? "vetter",
+            Sources = ParseSources(options.GetValueOrDefault("sources") ?? "toi"),
+            SyntheticWeight = double.Parse(options.GetValueOrDefault("synthetic-weight") ?? "1", CultureInfo.InvariantCulture),
+            Folds = Int("folds", 5),
+            Config = new()
+            {
+                NumTrees = Int("trees", 300),
+                MaxDepth = Int("max-depth", 12),
+                MinSamplesLeaf = Int("min-leaf", 5),
+                MaxFeatures = Int("max-features", 0),
+                Seed = Int("seed", 1),
+            },
+        };
+
+        var clock = Stopwatch.StartNew();
+        var (header, samples) = VettingDataset.ReadFile(datasetPath);
+        Console.WriteLine($"{samples.Count} examples in {datasetPath}; training on {string.Join(", ", trainingOptions.Sources)}.");
+
+        var result = VetterTraining.Train(header, samples, trainingOptions);
+        byte[] model = result.Model.Serialize();
+
+        // Loading retrains the forest and checks it against the saved fingerprint: prove it works now.
+        var loaded = CandidateVetter.Deserialize(model);
+        if (loaded.TrainingExamples != result.Model.TrainingExamples)
+            throw new InvalidDataException("The saved model does not load back.");
+
+        Directory.CreateDirectory(output);
+        File.WriteAllBytes(Path.Combine(output, "vetter.bin"), model);
+        string report = VetterTraining.Report(result, trainingOptions, datasetName, model.Length);
+        File.WriteAllText(Path.Combine(output, "report.md"), report);
+        File.WriteAllLines(Path.Combine(output, "oof.csv"), VetterTraining.OutOfFoldCsv(result));
+
+        Console.WriteLine(report);
+        Console.WriteLine($"Wrote {output}/vetter.bin, report.md and oof.csv in {clock.Elapsed.TotalSeconds:F0}s.");
+        return 0;
+    }
+
+    private static SampleSource[] ParseSources(string value)
+    {
+        if (value.Equals("all", StringComparison.OrdinalIgnoreCase))
+            return Enum.GetValues<SampleSource>();
+
+        return value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(v => v.ToLowerInvariant() switch
+            {
+                "toi" => SampleSource.Toi,
+                "planets" => SampleSource.InjectedPlanet,
+                "binaries" => SampleSource.EclipsingBinary,
+                "inverted" => SampleSource.Inverted,
+                "scrambled" => SampleSource.Scrambled,
+                _ => throw new ArgumentException($"Unknown source '{v}'. Use toi, planets, binaries, inverted, scrambled or all."),
+            })
+            .Distinct()
+            .ToArray();
     }
 
     private static void Save(string output, string skippedPath, VettingDatasetHeader header,
