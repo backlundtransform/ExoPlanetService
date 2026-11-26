@@ -40,8 +40,21 @@ TOIs) showed that the synthetic examples make the model worse at what matters, s
 | TOIs + synthetic, weight 1 | 0.813 | 0.846 | 0.742 |
 
 These numbers come from scikit-learn's random forest with the same settings and the same
-grouped folds, run before the C# training command existed. The training workflow reports the
-numbers of the model itself.
+grouped folds, run before the C# training command existed. The first model trained by the
+workflow, `vetter-1`, matches them:
+
+| `vetter-1` (real TOIs only) | Value |
+|---|---:|
+| ROC-AUC | 0.915 |
+| Average precision | 0.929 |
+| Precision at 90 % recall | 0.854 (threshold 0.46) |
+| Accuracy at 0.5 | 0.851 |
+| Brier score | 0.117 |
+
+Its probabilities are well ordered but pulled towards the middle, as random forests' usually are:
+of the TOIs scored about 0.06 none are planets, of those scored 0.55 about 64 %, and of those
+scored 0.65 about 80 %. Turning off class balancing does not change this. Calibration (Platt
+scaling) is planned for phase 3.
 
 The model separates the synthetic examples easily (injected planets average 0.87, inverted light
 curves 0.03), but that teaches it little about real false positives. Injected planets hurt most:

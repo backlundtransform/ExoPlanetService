@@ -123,7 +123,7 @@ public static class VetterTraining
         }
         sb.AppendLine();
 
-        Line($"Settings: {config.NumTrees} trees, max depth {config.MaxDepth}, at least {config.MinSamplesLeaf} examples per leaf, {(config.MaxFeatures > 0 ? config.MaxFeatures.ToString(CultureInfo.InvariantCulture) : "√features")} features per split, seed {config.Seed}, classes balanced: {(config.BalanceClasses ? "yes" : "no")}. Sources: {string.Join(", ", options.Sources)}; synthetic weight {options.SyntheticWeight:0.###}.");
+        Line($"Settings: {config.NumTrees} trees, max depth {config.MaxDepth}, at least {config.MinSamplesLeaf} examples per leaf, {(config.MaxFeatures > 0 ? config.MaxFeatures.ToString(CultureInfo.InvariantCulture) : "√features")} features per split, seed {config.Seed}, classes balanced: {(config.BalanceClasses ? "yes" : "no")}. Sources: {string.Join(", ", options.Sources)}{(options.Sources.Any(x => x != SampleSource.Toi) ? FormattableString.Invariant($"; synthetic weight {options.SyntheticWeight:0.###}") : "")}.");
         sb.AppendLine();
         Line($"Model file: {modelBytes / 1024.0:F0} KB (the training examples; the forest is trained again when the file is loaded).");
         return sb.ToString();

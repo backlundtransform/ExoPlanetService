@@ -1,8 +1,9 @@
 # Roadmap: ML-vetting i Transit Lab
 
-> Status 2026-11-25: fas 0 och 1 klara (datamängden `dataset-3`: 11 776 exempel, varav 2 299 riktiga
-> TOI:er). Fas 2: CSharpNumerics 4.5.0-preview.1 och Engines 1.3.0-preview.1 är släppta som
-> förhandsversioner; träningskommandot och workflowen finns på grenen `transit-ml/phase-2-train`.
+> Status 2026-11-26: fas 0, 1 och 2 klara. Baslinjemodellen `vetter-1` (random forest på 15
+> features) når ROC-AUC 0,915 på riktiga TOI:er. Datamängden är `dataset-3` (11 776 exempel, varav
+> 2 299 riktiga TOI:er). CSharpNumerics 4.5.0-preview.1 och Engines 1.3.0-preview.1 är släppta som
+> förhandsversioner.
 > Stabila releaser görs när roadmapen är klar.
 > Berör tre repon: **CSharpNumerics** (ML-byggstenar), **CSharpNumerics.Engines** (exoplanetmotorn)
 > och **ExoPlanetService** (data, träning, Transit Lab, webb).
@@ -165,11 +166,19 @@ rapport.
 - [x] Beslut: träna på bara riktiga TOI:er som standard. Syntetiska exempel sänkte resultatet
       på riktiga TOI:er (ROC-AUC 0,915 utan, 0,813 med full vikt; se
       [transit-vetting-model.md](transit-vetting-model.md))
-- [ ] Kör träningsworkflowen och för in modellens egna siffror här
+- [x] Kör träningsworkflowen och för in modellens egna siffror här (`vetter-1`)
 
 **Klart när:** ROC-AUC och precision vid 90 % recall är kända för baslinjen. Det är siffrorna
-CNN:en ska slå. Första mätningen (scikit-learn med samma inställningar): ROC-AUC 0,915, average
-precision 0,932, precision vid 90 % recall 0,851.
+CNN:en ska slå.
+
+**Baslinjen `vetter-1`** (2026-11-26, `dataset-3`, 2 299 riktiga TOI:er från 2 159 stjärnor, 5 folds
+per stjärna): ROC-AUC **0,915**, average precision **0,929**, precision vid 90 % recall **0,854**
+(tröskel 0,46), träffsäkerhet vid 0,5 **0,851**, Brier 0,117, log loss 0,384. Samma som
+förhandsmätningen i scikit-learn (0,915 / 0,932 / 0,851).
+
+Kalibreringen är bra men komprimerad mot mitten, som random forests brukar vara: vid 0,06 är 0 %
+planeter, vid 0,55 är 64 % och vid 0,65 är 80 %. Att stänga av klassbalanseringen ändrar nästan
+ingenting (provat i scikit-learn). Rättas med Platt-skalning i fas 3.
 
 ### Fas 3: CNN och stacking
 
