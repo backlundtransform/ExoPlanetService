@@ -73,6 +73,11 @@
     "radius_ratio": "Planet- / stjärnradie",
     "odd_even": "Kvot udda / jämna transiter",
     "first_transit": "Första transit",
-    "method_note": "Beräknad {{date}} från TESS 2-minuters SPOC-ljuskurvor (MAST) med transitpipelinen i CSharpNumerics.Engines: trendborttagning, BLS-periodsökning, transitanpassning och validering."
+    "method_note": "Beräknad {{date}} från TESS 2-minuters SPOC-ljuskurvor (MAST) med transitpipelinen i CSharpNumerics.Engines: trendborttagning, BLS-periodsökning, transitanpassning och validering.",
+    "vetting_score": "Planetbetyg",
+    "vetting_likely": "liknar en planet",
+    "vetting_uncertain": "osäker",
+    "vetting_unlikely": "liknar ett falsklarm",
+    "vetting_note": "Planetbetyg ({{model}}): en maskininlärd uppskattning, från 0 till 1, av hur mycket en signal liknar en planet snarare än en förmörkelsedubbelstjärna, stjärnaktivitet eller en instrumenteffekt. Den har lärt sig av ungefär 2 300 TESS-kandidater som astronomer har granskat. Ett högt betyg är ingen upptäckt: en riktig planet behöver uppföljande observationer."
   }
 }

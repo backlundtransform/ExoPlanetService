@@ -1,7 +1,10 @@
 using CSharpNumerics.Engines.Exoplanet.Data;
 using CSharpNumerics.Engines.Exoplanet.Enums;
+using CSharpNumerics.Engines.Exoplanet.Features;
 using CSharpNumerics.Engines.Exoplanet.Pipeline;
+using CSharpNumerics.Engines.Exoplanet.Vetting;
 using ExoplanetHunter.Domain.Catalog;
+using ExoplanetHunter.Transit.Vetting;
 
 namespace ExoplanetHunter.Transit;
 
@@ -31,9 +34,10 @@ public sealed record TransitAnalysisOptions
 
 /// <summary>
 /// Runs the CSharpNumerics.Engines exoplanet pipeline (detrend → BLS → fit → validate, repeated
-/// for several planets) on TESS sectors of one star and packages the result for the app.
+/// for several planets) on TESS sectors of one star and packages the result for the app. With a
+/// <see cref="CandidateVetter"/>, each candidate also gets a vetting score.
 /// </summary>
-public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
+public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null, CandidateVetter? vetter = null)
 {
     /// <summary>
     /// Bump when a change to the analysis (or to the Engines package) changes the results, so the
@@ -49,6 +53,8 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
         var (time, flux, error) = Join(sectors);
         if (time.Length < 100)
             throw new InvalidDataException($"Only {time.Length} good points in the selected sectors.");
+        var unbinned = new LightCurve(time, flux, error, new int[time.Length],
+            new LightCurveMetadata($"TIC {ticId}", "TESS", 0, CadenceType.Short));
 
         (time, flux, error) = Bin(time, flux, error, _options.SearchBinMinutes / 1440.0);
 
@@ -72,7 +78,8 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
         var processed = LightCurvePreprocessor.Preprocess(lightCurve, config);
         var search = PeriodSearcher.Search(processed, config);
 
-        var candidateResults = candidates.Select(c => ToResult(c, processed, config)).ToList();
+        var scores = Vet(unbinned, star, candidates);
+        var candidateResults = candidates.Select((c, i) => ToResult(c, processed, config) with { VettingScore = scores[i] }).ToList();
         var known = MatchKnownPlanets(knownPlanets, candidateResults, config.MaxPeriodDays);
         foreach (var match in known.Where(k => k.CandidateIndex is not null))
             candidateResults[match.CandidateIndex!.Value] = candidateResults[match.CandidateIndex.Value] with { MatchedPlanet = match.Name };
@@ -90,6 +97,7 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
             Points = time.Length,
             GeneratedAt = generatedAt,
             AnalysisVersion = Version,
+            VettingModel = vetter?.Name,
             LightCurve = new TimeSeries(Round(displayTime, 5), Round(displayFlux, 6)),
             Periodogram = ReducePeriodogram(search.Periods.Values, search.Power.Values, _options.PeriodogramPoints),
             Candidates = candidateResults,
@@ -131,6 +139,40 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null)
             Folded = new TimeSeries(Round(folded.Select(x => x.Phase).ToArray(), 5), Round(folded.Select(x => x.Flux).ToArray(), 6)),
         };
     }
+
+    /// <summary>
+    /// Vetting score of each candidate, computed as the training data was: on the 2-minute light
+    /// curve, detrended with the biweight filter while all candidates are masked. Null for every
+    /// candidate without a model, and for a candidate that cannot be scored.
+    /// </summary>
+    private double?[] Vet(LightCurve unbinned, Star star, TransitCandidate[] candidates)
+    {
+        var scores = new double?[candidates.Length];
+        if (vetter is null || candidates.Length == 0)
+            return scores;
+
+        var detrended = VettingSampleBuilder.DetrendForVetting(unbinned, candidates.Select(c => c.Parameters).ToList());
+        var stellar = HostStar(star);
+        for (int i = 0; i < candidates.Length; i++)
+        {
+            try
+            {
+                var features = VettingFeatureExtractor.Extract(detrended, candidates[i].Parameters, stellar);
+                scores[i] = Math.Round(vetter.Probability(VettingFeatures.ToVector(features)), 3);
+            }
+            catch (ArgumentException)
+            {
+                // Too little data around this signal to measure it; leave it unscored.
+            }
+        }
+        return scores;
+    }
+
+    /// <summary>The host star for the vetting features: radius, mass and temperature from the catalogue.</summary>
+    internal static StellarProperties? HostStar(Star star) =>
+        star.Radius is null && star.Mass is null && star.Teff is null
+            ? null
+            : new StellarProperties(star.Teff ?? 0, star.Radius ?? 0, star.Mass ?? 0, 0, star.FeH ?? 0, SpectralType.G);
 
     internal IReadOnlyList<KnownPlanetMatch> MatchKnownPlanets(IEnumerable<Planet> planets,
         IReadOnlyList<TransitCandidateResult> candidates, double maxPeriod)

@@ -3,10 +3,10 @@ namespace ExoplanetHunter.Transit.Tests;
 [TestClass]
 public sealed class ResultReuseTests
 {
-    private static TransitResult Previous(int version = TransitAnalyzer.Version) => new()
+    private static TransitResult Previous(int version = TransitAnalyzer.Version, string? vettingModel = null) => new()
     {
         StarId = 1, StarName = "WASP-18", TicId = 100100827, Mission = "TESS", Sectors = [104, 105, 106], Points = 1,
-        GeneratedAt = DateTimeOffset.UnixEpoch, AnalysisVersion = version,
+        GeneratedAt = DateTimeOffset.UnixEpoch, AnalysisVersion = version, VettingModel = vettingModel,
         LightCurve = new TimeSeries([], []), Periodogram = new TimeSeries([], []), Candidates = [],
         KnownPlanets = [new KnownPlanetMatch("WASP-18 b", 0.94145, MatchStatus.Found, 0)],
     };
@@ -23,5 +23,14 @@ public sealed class ResultReuseTests
         Assert.IsFalse(ResultReuse.CanReuse(Previous(), 100100827, [104, 105, 106], ["WASP-18 b", "WASP-18 c"]), "new planet");
         Assert.IsFalse(ResultReuse.CanReuse(Previous(version: 0), 100100827, [104, 105, 106], ["WASP-18 b"]), "older analysis");
         Assert.IsFalse(ResultReuse.CanReuse(Previous(), 1, [104, 105, 106], ["WASP-18 b"]), "other TIC");
+    }
+
+    [TestMethod]
+    public void NewVettingModel_ScoresTheStarAgain()
+    {
+        Assert.IsFalse(ResultReuse.CanReuse(Previous(), 100100827, [104, 105, 106], ["WASP-18 b"], "vetter-1"), "first model");
+        Assert.IsFalse(ResultReuse.CanReuse(Previous(vettingModel: "vetter-1"), 100100827, [104, 105, 106], ["WASP-18 b"], "vetter-2"), "new model");
+        Assert.IsFalse(ResultReuse.CanReuse(Previous(vettingModel: "vetter-1"), 100100827, [104, 105, 106], ["WASP-18 b"]), "model removed");
+        Assert.IsTrue(ResultReuse.CanReuse(Previous(vettingModel: "vetter-1"), 100100827, [104, 105, 106], ["WASP-18 b"], "vetter-1"), "same model");
     }
 }

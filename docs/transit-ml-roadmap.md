@@ -207,19 +207,23 @@ träningen tar under 2 timmar i Actions.
 
 **[E] Engines**
 
-- [ ] Släpp modellstödet (vetter, vyer, features, injector) som en minor-version
+- [x] Släpp modellstödet (vetter, vyer, features, injector): Engines 1.3.0-preview.1
 
 **[S] ExoPlanetService**
 
-- [ ] `TransitAnalyzer` laddar modellen från `data/transit/model/` och sätter `mlScore` och
-      `mlModel` på varje kandidat. Bumpa `TransitAnalyzer.Version`.
-- [ ] `ResultReuse` ska också räkna med modellversionen, så att en ny modell gör att alla
-      stjärnor analyseras om
-- [ ] `/api/v2/Transits`: nya fält läggs till utan att befintliga ändras. v1-endpoints
-      påverkas inte.
-- [ ] Webb: betygsbadge på kandidatkortet, kort förklaring ("liknar en planet", inte
-      "upptäckt") och en sida om modellen och dess mått
-- [ ] `docs/transit-lab.md`: beskriv modellen, dess begränsningar och hur man tränar om
+- [x] `TransitAnalyzer` laddar modellen (`vetter-1`) från `data/transit/model/` och sätter
+      `vettingScore` på varje kandidat och `vettingModel` på resultatet. Betyget räknas på
+      2-minutersdatan med samma detrending som träningsdatan. Analysversionen behöver inte
+      höjas: modellnamnet styr omkörningen.
+- [x] `ResultReuse` räknar med modellnamnet, så att en ny modell gör att alla stjärnor
+      analyseras om
+- [x] `/api/v2/Transits`: filerna serveras som de är, så de nya fälten följer med utan
+      ändringar i API:t. v1-endpoints påverkas inte.
+- [x] Webb: betygsbadge med stapel på kandidatkortet ("liknar en planet", "osäker", "liknar ett
+      falsklarm"; inte för sekundärförmörkelser) och en förklarande text om modellen.
+      Måtten finns i `docs/transit-vetting-model.md` i stället för på en egen sida.
+- [x] `docs/transit-lab.md`: beskriv modellen, dess begränsningar och hur man byter modell
+- [ ] Kör veckojobbet med modellen och kontrollera målen nedan
 
 **Klart när:** alla kända planeter som hittas bland de 94 stjärnorna får betyg över 0,5, och
 de omatchade signalerna från aktiva stjärnor (HIP 67522, DS Tuc A, AU Mic) får lågt betyg.

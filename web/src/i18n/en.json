@@ -73,6 +73,11 @@
     "radius_ratio": "Planet / star radius",
     "odd_even": "Odd / even depth ratio",
     "first_transit": "First transit",
-    "method_note": "Computed {{date}} from TESS 2-minute SPOC light curves (MAST) with the CSharpNumerics.Engines transit pipeline: detrending, BLS period search, transit fit and validation."
+    "method_note": "Computed {{date}} from TESS 2-minute SPOC light curves (MAST) with the CSharpNumerics.Engines transit pipeline: detrending, BLS period search, transit fit and validation.",
+    "vetting_score": "Planet score",
+    "vetting_likely": "looks like a planet",
+    "vetting_uncertain": "uncertain",
+    "vetting_unlikely": "looks like a false positive",
+    "vetting_note": "Planet score ({{model}}): a machine-learning estimate, from 0 to 1, of how much a signal looks like a planet rather than an eclipsing binary, stellar activity or an instrument effect. It learned from about 2,300 TESS candidates that astronomers have checked. A high score is not a discovery: a real planet needs follow-up observations."
   }
 }

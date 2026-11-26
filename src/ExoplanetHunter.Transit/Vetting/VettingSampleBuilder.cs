@@ -223,10 +223,20 @@ public sealed class VettingSampleBuilder(VettingSampleOptions? options = null)
         catch (Exception ex) when (ex is not OperationCanceledException) { skipped.Add(new(id, ticId, ex.Message)); }
     }
 
-    private LightCurve Detrend(LightCurve lc, IReadOnlyCollection<TransitParameters> mask)
+    private LightCurve Detrend(LightCurve lc, IReadOnlyCollection<TransitParameters> mask) =>
+        DetrendForVetting(lc, mask, _options.DetrendWindowDays);
+
+    /// <summary>
+    /// The detrending the vetting features are computed on: a biweight filter over
+    /// <paramref name="minWindowDays"/> (or 3 transit durations, if longer) with the given transits
+    /// masked. Transit Lab scores its candidates on exactly this, so the model sees the same kind
+    /// of light curve it was trained on.
+    /// </summary>
+    internal static LightCurve DetrendForVetting(LightCurve lc, IReadOnlyCollection<TransitParameters> mask,
+        double minWindowDays = TimeWindowDetrender.DefaultWindowDays)
     {
         double longest = mask.Count == 0 ? 0 : mask.Max(p => p.Duration);
-        double window = Math.Max(_options.DetrendWindowDays, 3 * longest);
+        double window = Math.Max(minWindowDays, 3 * longest);
         var masked = mask.Count == 0 ? null : TransitMask.Create(lc.Time, mask);
         return TimeWindowDetrender.Detrend(lc, window, DetrendingMethod.Biweight, masked);
     }

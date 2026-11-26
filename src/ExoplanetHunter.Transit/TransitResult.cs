@@ -21,6 +21,12 @@ public sealed record TransitResult
     /// </summary>
     public int AnalysisVersion { get; init; }
 
+    /// <summary>
+    /// Name of the vetting model that scored the candidates (<see cref="TransitCandidateResult.VettingScore"/>),
+    /// or null when no model was used.
+    /// </summary>
+    public string? VettingModel { get; init; }
+
     /// <summary>Detrended light curve, binned for display.</summary>
     public required TimeSeries LightCurve { get; init; }
 
@@ -46,6 +52,14 @@ public sealed record TransitCandidateResult
     public required double Snr { get; init; }
     public required double OddEvenDepthRatio { get; init; }
     public required double Score { get; init; }
+
+    /// <summary>
+    /// Vetting model's probability (0–1) that the signal is a planet rather than an eclipsing
+    /// binary, stellar activity or an instrument effect; null when no model was used or the
+    /// signal could not be scored. See docs/transit-vetting-model.md.
+    /// </summary>
+    public double? VettingScore { get; init; }
+
     public required string Disposition { get; init; }
     public required IReadOnlyList<string> Warnings { get; init; }
 

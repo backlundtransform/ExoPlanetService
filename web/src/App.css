@@ -466,6 +466,37 @@
   font-variant-numeric: tabular-nums;
 }
 
+.vetting-badge {
+  margin-top: 10px;
+  padding: 6px 10px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--panel);
+  font-size: 14px;
+}
+
+.vetting-badge p {
+  margin: 0 0 6px;
+}
+
+.vetting-badge__label {
+  color: var(--muted);
+}
+
+.vetting-badge__meter {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--border);
+}
+
+.vetting-badge__meter span {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background-color: var(--muted);
+}
+
 .candidate-card__warnings {
   margin: 8px 0 0;
   padding-left: 0;

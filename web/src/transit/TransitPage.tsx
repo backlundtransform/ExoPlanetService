@@ -165,6 +165,9 @@ function TransitReport({ result }: { result: TransitResult }) {
       <section className="transit-section">
         <h2>{t('transit.candidates')}</h2>
         {result.candidates.length === 0 && <p className="muted">{t('transit.no_candidates')}</p>}
+        {result.vettingModel && result.candidates.some((c) => c.vettingScore != null) && (
+          <p className="muted small">{t('transit.vetting_note', { model: result.vettingModel })}</p>
+        )}
         <div className="candidates">
           {result.candidates.map((c, i) => (
             <CandidateCard key={i} index={i} candidate={c} number={number} />
@@ -216,11 +219,33 @@ function CandidateCard({ index, candidate: c, number }: { index: number; candida
           <tr><th>{t('transit.first_transit')}</th><td>BTJD {number(c.epochBtjd, 3)}</td></tr>
         </tbody>
       </table>
+      {c.vettingScore != null && !c.secondaryEclipseOf && <VettingBadge score={c.vettingScore} number={number} />}
       {c.warnings.length > 0 && (
         <ul className="candidate-card__warnings">
           {c.warnings.map((w) => <li key={w}>⚠ {w}</li>)}
         </ul>
       )}
     </article>
+  )
+}
+
+/**
+ * The vetting model's planet score, with a bar from 0 to 1. Thresholds: 0.7 and above "looks like
+ * a planet", below 0.4 "looks like a false positive", in between "uncertain". The badge stays
+ * neutral in colour: the candidate colours already mean "which candidate".
+ */
+function VettingBadge({ score, number }: { score: number; number: (v: number, d?: number) => string }) {
+  const { t } = useTranslation()
+  const level = score >= 0.7 ? 'likely' : score >= 0.4 ? 'uncertain' : 'unlikely'
+  return (
+    <div className="vetting-badge">
+      <p>
+        <span className="vetting-badge__label">{t('transit.vetting_score')}</span>{' '}
+        <strong>{number(score, 2)}</strong> · {t(`transit.vetting_${level}`)}
+      </p>
+      <span className="vetting-badge__meter" aria-hidden="true">
+        <span style={{ width: `${Math.round(score * 100)}%` }} />
+      </span>
+    </div>
   )
 }
