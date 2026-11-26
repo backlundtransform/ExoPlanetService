@@ -1,0 +1,87 @@
+name: Transit vetting model
+
+# Trains the Transit Lab vetting model (docs/transit-vetting-model.md) on a vetting dataset
+# release, cross-validates it over the stars and publishes the model and its report as a GitHub
+# release (tag vetter-<run number>). Started by hand only. Takes a few minutes.
+on:
+  workflow_dispatch:
+    inputs:
+      dataset:
+        description: Dataset release tag, e.g. dataset-3. Empty = the newest dataset release
+        default: ''
+      sources:
+        description: Training examples, toi | all | a list such as toi,binaries,inverted,scrambled,planets
+        default: toi
+      synthetic_weight:
+        description: Training weight of synthetic examples (real TOIs weigh 1)
+        default: '0.3'
+      publish:
+        description: Publish the model as a release (otherwise only a workflow artifact)
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: transit-train
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build
+        run: dotnet build src/ExoplanetHunter.Transit.Cli -c Release
+
+      - name: Download the dataset
+        id: dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DATASET: ${{ inputs.dataset }}
+        run: |
+          if [ -z "$DATASET" ]; then
+            DATASET=$(gh release list --limit 100 --json tagName,createdAt \
+              --jq '[.[] | select(.tagName | startswith("dataset-"))] | sort_by(.createdAt) | last | .tagName')
+          fi
+          if [ -z "$DATASET" ] || [ "$DATASET" = "null" ]; then echo "No dataset release found." >&2; exit 1; fi
+          gh release download "$DATASET" --pattern vetting-dataset.bin --dir dataset
+          echo "tag=$DATASET" >> "$GITHUB_OUTPUT"
+
+      - name: Train
+        env:
+          DATASET: ${{ steps.dataset.outputs.tag }}
+          SOURCES: ${{ inputs.sources }}
+          WEIGHT: ${{ inputs.synthetic_weight }}
+        run: |
+          dotnet src/ExoplanetHunter.Transit.Cli/bin/Release/net10.0/ExoplanetHunter.Transit.Cli.dll train \
+            --dataset dataset/vetting-dataset.bin --dataset-name "$DATASET" \
+            --name "vetter-${{ github.run_number }}" --sources "$SOURCES" --synthetic-weight "$WEIGHT" \
+            --output model
+          cat model/report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vetter
+          path: model/
+
+      - name: Publish release
+        if: ${{ inputs.publish }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: vetter-${{ github.run_number }}
+        run: |
+          {
+            echo "Vetting model for Transit Lab, trained by run ${{ github.run_id }} from ${{ github.sha }}."
+            echo
+            cat model/report.md
+          } > notes.md
+          gh release create "$TAG" model/vetter.bin model/report.md model/oof.csv \
+            --title "Vetting model $TAG" --notes-file notes.md --target "${{ github.sha }}" --prerelease --latest=false
