@@ -5,7 +5,10 @@ eclipsing binary, stellar activity or an instrument effect. It is phase 2 of
 [transit-ml-roadmap.md](transit-ml-roadmap.md), and it learns from the
 [vetting dataset](transit-vetting-dataset.md).
 
-It is not yet used by Transit Lab: showing the score on candidate cards is phase 4.
+Transit Lab scores its candidates with it (phase 4): the model in `data/transit/model/` gives
+each candidate a *planet score* on its card. See step 10 in [transit-lab.md](transit-lab.md).
+To use a new model, download `vetter.bin` and `report.md` from its `vetter-<run>` release into
+`data/transit/model/`; the next weekly run scores every star again.
 
 ## The model
 
@@ -110,4 +113,3 @@ is refused as well.
 ## Next
 
 - **Phase 3:** a network on the phase-folded views, stacked with these features.
-- **Phase 4:** score Transit Lab's candidates with the model and show the score in the app.

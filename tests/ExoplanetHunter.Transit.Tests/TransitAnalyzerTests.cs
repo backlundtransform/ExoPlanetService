@@ -1,3 +1,5 @@
+using CSharpNumerics.Engines.Exoplanet.Features;
+using CSharpNumerics.Engines.Exoplanet.Vetting;
 using ExoplanetHunter.Domain.Catalog;
 using ExoplanetHunter.Transit.Mast;
 
@@ -82,11 +84,10 @@ public sealed class TransitAnalyzerTests
         CollectionAssert.AreEqual(new[] { 28, 29, 30 }, chosen.Select(f => f.Sector).ToArray());
     }
 
-    [TestMethod]
-    public void Analyze_SyntheticTransits_FindsThePeriod()
+    /// <summary>27 days of 2-minute data with a 1% deep, 2-hour transit every <paramref name="period"/> days.</summary>
+    private static SectorLightCurve SyntheticSector(double period = 3.2)
     {
-        // 27 days of 2-minute data with a 1% deep, 2-hour transit every 3.2 days.
-        const double period = 3.2, duration = 2.0 / 24, depth = 0.01;
+        const double duration = 2.0 / 24, depth = 0.01;
         var rng = new Random(42);
         int n = (int)(27 * 720);
         var time = Enumerable.Range(0, n).Select(i => 1000 + i / 720.0).ToArray();
@@ -96,11 +97,39 @@ public sealed class TransitAnalyzerTests
             bool inTransit = phase < duration / 2 || phase > period - duration / 2;
             return (float)((inTransit ? 1 - depth : 1) * 10_000 + rng.NextDouble() * 20 - 10);
         }).ToArray();
-        var fits = FitsBinaryTableTests.BuildFits(time, flux, time.Select(_ => 6f).ToArray(), new int[n]);
+        return SectorLightCurve.FromFits(FitsBinaryTableTests.BuildFits(time, flux, time.Select(_ => 6f).ToArray(), new int[n]), 1);
+    }
 
+    [TestMethod]
+    public void Analyze_WithAVettingModel_ScoresEveryCandidate()
+    {
+        // A small model on random features: the point is that scores are computed and stored.
+        var rng = new Random(5);
+        var examples = Enumerable.Range(0, 60).Select(i => new VettingExample(
+            $"x{i}", i, i % 2, Enumerable.Range(0, VettingFeatures.Names.Length).Select(_ => rng.NextDouble() + i % 2).ToArray()))
+            .ToList();
+        var vetter = CandidateVetter.Train(examples, new VetterConfig { NumTrees = 10 }, "test-vetter");
+        var star = new Star { Id = 9, Name = "Test", Radius = 1.0, Mass = 1.0, Teff = 5772 };
+
+        var scored = new TransitAnalyzer(new TransitAnalysisOptions { TrialPeriods = 8000 }, vetter)
+            .Analyze(star, [Planet("Test b", 3.2)], 1, [SyntheticSector()], DateTimeOffset.UnixEpoch);
+        var unscored = new TransitAnalyzer(new TransitAnalysisOptions { TrialPeriods = 8000 })
+            .Analyze(star, [Planet("Test b", 3.2)], 1, [SyntheticSector()], DateTimeOffset.UnixEpoch);
+
+        Assert.AreEqual("test-vetter", scored.VettingModel);
+        Assert.IsNotEmpty(scored.Candidates);
+        Assert.IsTrue(scored.Candidates.All(c => c.VettingScore is >= 0 and <= 1));
+        Assert.IsNull(unscored.VettingModel);
+        Assert.IsTrue(unscored.Candidates.All(c => c.VettingScore is null));
+    }
+
+    [TestMethod]
+    public void Analyze_SyntheticTransits_FindsThePeriod()
+    {
+        const double period = 3.2;
         var star = new Star { Id = 9, Name = "Test" };
         var result = new TransitAnalyzer(new TransitAnalysisOptions { TrialPeriods = 8000 })
-            .Analyze(star, [Planet("Test b", period)], 1, [SectorLightCurve.FromFits(fits, 1)], DateTimeOffset.UnixEpoch);
+            .Analyze(star, [Planet("Test b", period)], 1, [SyntheticSector(period)], DateTimeOffset.UnixEpoch);
 
         Assert.IsNotEmpty(result.Candidates);
         Assert.AreEqual(period, result.Candidates[0].PeriodDays, 0.02);

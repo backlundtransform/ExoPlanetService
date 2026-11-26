@@ -144,6 +144,22 @@ by [`TransitAnalyzer`](../src/ExoplanetHunter.Transit/TransitAnalyzer.cs).
 
    A candidate that matches nothing is shown as an *unmatched signal*. It is usually noise,
    stellar activity or an instrument effect, and is not a claimed discovery.
+10. **Score.** The vetting model in `data/transit/model/vetter.bin` gives each candidate a
+    *planet score*: the probability, from 0 to 1, that the signal is a planet rather than an
+    eclipsing binary, stellar activity or an instrument effect. It is a random forest trained on
+    about 2,300 TESS candidates that astronomers have checked; see
+    [transit-vetting-model.md](transit-vetting-model.md).
+
+    The score is computed the way the model was trained: on the 2-minute light curve (not the
+    10-minute bins of the search), detrended with a biweight filter while all candidates are
+    masked, from the 15 vetting features and the star's mass, radius and temperature in the
+    catalogue. The app shows it on the candidate card as "looks like a planet" (0.7 and above),
+    "uncertain" or "looks like a false positive" (below 0.4), but not for a secondary eclipse.
+
+    The result records the model's name (`vettingModel`). When the model file changes, the next
+    run scores every star again. A model file that no longer loads (for example after a
+    CSharpNumerics change) stops the run: train it again with the *Transit vetting model*
+    workflow and replace `data/transit/model/`.
 
 For display, the stored result is reduced to these series:
 
@@ -204,11 +220,15 @@ dotnet run --project src/ExoplanetHunter.Transit.Cli -c Release -- --only "WASP-
 | `--max-sectors` | `3` | Most sectors per star |
 | `--force` | `false` | Analyse even when the result could be reused |
 | `--summary` | | Write a Markdown report of the run |
+| `--vetter` | `data/transit/model/vetter.bin` | Vetting model; without the file, candidates are not scored |
 
 ## Limitations
 
-- **Only BLS.** The search looks only for box-shaped dips. A machine-learning classifier of
-  candidates may come later.
+- **Only BLS.** The search looks only for box-shaped dips.
+- **The planet score is an estimate.** It ranks a real planet above a false positive about 9
+  times in 10 among checked TESS candidates, and partly reflects which stars became TOIs. It
+  does not make a signal a discovery. Its probabilities are pulled towards the middle (calibration
+  is planned).
 - **Young or active stars.** Starspot rotation of a few days, as on HIP 67522, DS Tuc A and
   AU Mic, survives the detrending and appears as unmatched signals.
 - **At most 3 sectors and 3 candidates per star.** Planets beyond the third signal are not

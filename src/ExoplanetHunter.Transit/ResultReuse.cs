@@ -7,9 +7,12 @@ namespace ExoplanetHunter.Transit;
 /// </summary>
 public static class ResultReuse
 {
-    public static bool CanReuse(TransitResult? previous, long ticId, IReadOnlyList<int> sectors, IEnumerable<string> knownPlanets) =>
+    /// <param name="vettingModel">Name of the vetting model in use, or null: a new model scores every star again.</param>
+    public static bool CanReuse(TransitResult? previous, long ticId, IReadOnlyList<int> sectors, IEnumerable<string> knownPlanets,
+        string? vettingModel = null) =>
         previous is not null
         && previous.AnalysisVersion == TransitAnalyzer.Version
+        && previous.VettingModel == vettingModel
         && previous.TicId == ticId
         && previous.Sectors.SequenceEqual(sectors)
         && previous.KnownPlanets.Select(k => k.Name).Order(StringComparer.Ordinal)
