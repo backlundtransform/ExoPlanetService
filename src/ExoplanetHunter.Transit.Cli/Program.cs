@@ -3,6 +3,7 @@ using System.Text.Json;
 using ExoplanetHunter.Domain.Catalog;
 using ExoplanetHunter.Transit;
 using ExoplanetHunter.Transit.Mast;
+using ExoplanetHunter.Transit.Vetting;
 using CSharpNumerics.Engines.Exoplanet.Vetting;
 
 // Precomputes Transit Lab results for the stars in a target list.
@@ -112,9 +113,11 @@ foreach (string name in targets)
 }
 
 // Rebuild the index from every result on disk, so stars that failed this run keep theirs.
-var index = Directory.EnumerateFiles(outputDir, "*.json")
+var allResults = Directory.EnumerateFiles(outputDir, "*.json")
     .Where(f => int.TryParse(Path.GetFileNameWithoutExtension(f), out _)) // <starId>.json, not targets.json or index.json
     .Select(f => JsonSerializer.Deserialize<TransitResult>(File.ReadAllText(f), json)!)
+    .ToList();
+var index = allResults
     .OrderBy(r => r.StarName, StringComparer.OrdinalIgnoreCase)
     .Select(r => new TransitIndexEntry(r.StarId, r.StarName, r.TicId, r.Sectors, r.Candidates.Count,
         r.KnownPlanets.Count(k => k.Status is MatchStatus.Found or MatchStatus.FoundAtHarmonic), r.KnownPlanets.Count, r.GeneratedAt))
@@ -133,6 +136,8 @@ if (summaryPath is not null)
     };
     if (report.Count > 0)
         summary.AddRange(["| Star | Sectors | Known planets found | Candidates | Unmatched signals | Planet scores | Result |", "|---|---|---|---|---|---|---|", .. report]);
+    if (vetter is not null)
+        summary.AddRange(["", LabEvaluation.Evaluate(allResults).ToMarkdown()]);
     await File.WriteAllLinesAsync(summaryPath, summary);
 }
 
