@@ -223,10 +223,21 @@ träningen tar under 2 timmar i Actions.
       falsklarm"; inte för sekundärförmörkelser) och en förklarande text om modellen.
       Måtten finns i `docs/transit-vetting-model.md` i stället för på en egen sida.
 - [x] `docs/transit-lab.md`: beskriv modellen, dess begränsningar och hur man byter modell
-- [ ] Kör veckojobbet med modellen och kontrollera målen nedan
+- [x] Kör veckojobbet med modellen och kontrollera målen nedan (2026-11-27)
+- [x] Inget betyg för kandidater med färre än 3 transiter i datan (`MinTransitsToScore`,
+      `transitsObserved`, `TransitAnalyzer.Version = 3`): modellen kan inte skilja få transiter
+      från instrumenteffekter
 
 **Klart när:** alla kända planeter som hittas bland de 94 stjärnorna får betyg över 0,5, och
 de omatchade signalerna från aktiva stjärnor (HIP 67522, DS Tuc A, AU Mic) får lågt betyg.
+
+**Utfall 2026-11-27 (`vetter-1`):** 92 av 96 matchade planeter över 0,5 (medel 0,78). Under 0,5:
+TOI-216.01 (0,26, betande transit), HD 213885 b (0,39), TOI-2109 b (0,46), HD 191939 c (0,48).
+Heta Jupitrar får bara 0,5–0,75. Sekundärförmörkelser högst 0,12. Aktiva stjärnor: HIP 67522 0,29
+och DS Tuc A 0,22, men AU Mic 0,36–0,52. Omatchade signaler: medel 0,24 med minst 6 transiter
+men ungefär 0,6 med 0–5, därav gränsen på 3 transiter. Att lära modellen instrumenteffekter är
+en uppgift för fas 3: en andra utvärderingsmängd med Transit Labs egna kandidater, och en ny
+prövning av syntetiska falsklarm och features för transiter nära dataglapp.
 
 ### Fas 5: Fler stjärnor och live-validering
 

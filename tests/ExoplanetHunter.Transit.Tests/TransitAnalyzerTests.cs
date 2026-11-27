@@ -120,7 +120,15 @@ public sealed class TransitAnalyzerTests
         Assert.IsNotEmpty(scored.Candidates);
         Assert.IsTrue(scored.Candidates.All(c => c.VettingScore is >= 0 and <= 1));
         Assert.IsNull(unscored.VettingModel);
-        Assert.IsTrue(unscored.Candidates.All(c => c.VettingScore is null));
+        Assert.IsTrue(unscored.Candidates.All(c => c.VettingScore is null && c.TransitsObserved is null));
+
+        // The planet: 27 days at a 3.2-day period gives 8 or 9 transits.
+        Assert.IsTrue(scored.Candidates[0].TransitsObserved is >= 8 and <= 9, $"{scored.Candidates[0].TransitsObserved} transits");
+
+        var tooFew = new TransitAnalyzer(new TransitAnalysisOptions { TrialPeriods = 8000, MinTransitsToScore = 20 }, vetter)
+            .Analyze(star, [Planet("Test b", 3.2)], 1, [SyntheticSector()], DateTimeOffset.UnixEpoch);
+        Assert.IsTrue(tooFew.Candidates.All(c => c.VettingScore is null && c.TransitsObserved is not null));
+        Assert.AreEqual("test-vetter", tooFew.VettingModel);
     }
 
     [TestMethod]

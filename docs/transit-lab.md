@@ -156,6 +156,13 @@ by [`TransitAnalyzer`](../src/ExoplanetHunter.Transit/TransitAnalyzer.cs).
     catalogue. The app shows it on the candidate card as "looks like a planet" (0.7 and above),
     "uncertain" or "looks like a false positive" (below 0.4), but not for a secondary eclipse.
 
+    A candidate with fewer than 3 transits in the data gets no score; the card says so and the
+    result records the count (`transitsObserved`). The model learned from TOIs, which TESS's own
+    pipeline had already screened for instrument effects, and it cannot tell a planet from an
+    artefact seen once or twice. In the first scored run, unmatched signals with 0–5 transits
+    averaged 0.6 while those with 6 or more averaged 0.24, and known planets were barely affected
+    (3 of 96 had fewer than 3 transits).
+
     The result records the model's name (`vettingModel`). When the model file changes, the next
     run scores every star again. A model file that no longer loads (for example after a
     CSharpNumerics change) stops the run: train it again with the *Transit vetting model*
@@ -228,7 +235,9 @@ dotnet run --project src/ExoplanetHunter.Transit.Cli -c Release -- --only "WASP-
 - **The planet score is an estimate.** It ranks a real planet above a false positive about 9
   times in 10 among checked TESS candidates, and partly reflects which stars became TOIs. It
   does not make a signal a discovery. Its probabilities are pulled towards the middle (calibration
-  is planned).
+  is planned). It is weak on instrument effects: signals with only a few transits score too high,
+  which is why candidates with fewer than 3 transits are not scored. Hot Jupiters score only
+  0.5–0.75 because large, deep transits resemble eclipsing binaries.
 - **Young or active stars.** Starspot rotation of a few days, as on HIP 67522, DS Tuc A and
   AU Mic, survives the detrending and appears as unmatched signals.
 - **At most 3 sectors and 3 candidates per star.** Planets beyond the third signal are not

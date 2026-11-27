@@ -30,6 +30,14 @@ public sealed record TransitAnalysisOptions
 
     /// <summary>Relative period difference within which a candidate counts as a catalogue planet.</summary>
     public double MatchTolerance { get; init; } = 0.01;
+
+    /// <summary>
+    /// Fewest transits with data a candidate needs for a vetting score. The model learned from
+    /// vetted TOIs and cannot tell a planet from an instrument effect seen only once or twice:
+    /// in the first scored run, unmatched signals with 0–5 transits averaged 0.6, those with 6 or
+    /// more 0.24.
+    /// </summary>
+    public int MinTransitsToScore { get; init; } = 3;
 }
 
 /// <summary>
@@ -43,7 +51,7 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null, Cand
     /// Bump when a change to the analysis (or to the Engines package) changes the results, so the
     /// next scheduled run re-analyses every star instead of keeping results it would reuse.
     /// </summary>
-    public const int Version = 2;
+    public const int Version = 3;
 
     private readonly TransitAnalysisOptions _options = options ?? new();
 
@@ -79,7 +87,9 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null, Cand
         var search = PeriodSearcher.Search(processed, config);
 
         var scores = Vet(unbinned, star, candidates);
-        var candidateResults = candidates.Select((c, i) => ToResult(c, processed, config) with { VettingScore = scores[i] }).ToList();
+        var candidateResults = candidates
+            .Select((c, i) => ToResult(c, processed, config) with { VettingScore = scores[i].Score, TransitsObserved = scores[i].Transits })
+            .ToList();
         var known = MatchKnownPlanets(knownPlanets, candidateResults, config.MaxPeriodDays);
         foreach (var match in known.Where(k => k.CandidateIndex is not null))
             candidateResults[match.CandidateIndex!.Value] = candidateResults[match.CandidateIndex.Value] with { MatchedPlanet = match.Name };
@@ -142,12 +152,14 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null, Cand
 
     /// <summary>
     /// Vetting score of each candidate, computed as the training data was: on the 2-minute light
-    /// curve, detrended with the biweight filter while all candidates are masked. Null for every
-    /// candidate without a model, and for a candidate that cannot be scored.
+    /// curve, detrended with the biweight filter while all candidates are masked, and the number
+    /// of its transits that have data. The score is null without a model, for a candidate with
+    /// fewer than <see cref="TransitAnalysisOptions.MinTransitsToScore"/> transits, and for one
+    /// that cannot be measured.
     /// </summary>
-    private double?[] Vet(LightCurve unbinned, Star star, TransitCandidate[] candidates)
+    private (double? Score, int? Transits)[] Vet(LightCurve unbinned, Star star, TransitCandidate[] candidates)
     {
-        var scores = new double?[candidates.Length];
+        var scores = new (double? Score, int? Transits)[candidates.Length];
         if (vetter is null || candidates.Length == 0)
             return scores;
 
@@ -158,7 +170,10 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null, Cand
             try
             {
                 var features = VettingFeatureExtractor.Extract(detrended, candidates[i].Parameters, stellar);
-                scores[i] = Math.Round(vetter.Probability(VettingFeatures.ToVector(features)), 3);
+                int transits = (int)features[VettingFeatures.TransitCount];
+                scores[i] = (transits >= _options.MinTransitsToScore
+                    ? Math.Round(vetter.Probability(VettingFeatures.ToVector(features)), 3)
+                    : null, transits);
             }
             catch (ArgumentException)
             {
