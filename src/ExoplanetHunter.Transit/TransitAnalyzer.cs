@@ -51,7 +51,7 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null, Cand
     /// Bump when a change to the analysis (or to the Engines package) changes the results, so the
     /// next scheduled run re-analyses every star instead of keeping results it would reuse.
     /// </summary>
-    public const int Version = 3;
+    public const int Version = 4;
 
     private readonly TransitAnalysisOptions _options = options ?? new();
 
@@ -82,13 +82,18 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null, Cand
         var lightCurve = new LightCurve(time, flux, error, new int[time.Length],
             new LightCurveMetadata($"TIC {ticId}", "TESS", 0, CadenceType.Short));
 
-        var candidates = TransitDetectionPipeline.Detect(lightCurve, config);
         var processed = LightCurvePreprocessor.Preprocess(lightCurve, config);
         var search = PeriodSearcher.Search(processed, config);
 
+        var found = TransitDetectionPipeline.Detect(lightCurve, config)
+            .Select(c => (Candidate: c, Result: ToResult(c, processed, config)))
+            .Where(x => HasSignal(x.Result))
+            .ToArray();
+        var candidates = found.Select(x => x.Candidate).ToArray();
+
         var scores = Vet(unbinned, star, candidates);
-        var candidateResults = candidates
-            .Select((c, i) => ToResult(c, processed, config) with { VettingScore = scores[i].Score, TransitsObserved = scores[i].Transits })
+        var candidateResults = found
+            .Select((x, i) => x.Result with { VettingScore = scores[i].Score, TransitsObserved = scores[i].Transits })
             .ToList();
         var known = MatchKnownPlanets(knownPlanets, candidateResults, config.MaxPeriodDays);
         foreach (var match in known.Where(k => k.CandidateIndex is not null))
@@ -114,6 +119,14 @@ public sealed class TransitAnalyzer(TransitAnalysisOptions? options = null, Cand
             KnownPlanets = known,
         };
     }
+
+    /// <summary>
+    /// False for a "candidate" without a dip: the search sometimes returns one with no depth or
+    /// signal-to-noise (zero, negative or not a number) after the real signals are masked. Such a
+    /// candidate is noise and must not be shown or scored.
+    /// </summary>
+    internal static bool HasSignal(TransitCandidateResult candidate) =>
+        candidate.DepthPpm > 0 && candidate.Snr > 0;
 
     private static TransitCandidateResult ToResult(TransitCandidate candidate, LightCurve processed, TransitDetectionConfig config)
     {

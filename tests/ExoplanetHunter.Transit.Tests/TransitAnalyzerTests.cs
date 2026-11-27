@@ -37,6 +37,16 @@ public sealed class TransitAnalyzerTests
     }
 
     [TestMethod]
+    public void HasSignal_CandidateWithoutDepthOrSnr_IsDropped()
+    {
+        Assert.IsTrue(TransitAnalyzer.HasSignal(Candidate(3)));
+        // Seen in the weekly run (GJ 1252, K2-138): depth and SNR 0, NaN mapped to 0 in the result.
+        Assert.IsFalse(TransitAnalyzer.HasSignal(Candidate(0.312) with { DepthPpm = 0, Snr = 0 }));
+        Assert.IsFalse(TransitAnalyzer.HasSignal(Candidate(3) with { Snr = 0 }));
+        Assert.IsFalse(TransitAnalyzer.HasSignal(Candidate(3) with { DepthPpm = -50 }));
+    }
+
+    [TestMethod]
     public void MarkSecondaryEclipses_HalfPhaseAtSamePeriod_IsTheOccultation()
     {
         var planet = Candidate(0.94145) with { EpochBtjd = 4180.699, MatchedPlanet = "WASP-18 b" };
