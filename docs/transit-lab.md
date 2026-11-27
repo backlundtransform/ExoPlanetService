@@ -125,7 +125,8 @@ by [`TransitAnalyzer`](../src/ExoplanetHunter.Transit/TransitAnalyzer.cs).
 
 7. **Repeat.** Mask the found transits (±1 duration around each) and search again, up to 3
    candidates. A rejected signal is masked as well, so a strong false signal cannot hide a
-   weaker real one.
+   weaker real one. A candidate without a dip (depth or signal-to-noise zero, negative or not a
+   number), which the search can return once the real signals are masked, is dropped.
 8. **Compare with the catalogue.** Compare the candidates with the planets the catalogue lists
    for the star:
 
