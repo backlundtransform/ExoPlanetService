@@ -98,6 +98,8 @@ export interface TransitCandidate {
   score: number
   /** Vetting model's probability (0–1) that the signal is a planet; absent or null when not scored. */
   vettingScore?: number | null
+  /** Transits with data, counted when vetted; too few and there is no vettingScore. */
+  transitsObserved?: number | null
   disposition: string
   warnings: string[]
   /** Phase −0.5…0.5 (transit at 0) against flux. */

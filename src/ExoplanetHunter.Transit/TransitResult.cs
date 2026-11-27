@@ -60,6 +60,12 @@ public sealed record TransitCandidateResult
     /// </summary>
     public double? VettingScore { get; init; }
 
+    /// <summary>
+    /// Transits of this candidate that have data, counted when it was vetted (null without a
+    /// vetting model). A candidate with too few transits gets no <see cref="VettingScore"/>.
+    /// </summary>
+    public int? TransitsObserved { get; init; }
+
     public required string Disposition { get; init; }
     public required IReadOnlyList<string> Warnings { get; init; }
 

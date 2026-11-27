@@ -165,7 +165,7 @@ function TransitReport({ result }: { result: TransitResult }) {
       <section className="transit-section">
         <h2>{t('transit.candidates')}</h2>
         {result.candidates.length === 0 && <p className="muted">{t('transit.no_candidates')}</p>}
-        {result.vettingModel && result.candidates.some((c) => c.vettingScore != null) && (
+        {result.vettingModel && result.candidates.some((c) => c.vettingScore != null || c.transitsObserved != null) && (
           <p className="muted small">{t('transit.vetting_note', { model: result.vettingModel })}</p>
         )}
         <div className="candidates">
@@ -220,6 +220,12 @@ function CandidateCard({ index, candidate: c, number }: { index: number; candida
         </tbody>
       </table>
       {c.vettingScore != null && !c.secondaryEclipseOf && <VettingBadge score={c.vettingScore} number={number} />}
+      {c.vettingScore == null && c.transitsObserved != null && !c.secondaryEclipseOf && (
+        <p className="vetting-badge">
+          <span className="vetting-badge__label">{t('transit.vetting_score')}</span>{' '}
+          {t('transit.vetting_too_few', { count: c.transitsObserved })}
+        </p>
+      )}
       {c.warnings.length > 0 && (
         <ul className="candidate-card__warnings">
           {c.warnings.map((w) => <li key={w}>⚠ {w}</li>)}

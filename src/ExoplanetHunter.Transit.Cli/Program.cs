@@ -139,7 +139,10 @@ if (summaryPath is not null)
 return failures == targets.Length && targets.Length > 0 ? 1 : 0;
 
 static string Scores(TransitResult result) =>
-    string.Join(", ", result.Candidates.Select(c => c.VettingScore is { } p ? p.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "–"));
+    string.Join(", ", result.Candidates.Select(c =>
+        c.VettingScore is { } p ? p.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)
+        : c.TransitsObserved is { } n ? $"– ({n} transits)"
+        : "–"));
 
 static Dictionary<string, string> ParseArgs(string[] args)
 {

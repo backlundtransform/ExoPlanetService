@@ -78,6 +78,7 @@
     "vetting_likely": "liknar en planet",
     "vetting_uncertain": "osäker",
     "vetting_unlikely": "liknar ett falsklarm",
-    "vetting_note": "Planetbetyg ({{model}}): en maskininlärd uppskattning, från 0 till 1, av hur mycket en signal liknar en planet snarare än en förmörkelsedubbelstjärna, stjärnaktivitet eller en instrumenteffekt. Den har lärt sig av ungefär 2 300 TESS-kandidater som astronomer har granskat. Ett högt betyg är ingen upptäckt: en riktig planet behöver uppföljande observationer."
+    "vetting_note": "Planetbetyg ({{model}}): en maskininlärd uppskattning, från 0 till 1, av hur mycket en signal liknar en planet snarare än en förmörkelsedubbelstjärna, stjärnaktivitet eller en instrumenteffekt. Den har lärt sig av ungefär 2 300 TESS-kandidater som astronomer har granskat. Ett högt betyg är ingen upptäckt: en riktig planet behöver uppföljande observationer.",
+    "vetting_too_few": "för få transiter i datan ({{count}}) för att bedöma"
   }
 }
