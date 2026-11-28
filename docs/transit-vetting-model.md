@@ -27,12 +27,22 @@ planets. Without it the probabilities are squeezed towards the middle: `vetter-1
 TOIs of which 91 % were planets. The cross-validation calibrates each fold's model on its own
 training stars, so the reported metrics are of calibrated models.
 
+The model in use is `vetter-2` (dataset `dataset-4`, 2026-11-28). On the 2,299 real TOIs:
+
+| Model | ROC-AUC | Average precision | Precision at 90 % recall | Brier score |
+|---|---:|---:|---:|---:|
+| `vetter-1` (schema 1, not calibrated) | 0.915 | 0.929 | 0.854 | 0.117 |
+| **`vetter-2`** (schema 2, Platt scaling) | **0.915** | **0.930** | **0.858** | **0.111** |
+
+The ranking of the TOIs is the same; the probabilities are better (Platt slope 1.65). The new
+features are aimed at Transit Lab's own false signals, which the TOIs hardly hold; see below.
+
 | Setting | Value |
 |---|---|
 | Trees | 300 |
 | Max depth | 12 |
 | Examples per leaf | at least 5, for smoother probabilities |
-| Features per split | √15 ≈ 4, chosen at random |
+| Features per split | √19 ≈ 4, chosen at random |
 | Class balance | planets and non-planets weigh the same in total |
 | Seed | 1: training is repeatable |
 

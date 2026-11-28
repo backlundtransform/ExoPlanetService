@@ -209,8 +209,19 @@ ordningen:
       kandidater (`LabEvaluation`): kända planeter mot sekundärförmörkelser och omatchade
       signaler. Baslinje `vetter-1` (2026-11-27): ROC-AUC 0,833, 7 av 21 omatchade signaler på
       0,5 eller mer.
-- [ ] Bygg om datamängden med schema 2, träna `vetter-2`, jämför med `vetter-1` på TOI:erna och
-      på Transit Labs kandidater, och byt modell om den är bättre
+- [x] Bygg om datamängden med schema 2 (`dataset-4`), träna `vetter-2` och jämför med `vetter-1`
+      på TOI:erna (2026-11-28, samma 2 299 TOI:er):
+
+      | Modell | ROC-AUC | AP | Precision vid 90 % recall | Brier | Log loss |
+      |---|---:|---:|---:|---:|---:|
+      | `vetter-1` (schema 1, okalibrerad) | 0,915 | 0,929 | 0,854 | 0,117 | – |
+      | `vetter-2` (schema 2, Platt) | 0,915 | 0,930 | 0,858 | 0,111 | 0,358 |
+
+      Kalibreringen gör nytta (Platt-lutning 1,65: skogens sannolikheter var för nära mitten).
+      De fyra nya featuresen ändrar nästan inget på TOI:erna, vilket var väntat: deras mål är
+      Transit Labs egna falsklarm. `vetter-2` ligger i `data/transit/model/`.
+- [ ] Kör veckojobbet med `vetter-2` och jämför med `vetter-1` på Transit Labs kandidater
+      (ROC-AUC 0,833, 7 av 21 omatchade på 0,5 eller mer)
 - [ ] Injection–recovery-rapport: andel återfunna som funktion av djup och period, för BLS
       ensamt och för BLS med vetting
 
