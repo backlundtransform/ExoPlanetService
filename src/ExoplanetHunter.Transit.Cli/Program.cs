@@ -4,6 +4,7 @@ using ExoplanetHunter.Domain.Catalog;
 using ExoplanetHunter.Transit;
 using ExoplanetHunter.Transit.Mast;
 using ExoplanetHunter.Transit.Vetting;
+using CSharpNumerics.Engines.Exoplanet.Features;
 using CSharpNumerics.Engines.Exoplanet.Vetting;
 
 // Precomputes Transit Lab results for the stars in a target list.
@@ -54,6 +55,13 @@ if (File.Exists(vetterPath))
     // Loading trains the forest again and checks it against the saved fingerprint.
     vetter = CandidateVetter.Deserialize(await File.ReadAllBytesAsync(vetterPath));
     Console.WriteLine($"Vetting model {vetter.Name} ({vetter.TrainingExamples} training examples) from {vetterPath}.");
+    if (vetter.FeatureSchemaVersion != VettingFeatures.SchemaVersion)
+    {
+        // An old model after a feature change: run without scores rather than fail every star.
+        Console.WriteLine($"WARNING: {vetter.Name} uses feature schema {vetter.FeatureSchemaVersion}, this build computes " +
+                          $"schema {VettingFeatures.SchemaVersion}. Candidates are not scored; train a new model.");
+        vetter = null;
+    }
 }
 else
 {

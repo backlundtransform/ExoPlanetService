@@ -12,10 +12,20 @@ To use a new model, download `vetter.bin` and `report.md` from its `vetter-<run>
 
 ## The model
 
-A random forest (`CandidateVetter` in CSharpNumerics.Engines 1.3) on the 15 scalar vetting
+A random forest (`CandidateVetter` in CSharpNumerics.Engines 1.3) on the scalar vetting
 features of each signal: depth, duration, signal-to-noise, how consistent the transits are, odd
 and even depths, a secondary eclipse, the transit shape, the duration compared with what the star
-predicts, the planet radius and the host star.
+predicts, the planet radius and the host star. Feature schema 2 (Engines 1.3.0-preview.2) adds
+four aimed at instrument effects and stellar activity: how much the individual transit depths
+differ (`DepthChi2`), transits cut by gaps (`PartialTransitFraction`), transits near gaps and
+the ends of the data (`GapEdgeFraction`), and the noise near the transits against the noise
+everywhere (`LocalNoiseRatio`). `vetter-1` used the 15 features of schema 1.
+
+The forest's probabilities are then **calibrated** with Platt scaling, fitted on its 5-fold
+out-of-fold probabilities of the real TOIs, so that of the candidates given 0.8, about 80 % are
+planets. Without it the probabilities are squeezed towards the middle: `vetter-1` gave 0.75 to
+TOIs of which 91 % were planets. The cross-validation calibrates each fold's model on its own
+training stars, so the reported metrics are of calibrated models.
 
 | Setting | Value |
 |---|---|

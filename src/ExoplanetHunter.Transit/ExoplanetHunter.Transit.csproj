@@ -13,8 +13,9 @@
     <!-- 1.0.4: standard transit SNR, refined BLS period, masked multi-planet search, TransitCandidate.Validation.
          1.1.0: BLS trial periods evenly spaced in frequency (finds ultra-short periods); needs core 4.4.0.
          1.2.0: views, vetting features, time-window detrending, injection (used by the vetting dataset).
-         1.3.0-preview.1: CandidateVetter (random forest on the vetting features); needs core 4.5.0-preview.1. -->
-    <PackageReference Include="CSharpNumerics.Engines" Version="1.3.0-preview.1" />
+         1.3.0-preview.1: CandidateVetter (random forest on the vetting features); needs core 4.5.0-preview.1.
+         1.3.0-preview.2: Platt calibration, vetting feature schema 2 (19 features). -->
+    <PackageReference Include="CSharpNumerics.Engines" Version="1.3.0-preview.2" />
   </ItemGroup>
 
   <ItemGroup>

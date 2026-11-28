@@ -9,7 +9,7 @@ Nothing runs in Azure, and the data is never committed to git.
 
 ## Examples
 
-Each example is one signal on one star: five phase-folded views and 15 scalar features, with a
+Each example is one signal on one star: five phase-folded views and 19 scalar features, with a
 label.
 
 | Source | Label | What it is |
@@ -38,7 +38,7 @@ The views and features come from CSharpNumerics.Engines 1.2 (`TransitViewBuilder
 | Secondary | 61 | As local, half an orbit later |
 
 All views are scaled so that out of transit is 0 and the bottom of the transit is −1. The features
-are listed in the Engines README (`VettingFeatures.Names`, schema version 1).
+are listed in the Engines README (`VettingFeatures.Names`, schema version 2 since Engines 1.3.0-preview.2: the 15 of schema 1 plus `DepthChi2`, `PartialTransitFraction`, `GapEdgeFraction` and `LocalNoiseRatio`). A dataset built with another schema must be built again.
 
 ## Steps for each star
 
