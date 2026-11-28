@@ -125,6 +125,9 @@ public static class VetterTraining
 
         Line($"Settings: {config.NumTrees} trees, max depth {config.MaxDepth}, at least {config.MinSamplesLeaf} examples per leaf, {(config.MaxFeatures > 0 ? config.MaxFeatures.ToString(CultureInfo.InvariantCulture) : "√features")} features per split, seed {config.Seed}, classes balanced: {(config.BalanceClasses ? "yes" : "no")}. Sources: {string.Join(", ", options.Sources)}; synthetic weight {options.SyntheticWeight:0.###}.");
         sb.AppendLine();
+        var calibration = result.Model.Calibration;
+        Line($"Calibration: {(calibration is null ? "none" : $"Platt scaling fitted on {config.CalibrationFolds}-fold out-of-fold probabilities of the real TOIs, slope {calibration.Slope:F3}, intercept {calibration.Intercept:F3}")}. The cross-validation metrics above are of calibrated models, each calibrated on its own training stars.");
+        sb.AppendLine();
         Line($"Model file: {modelBytes / 1024.0:F0} KB (the training examples; the forest is trained again when the file is loaded).");
         return sb.ToString();
     }

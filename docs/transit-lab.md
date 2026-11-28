@@ -153,7 +153,7 @@ by [`TransitAnalyzer`](../src/ExoplanetHunter.Transit/TransitAnalyzer.cs).
 
     The score is computed the way the model was trained: on the 2-minute light curve (not the
     10-minute bins of the search), detrended with a biweight filter while all candidates are
-    masked, from the 15 vetting features and the star's mass, radius and temperature in the
+    masked, from the 19 vetting features and the star's mass, radius and temperature in the
     catalogue. The app shows it on the candidate card as "looks like a planet" (0.7 and above),
     "uncertain" or "looks like a false positive" (below 0.4), but not for a secondary eclipse.
 
