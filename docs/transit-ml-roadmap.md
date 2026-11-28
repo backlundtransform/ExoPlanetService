@@ -171,37 +171,56 @@ rapport.
 CNN:en ska slå. Första mätningen (scikit-learn med samma inställningar): ROC-AUC 0,915, average
 precision 0,932, precision vid 90 % recall 0,851.
 
-### Fas 3: CNN och stacking
+### Fas 3: Kalibrering och instrumenteffekter
 
-**[C] CSharpNumerics**
+Fasen hette först "CNN och stacking". Ett förexperiment (PyTorch och scikit-learn, samma
+datamängd `dataset-3` och samma grupperade folds som fas 2, 2 299 riktiga TOI:er) ändrade
+ordningen:
 
-- [ ] Konfigurerbart djup i `CNN1DClassifier`: lista av conv-block (filter, kärna, pooling)
-      ovanpå befintliga `ILayer` och `SequentialModel`
-- [ ] Adam-optimeraren även i sekvensmodellerna (den finns redan i `Numerics/Optimization`),
-      batchvis forward och backward, och återställning av bästa vikterna vid early stopping
-- [ ] Parallellisering över prov i en batch (`Parallel.For` med gradientackumulering per tråd).
-      Tydligaste prestandavinsten för träning i Actions.
-- [ ] Serialisering i biblioteket (`ISerializableModel`) för nätverk och träd, så att Engines
-      `ModelSerializer` inte behöver reflektion och `CandidateVetter` kan spara skogen i stället
-      för att träna om den
-- [ ] (Valfritt) `GradientBoostingClassifier` enligt MLExpansionRoadMap fas 1–2, som
-      stacking-modell
+| Modell | ROC-AUC | AP | Precision vid 90 % recall | Brier |
+|---|---:|---:|---:|---:|
+| Random forest (baslinjen) | 0,916 | 0,932 | 0,859 | 0,119 |
+| Random forest + Platt-skalning | 0,915 | 0,931 | 0,858 | 0,111 |
+| CNN på vyerna (global + 4 lokala kanaler) | 0,82–0,84 | 0,83–0,85 | 0,75–0,77 | 0,15–0,16 |
+| Stacking skog + CNN (logistisk regression) | 0,924 | 0,937 | 0,870 | 0,104 |
 
-**[E] Engines**
+- CNN:en ensam är svag med 2 300 exempel. Klippta vyer gav inget, spegling lite, och
+  syntetiska exempel sänkte även CNN:en (AP 0,83 med vikt 0,3, 0,78 med vikt 1).
+- Stacking slår baslinjen men knappt: AP +0,006 (95 % bootstrap över stjärnor +0,002 till
+  +0,010). Det motiverar inte det stora C#-arbetet nu.
+- Platt-skalning gör sannolikheterna kalibrerade nästan gratis.
+- Inget av det rättar det verkliga felet från fas 4: omatchade signaler med 3–4 transiter som
+  får 0,85–0,96. Sådana finns knappt bland TOI:erna och syns inte i måtten ovan.
 
-- [ ] CNN-vetter: globala och lokala vyer som två kanaler (lokala vyn interpoleras till samma
-      längd), eller som två separata CNN:er
-- [ ] Stacking: CNN-sannolikheter och skalärer in i RandomForest eller gradient boosting
-- [ ] Kalibrering (Platt-skalning) så att `Probability` går att tolka som sannolikhet
+**[E] Engines 1.3.0-preview.2**
+
+- [x] Kalibrering: `VetterConfig.Calibrate` (standard på). `Train` korsvaliderar skogen över
+      stjärnorna och anpassar Platt-skalning (`PlattScaling`) till de riktiga exemplens
+      out-of-fold-sannolikheter. `CrossValidate` kalibrerar varje folds modell på dess egna
+      träningsstjärnor. Modellformat 2; format 1 läses fortfarande, okalibrerat.
+- [x] Feature-schema 2, fyra nya features riktade mot instrumenteffekter och aktivitet:
+      `DepthChi2` (hur lika de enskilda transiternas djup är), `PartialTransitFraction`,
+      `GapEdgeFraction` (transiter nära glapp och kanter) och `LocalNoiseRatio` (bruset nära
+      transiterna mot bruset överallt)
 
 **[S] ExoPlanetService**
 
-- [ ] `train` jämför baslinje, CNN och stacking i samma rapport och väljer modell
+- [x] Andra utvärderingsmängd: veckojobbets sammanfattning mäter modellen på Transit Labs egna
+      kandidater (`LabEvaluation`): kända planeter mot sekundärförmörkelser och omatchade
+      signaler. Baslinje `vetter-1` (2026-11-27): ROC-AUC 0,833, 7 av 21 omatchade signaler på
+      0,5 eller mer.
+- [ ] Bygg om datamängden med schema 2, träna `vetter-2`, jämför med `vetter-1` på TOI:erna och
+      på Transit Labs kandidater, och byt modell om den är bättre
 - [ ] Injection–recovery-rapport: andel återfunna som funktion av djup och period, för BLS
       ensamt och för BLS med vetting
 
-**Klart när:** stackingmodellen slår baslinjen på PR-AUC i grupperad korsvalidering och
-träningen tar under 2 timmar i Actions.
+**Senare (fas 5 eller när datamängden är större):** CNN på vyerna och stacking. Det kräver i
+CSharpNumerics konfigurerbart djup i `CNN1DClassifier`, Adam och batchträning i
+sekvensmodellerna, parallellisering över prov i en batch och serialisering av nätverk och träd
+(så att `CandidateVetter` kan spara skogen i stället för att träna om den).
+
+**Klart när:** `vetter-2` är minst lika bra som `vetter-1` på TOI:erna, har lägre Brier-poäng,
+och ger färre omatchade signaler på 0,5 eller mer i Transit Lab.
 
 ### Fas 4: ML-betyg i Transit Lab
 
@@ -280,9 +299,11 @@ Engines 1.2.0 (vyer, features, injector, detrending)
 CSharpNumerics 4.5.0-preview.1 (GroupKFold, sannolikheter, vikter, mått, snabbare träd)
    → Engines 1.3.0-preview.1 (CandidateVetter)
                                     → fas 2   (släppta som förhandsversioner)
+Engines 1.3.0-preview.2 (kalibrering, feature-schema 2; ingen ny CSharpNumerics behövs)
+                                    → fas 3
 CSharpNumerics 4.5.0-preview.N (djupare CNN, Adam, parallellisering, serialisering)
    → Engines 1.3.0-preview.N (CNN + stacking)
-                                    → fas 3–4
+                                    → senare, när datamängden är större
 CSharpNumerics 4.5.0 + Engines 1.3.0 (stabila) när roadmapen är klar
 ```
 

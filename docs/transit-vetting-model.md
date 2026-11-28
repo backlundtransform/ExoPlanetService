@@ -66,6 +66,16 @@ The training command cross-validates before it trains the final model:
   at 0.5, Brier score, log loss, and a calibration table (of the TOIs given about 0.8, how many
   are planets).
 
+### Transit Lab's own candidates
+
+The TOIs hold few of the false signals Transit Lab finds: instrument effects and stellar
+activity on the well-studied stars it searches. The weekly run therefore also measures the
+model on its own candidates (`LabEvaluation`, at the end of the run's summary): candidates that
+match a known planet count as planets, secondary eclipses and unmatched signals as not. A new
+planet among the unmatched signals would count against the model, so the numbers are for
+comparing models. `vetter-1` (2026-11-27): ROC-AUC 0.833; 7 of 21 unmatched signals scored 0.5
+or more.
+
 A high score partly reflects the TOI catalogue: the host star's temperature, surface gravity and
 radius are among the most used features, and some of that is how TOIs were selected and followed
 up rather than astrophysics. Scores should be presented as "looks like a planet", not as a
